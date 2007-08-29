@@ -1,0 +1,39 @@
+<!--
+    
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    Jiao Lin
+    California Institute of Technology
+    (C) 2007 All Rights Reserved
+    
+    {LicenseText}
+    
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+-->
+
+<chapter id="NdArray">
+  
+  <title >
+    NdArray 
+  </title>
+  
+  <sect1 id="NdArray.interface">
+    <sect2 id="NdArray.interface.asNumarray">
+      The method "asNumarray" is provided so that any
+      NdArray instance can be converted to a Numarray instance if
+      necessary. This decision might look not so good because
+      we are committing to a particular implementation of 
+      arrays. But since numarray is so commonly useful for
+      scientific python packages, it does not seem to be 
+      that bad.
+    </sect2>
+  </sect1>
+  
+</chapter>
+
+
+<!-- version-->
+<!-- $Id$-->
+
+<!-- End of file -->

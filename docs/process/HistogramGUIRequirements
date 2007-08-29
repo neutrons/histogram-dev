@@ -1,0 +1,16 @@
+== Histogram GUI ==
+
+Provide a GUI in which users can view histograms and manipulate plots 
+
+ * make plots for 1D/2D histograms
+ * display info and meta data of a histogram
+ * manipulate histograms in a python shell window so we can create slices, projections, etc
+ * simple manipulation of plots 
+   * change plot title
+   * change axis labels 
+   * select region of plot
+   * choose ticks / add minor ticks
+   * change color coding
+   * choose color palette
+   * error bar on/off
+   * *add colorbar*

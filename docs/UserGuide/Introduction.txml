@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="us-ascii" ?>
+
+<!--
+
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                                   Jiao Lin
+                      California Institute of Technology
+                        (C) 2007 All Rights Reserved
+
+ {LicenseText}
+
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-->
+
+
+<chapter>
+
+  <title>Introduction</title>
+
+<para>
+The methods of the Histogram package
+allow powerful versatility in customizing data 
+manipulations. 
+Think of these methods as calculator functions 
+such as arithmetic, boolean, or slicing operations
+ that can be performed on large data sets.  
+These can be put together in scripts for customized
+data reduction, as explained in 
+<xref linkend='reduction.Scripting'/>.
+These methods can be used for appliations other
+than reduction as well.
+A histogram is the fundamental data object of 
+    <ulink url='xxxWEBSITExxx/reduction/Software-UserGuide/html/index.html'>
+      DRCS
+    </ulink>
+    .
+    It is a container of data, error bars, and axes.
+  </para>
+
+  <para>
+    A user can access a histogram through its public interface
+    using the python shell. 
+    Here is an example of a  python session:
+  </para>
+
+  <programlisting>
+    from histogram import histogram
+    taxis = 't', [1.,2.,3.], 'second'
+    axes = [taxis]
+    data = [3, 10, 5]
+    errs = [3, 10, 5]
+    h = histogram( "intensity", axes, data, errs)
+    print h
+    help(h)
+  </programlisting>
+
+  <para>
+    For more details about how to manipulate histograms 
+    from the python command line, please read
+    <xref linkend="histogram.CommandlineInterface"/>.
+    Histograms can also be accessed from the Histogram GUI application,
+    which may be more convenient and interactive.
+    The <xref linkend='HistogramGUI'/> has more details about that.
+  </para>
+  
+</chapter>
+

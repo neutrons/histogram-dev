@@ -1,0 +1,457 @@
+<!--
+    
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    Jiao Lin
+    California Institute of Technology
+    (C) 2007 All Rights Reserved
+    
+    {LicenseText}
+    
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+-->
+
+<chapter id="histogram.CommandlineInterface">
+  
+  <title >
+    Histogram Scripting Interface
+  </title>
+
+
+<sect1>
+<title> Create histogram </title>
+
+<para>
+We start by importing from the packages
+<emphasis>histogram</emphasis> and <emphasis>numpy</emphasis>.
+They include many convenient functions like "histogram" factory
+and "exp" math functions.
+
+<programlisting>
+  from numpy import *  
+  from histogram import *
+</programlisting>
+
+Then we make an instance of a histogram:
+<programlisting>
+  h = histogram( "h", [ ('tof', arange(1000., 3000., 1.0), "microsecond") ] )
+</programlisting>
+
+Here, string "h" denotes the name of the histogram. The tuple
+
+<programlisting>
+  ('tof', arange(1000., 3000., 1.0), "microsecond")
+</programlisting>
+
+defines a time-of-flight axis. The axis has a name 'tof', and the
+centers of the bins on the axis are 
+
+<programlisting>
+  1000., 1001., ..., 2999.
+</programlisting>
+
+The string "microsecond" is the unit of the tof axis.
+The tuple 
+
+<programlisting>
+  ('tof', arange(1000., 3000., 1.0), "microsecond")
+</programlisting>
+
+is put into a list. 
+
+<note>
+In most cases, histograms
+are multi-dimensional. For a multi-dimensional histogram, 
+we need a list, in which each item describes an axis.
+So, even for a 1D histogram, we 
+require user to supply a single-item list, 
+in which the only item describes the only axis for the
+histogram.
+</note>
+
+If we type 
+
+<programlisting>
+  print h
+</programlisting>
+
+The following texts show up:
+
+<programlisting>
+  
+Histogram "h"
+- Axes:
+   - Axis tof: [ 1000.0, 1001.0, ... 2998.0, 2999.0 ]
+
+- Shape: [2000L]
+- Metadata: [('name', 'h')]
+
+......
+</programlisting>
+
+Please note that this histogram is apparantly empty (with no data).
+Now we want to make this histogram more meaningful.
+Say we want the histogram "h" to have the
+form of an exponential function
+
+<equation id="h=exp(-tof/1000)">
+  <title>A test function</title>
+  <mediaobject>
+    <imageobject role="html">
+      <imagedata fileref="figures/equations/testfunction.png" format="PNG"/>
+    </imageobject>
+    <textobject role="tex">
+      <phrase>h=exp(-\frac{tof}{1000.})</phrase>
+    </textobject>
+  </mediaobject>
+</equation>
+</para>
+
+In the python command line, we enter
+
+<programlisting>
+  # first we define the function
+  from numpy import exp
+  def f(tof): return exp(-tof/1000.)
+  # and we also need the time-of-flight axis
+  tofaxis = h.axisFromName('tof') 
+  # now we apply the function to the axis to obtain a dataset
+  d = datasetFromFunction( f, [tofaxis] )
+  h[()] = d, None
+</programlisting>
+
+A shortcut to create the same histogram is to use
+a lambda expression offered by  Python
+<programlisting>
+  from histogram import *
+  from numpy import exp
+  h = histogram(
+      "h", [ ('tof', arange(1000., 3000., 1.0), "microsecond") ], 
+      fromfunction = lambda x: exp(-x/1000.) ) 
+</programlisting>
+
+</sect1>
+
+<sect1>
+<title> Slicing </title>
+Probably the most important functionality of a histogram is 
+slicing. 
+First note that the syntax of histogram slicing is different from
+normal python array slicing. A python slicing looks like
+
+<programlisting>
+  a[ 3:10, 1:9 ]
+</programlisting>
+    
+whereas a histogram slicing looks like
+
+<programlisting>
+  h[ (3,10), (1,9) ]
+</programlisting>
+
+<sect2>
+<title> Examples </title>
+      
+Create a histogram:
+
+<programlisting>
+  from histogram import *
+  x = 'x', arange(-1, 1, 0.05 )
+  y = 'y', arange(-1, 1, 0.05 )
+  h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
+</programlisting>
+
+Get a slice in the region  x=(0.5, 0.9), y=(-0.8, 0.8)
+
+<programlisting>
+  h1 = h[ (0.5, 0.9), (-0.8, 0.8) ]
+</programlisting>
+
+Get a slice in the region x=(minimum, 0.5), y=(-0.8, 0.8)
+
+<programlisting>
+  h2 = h[ (None, 0.5), (-0.8, 0.8) ]
+</programlisting>
+
+Get a slice at x=0.5 over the full range of y
+
+<programlisting>
+  h3 = h[ 0.5, () ]
+</programlisting>
+
+the resulting histogram is a 1D curve.
+
+<note>
+  Slicing is by reference. No new data array will be created, and
+  the new histogram is refering to a section of the original
+  data. If you really need a copy, please use the "copy" method
+  of the histogram object.
+</note>
+
+To set a slice, the easier way is to use method "datasetFromFunction".
+<programlisting>
+  # create new slice
+  yaxis = h.axisFromName( 'y' )
+  s = datasetFromFunction( lambda y: y, (yaxis,) )
+  # set new slice
+  h[ 0.3, () ] = s, None
+</programlisting>
+You may notice that we need a tuple on the right-hand side.
+The reason is there are two datasets in a histogram: one for
+the data, another for the errors.
+(Recall that the squares of
+the errors are stored to reduce computation time.)
+In the 2-tuple
+<programlisting>
+  s, None
+</programlisting>
+"s" will be assign to the "data" dataset, and "None" will be assigned
+to the "error bar squares" dataset. 
+Actually "None" is a special dataset for error bar squares:
+it means all error bars are zero.
+
+</sect2>
+</sect1>
+
+<sect1>
+<title> Numerical Operators </title>
+<para>
+Some basic numerical operators are availabele
+for manipulating histograms.
+When these computations are performed, both data and error bars 
+are processed.
+</para>
+
+<para>
+  The supported operators are:
+
+  <programlisting>
+  +, -, *, /, +=, -=, *=, /=
+  </programlisting>
+</para>
+
+<sect2>
+<title>Examples</title>
+
+<para>
+First, create a histogram
+<programlisting>
+  from histogram import *
+  x = 'x', arange(-1, 1, 0.05 )
+  y = 'y', arange(-1, 1, 0.05 )
+  h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
+</programlisting>
+
+Then we  add a constant to the histogram:
+
+<programlisting>
+  h += 3., 1.
+</programlisting>
+
+Please note that there are two numbers on the right hand side, one for
+data, another for error bar squares.
+</para>
+
+<para>
+Next we add a histogram to a histogram
+
+<programlisting>
+  h1 = histogram( 'h1', [x,y], fromfunction = lambda x,y: x + y )
+  h2 = h + h1
+  h2 += h
+</programlisting>
+
+You can do similar things with the other operators,
+following ususal Python syntax.
+</para>
+</sect2>
+
+</sect1>
+
+<sect1>
+<title> Numerical functions </title>
+
+<sect2>   
+<title>sum</title>
+  
+<sect3>
+<title> Description </title>
+It will sum the data and the error bar squares of all bins,
+and return the total
+counts and its error bar square.
+It can also sum a high-dimensional (D) histogram along one axis,
+and return a histogram of reduced dimension (D-1).
+</sect3>    
+  
+<sect3>
+<title> Examples </title>
+First, create a histogram
+<programlisting>
+  from histogram import *
+  x = 'x', arange(-1, 1, 0.05 )
+  y = 'y', arange(-1, 1, 0.05 )
+  h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
+</programlisting>
+
+Now,
+
+<programlisting>
+  h.sum()
+</programlisting>
+
+returns a 2-tuple of counts and error bar square of all bins summed together.
+The expression 
+
+<programlisting>
+  h.sum( 'x' )
+</programlisting>
+returns a 1-D histogram that results from summing over the axis 'x'.
+  </sect3>
+  
+</sect2>
+
+<sect2>   
+  <title>reduce</title>
+  
+  <sect3>
+    <title> Description </title>
+    Sometime you may have a histogram having  an axis
+    that is only one bin wide. 
+    Such histograms (n-dimensional) are
+    actually (n-1)-dimensional. 
+    You can reduce the dimensionality
+    of this kind of histogram by using this command.
+  </sect3>    
+  
+  <sect3>
+    <title> Examples </title>
+<programlisting>
+  from histogram import *
+  axes = [ ('x', [1,2,3]), ('yID', [1]) ]
+  data = [ [1,2,3] ]; errs = [ [1,2,3] ]
+  h = makeHistogram( 'h', axes, data, errs )
+  h.reduce()
+</programlisting>
+
+  </sect3>
+  
+</sect2>
+
+<sect2>   
+  <title>transpose</title>
+  
+  <sect3>
+    <title> Description </title>
+    This function transpose the axes of a histogram.
+  </sect3>    
+  
+  <sect3>
+    <title> Examples </title>
+<para>
+The following commands create a 2-D histogram, and
+then transpose the x and y axes.
+<programlisting>
+  from histogram import *
+  x = 'x', arange(-1, 1, 0.05 )
+  y = 'y', arange(0, 5, 0.05 )
+  h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
+  ht = h.transpose()
+</programlisting>
+</para>
+
+  </sect3>
+  
+</sect2>
+
+  </sect1>
+
+  <sect1>
+    <title>Miscellaneous</title>
+
+<sect2>   
+  <title>axisFromName</title>
+  
+  <sect3>
+    <title> Description </title>
+    Given axis name, return an axis instance of a histogram.
+  </sect3>    
+  
+  <sect3>
+    <title> Examples </title>
+<programlisting>
+  from histogram import *
+  x = 'x', arange(-1, 1, 0.05 )
+  y = 'y', arange(0, 5, 0.05 )
+  h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
+  xaxis = h.axisFromName( 'x' )
+  print xaxis.binCenters()
+  print xaxis.binBoundaries()
+</programlisting>
+  </sect3>
+  
+</sect2>
+
+<sect2>   
+<title>Retrieve Data and Error Bar Square Arrays</title>
+  
+<sect3>
+<title> Description </title>
+Sometimes it may be necessary to develop new numeric
+operators and methods for customized computation
+on  the data array encapsulated in the
+histogram object. 
+Here are examples to get you started. 
+We believe this approach can become sophisticated, 
+and we would be interested in hearing back from you
+about it.
+</sect3>    
+  
+<sect3>
+<title> Examples </title>
+<programlisting>
+  from histogram import *
+  x = 'x', arange(-1, 1, 0.05 )
+  y = 'y', arange(0, 5, 0.05 )
+  h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
+  dataarr = h.data().storage().asNumarray()
+  errsarr = h.errors().storage().asNumarray()
+</programlisting>
+Both "dataarr" and "errsarr" are numpy arrays that reference to 
+the underlying data stored in the histogram. You can work directly 
+on these arrays, and the original histogram will be changed.
+Please see 
+<ulink url="http://www.numpy.org">
+numpy
+</ulink>
+ documentation to learn of other methods
+that are available.
+  </sect3>
+  
+</sect2>
+
+<!--
+<sect2>   
+  <title>sum</title>
+  
+  <sect3>
+    <title> Description </title>
+    Sum all data and error bar squares, or along one axis.
+  </sect3>    
+  
+  <sect3>
+    <title> Examples </title>
+  </sect3>
+  
+</sect2>
+
+-->
+
+  </sect1>
+</chapter>
+
+
+<!-- version-->
+<!-- $Id$-->
+
+<!-- End of file -->
