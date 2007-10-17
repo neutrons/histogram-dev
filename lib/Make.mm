@@ -55,6 +55,7 @@ EXPORT_HEADERS = \
 	DataGrid1D.h \
 	DataGrid2D.h \
 	EvenlySpacedAxisMapper.h \
+	Exception.h\
 	Ix.h \
 	NdArray.h \
 

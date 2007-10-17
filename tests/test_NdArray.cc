@@ -12,12 +12,16 @@ int main()
   using namespace DANSE;
 
   unsigned int counts [ 4*6 ];
-  for (int i=0; i<4*6; i++) counts[i] = 0;
   short shape[2];
 
   shape[0] = 4; shape[1] = 6;
 
   NdArray<unsigned int *, unsigned int, short, size_t> arr(counts, shape, 2);
+
+  // test method "clear"
+  for (int i=0; i<4*6; i++) counts[i] = 1;
+  arr.clear();
+  for (int i=0; i<4*6; i++) assert(counts[i]==0);
 
   short indexes[2];
   indexes[0] = 2; indexes[1] = 3;

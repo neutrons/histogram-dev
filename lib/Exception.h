@@ -11,37 +11,28 @@
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-#ifndef H_DANSE_AXISMAPPER
-#define H_DANSE_AXISMAPPER
 
+#ifndef H_DANSE_EXCEPTION
+#define H_DANSE_EXCEPTION
 
-#include "Exception.h"
 
 namespace DANSE {
 
-  struct OutOfBound : public Exception
-  {
-    OutOfBound() : Exception( "out of bound" ) 
-    {}
-  };
-  
-  // map data value to index
-  template <typename DataType, typename IndexType>
-  class AxisMapper {
-
+  struct Exception{ //: public std::exception {
   public:
-    
-    typedef DataType datatype;
-    typedef IndexType indextype;
   
-    virtual IndexType operator() ( const DataType & data ) const = 0;
-    virtual ~AxisMapper() {};
+    Exception(const char *m) {_msg = std::string(m);}
+    const char *what() const throw()  { return _msg.c_str(); }
+    ~Exception() throw() {}
+
+  private:
+    std::string _msg;
+
   };
 
 }
 
 #endif
-
 
 // version
 // $Id$

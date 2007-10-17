@@ -29,7 +29,7 @@ namespace DANSE {
 
     virtual IndexType operator() ( const FloatType & data ) const 
     {
-      if (data>=m_end || data<m_begin) { throw "out of bound"; }
+      if (data>=m_end || data<m_begin) { throw OutOfBound(); }
       //std::cout << data << std::endl;
       //std::cout << IndexType( (data-m_begin)/m_step ) << std::endl;
       return IndexType( (data-m_begin)/m_step );
