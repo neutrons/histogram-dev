@@ -49,7 +49,12 @@ namespace DANSE {
     {
       assert(xend > xbegin+xstep*2);
     
-      size = (xend-xbegin)/xstep ;
+      //std::cout << xend << ", " << xbegin << ", " << xstep << ", "
+      //<<  (xend-xbegin)/xstep  << std::endl;
+      
+      size = IndexType( (xend-xbegin)/xstep );
+
+
       IndexType shape[1]; shape[0] = size;
       intensities = new IDataType[ size ];
 
