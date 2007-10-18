@@ -17,13 +17,13 @@ def preparePackage( package, sourceRoot = "." ):
 
     #histogram.applications
     package.addPurePython(
-        sourceDir = 'applications1',
+        sourceDir = 'applications',
         #sourceDir = 'applications',
         destModuleName = 'histogram.applications' )
 
     #apps
     package.addScripts(sourceFiles = [
-        "applications1/gui/HistogramGUIApp.py",
+        "applications/gui/HistogramGUIApp.py",
         #"applications/gui/histogramGui.py",
         ] )
 
