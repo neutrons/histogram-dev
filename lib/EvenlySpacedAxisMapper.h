@@ -19,15 +19,15 @@
 namespace DANSE {
 
   // map data value to index
-  template <typename FloatType, typename IndexType>
-  class EvenlySpacedAxisMapper: AxisMapper<FloatType, IndexType> {
+  template <typename NumberType, typename IndexType>
+  class EvenlySpacedAxisMapper: AxisMapper<NumberType, IndexType> {
 
   public:
-    EvenlySpacedAxisMapper( FloatType begin, FloatType end, FloatType step )
+    EvenlySpacedAxisMapper( NumberType begin, NumberType end, NumberType step )
       : m_begin( begin ), m_end( end ), m_step( step )
     {}
 
-    virtual IndexType operator() ( const FloatType & data ) const 
+    virtual IndexType operator() ( const NumberType & data ) const 
     {
       if (data>=m_end || data<m_begin) { throw OutOfBound(); }
       //std::cout << data << std::endl;
@@ -36,7 +36,7 @@ namespace DANSE {
     }
     
   private:
-    FloatType m_begin, m_end, m_step;
+    NumberType m_begin, m_end, m_step;
   };
 
 }

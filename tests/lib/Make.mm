@@ -15,8 +15,9 @@ PACKAGE = tests
 
 PROJ_CLEAN += $(PROJ_CPPTESTS)
 
-PROJ_PYTESTS = signon.py
-PROJ_CPPTESTS = test_NdArray test_DataGrid1D test_DataGrid2D test_Itof test_Itof2
+PROJ_PYTESTS = 
+PROJ_CPPTESTS = test_NdArray test_DataGrid1D test_DataGrid2D test_Itof test_Ix \
+	test_Ixy
 PROJ_TESTS = $(PROJ_PYTESTS) $(PROJ_CPPTESTS)
 PROJ_LIBRARIES = -L$(BLD_LIBDIR) -lhistogram
 
@@ -50,9 +51,11 @@ test_DataGrid2D: test_DataGrid2D.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
 test_Itof: test_Itof.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
 	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_Itof.cc $(PROJ_LIBRARIES)
 
-test_Itof2: test_Itof2.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
-	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_Itof2.cc $(PROJ_LIBRARIES)
+test_Ix: test_Ix.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
+	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_Ix.cc $(PROJ_LIBRARIES)
 
+test_Ixy: test_Ixy.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
+	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_Ixy.cc $(PROJ_LIBRARIES)
 
 
 # version

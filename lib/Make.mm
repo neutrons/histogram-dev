@@ -57,6 +57,7 @@ EXPORT_HEADERS = \
 	EvenlySpacedAxisMapper.h \
 	Exception.h\
 	Ix.h \
+	Ixy.h \
 	NdArray.h \
 
 EXPORT_LIBS = $(PROJ_SAR)

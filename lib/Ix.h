@@ -30,17 +30,19 @@ namespace DANSE {
   /// I is intensity-like quantity
   /// A new array is created and kept in the data object;
   /// please remember to delete it!!!
-  template <typename XDataType, typename IDataType, typename IndexType=unsigned int >
+  template <typename XDataType, 
+	    typename IDataType, typename IIterator=IDataType *,
+	    typename IndexType=unsigned int >
   struct Ix {
 
     typedef IDataType idatatype;
     typedef XDataType xdatatype;
     
     typedef DataGrid1D< IndexType, XDataType, EvenlySpacedAxisMapper< XDataType, IndexType >, 
-			IndexType, NdArray< IDataType *, IDataType, IndexType, size_t> > 
+			IDataType, NdArray< IIterator, IDataType, IndexType, size_t> > 
     DG;
 
-    IDataType * intensities;
+    IIterator intensities;
     IndexType size;
     XDataType xbegin, xend, xstep;
 
@@ -49,9 +51,6 @@ namespace DANSE {
     {
       assert(xend > xbegin+xstep*2);
     
-      //std::cout << xend << ", " << xbegin << ", " << xstep << ", "
-      //<<  (xend-xbegin)/xstep  << std::endl;
-      
       size = IndexType( (xend-xbegin)/xstep );
 
 
@@ -62,6 +61,26 @@ namespace DANSE {
       m_Iarray = new IArray(intensities, shape, 1);
       m_dg = new DG( *m_xmapper, *m_Iarray );
     }    
+
+    /// ctor
+    /// This constructor accepts an iterator that points to a 1D array to hold
+    /// intensities.
+    /// The intensities array must have consistent shape with that defined
+    /// by parameters xbegin, xend, and xstep.
+    Ix( XDataType i_xbegin, XDataType i_xend, XDataType i_xstep, IIterator i_intensities)
+      : xbegin(i_xbegin), xend( i_xend ), xstep( i_xstep )
+    {
+      assert(xend > xbegin+xstep*2);
+    
+      size = IndexType( (xend-xbegin)/xstep );
+
+      IndexType shape[1]; shape[0] = size;
+      intensities = i_intensities;
+
+      m_xmapper = new XMapper( xbegin, xend, xstep );
+      m_Iarray = new IArray(intensities, shape, 1);
+      m_dg = new DG( *m_xmapper, *m_Iarray );
+    }
 
     const IDataType & operator () ( const XDataType & x ) const
     { return (*m_dg)( x ) ; }
@@ -74,7 +93,7 @@ namespace DANSE {
     ~Ix() { delete m_xmapper; delete m_Iarray; delete m_dg; }
     
   private:
-    typedef NdArray< IDataType *, IDataType, IndexType, size_t> IArray;
+    typedef NdArray< IIterator, IDataType, IndexType, size_t> IArray;
     typedef EvenlySpacedAxisMapper< XDataType, IndexType > XMapper;
     IArray *m_Iarray; // NdArray 
     XMapper *m_xmapper;
