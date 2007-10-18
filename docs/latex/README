@@ -1,0 +1,17 @@
+*.uml are UML projects (created by ArgoUML 0.22)
+*.jpg are generated from UML projects
+*.lyx are lyx documents
+*.tex are latex files generated from lyx documents
+
+
+To convert a lyx file to a latex file:
+ $ lyx --export latex developer.lyx
+
+To compile latex file:
+
+ $ export TEXINPUTS=.::
+ $ latex developer
+ $ dvips -Ppdf developer
+ $ ps2pdf developer.ps
+
+

@@ -1,61 +1,48 @@
 # -*- Makefile -*-
 #
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 #                               Michael A.G. Aivazis
 #                        California Institute of Technology
-#                        (C) 1998-2005  All Rights Reserved
+#                        (C) 1998-2004  All Rights Reserved
 #
 # <LicenseText>
 #
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
 
 PROJECT = histogram
-PACKAGE = tests
+PROJECT = tests
 
-PROJ_CLEAN += $(PROJ_CPPTESTS)
+# directory structure
 
-PROJ_PYTESTS = signon.py
-PROJ_CPPTESTS = test_NdArray test_DataGrid1D test_DataGrid2D test_Itof test_Itof2
-PROJ_TESTS = $(PROJ_PYTESTS) $(PROJ_CPPTESTS)
-PROJ_LIBRARIES = -L$(BLD_LIBDIR) -lhistogram
+BUILD_DIRS = \
+    lib \
+    histogram \
+    ndarray \
 
+OTHER_DIRS = \
 
-#--------------------------------------------------------------------------
-#
-
-all: $(PROJ_TESTS)
-
-test:
-	for test in $(PROJ_TESTS) ; do $${test}; done
-
-release: tidy
-	cvs release .
-
-update: clean
-	cvs update .
+RECURSE_DIRS = $(BUILD_DIRS) $(OTHER_DIRS)
 
 #--------------------------------------------------------------------------
 #
 
-test_NdArray: test_NdArray.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
-	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_NdArray.cc $(PROJ_LIBRARIES)
+all:
+	BLD_ACTION="all" $(MM) recurse
 
-test_DataGrid1D: test_DataGrid1D.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
-	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_DataGrid1D.cc $(PROJ_LIBRARIES)
+distclean::
+	BLD_ACTION="distclean" $(MM) recurse
 
-test_DataGrid2D: test_DataGrid2D.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
-	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_DataGrid2D.cc $(PROJ_LIBRARIES)
+clean::
+	BLD_ACTION="clean" $(MM) recurse
 
-test_Itof: test_Itof.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
-	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_Itof.cc $(PROJ_LIBRARIES)
-
-test_Itof2: test_Itof2.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
-	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_Itof2.cc $(PROJ_LIBRARIES)
+tidy::
+	BLD_ACTION="tidy" $(MM) recurse
 
 
 
 # version
-# $Id$
+# $Id: Make.mm 1252 2007-05-09 16:09:24Z linjiao $
 
 # End of file

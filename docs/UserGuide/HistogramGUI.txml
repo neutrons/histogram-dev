@@ -1,0 +1,385 @@
+<!--
+    
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    Jiao Lin
+    California Institute of Technology
+    (C) 2007 All Rights Reserved
+    
+    {LicenseText}
+    
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+-->
+
+<chapter id="HistogramGUI">
+  
+<title >
+  Histogram GUI
+</title>
+
+<para>
+  Histogram GUI interface helps you work on histograms,
+and see what you are doing.
+</para>
+
+<sect1 id="HistogramsGUI.launch">
+<title>Launch the Histogram GUI</title>
+
+To launch the Histogram GUI application, type the 
+following command:
+
+<programlisting>
+  $ HistogramGUIApp.py
+</programlisting>
+
+The main window will appear.
+
+<figure id='HistogramGUIApp.snapshot'>
+  <title >
+    Histogram GUI snapshot
+  </title>
+  
+  <mediaobject >
+    <imageobject >
+      <imagedata width='70%' fileref='figures/HistogramGUIApp-snapshot.png' scalefit='1'/>
+    </imageobject>
+    <textobject >
+      <phrase >
+	Histogram GUI snapshot
+      </phrase>
+    </textobject>
+  </mediaobject>
+</figure>
+    
+<para>
+  The window  is divided into three parts: 1) a list of opened
+  histograms are presented in the upper left corner, 
+  2) a plot of
+  the current histogram is presented at the upper right,
+  and 3) a embedded python shell is available in the bottom window.
+</para>
+  
+  </sect1>
+
+<sect1 id="HistogramGUI.loadHistogram">
+<title>
+  Load a Histogram
+</title>
+
+<para>
+A histogram can be loaded from a python pickle file. 
+<ulink url="xxxWEBSITExxx/reduction/Software-UserGuide/html/index.html">
+  Reduction
+</ulink>
+applications such as LrmecsReductionLight and PharosReductionLight
+can produce histograms in the proper format of pickled files.
+</para>
+
+<para>
+  To load a pickled histogram, select "File" from the main menu,
+  and click "Open histogram". A file dialog will show up, and you
+  can pick a pickle file. Examples of file names of pickled histograms
+  are "sqehist.pkl", "spehist.pkl".
+</para>
+
+<para>
+  After you load the histogram, the name of this histogram will
+  show up in the histogram list in the window at the upper left,
+  a plot
+  will appear in the upper right window, and the histogram is
+  also available in the embedded shell window to be manipulated
+  further.
+  You can save the plot by using menu "File" --> "Save plot to file".
+</para>
+
+</sect1>
+
+<sect1 id="HistogramGUI.embedded_python">
+<title>Embedded python shell</title>
+
+<note>
+  Some examples in this tutorial can be found under the "Tools"
+  menu.
+</note>
+
+<para>
+  In the embedded python shell you can fine-tune your plot
+  using
+  <ulink url="http://matplotlib.sourceforge.net/matplotlib.pylab.html">
+    pylab commands 
+  </ulink> 
+  . 
+  If you are familiar with pylab or matlab,
+  this should be really easy for you.
+</para>
+
+<para>
+  Here we explain how you may want to perform
+  some simple tasks with the embedded python shell.
+</para>
+
+<sect2>
+<title >2D False-Color Plotting</title>
+
+<figure id='HistogramGUIApp.sqe'>
+  <title >
+    S(Q,E)
+  </title>
+  <mediaobject >
+    <imageobject >
+      <imagedata width='70%' fileref='figures/sqe.png' scalefit='1'/>
+    </imageobject>
+    <textobject >
+      <phrase >
+	S(Q,E)
+      </phrase>
+    </textobject>
+  </mediaobject>
+</figure>
+
+<para>
+Let us first open a 2D histogram. From the menu bar, follow
+the sequence:
+
+<programlisting>
+  File --> Open histogram --> Choose sqehist.pkl --> Click open
+</programlisting>
+
+or you can do it in the command line window
+
+<programlisting>
+  >>> import pickle
+  >>> SQEData = pickle.load( open( 'sqehist.pkl' ) )
+</programlisting>
+
+A pseudo-color plot will appear. 
+</para>
+
+<para>
+Plot the transpose of I:
+      
+<programlisting>
+  >>> SQEData1 = SQEData.transpose()
+</programlisting>
+
+Choose a range for axes
+
+<programlisting>
+  >>> pylab.xlim( 0, 12 )
+</programlisting>
+
+Usually the automatically-selected ticks work quite well.
+But if it is neceesary, you can choose the tick mark
+spacing or add minor tick marks:
+
+<programlisting>
+  >>> majorticks = pylab.ticker.MultipleLocator(2)
+  >>> minorticks = pylab.ticker.MultipleLocator(1)
+  >>> ax = pylab.gca()
+  >>> ax.xaxis.set_major_locator( major )
+  >>> ax.xaxis.set_minor_locator( minor )
+</programlisting>
+
+You may notice that the minor ticks are really small,
+and you many want to change the apperarance of the plot.
+We can change labels of the axes. The best visual
+appearance can be achieved with LaTeX typesetting. This is done
+by first enabling LaTeX support, and then specifying label
+texts using LaTeX syntax. Please remember to use "raw"
+python strings (for example, r"$\AA$' will work, but '$\AA$' won't):
+
+<programlisting>
+  >>> pylab.rcParams['text.usetex'] = 1 #enable LaTeX
+  >>> pylab.xlabel( r"$Q {\rm(\AA^{-1})}$" )
+  >>> pylab.ylabel( r"$E {\rm(eV)}$" )
+</programlisting>
+
+You may add a title:
+      
+<programlisting>
+  >>> pylab.title( r"$S(Q,E)$" )
+</programlisting>
+
+or add a colorbar,
+
+<programlisting>
+  >>> pylab.colorbar()
+</programlisting>
+
+You can choose the range of "z" values in
+which color-coding will be applied
+
+<programlisting>
+  >>> pylab.clim( 0, 1e-3 )
+</programlisting>
+
+You can choose a color palette 
+(some color palettes render the faint details better than others).
+For example:
+
+<programlisting>
+  >>> pylab.hot()
+  >>> pylab.bone()
+</programlisting>
+
+The following color maps are provided by pylab: 
+	
+<programlisting>
+  autumn bone cool copper flag gray hot hsv jet pink prism
+  spring summer winter spectral
+</programlisting>
+
+If you have questions about color maps, you can 
+get help by 
+
+<programlisting>
+  >>> help(pylab.colormaps)
+</programlisting>
+	
+Choice of plotting intensity I or Sqrt(I) or Ln(I) (if no zeroes)
+
+<programlisting>
+  ???
+</programlisting>
+
+
+You can zoom into a particular region by left-dragging 
+your mouse.
+
+</para>
+
+<para>
+You can get a slice of the original data as fllows
+
+<programlisting>
+  >>> h = SQEData[ (0,10), (-10,10) ]
+</programlisting>
+
+The slicing syntax is 
+
+<programlisting>
+  >>> histslice = histogram[ (axis1min, axis1max), (axis2min, axis2max), ... ]
+</programlisting>
+</para>
+
+Again, you might find the 
+<ulink url="http://matplotlib.sourceforge.net/matplotlib.pylab.html">
+documentation for pylab 
+</ulink>
+to be handy.
+
+</sect2>
+
+
+<sect2>
+<title>Plot of a 1D Curve</title>
+      
+<figure id='HistogramGUIApp.diffraction_pattern'>
+  <title >
+    Diffraction pattern
+  </title>
+	
+  <mediaobject >
+    <imageobject >
+      <imagedata width='70%' fileref='figures/diffraction_pattern.png' scalefit='1'/>
+    </imageobject>
+    <textobject >
+      <phrase >
+	Diffraction pattern
+      </phrase>
+    </textobject>
+  </mediaobject>
+</figure>
+
+
+Continueing from the last section, we can create a 1D
+histogram by taking a sum of the 2D histogram SQEData
+over an axis. Before we
+can do that, we need to know the name of the
+axis over which the sum will be taken.
+This can be done by printing out the information
+about a histogram:
+
+<programlisting>
+  >>> print SQEData
+</programlisting>
+
+and you will see a line like this:
+
+<programlisting>
+  - Axis energy: [ -50.0, -49.0, ..., 50.0 ]
+</programlisting>
+
+This will tell us there is an axis called "energy", and
+this axis name becomes the argument of method "sum" in
+the following command 
+
+<programlisting>
+  >>> I_Q = SQEData.sum( "energy" )
+</programlisting>
+
+
+You can zoom into a particular region by left-dragging 
+your mouse.
+
+You can also zoom in by entering
+commands in the python shell window
+if you prefer:
+
+<programlisting>
+  >>> pylab.xlim( 2, 10 )
+  >>> pylab.ylim( 0.0, )
+</programlisting>
+
+</sect2>
+
+<sect2>
+  <title>Find bad detectors</title>
+  <para>
+    An important task in data reduction is to find out 
+    bad detectors. It can be performed by looking at the 
+      histogram of I(detector, pixel). 
+  </para>
+  
+  <para>
+    To obtain I(detector, pixel) from measured data,
+    you can follow the instructions 
+    <ulink url="xxxWEBSITExxx/measurement/UserGuide/html/index.html">
+      here
+      </ulink>.
+  </para>
+  
+</sect2>
+
+</sect1>
+
+<sect1 id="HistogramGUI.toolsmenu">
+  <title>Tools menu
+  </title>
+    
+  <para>
+    The menu "Tools" is dynamic. You can load a toolset onto that menu by
+    using menu "File-->Load a toolset".
+  </para>
+  
+  <para>
+    The default set of menus under the "Tools" menu are:
+    
+    <itemizedlist>
+      <listitem> Raw data </listitem>
+      <listitem> Reduction </listitem>
+      <listitem> PRL </listitem>
+      <listitem> Web </listitem>
+    </itemizedlist>
+  </para>
+
+</sect1>
+
+</chapter>
+
+
+<!-- version-->
+<!-- $Id$-->
+
+<!-- End of file -->

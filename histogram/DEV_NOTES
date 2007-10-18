@@ -1,0 +1,22 @@
+Jan 22, 2006:
+
+** create slicers **
+
+It seems useful to have a histogram slicer that can create slice of
+a histogram.
+It can be used when only a part of the data is interesting and it 
+would be unecessary to reduce the whole data set which could take forever.
+
+Slicers now include:
+
+VectorSlicer: create a slice of a vector
+StdvectorDatasetSlicer: create a slice of a dataset
+AxisSlicer: create a slice of an axis
+HistogramSlicer: create a slice of a histogram
+
+The general interface for a slicer class is:
+
+  - constructor: ctor( instance_to_be_sliced )
+  - get a slice: getSlice( slice_or_list_of_slices )
+
+Please take a look at unit tests to see how slicers are used.
