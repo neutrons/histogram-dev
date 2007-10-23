@@ -45,7 +45,7 @@ namespace DANSE {
 			IDataType, NdArray< IIterator, IDataType, IndexType, size_t> > DG;
   
     IIterator intensities;
-    IndexType size;
+    IndexType size, shape[2];
     XDataType xbegin, xend, xstep;
     YDataType ybegin, yend, ystep;  
 
@@ -60,7 +60,6 @@ namespace DANSE {
       //std::cout << xend << ", " << xbegin << ", " << xstep << ", "
       //<<  (xend-xbegin)/xstep  << std::endl;
       
-      IndexType shape[2]; 
       shape[0] = IndexType( (xend-xbegin)/xstep );
       shape[1] = IndexType( (yend-ybegin)/ystep );
 
@@ -89,7 +88,6 @@ namespace DANSE {
       assert(xend > xbegin+xstep*2);
       assert(yend > ybegin+ystep*2);
     
-      IndexType shape[2]; 
       shape[0] = IndexType( (xend-xbegin)/xstep );
       shape[1] = IndexType( (yend-ybegin)/ystep );
 

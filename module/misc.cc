@@ -24,7 +24,7 @@ char pyhistogram_copyright__doc__[] = "";
 char pyhistogram_copyright__name__[] = "copyright";
 
 static char pyhistogram_copyright_note[] = 
-    "histogram python module: Copyright (c) 1998-2005 Michael A.G. Aivazis";
+    "histogram python module: Copyright (c) 2007 Jiao Lin";
 
 
 PyObject * pyhistogram_copyright(PyObject *, PyObject *)
