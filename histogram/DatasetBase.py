@@ -92,6 +92,7 @@ class DatasetBase( object):
         self._attributeCont = attributeCont
 
         self.setAttribute( 'name', name)
+        unit = _tounit( unit )
         self.setAttribute( 'unit', unit)
 
         self._shape = shape
@@ -129,6 +130,8 @@ class DatasetBase( object):
                     'UInt32' :25
                     }
 
+
+from _units import tounit as _tounit
 
 # version
 __id__ = "$Id$"

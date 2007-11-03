@@ -17,6 +17,7 @@ PACKAGE = histogram
 # directory structure
 
 BUILD_DIRS = \
+    hdf \
     ins \
     pyrecomponents \
 
@@ -58,6 +59,7 @@ EXPORT_PYTHON_MODULES = \
 	paths.py  \
 	plotter.py   \
 	hpickle.py  \
+	_units.py \
 	__init__.py  \
 
 #    MonitorData.py       \

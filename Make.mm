@@ -16,7 +16,8 @@ PROJECT = histogram
 # directory structure
 
 BUILD_DIRS = \
-    applications1 \
+    lib \
+    applications \
     etc \
     histogram \
     ndarray \

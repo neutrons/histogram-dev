@@ -498,6 +498,9 @@ class NdArray_TestCase(TestCase):
 
         v[10] = 11
         self.assertAlmostEqual( v[10], 11 )
+
+        v[3:5] = 0
+        self.assert_( v[3:5].compare( self.NdArray('double', [0,0] ) ) )
         return
 
 

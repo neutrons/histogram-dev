@@ -22,7 +22,7 @@ def test_0( **kwds):
 
     from histogram.StdvectorDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
     shape = [2,3,4]
     dtype = 6  # double
@@ -54,7 +54,7 @@ def test_0( **kwds):
 def test_1( **kwds):
     from histogram.StdvectorDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 42:'answer'}
     shape = [2,3,4]
     dtype = 6  # double
@@ -85,7 +85,7 @@ def test_2( **kwds):
     
     from histogram.StdvectorDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 42:'answer'}
     shape = [2,3,4]
     dtype = 6  # double
@@ -110,7 +110,7 @@ def test_3( **kwds):
     
     from histogram.StdvectorDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 42:'answer'}
     shape = [2,3,4]
     dtype = 6  # double
@@ -134,7 +134,7 @@ def test_4( **kwds):
     
     from histogram.StdvectorDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 42:'answer'}
     shape = [2,3,4]
     dtype = 6  # double
@@ -155,7 +155,7 @@ def test_5( **kwds):
     
     from histogram.StdvectorDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 42:'answer'}
     shape = [2,3,4]
     dtype = 6  # double
@@ -178,7 +178,7 @@ def test_6( **kwds):
     
     from histogram.StdvectorDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 42:'answer'}
     shape = [2,3,4]
     dtype = 6  # double
@@ -201,7 +201,7 @@ def test_7( **kwds):
     
     from histogram.StdvectorDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 42:'answer'}
     shape = [2,3,4]
     typecode = 6  # double
@@ -224,7 +224,7 @@ def test_8( **kwds):
     
     from histogram.StdvectorDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 42:'answer'}
     shape = [2,3,4]
     typecode = 6  # double
@@ -247,7 +247,7 @@ def test_9( **kwds):
     
     from histogram.StdvectorDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 42:'answer'}
     shape = [2,3,4]
     typecode = 6  # double
@@ -270,7 +270,7 @@ def test_10( **kwds):
     
     from histogram.StdvectorDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 42:'answer'}
     shape = [2,3,4]
     typecode = 6  # double
@@ -294,7 +294,7 @@ def test_11( **kwds):
     
     from histogram.StdvectorDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 42:'answer'}
     shape = [2,3,4]
     dtype = 6  # double
@@ -307,7 +307,7 @@ def test_11( **kwds):
     passed = True
     if ds.unit() != unit:
         passed = False
-        log("ds unit was %s instead of 'many'" % ds.unit())
+        log("ds unit was %s instead of '1'" % ds.unit())
     return passed
 
 
@@ -315,7 +315,7 @@ def test_12( **kwds):
     
     from histogram.StdvectorDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 42:'answer'}
     shape = [2,3,4]
     dtype = 6  # double

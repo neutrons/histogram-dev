@@ -20,8 +20,8 @@ from histogram import createDataset
 from histogram.DatasetContainer import DatasetContainer
 
 
-ds = createDataset( "ds", "no unit", shape = (3,4) )
-ds2 = createDataset( "ds2", "no unit", shape = (3,4) )
+ds = createDataset( "ds", shape = (3,4) )
+ds2 = createDataset( "ds2", shape = (3,4) )
 
 
 class DatasetContainer_TestCase(TestCase):

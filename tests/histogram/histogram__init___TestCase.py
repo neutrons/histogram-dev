@@ -129,6 +129,32 @@ class Histogram_TestCase(TestCase):
         return
 
 
+    def test_histogram5(self):
+        """Histogram.__init__: unit"""
+        h = histogram(
+            'h',
+            [
+            ('x', [1,2,3] ),
+            ],
+            unit = 'meter',
+            )
+        return
+
+
+    def test_histogram6(self):
+        """Histogram.__init__: erros = None"""
+        h = histogram(
+            'h',
+            [
+            ('x', [1,2,3] ),
+            ],
+            unit = 'meter',
+            data = [1,2,3]
+            )
+        self.assertVectorAlmostEqual( h.errors().storage().asNumarray(), [0,0,0] )
+        return
+
+
     def test_meshgrid(self):
         """Histogram.__init__: meshgrid"""
         x, y, z = [1,2], [3,4,5], [6,7,8,9]
@@ -190,13 +216,13 @@ class Histogram_TestCase(TestCase):
     def test_createDataset(self):
         "histogram.__init__:  createDataset"
         name = "intensity"
-        unit = ""
+        unit = "1"
         shape = [100,200]
         types = [ 'double', 'float', 'int', 'unsigned' ]
         for datatype in types:
             ds = createDataset( name, unit, shape=shape, data_type = datatype )
             self.assertEqual( name, ds.name() )
-            self.assertEqual( unit, ds.unit() )
+            self.assertEqual( 1, ds.unit() )
             self.assertVectorEqual( shape, ds.shape() )
             self.assertEqual( ds.typecodeAsC(), datatype )
             continue
@@ -206,7 +232,7 @@ class Histogram_TestCase(TestCase):
         storage.setShape( shape )
         ds2 = createDataset( name, unit, storage = storage )
         self.assertEqual( name, ds2.name() )
-        self.assertEqual( unit, ds2.unit() )
+        self.assertEqual( 1, ds2.unit() )
         self.assertVectorEqual( shape, ds2.shape() )
         self.assertEqual( ds2.typecodeAsC(), "float" )
         return

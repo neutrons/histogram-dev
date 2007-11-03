@@ -12,6 +12,7 @@
 #
 
 
+import histogram
 
 def createHistogram(noerror = False):
     from histogram import createContinuousAxis, arange, createDiscreteAxis
@@ -27,9 +28,9 @@ def createHistogram(noerror = False):
     dataStorage = NdArray( 'double', range(9) ); dataStorage.setShape( (3,3) )
     errorsStorage = NdArray( 'double', range(9) ); errorsStorage.setShape( (3,3) )
     
-    data = createDataset('data', '', storage = dataStorage )
+    data = createDataset('data', storage = dataStorage )
     if noerror: errors = None
-    else: errors  = createDataset('errors', '', storage = errorsStorage )
+    else: errors  = createDataset('errors', storage = errorsStorage )
     from histogram.Histogram import Histogram
     histogram = Histogram( name = 'I(E, TubeId)', data = data, errors = errors,
                            axes = [axisE, axisTubeId])
@@ -151,6 +152,14 @@ class Histogram_TestCase(TestCase):
         detIDaxis = axis('detID', range(5))
         h = histogram( 'h', [detIDaxis])
         h[ {'detID':0 } ]
+
+        #get slice. units envolved
+        h = histogram( 'distance',
+                       [ ('x', [1,2,3] ),
+                         ],
+                       unit = 'meter', data = [1,2,3] )
+        h1 = h[(2,3)]
+        self.assertEqual( h1.unit(), h.unit() )
         return
 
 
@@ -178,6 +187,13 @@ class Histogram_TestCase(TestCase):
             h.errors().storage().asList(), [0,1,0,0,0,0] )
 
         self.assertVectorAlmostEqual( h[1,5], (1,1) )
+
+        h = histogram( 'h', [('a', [1,2,3])] )
+        h[1] = 10,10
+
+        h = histogram( 'h', [('a', [1,2,3])], unit = 'meter')
+        from pyre.units.length import meter
+        h[1] = 10*meter,10*meter*meter
         return
 
 
@@ -207,20 +223,20 @@ class Histogram_TestCase(TestCase):
         #set slice
         from histogram.SlicingInfo import SlicingInfo, all, front, back
         from histogram import createDataset
+        from numpy import array
         
-        data = createDataset( "data", "", [2,2] )
-        data[:,:] = [ [1,2],
-                      [3,4], ]
-        errs = createDataset( "errs", "", [2,2] )
-        errs[:,:] = [ [1,2],
-                      [3,4], ]
+        data = createDataset( "data", shape = [2,2] )
+        data[:,:] = array( [ [1,2],
+                             [3,4], ] )
+        errs = createDataset( "errs", shape = [2,2] )
+        errs[:,:] = array( [ [1,2],
+                             [3,4], ] )
 
         histogram[SlicingInfo((0.5, 1.5)), SlicingInfo((1,3))] = data,errs
         self.assertVectorEqual( histogram[0.5,1], (1,1) )
         self.assertVectorEqual( histogram[0.5,3], (2,2) )
         self.assertVectorEqual( histogram[1,1], (3,3) )
         self.assertVectorEqual( histogram[1,3], (4,4) )
-
 
         histogram[(0.5, 1.5),(1,3)] = data,errs
         self.assertVectorEqual( histogram[0.5,1], (1,1) )
@@ -231,9 +247,12 @@ class Histogram_TestCase(TestCase):
         
         from histogram import makeHistogram
         name = "h"
-        axes = [ ('x', [1,2]), ('y', [1,2]) ]
-        data = [ [1,2], [3,4] ]
-        errs = [ [1,2], [3,4] ]
+        axes = [
+            ('x', [1,2]),
+            ('y', [1,2]),
+            ]
+        data = array( [ [1,2], [3,4] ] )
+        errs = array( [ [1,2], [3,4] ] )
         h2 = makeHistogram( name, axes, data, errs )
         histogram[SlicingInfo((0.5, 1.5)), SlicingInfo((1,3))] = h2
 
@@ -247,8 +266,11 @@ class Histogram_TestCase(TestCase):
         histogram[(0.5, 1.5), (1,3)] = data, None
 
         # setslice: rhs is a lit of arrays. histogram is 1D
-        data = [1,2]; errs = data;
+        data = array([1,2]); errs = data;
         histogram[ 0.5, () ] [ (1,3) ] = data, errs
+
+        # setslice: rhs is a tuple of two numbers
+        histogram[ 0.5, () ] [ (1,3 )]  = 0., 0.
         
         #setitem using dictionary
         histogram[ {'E':1.5, 'tubeId':3} ] = 3, 3
@@ -258,6 +280,10 @@ class Histogram_TestCase(TestCase):
         histogram[ {'E':1.5} ][ {'tubeId':3} ] = 3, 3
         self.assertVectorAlmostEqual(
             histogram[ {'E':1.5, 'tubeId':3} ], (3, 3) )
+
+        #
+        histogram[ {'E':1.5} ] /= 3,3
+        histogram[ {'E':1.5} ] /= 3,3
         return
 
 
@@ -293,7 +319,11 @@ class Histogram_TestCase(TestCase):
         h *= (2,1)
         self.assertVectorEqual( h[0.5, 1], (0,0) )
         self.assertVectorEqual( h[0.5, 3], (2,9) )
+        return
 
+
+    def test__imul__2(self):
+        "histogram: h*=h2"
         h = self._histogram.copy()
         h2 = self._histogram2
         h *= h2
@@ -312,7 +342,11 @@ class Histogram_TestCase(TestCase):
         h /= (2,0)
         self.assertVectorEqual( h[0.5, 1], (0,0) )
         self.assertVectorEqual( h[0.5, 3], (0.5,1./4) )
+        return
+    
 
+    def test__idiv__2(self):
+        "histogram: h/=h1"
         h = self._histogram.copy()
         h2 = self._histogram2
         h /= h2
@@ -346,7 +380,24 @@ class Histogram_TestCase(TestCase):
         for xi in x.binCenters():
             for yi in y.binCenters():
                 self.assertAlmostEqual( yi+1, hc[xi,yi][0] )
-        
+
+        #involve units
+        h1 = histogram(
+            'h1',
+            [ ('x', [1,2,3]),
+              ],
+            unit = 'meter',
+            data = [1,2,3],
+            errors = [1,2,3],
+            )
+        h2 = histogram(
+            'h2',
+            [ ('x', [1,2,3]),
+              ],
+            data = [1,1,1],
+            errors = [1,1,1],
+            unit = 'second',
+            )
         return
 
 
@@ -357,6 +408,18 @@ class Histogram_TestCase(TestCase):
 
         h = self._histogram + self._histogram2
         self.assertVectorEqual( h[1.5,1], (6,6) )
+
+        h1 = histogram.histogram( 'h1', [ ['x', range(10)] ] )
+        h1[()] = 1,1
+        
+        h2 = histogram.histogram( 'h2', [ ['x', range(10)] ] )
+        h2[()] = 2,2
+
+        h1*=(2.,0)
+        h2/=(2.,0)
+
+        h3 = h1+h2
+        for x in range(10): self.assertAlmostEqual( h3[x][0], 3 )
         return
     
     
@@ -365,7 +428,7 @@ class Histogram_TestCase(TestCase):
         h = self._histogram - (1,2)
         self.assertVectorEqual( h[0.5, 1], (-1,2) )
 
-        h = (1,2)  - self._histogram 
+        h = (1,2)  - self._histogram
         self.assertVectorEqual( h[0.5, 1], (1,2) )
 
         h = self._histogram - self._histogram2
@@ -424,6 +487,16 @@ class Histogram_TestCase(TestCase):
             axis1 = h1.axisFromName( axisName )
             self.assert_( axis.storage().compare( axis1.storage() ) )
             continue
+
+        from histogram import histogram
+        h2 = histogram(
+            'h2',
+            [ ('x', [1,2,3]),
+              ],
+            unit = 'meter' )
+        pickle.dump( h2, open( "tmp.pkl", 'w' ) )
+        h2a = pickle.load( open("tmp.pkl") )
+        
         return
 
 
@@ -432,8 +505,8 @@ class Histogram_TestCase(TestCase):
         from histogram import makeHistogram
         name = "h"
         axes = [ ('x', [1,2,3]), ('yID', [1]) ]
-        data = [ [1,2,3] ]
-        errs = [ [1,2,3] ]
+        data = [ [1],[2],[3] ]
+        errs = [ [1],[2],[3] ]
         h = makeHistogram( name, axes, data, errs )
         h.reduce()
         shape = h.shape()

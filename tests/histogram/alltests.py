@@ -23,7 +23,8 @@ files = os.listdir( curdir )
 #get names of all test cases
 tests = []
 for f in files:
-    if f.endswith("TestCase.py"): tests.append( f.rstrip('.py') )
+    if f.endswith("TestCase.py") and '#' not in f:
+        tests.append( f.rstrip('.py') )
     continue
 
 #make a list of test suites

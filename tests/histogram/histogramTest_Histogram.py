@@ -20,7 +20,7 @@ def test_0( **kwds):
     from histogram.Axis import Axis
     from histogram.NdArrayDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
     lengths = [2,3,4]
     dtype = 6  # double
@@ -55,7 +55,7 @@ def test_1( **kwds):
     from histogram.Axis import Axis
     from histogram.NdArrayDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
     lengths = [2,3,4]
     dtype = 6  # double
@@ -95,7 +95,7 @@ def test_2( **kwds):
     from histogram.Axis import Axis
     from histogram.NdArrayDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
     lengths = [2,3,4]
     dtype = 6  # double
@@ -135,7 +135,7 @@ def test_3( **kwds):
     from histogram.Axis import Axis
     from histogram.NdArrayDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
     lengths = [2,3,4]
     dtype = 6  # double
@@ -175,7 +175,7 @@ def test_4( **kwds):
     from histogram.Axis import Axis
     from histogram.NdArrayDataset import Dataset
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
     lengths = [2,3,4]
     dtype = 6  # double

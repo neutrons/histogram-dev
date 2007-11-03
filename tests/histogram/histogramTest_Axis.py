@@ -19,7 +19,7 @@ def test_0( **kwds):
     from histogram.Axis import Axis
 
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
     length = 23
     dtype = 6  # double
@@ -42,7 +42,7 @@ def test_1( **kwds):
     from histogram.Axis import Axis
 
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
     length = 23
     dtype = 6  # double
@@ -67,7 +67,7 @@ def test_2( **kwds):
     from histogram.Axis import Axis
 
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
     length = 23
     dtype = 6  # double
@@ -90,7 +90,7 @@ def test_3( **kwds):
     from histogram.Axis import Axis
 
     name = 'test'
-    unit = 'many'
+    unit = '1'
     attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
     length = 23
     dtype = 6  # double

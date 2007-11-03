@@ -17,6 +17,7 @@ PROJECT = tests
 # directory structure
 
 BUILD_DIRS = \
+    lib \
     histogram \
     ndarray \
 

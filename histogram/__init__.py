@@ -114,6 +114,7 @@ def ndArray( *args, **kwds):
 
 def histogram( name, axes, data = None, errors = None, unit="1",
                data_type = "double", fromfunction = None):
+    
     """create a histogram out of given inputs
     
     axes are a list of axis, each axis could be specified by
@@ -141,7 +142,7 @@ def histogram( name, axes, data = None, errors = None, unit="1",
         )
         
     """
-    h = makeHistogram( name, axes, data, errors, unit,
+    h = makeHistogram( name, axes, data, errors, unit = unit,
                        data_type = data_type )
     
     if fromfunction is None: return h
@@ -333,7 +334,7 @@ def volume(shape):
     return reduce(mul, shape)
 
 
-def createDataset( name, unit, shape=[], data = None, data_type = "double",
+def createDataset( name, unit='1', shape=[], data = None, data_type = "double",
                    storage = None, array_factory = None,
                    ):
     """create a dataset
@@ -352,7 +353,7 @@ def createDataset( name, unit, shape=[], data = None, data_type = "double",
     
     if data is not None:
         import numpy
-        array = numpy.array( data )
+        array = numpy.array( data, data_type )
         if shape: array.shape = shape
         from ndarray.NumpyNdArray import arrayFromNumpyArray as ndarrayFromNumpyArray
         storage = ndarrayFromNumpyArray( array )
@@ -381,19 +382,24 @@ def makeHistogram( name, axes, data, errs, unit="1", data_type = 'double'):
 
     # data and error bars
     shape = [ _axis.size() for _axis in _axes ]
-    if data is None: data=createDataset( 'data', unit, shape = shape,
-                                         data_type = data_type )
-    if errs is None: errs=createDataset( 'errors', unit*unit, shape = shape,
-                                         data_type = data_type )
+    if data is None: data=createDataset(
+        'data', unit, shape = shape,
+        data_type = data_type )
+    if errs is None: errs=createDataset(
+        'errors', unit*unit, shape = shape,
+        data_type = data_type )
 
     from DatasetBase import DatasetBase
     if isinstance( data, DatasetBase ): dataDS = data
-    else: dataDS = createDataset( "data", unit, data = data )
+    else: dataDS = createDataset( "data", unit, data = data, data_type = data_type )
     if isinstance( errs, DatasetBase ): errsDS = errs
-    else: errsDS = createDataset( "errs", unit**2, data = errs )
+    else: errsDS = createDataset( "errs", unit**2, data = errs, data_type = data_type )
     
     from Histogram import Histogram
-    return Histogram( name = name, data = dataDS, errors = errsDS, axes = _axes )
+    h = Histogram( name = name, unit = unit,
+                   data = dataDS, errors = errsDS, axes = _axes )
+    h._setShape( tuple([ len(_axis.binCenters()) for _axis in h.axes() ]) )
+    return h
 
 
 def makeHistogramCollection( args, factory = None ):
@@ -415,7 +421,10 @@ def unitFromString( s ):
     if s is None: return 1
     if isinstance( s, unitFromString.unittype ): return s
     if isinstance( s, basestring ): return unitFromString.parser.parse( s )
-    raise NotImplementedError , "Don't know how to convert %s to unit" % s
+    try: return unitFromString.parser.parse( str(s) )
+    except:
+        raise NotImplementedError , "Don't know how to convert %r to unit" % s
+    raise "Should not reach here"
 from pyre.units import parser
 unitFromString.parser = parser()
 del parser

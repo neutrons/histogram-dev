@@ -9,14 +9,42 @@ debug = journal.debug("NdArrayDataset")
 class Dataset( DatasetBase):
     """datasets that use stdVectors"""
 
-    def attribute( self, name):
-        """attribute( attrName) -> attrValue"""
-        return self._attributeCont.getAttribute( name)
+    def __init__( self, name='', unit='1', attributes = {},
+                  shape = [], storage = None, isslice = False):
+        """DatasetBase( name='', unit='', attributes={},
+        shape = [], storage = None)
+        Inputs:
+            name: name (string)
+            unit: unit (string)
+            attributes: additional user defined attributes (dictionary)
+            shape: axes dimensions ([integers > 0])
+            storage: raw array/vector etc. holding BIN BOUNDARIES
+        Output:
+            new DatasetBase object
+        Exceptions: None
+        Notes: None"""
+        #whether this dataset is a slice of another dataset
+        self._isslice = isslice
+        
+        from DictAttributeCont import AttributeCont
+        # copy user's attributes to avoid confusion
+        attributeCont = AttributeCont( dict(attributes))
 
+        #debug.log("storage = %s" % str(storage))
+        
+        if shape == [] and storage is not None: shape = storage.shape()
+        if shape != [] and storage is not None:
+            if list(storage.shape()) != list(shape):
+                raise "Incompaitlbe inputs: shape = %s, storage.shape = %s" % (
+                    shape, storage.shape())
+            pass
+        shape = list(shape)
+        _checkShape(shape)
 
-    def listAttributes( self):
-        """listAttributes() -> [list of attr names]"""
-        return self._attributeCont.listAttributes()
+        #debug.log("shape = %s" % (storage.shape(),))
+
+        DatasetBase.__init__( self, name, unit, attributeCont, shape, storage)
+        return
 
 
     def name( self):
@@ -24,10 +52,14 @@ class Dataset( DatasetBase):
         return self._attributeCont.getAttribute('name')
 
 
-    def setAttribute( self, name, value):
-        """setAttribute( name, value) -> None"""
-        self._attributeCont.setAttribute( name, value)
-        return
+    def isunitless(self):
+        from _units import isunitless
+        return isunitless( self.unit() )
+
+
+    def isslice(self):
+        "is this dataset a slice of another dataset?"
+        return self._isslice
 
 
     def shape( self):
@@ -76,42 +108,38 @@ class Dataset( DatasetBase):
     def unit( self):
         """unit() -> unit for this axis"""
         return self._attributeCont.getAttribute('unit')
+
+
+    def changeUnit(self, unit):
+        '''change unit. update data array accordingly'''
+
+        unit = tounit( unit )
+        myunit = self.unit()
+        
+        try: unit + myunit
+        except: ValueError, "cannot set dataset of unit %s to new unit %s" % (
+            myunit, unit)
+
+        ratio = myunit/unit
+        self._storage *= ratio
+        self._setunit( unit )
+        return
     
 
-    def __init__( self, name='', unit='', attributes = {},
-                  shape = [], storage = None):
-        """DatasetBase( name='', unit='', attributes={},
-        shape = [], storage = None)
-        Inputs:
-            name: name (string)
-            unit: unit (string)
-            attributes: additional user defined attributes (dictionary)
-            shape: axes dimensions ([integers > 0])
-            storage: raw array/vector etc. holding BIN BOUNDARIES
-        Output:
-            new DatasetBase object
-        Exceptions: None
-        Notes: None"""
-        from DictAttributeCont import AttributeCont
-        # copy user's attributes to avoid confusion
-        attributeCont = AttributeCont( dict(attributes))
+    def attribute( self, name):
+        """attribute( attrName) -> attrValue"""
+        return self._attributeCont.getAttribute( name)
 
-        #debug.log("storage = %s" % str(storage))
-        
-        if shape == [] and storage is not None: shape = storage.shape()
-        if shape != [] and storage is not None:
-            if list(storage.shape()) != list(shape):
-                raise "Incompaitlbe inputs: shape = %s, storage.shape = %s" % (
-                    shape, storage.shape())
-            pass
-        shape = list(shape)
-        _checkShape(shape)
 
-        #debug.log("shape = %s" % (storage.shape(),))
+    def listAttributes( self):
+        """listAttributes() -> [list of attr names]"""
+        return self._attributeCont.listAttributes()
 
-        DatasetBase.__init__( self, name, unit, attributeCont, shape, storage)
+
+    def setAttribute( self, name, value):
+        """setAttribute( name, value) -> None"""
+        self._attributeCont.setAttribute( name, value)
         return
-
 
 
     def copy(self):
@@ -119,7 +147,7 @@ class Dataset( DatasetBase):
 
 
     def sum(self, axis = None):
-        if axis is None : return self.storage().sum()
+        if axis is None : return self.storage().sum() * self.unit()
         name = "sum of %s along axis %s" % (self.name(), axis)
         unit = self.unit() #sum don't change unit
 
@@ -194,21 +222,32 @@ class Dataset( DatasetBase):
     def __iadd__(self, other):
         if other is None: return self
         stor = self.storage()
-        if isNumber(other): stor += other
-        elif isCompatibleDataset(self, other):
-            stor += other.storage()
+        if isNumber(other) and self.isunitless():
+            stor += other/self.unit()
+        elif isDimensional(other):
+            try: self.unit() + other
+            except: raise ValueError, "unit mismatch: %s and %s" % (
+                self.unit(), other)
+            stor += other/self.unit()
+        elif isUnitCompatibleDataset(self, other):
+            stor += other.storage() * (other.unit()/self.unit())
+        elif isDataset(other):
+            raise ValueError, "Incompatible datasets: %s, %s" (
+                self, other)
         else:
             raise NotImplementedError , "%s + %s" % (
-                self.__class__.__name__, other.__class__.__name__)
+                self.__class__.__name__, other.__class__.__name__, 
+                )
         return self
 
 
     def __isub__(self, other):
         if other is None: return self
         stor = self.storage()
-        if isNumber(other): stor -= other
-        elif isCompatibleDataset(self, other):
-            stor -= other.storage()
+        if isNumber(other) and self.isunitless(): stor -= other/self.unit()
+        elif isDimensional(other): stor -= other/self.unit()
+        elif isUnitCompatibleDataset(self, other):
+            stor -= other.storage() * (other.unit()/self.unit())
         else:
             raise NotImplementedError , "%s - %s" % (
                 self.__class__.__name__, other.__class__.__name__)
@@ -217,9 +256,29 @@ class Dataset( DatasetBase):
 
     def __imul__(self, other):
         stor = self.storage()
-        if isNumber(other): stor *= other
+        if isNumber(other) and (other == 0 or other == 0.0):
+            stor *= 0
+            return self
+        if self.isslice() and isNumber(other):
+            #if this dataset is a slice, and other is a number
+            #we just need to work on the array. But we cannot
+            #change unit.
+            stor *= other
+            return self
+        
+        if self.isslice():
+            # if this dataset is actually a slice of another dataset, then
+            # we cannot change unit. otherwise this dataset will
+            # have different unit than the original dataset
+            raise ValueError , \
+                  "%s*%s. This dataset is a slice, we cannot change unit" % (
+                self, other)
+        
+        if isNumber(other) or isDimensional(other):
+            self.setAttribute( 'unit', self.unit()*other )
         elif isCompatibleDataset(self, other):
             stor *= other.storage()
+            self.setAttribute( 'unit', self.unit()*other.unit() )
         else:
             raise NotImplementedError , "%s * %s" % (
                 self.__class__.__name__, other.__class__.__name__)
@@ -228,24 +287,49 @@ class Dataset( DatasetBase):
 
     def __idiv__(self, other):
         stor = self.storage()
-        if isNumber(other): stor /= other
+        
+        if self.isslice() and isNumber(other):
+            #if this dataset is a slice, and other is a number
+            #we just need to work on the array. But we cannot
+            #change unit.
+            stor /= other
+            return self
+        
+        if self.isslice():
+            # if this dataset is actually a slice of another dataset, then
+            # we cannot change unit. otherwise this dataset will
+            # have different unit than the original dataset
+            raise ValueError , \
+                  "%s/%s. This dataset is a slice, we cannot change unit" % (
+                self, other)
+        
+        if isNumber(other) or isDimensional(other):
+            self.setAttribute('unit', 1.* self.unit()/other)
         elif isCompatibleDataset(self, other):
             stor /= other.storage()
+            self.setAttribute( 'unit', 1.* self.unit()/other.unit() )
         else:
             raise NotImplementedError , "%s * %s" % (
                 self.__class__.__name__, other.__class__.__name__)
         return self
 
 
-    #shoud we change the unit???
-    def square(self): self.storage().square()
+    def square(self):
+        self.storage().square()
+        self.setAttribute( 'unit', self.unit()**2 )
+        return
+    
 
-
-    def sqrt(self): self.storage().sqrt()
+    def sqrt(self):
+        self.storage().sqrt()
+        from math import sqrt
+        self.setAttribute( 'unit', self.unit()**(1./2) )
+        return
 
 
     def reverse(self):
         self.storage().reverse()
+        self.setAttribute( 'unit', 1./self.unit() )
         return
 
 
@@ -274,7 +358,7 @@ class Dataset( DatasetBase):
     def __getitem__(self, s):
         if isinstance(s, list): s = tuple(s)
         
-        if isinstance(s, int): return self._storage[s]
+        if isinstance(s, int): return self._storage[s] * self.unit()
         elif isinstance(s, tuple):
             s = list(s)
             slicing = False
@@ -286,17 +370,34 @@ class Dataset( DatasetBase):
         else:
             raise IndexError , "Don't know how to do indexing by %s" % (s,)
         
-        if slicing: return self._copy( self._storage[s] )
-        return self._storage[s]
+        if slicing: return self._copy( self._storage[s], slicing = True )
+        return self._storage[s] * self.unit()
         
 
     def __setitem__(self, s, rhs):
-        if isDataset( rhs ): rhs = rhs._storage
-        self._storage[s] = rhs
+        if isDataset( rhs ):
+            rhs = rhs._storage * (rhs.unit()/self.unit())
+        else:
+            try: rhs /= self.unit()
+            except Exception , msg :
+                raise ValueError, \
+                      '__setitem__: the rhs must be either dataset or numpy data array'\
+                      ' with unit. rhs = %s.\n'\
+                      '%s: %s' %  (rhs, msg.__class__.__name__, msg)
+            pass
+        try:
+            self._storage[s] = rhs
+        except Exception, err:
+            raise ValueError , "rhs = %s. %s:%s" % (rhs, err.__class__, err)
         return rhs 
 
 
-    def _copy(self, storage = None):
+    def __str__(self):
+        return '''Dataset %s(unit=%s): %s''' % (
+            self.name(), self.unit(), self.storage().asNumarray() )
+    
+
+    def _copy(self, storage = None, slicing = False):
         keys = self.listAttributes()
         attrs = {}
         for key in keys: attrs[key] = self.attribute( key )
@@ -306,20 +407,23 @@ class Dataset( DatasetBase):
         
         copy = self.__class__(
             name=self.name(), unit=self.unit(), attributes = attrs,
-            shape = [], storage = storage)
+            shape = [], storage = storage, isslice = slicing)
         return copy
+
+
+    def _setunit(self, unit):
+        self.setAttribute( 'unit', unit )
+        return
     
 
     pass # end of Class Dataset
 
 
+from _units import *
+
 
 def isDataset(ds):
     return isinstance(ds, DatasetBase)
-
-
-def isNumber(a):
-    return isinstance(a, float) or isinstance(a, int )
 
 
 def isCompatibleDataset(a,b):
@@ -331,10 +435,16 @@ def isCompatibleDataset(a,b):
     if a.shape() != b.shape():
         debug.log("imcompatible shape: %s, %s" % (a.shape(), b.shape()) )
         return False
-    
-##     if a.unit() != b.unit():
-##         debug.log("imcompatible unit: %s, %s" % (a.unit(), b.unit()) )
-##         return False
+
+    return True
+
+
+def isUnitCompatibleDataset(a,b):
+    if not isCompatibleDataset(a,b): return False
+    try: a.unit() + b.unit()
+    except:
+        debug.log("imcompatible units: %s, %s" % (a.unit(), b.unit()) )
+        return False
     return True
 
 

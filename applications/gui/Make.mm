@@ -13,13 +13,15 @@
 PROJECT = histogram
 PACKAGE = applications/gui
 
-PROJ_TIDY += *.log *.pyc
+PROJ_TIDY += *.log
 PROJ_CLEAN =
 
 # directory structure
 
 BUILD_DIRS = \
-    wxmpl \
+	models \
+	controllers \
+	tools \
 
 OTHER_DIRS = \
  
@@ -44,20 +46,11 @@ tidy::
 EXPORT_PYTHON_MODULES = \
 	__init__.py \
 	testhistogram.py \
-	ControlPanel.py \
-	HistInfoPanel.py \
-	HistPlotPanel.py \
-	HistNotebook.py \
-	LowerPanel.py \
-	MainWinApp.py \
-	MainFrame.py \
-	MainPanel.py \
-	UpperPanel.py \
 
 
 
 EXPORT_BINS = \
-	histogramGui.py \
+	HistogramGUIApp.py \
 
 
 

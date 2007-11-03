@@ -35,8 +35,9 @@ class Axis_TestCase(TestCase):
         self.assertVectorEqual( binBoundaries, [0.0, 1.0, 2.0, 3.0] )
         axisMapper = AxisMapper( binBoundaries = binBoundaries )
         
-        axis = Axis( 'x', unit='', attributes = {},
-                     length = nBins, storage = storage, mapper = axisMapper)
+        axis = Axis(
+            'x', unit='1', attributes = {},
+            length = nBins, storage = storage, mapper = axisMapper)
             
         self.assertEqual( axis.cellIndexFromValue( 0.5 ), 0 )
         self.assertEqual( axis.cellIndexFromValue( 0. ), 0 )
@@ -100,7 +101,18 @@ class Axis_TestCase(TestCase):
         t1axis = 10-taxis
         self.assert_( isinstance( t1axis, Axis) )
         return
-        
+
+
+    def test_changeUnit(self):
+        'Axis: changeUnit'
+        taxis= axis('t', range(3), unit='second' )
+        taxis.changeUnit( 'millisecond' )
+        self.assertVectorAlmostEqual( taxis.binBoundaries().asNumarray(),
+                                      [-500, 500, 1500, 2500] )
+        self.assertVectorAlmostEqual( taxis.binCenters(), 
+                                      [0, 1000, 2000] )
+        return
+    
     
     #def test_0(self): self._run_oldtest(0)
     #def test_1(self): self._run_oldtest(1)
