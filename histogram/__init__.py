@@ -279,35 +279,62 @@ def createContinuousAxis( name, unit, centers = None, boundaries = None,
 
 
 def boundariesFromCenters( centers ):
-    
+    '''boundariesFromCenters( centers ) --> boundaries
+
+    given bin centers, return bin boundaries
+    '''
     if len(centers) < 2:
         raise ValueError , "Cannot create boundaries from centers %s" %(centers, )
+
+    msg =  "centers array must be ascending: %s" % (centers, )
+    for i in range(len(centers)-1):
+        assert centers[i] <= centers[i+1], msg
+        continue
+    try: return _boundariesFromEvenlySpacedCenters( centers )
+    except ArrayNotEvenlySpaced: return _boundariesFromCenters( centers )
+    raise RuntimeError, "should not reach here"
+
+
+def _boundariesFromCenters( centers ):
+    '''_boundariesFromCenters( centers ) --> boundaries
+
+    given centers that are not evenly spaced, try to
+    make a reasonable guess of bin boundaries.
     
+    This is not a good way of doing things because we
+    have to make guesses.
+    '''
+    import numpy
+    c = numpy.array(centers)
+    c1 = c[1:]
+    c2 = c[:-1]
+    ret = numpy.zeros( len(centers) + 1, 'd' )
+    ret[1:-1] = (c1+c2)/2.
+    ret[0] = c[0] - (c[1]-c[0])/2.
+    ret[-1] = c[-1] + (c[-1]-c[-2])/2.
+    return list(ret)
+    
+
+class ArrayNotEvenlySpaced( Exception ): pass
+class BinsOverlapped( Exception ): pass
+
+
+def _boundariesFromEvenlySpacedCenters( centers ):
     d = centers[1] - centers[0]
     if d == 0 or d == 0.0 :
-        raise ValueError , "Cannot create boundaries from centers %s" %(centers, )
+        raise BinsOverlapped , "Cannot create boundaries from centers %s" %(centers, )
 
     evenlyspaced = True
     for i in range(1, len(centers)-1):
         d1 = centers[i+1] - centers[i]
-        if abs( (d1-d)/d  ) > eps: evenlyspaced = False; break
+        if abs( (d1-d)/d  ) > eps:
+            raise ArrayNotEvenlySpaced
         continue
 
-    if evenlyspaced:
-        min = centers[0]
-        delta = d
-        n = len( centers )
-        return calcBinBoundaries( min, delta, n )
-
-    #a trivial way to deal with unevenly-spaced bins
-    import numpy
-    centers = numpy.array( centers )
-    c1 = centers[1:]
-    bbs = numpy.zeros( len(centers) + 1, 'd' )
-    bbs[1:-1] = (centers[:-1] + c1)/2.
-    bbs[0] = centers[0] - (centers[1]-centers[0])/2.
-    bbs[-1] = centers[-1] + (centers[-1]-centers[-2])/2
-    return list(bbs)
+    min = centers[0]
+    delta = d
+    n = len( centers )
+    return calcBinBoundaries( min, delta, n )
 
 
 def createDiscreteAxis( name, items, datatype):

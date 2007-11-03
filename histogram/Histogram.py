@@ -65,7 +65,7 @@ class Histogram( AttributeCont):
         self._lastDatasetID = 0
         self._dataCont = DC()
         
-        if data is None: raise "data should be provided"
+        if data is None: raise ValueError, "No data provided"
         self._add_data_and_errors( data, errors )
         return
 
@@ -652,7 +652,7 @@ class Histogram( AttributeCont):
     def axisIndexFromName(self, name):
         names = self.axisNameList()
         try: return names.index(name)
-        except: raise "Unknown axis: %s" % name
+        except: raise UnknownAxis, "%r. Axes: %s" % (name, self.axisNameList())
 
 
     def axisFromId( self, number):
@@ -859,6 +859,9 @@ class Histogram( AttributeCont):
 
     pass # end of Histogram
 
+
+
+class UnknownAxis(Exception): pass
 
 
 def _equalUnit( u1, u2 ):

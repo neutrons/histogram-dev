@@ -4,7 +4,7 @@
 #
 #                                   Jiao Lin
 #                      California Institute of Technology
-#              (C) 2005 All Rights Reserved  All Rights Reserved
+#                        (C) 2005 All Rights Reserved
 #
 # {LicenseText}
 #
@@ -12,7 +12,9 @@
 #
 
 
-from histogram.data_plotter import defaultPlotter1D, defaultPlotter2D
+from histogram.plotter import defaultPlotter
+from histogram import *
+import pylab
 
 
 import unittest
@@ -23,16 +25,25 @@ class plotter_TestCase(TestCase):
 
     def test1D(self):
         "pylab plotter: 1D"
-        defaultPlotter1D.plot( [1,2,3], [1,2,3] )
-        defaultPlotter1D.plot( [1,2,3], [1,2,3], yerr = [0.1,0.1,0.1] )
+        h = histogram('h', [('x', arange(10))], fromfunction=lambda x: x*x)
+        defaultPlotter.plot(h)
+        raw_input('Press ENTER to continue')
+        pylab.clf()
+        pylab.close()
         return
         
     def test2D(self):
         "pylab plotter: 2D"
-        import numpy
-        I = numpy.arange( 0, 12, 1.)
-        I.shape = 3,4
-        defaultPlotter2D.plot( [1,2,3], [1,2,3,4], I )
+        h = histogram(
+            'h',
+            [('x', arange(10)),
+             ('y', arange( 5 )),
+             ],
+            fromfunction=lambda x,y: x*x + y*y)
+        defaultPlotter.plot(h)
+        raw_input('Press ENTER to continue')
+        pylab.clf()
+        pylab.close()
         return
     
     pass # end of plotter_TestCase

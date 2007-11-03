@@ -175,6 +175,21 @@ class Histogram_TestCase(TestCase):
         return
 
 
+    def test_boundariesFromCenters(self):
+        "histogram.__init__: boundariesFromCenters"
+        c = [1., 2., 3., 4.]
+        bb = boundariesFromCenters( c )
+        self.assertVectorAlmostEqual( bb, [0.5, 1.5, 2.5, 3.5, 4.5] )
+
+        c = [1, 2, 4, 5]
+        bb = boundariesFromCenters( c )
+        self.assertVectorAlmostEqual( bb, [0.5, 1.5, 3, 4.5, 5.5] )
+        
+        c = [1, 1, 2, 4]
+        self.assertRaises( BinsOverlapped, boundariesFromCenters, c )
+        return
+
+
     def test_calcBinBoundaries(self):
         "histogram.__init__:  calcBinBoundaries"
         bb = calcBinBoundaries( 1.0, 1.0, 10 );

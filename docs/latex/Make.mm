@@ -64,10 +64,13 @@ include std-docs.def
 %.tex: %.lyx
 	lyx --export latex $<
 
-export:: export-texdocs 
+export:: 
 
 export-texdocs:: $(TEXDOCS) $(EXPORT_DOCDIR)
 	$(CP_F) *.pdf $(EXPORT_DOCDIR)
+
+
+docs:: export-texdocs
 
 # version
 # $Id: Make.mm 1213 2006-11-18 16:17:08Z linjiao $

@@ -4,7 +4,7 @@
 #
 #                                   Jiao Lin
 #                      California Institute of Technology
-#              (C) 2005 All Rights Reserved  All Rights Reserved
+#                        (C) 2005 All Rights Reserved  
 #
 # {LicenseText}
 #
@@ -108,17 +108,21 @@ class HistogramMplPlotter(HistogramPlotter):
         x = xaxis.binCenters()
         yaxis = hist.axisFromId(2)
         y = yaxis.binCenters()
+
+        from histogram import boundariesFromCenters
+        x = boundariesFromCenters( x )
+        y = boundariesFromCenters( y )
         
         z = hist.data().storage().asNumarray()
-        ly, lx = z.shape
-        if len(x) == ly and len(y) == lx:
-            from numpy import transpose
-            z = transpose(z)
-            pass
-        elif len(x) == lx and len(y) == ly:
-            pass
-        else: raise "Shape mismatch: len(x) = %s, len(y) = %s, z.shape = %s" % (
-            len(x), len(y), z.shape )
+##         ly, lx = z.shape
+##         if len(x) == ly and len(y) == lx:
+##             from numpy import transpose
+##             z = transpose(z)
+##             pass
+##         elif len(x) == lx and len(y) == ly:
+##             pass
+##         else: raise "Shape mismatch: len(x) = %s, len(y) = %s, z.shape = %s" % (
+##             len(x), len(y), z.shape )
         
         self.dp2.plot(x,y,z, **kwds)
         

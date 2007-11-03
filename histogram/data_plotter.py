@@ -68,7 +68,10 @@ class MplPlotter:
 
 
     def clear(self):
-        self.get_figure().clf()
+        figure = self.get_figure()
+        figure.clf()
+        try: figure.gca()
+        except: pass
         return
     
 
@@ -188,6 +191,16 @@ class MplPlotter2D(MplPlotter, Plotter2D):
 
 
     def plot(self, x, y, z, min = None, max = None):
+        '''plot z(x,y)
+
+        Notes:
+          * x, y are arrays of bin boundaries! This make more sense for
+            histograms.
+          * z is a 2D array. The convention is that the y index runs faster
+            than the x index. This convention is just opposite to the
+            matplotlib convention in function pcolor. So we need to
+            do a transpose.
+        '''
         figure = self.get_figure()
         _clear( figure )
         self._image = self.plot_(x,y,z, min = min, max = max)
@@ -213,6 +226,9 @@ class MplPlotter2D(MplPlotter, Plotter2D):
 
         zcopy = _restrictedZ( z, min, max)
 
+        #please read notes in docstring of method "plot"
+        zcopy = zcopy.transpose()
+
         print "plot z in (%s, %s)" % (min, max)
         X,Y = self._engine.meshgrid(x,y)
         if self._usePylab: rt = self._engine.pcolor( X,Y, zcopy, shading="flat")
@@ -221,6 +237,17 @@ class MplPlotter2D(MplPlotter, Plotter2D):
 
 
     def contourPlot( self, x, y, z, min = None, max = None, nsteps = 20):
+        '''contour plot of z(x,y)
+
+        Notes:
+          * x, y are arrays of bin centers! This is totally differnt
+            from method 'plot'
+          * z is a 2D array. The convention is that the y index runs faster
+            than the x index. This convention is just opposite to the
+            matplotlib convention in function pcolor. So we need to
+            do a transpose.
+        '''
+        figure = self.get_figure()
         _clear( figure )
         self.contourPlot_(x, y, z, min = min, max = max, nsteps = 20)
         if self._usePylab and not self._interactive: self._engine.show()
@@ -232,6 +259,7 @@ class MplPlotter2D(MplPlotter, Plotter2D):
         if figure is None: print "missing matplotlib! "; return
         from numpy import array
         z = array(z)
+        z = z.transpose()
         _min, _max = _guessMinMax( z )
         if min is None: min = _min
         if max is None: max = _max
