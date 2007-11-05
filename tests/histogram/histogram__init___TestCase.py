@@ -73,6 +73,42 @@ class Histogram_TestCase(TestCase):
         return
 
 
+    def test_histogram1b(self):
+        """Histogram.__init__: histogram factory method, keyword 'fromfunction'. 3D
+        """
+        h = histogram(
+            'h',
+            [
+            ('x',range(2)),
+            ('y',range(2,4)),
+            ('z',range(4,6)),
+            ],
+            fromfunction = lambda x,y,z: x+y+z )
+        
+        return
+
+
+    def test_histogram1c(self):
+        """Histogram.__init__: histogram factory method, keyword 'fromfunction'. math.sin
+        """
+        import math
+        h = histogram(
+            'h',
+            [
+            ('x',arange(0, 3.0, 0.1)),
+            ],
+            fromfunction = math.sin )
+
+        h = histogram(
+            'h',
+            [
+            ('x',arange(0, 3.0, 0.1)),
+            ('y',arange(0, 3.0, 0.1)),
+            ],
+            fromfunction = lambda x,y: math.sin(x+y) )
+        return
+
+
     def test_histogram2(self):
         """Histogram.__init__: datasetFromFunction"""
         qaxis = axis( 'q', arange( 0, 13, 0.1), 'angstrom**(-1)' )

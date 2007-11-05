@@ -6,7 +6,7 @@ def ExtractHistograms( environ ):
 
 def loadPharosIdpt( environ ):
     try:
-        from measurement.ins import createPharosRun
+        from measurement.ins.Pharos import createRun
     except ImportError , err:
         new = "This feature needs the 'measurement' package"
         raise ImportError, "%s: %s. \n ** %s" % (
@@ -22,8 +22,8 @@ def loadPharosIdpt( environ ):
     
     datafile = toolkit.loadfileDialog(parent, "Please locate PHAROS data file" )
 
-    run = createPharosRun( detdef, datafile )
-    ret = run.getDetPixTOFData()
+    run = createRun( detdef, datafile )
+    ret = run.getIdpt()
 
     environ.update( {'I_detpixtof': ret} )
     controller = environ['controller']
@@ -34,7 +34,7 @@ def loadPharosIdpt( environ ):
     
 def loadLrmecsIdpt( environ ):
     try:
-        from measurement.ins import createLrmecsRun
+        from measurement.ins.LRMECS import createRun
     except ImportError , err:
         new = "This feature needs the 'measurement' package"
         raise ImportError, "%s: %s. \n ** %s" % (
@@ -48,8 +48,8 @@ def loadLrmecsIdpt( environ ):
     
     datafile = toolkit.loadfileDialog(parent, "Please locate LRMECS data file" )
 
-    run = createLrmecsRun( datafile )
-    ret = run.getDetPixTOFData()
+    run = createRun( datafile )
+    ret = run.getIdpt()
 
     environ.update( {'I_detpixtof': ret} )
     controller = environ['controller']
