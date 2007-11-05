@@ -22,6 +22,10 @@ is fixed.
 """
 
 
+import numpy as N
+
+
+
 class Plotter1D(object):
 
     def interactive( self, b ):
@@ -231,8 +235,8 @@ class MplPlotter2D(MplPlotter, Plotter2D):
 
         print "plot z in (%s, %s)" % (min, max)
         X,Y = self._engine.meshgrid(x,y)
-        if self._usePylab: rt = self._engine.pcolor( X,Y, zcopy, shading="flat")
-        else: rt = figure.gca().pcolor( X,Y, zcopy, shading="flat")
+        if self._usePylab: rt = self._engine.pcolormesh( X,Y, zcopy, shading="flat")
+        else: rt = figure.gca().pcolormesh( X,Y, zcopy, shading="flat")
         return rt
 
 
@@ -265,7 +269,6 @@ class MplPlotter2D(MplPlotter, Plotter2D):
         if max is None: max = _max
 
         #color steps
-        import numpy as N
         c = N.arange( min, max, (max-min)/nsteps)
 
         print "plot z in (%s, %s)" % (min, max)
@@ -280,17 +283,7 @@ class MplPlotter2D(MplPlotter, Plotter2D):
 # detailed implementations
 def _restrictedZ( z, min, max):
     """go through all data and restrict z to be within min,max"""
-    lx, ly = z.shape
-    import numpy as N
-    copy = N.array( z, copy=1) 
-    for i in range(lx):
-        for j in range(ly):
-            v = z[i,j]
-            if v>max: copy[i,j] = max
-            if v<min: copy[i,j] = min
-            continue
-        continue
-    return copy
+    return N.clip( z, min, max )
 
 
 def _guessMinMax(z):
@@ -316,7 +309,6 @@ def _guessMax(z):
 
 def _average( z ):
     """return average of z"""
-    import numpy as N
     ave = N.average( N.average( z ) )
     return ave
 
@@ -349,104 +341,6 @@ def _clear(figure):
 
 pylabPlotter2D = defaultPlotter2D = MplPlotter2D()
 
-
-
-
-#the following code is not necessary anymore.
-#Patrick pointed out the following numpy trick:
-# import pylab, numpy
-# x = numpy.random.rand(100)*10
-# y = numpy.sin(x)
-# o = x.argsort()
-# pylab.plot(x[o],y[o])
-# pylab.show()
-
-
-
-## def sortxy_x_numpy( x, y ):
-##     '''sort x, y according to x
-
-##     when we want to plot y(x) curve, we want array x and y to be
-##     sorted. An unsorted array will cause plotter to
-##     plot draw lines back-and-forth, if the plotting is in any
-##     kind of "line" mode.
-
-##     This function sort the input x array and y array, and make
-##     sure x array is incremental (y array is adjusted to make
-##     sure any (xi,yi) pair-relationship is maintained.
-
-##     sortxy_x( [2,3,1], [4,5,6] ) ---> [1,2,3], [6,4,5]
-##     '''
-##     import numpy as n
-##     try: yx = n.array( (x, y) )
-##     except: yx = n.array( (x,y), object )
-##     import operator
-##     yx_sorted = n.array( sorted(
-##         yx.transpose(), key=operator.itemgetter(0) ) ).transpose()
-##     return yx_sorted
-    
-## sortxy_x = sortxy_x_numpy
-
-## def sortxy_x_slow( x, y ):
-##     '''sort x, y according to x
-
-##     same as sortxy_x_numpy. but do not use numpy.
-##     it is slower but more general.
-##     '''
-##     yx =x, y
-##     yxt = _transpose( yx )
-##     import operator
-##     yx_sorted =  _transpose( sorted(
-##         yxt, key=operator.itemgetter(0) ) )
-##     return yx_sorted
-
-
-
-## def _transpose_numpy(m):
-##     import numpy as n
-##     try:
-##         m1 = n.array( m )
-##     except:
-##         m1 = n.array( m, object )
-##         pass
-##     return m1.transpose()
-
-
-## _transpose = _transpose_numpy
-
-
-## def _transpose_slow( m ):
-##     "transpose a 2D matrix"
-##     try: m[0]
-##     except:
-##         raise ValueError , "%s is not even a list" % (m, )
-##     try: m[0][0]
-##     except:
-##         raise ValueError , "%s is not a matrix" % (m, )
-##     ncols = len(m[0])
-##     for row in m:
-##         assert len(row) == ncols, "%s is not a matrix" % (m,)
-                
-##     ret = [ [] for i in  m[0] ]
-
-##     for i, row in enumerate(ret):
-##         for a in m: row.append( a[i] )
-##         continue
-
-##     return ret
-    
-
-
-## def sortxys_x( x, ys ):
-##     '''similar to sortxy_x, but instead of a y array, here
-##     we have a list of y arrays
-    
-##     sortxys_x( [2,3,1], [ [4,5,6], [7,8,9] ] )
-##        ---> [1,2,3], [[6,4,5], [9,7,8] ]
-##     '''
-##     Y1 = _transpose(ys)
-##     sx, sY = sortxy_x( x, Y1 )
-##     return sx, _transpose_slow(sY)
 
 
 

@@ -166,18 +166,74 @@ def histogram( name, axes, data = None, errors = None, unit="1",
     
     h[ slices ] = datasets
     return h
-            
+
 
 
 def datasetFromFunction( func, axes, *args, **kwds):
-    from numpy import transpose
     shape = [ axis.size() for axis in axes ]
 
     xs = [ axis.binCenters() for axis in axes ]
-    mg = meshgrid( *xs ) 
 
+    try: return applyFunction_fast( func, xs, *args, **kwds )
+    except: return applyFunction_slow( func, xs, *args, **kwds )
+    raise "should not reach here"
+
+
+def applyFunction_fast( func, xs, *args, **kwds ):
+    """compute the array [ func(x) ] for each x constructed from xs.
+
+    Example:
+      applyFunction_fast( lambda x,y,z: x+y+z, [ arange(0,1,0.1), arange(-2,2,0.5), arange(0,10,1.) ] ) -->   a grid of values of x+y+z for all points (x,y,z) while x in [0,0.1,...,0.9], y in [-2, -1.5, ...,1.5] and z in [0,1.,2.,...,9.]
+
+    xs is a list. Each item, xs[i]. in the list represent one axis and it
+    is a list of values on that axis.
+
+    The basic idea is to calculate the function value for each
+    grid point. A grid point is
+    
+      x = [ xs[0][i0], xs[1][i1], xs[2][i2], ... ]
+    
+    This implementation assumes all operations in 'func' can be applied
+    to numpy arrays. Those operations include numpy.sin, numpy.cos,
+    operator +-*/, etc.
+    
+    *args and **kwds are additional parameters for 'func'
+    """
+    mg = meshgrid( *xs ) 
     targs = mg + list(args)
     return func( *targs, **kwds )
+
+
+def applyFunction_slow( func, xs, *args, **kwds):
+    """compute the array [ func(x) ] for each x constructed from xs.
+
+    Read applyFunction_fast for more docs.
+    
+    This implementation assumes all operations in 'func' can be applied
+    to numpy arrays. Those operations include numpy.sin, numpy.cos,
+    operator +-*/, etc.
+    
+    *args and **kwds are additional parameters for 'func'
+    """
+    from numpy import zeros, array
+    
+    dim = len(xs) # dimension of x space
+
+    #get a list of grid points
+    mg = array(meshgrid( *xs ))
+    Xs = mg.transpose( range(1,len(xs)+1) + [0] )
+    shape = Xs.shape #save the shape
+    Xs.shape = -1, dim
+
+    # create result array
+    ret = zeros( Xs.shape[0] )
+    for i,X in enumerate(Xs):
+        targs = tuple(X) + args
+        ret[i] = func( *targs, **kwds )
+
+    # adjust shape
+    ret.shape = shape[:-1]
+    return ret
 
 
 def histogramContainer( input ):
@@ -531,8 +587,6 @@ def _grid( arr, i, shape ):
     
     rt = rt.transpose( axes )
     return rt
-
-
 
 
 

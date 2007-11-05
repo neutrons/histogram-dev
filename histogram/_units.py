@@ -1,26 +1,26 @@
+import numpy as N
+from pyre.units import *
+from pyre.units import unit
 
 def tounit( candidate ):
     if isinstance( candidate, basestring ):
-        from pyre.units import parser
-        parser = parser()
-        return parser.parse( candidate )
+        _parser = parser()
+        return _parser.parse( candidate )
     return candidate
 
 
 def isunitless( candidate ):
-    from pyre.units.unit import unit
-    if isinstance( candidate, unit ): return False
+    if isinstance( candidate, unit.unit ): return False
     if isNumber( candidate ): return True
     return False
 
 
 def isNumber(a):
-    return isinstance(a, int) or isinstance(a, float)
+    return N.isscalar(a) and N.isreal(a)
     
 
 def isDimensional(d):
-    from pyre.units.unit import unit
-    return isinstance(d, unit)
+    return isinstance(d, unit.unit)
 
 
 def isPair(a):

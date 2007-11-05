@@ -146,8 +146,8 @@ def plot1d( histogram, *args ):
     defaultPlotter.plot1d( histogram, *args )
     return
 
-def plot2d( histogram, *args ):
-    defaultPlotter.plot2d( histogram, *args )
+def plot2d( histogram, *args, **kwds ):
+    defaultPlotter.plot2d( histogram, *args, **kwds )
     return
 
 
