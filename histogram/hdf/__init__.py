@@ -11,7 +11,10 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 
-def load( filename, pathinfile ):
+def load( filename, pathinfile=None ):
+    if pathinfile is None:
+        import os
+        filename, pathinfile = os.path.split( filename )
     from nx5.renderers import *
     g = graphFromHDF5File( filename, pathinfile )
     dataExtractor( filename ).render( g )

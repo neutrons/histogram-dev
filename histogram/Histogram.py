@@ -830,8 +830,8 @@ class Histogram( AttributeCont):
         eunit = dunit*dunit
         if errors: eunit = tounit( errors.unit() )
         if not _equalUnit( unit, dunit) or not _equalUnit( unit*unit, eunit ):
-            msg = "Unit mismatch: histogram unit: %s, data unit: %s, "\
-                  "errors unit: %s." % (
+            msg = "Unit mismatch: histogram unit: %r, data unit: %r, "\
+                  "errors unit: %r." % (
                 unit, dunit, eunit )
             raise ValueError, msg
 
@@ -864,10 +864,22 @@ class Histogram( AttributeCont):
 class UnknownAxis(Exception): pass
 
 
+epsilon = 1e-5
 def _equalUnit( u1, u2 ):
     try: u1 + u2
-    except: return False
-    return u1 == u2
+    except Exception, err:
+        return False
+    try:
+        diff = u1/u2-1
+        return abs(diff) < epsilon
+    except:
+        try:
+            diff = u2/u1-1
+            return abs(diff) < epsilon
+        except:
+            return True
+        raise "should not reach here"
+    raise "should not reach here"
 
 
 def _indexFromIndexes( indexes, shape ):
@@ -944,7 +956,31 @@ def _slicingInfosFromDictionary( d, histogram ):
 def _short_list_str(l):
     if len(l) <  10: return str(l)
     else: return "[ %s, %s, ... %s, %s ]"%(l[0],l[1], l[-2], l[-1])
-    
+
+
+
+def test_equalUnit():
+    assert _equalUnit( 1, 2 ) == False
+    assert _equalUnit( 1, 1 ) == True
+    assert _equalUnit( 1, 1+1e-10 ) == True
+    import _units as units
+    meter = units.length.meter
+    second = units.time.second
+    assert _equalUnit( 1*meter, 1*meter ) == True
+    assert _equalUnit( 1*meter, 1) == False
+    assert _equalUnit( 1*meter, 1*second) == False
+    assert _equalUnit( 1*meter, (1+1e-10)*meter) == True
+    assert _equalUnit( 0*meter, 0*meter) == True
+    assert _equalUnit( 0*meter, 1*meter) == False
+    assert _equalUnit( 1*meter, 0*meter) == False
+    return
+
+def main():
+    test_equalUnit()
+    return
+
+
+if __name__ == '__main__': main()
 
 # version
 __id__ = "$Id$"

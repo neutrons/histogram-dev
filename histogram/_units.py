@@ -1,6 +1,6 @@
 import numpy as N
 from pyre.units import *
-from pyre.units import unit
+from pyre.units import unit, length, time, pressure, angle
 
 def tounit( candidate ):
     if isinstance( candidate, basestring ):

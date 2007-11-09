@@ -89,7 +89,10 @@ class Axis( Dataset):
 
 
     def changeUnit(self, unit):
+        #there is a problem with mapper!!!!
         Dataset.changeUnit(self, unit)
+        #mapper need to be reset
+        self._mapper = createMapper( self._storage.asList(), self._mapper.__class__ )
         #!!! need to remove cache!!!
         self._cache = {}
         return
@@ -143,8 +146,7 @@ class Axis( Dataset):
         if storage is None: storage = self.storage().copy()
 
         if mapper is None:
-            from AxisMapperCreater import creater
-            mapper = creater.create( storage.asList(), self._mapper.__class__ )
+            mapper = createMapper( storage.asList(), self._mapper.__class__ )
 
         copy = self.__class__(
             name=self.name(), unit=self.unit(), attributes = attrs,
@@ -152,6 +154,12 @@ class Axis( Dataset):
         return copy
     
 
+    pass # end of Axis
+
+
+from AxisMapperCreater import creater
+createMapper = creater.create
+del creater
         
 from SlicingInfo import front, back
         

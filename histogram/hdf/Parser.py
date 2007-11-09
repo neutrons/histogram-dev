@@ -104,7 +104,7 @@ class Parser:
         name = histogram.name() 
 
         from histogram import histogram
-        return histogram( name, axes, data = data, errors = errors )
+        return histogram( name, axes, data = data, errors = errors, unit = data.unit() )
 
     onNXroot = onHistogram # hack
 

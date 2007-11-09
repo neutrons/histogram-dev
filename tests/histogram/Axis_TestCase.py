@@ -111,6 +111,7 @@ class Axis_TestCase(TestCase):
                                       [-500, 500, 1500, 2500] )
         self.assertVectorAlmostEqual( taxis.binCenters(), 
                                       [0, 1000, 2000] )
+        self.assertEqual( taxis.cellIndexFromValue( 0 ), 0 )
         return
     
     

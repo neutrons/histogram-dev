@@ -27,7 +27,8 @@ class hdf_TestCase(TestCase):
         from histogram import histogram, arange
         h = histogram('h',
                       [('x', arange(0,100, 1.) ),
-                       ('y', arange(100, 180, 1.) ),]
+                       ('y', arange(100, 180, 1.) ),],
+                      unit = 'meter',
                       )
 
         filename = 'test.h5'
@@ -38,8 +39,18 @@ class hdf_TestCase(TestCase):
 
 
     def testload(self):
+        'load simplest histogram'
         h = load( 'testload.h5', '/h' )
-        print h
+        return
+
+    def testload3(self):
+        'load histogram with unit'
+        h = load( 'testload.h5', '/h1' )
+        return
+
+    def testload2(self):
+        'load histogram with one path string'
+        h = load( 'testload.h5/h' )
         return
 
     pass # end of Dataset_TestCase
