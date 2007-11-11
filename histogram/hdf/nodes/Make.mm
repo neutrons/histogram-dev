@@ -11,13 +11,12 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 PROJECT = histogram
-PACKAGE = hdf
+PACKAGE = hdf/nodes
 
 
 # directory structure
 
 BUILD_DIRS = \
-    nodes \
 
 OTHER_DIRS = \
 
@@ -30,7 +29,7 @@ RECURSE_DIRS = $(BUILD_DIRS) $(OTHER_DIRS)
 all: export
 	BLD_ACTION="all" $(MM) recurse
 
-tidy:: 
+tidy::
 	BLD_ACTION="tidy" $(MM) recurse
 
 
@@ -39,10 +38,16 @@ tidy::
 # export
 
 EXPORT_PYTHON_MODULES = \
-	Renderer.py \
-	Parser.py \
-	__init__.py  \
-
+	AbstractDataSource.py \
+	AbstractNode.py \
+	Axis.py \
+	Grid.py \
+	H5DataSource.py \
+	Histogram.py \
+	__init__.py \
+	_journal.py \
+	NdArray.py \
+	PhysicalValueNdArray.py \
 
 
 export:: export-package-python-modules 

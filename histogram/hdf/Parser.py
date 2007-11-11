@@ -12,12 +12,27 @@
 #
 
 
-# create a histogram object out of a nexml graph
+# render a graph consisting nodes in the "nodes" subpackage out of
+# the graph of a hdf5 file.
+
+
+import nodes
 
 
 class Parser:
     
     
+    def __init__( self, filename):
+        import nx5.file
+        self._nxf = nx5.file.file( filename, 'r')
+
+        from nx5.file.VectorReader import Reader
+        self._reader = Reader()
+
+        self._selector = self._nxf.selector()
+        return
+
+
     def parse( self, graph ):
         return graph.identify(self)
     
@@ -35,21 +50,19 @@ class Parser:
 
 
     def onDataset(self, dataset):
+        name = dataset.name()
         shape = dataset.dimensions()
-        from ndarray.StdVectorNdArray import arrayFromVector
-        ret = arrayFromVector(dataset.storage())
-        ret.setShape( shape )
+        path = dataset.path()
+        datasource = nodes.h5DataSource(
+            shape, path, self._selector, self._reader )
+        ret = nodes.ndArray(name, shape, datasource )
         return ret
-
-
-    def onNdArray(self, ndarray):
-        return ndarray.storage()
 
 
     def onAxis(self, axis):
         for e in axis.children():
             name = e.name()
-            v = e.identify(self).asNumarray()
+            v = e.identify(self)
             exec '%s=v' % name.replace(' ', '_')
             continue
 
@@ -57,7 +70,7 @@ class Parser:
         unit = axis.getAttribute( 'unit' )
         type = axis.getAttribute( 'type' )
 
-        ret = _axis( name, unit, type, bin_centers, bin_boundaries )
+        ret = nodes.axis( name, unit, type, bin_centers, bin_boundaries )
         
         return ret
 
@@ -72,6 +85,7 @@ class Parser:
         ret = [None for i in range(n)]
         
         for axisNode in grid.children():
+            #index keep axis in the right order
             index = axisNode.getAttribute( 'index' )
             axis = axisNode.identify(self)
             ret[index] = axis
@@ -79,15 +93,14 @@ class Parser:
 
         for axis in ret: assert axis is not None
 
-        return ret            
+        return ret 
 
 
     def onValueNdArray(self, valueArray):
-        storage = valueArray.getChild('storage').identify(self)
-        from histogram.NdArrayDataset import Dataset as NdArrayDataset
+        valuearray = valueArray.getChild('storage').identify(self)
         name = valueArray.name()
         unit = valueArray.getAttribute( 'unit' )
-        return NdArrayDataset( name, unit, storage = storage )
+        return nodes.physicalValueNdArray( name, unit, valuearray )
 
 
     def onHistogram(self, histogram):
@@ -103,28 +116,17 @@ class Parser:
 
         name = histogram.name() 
 
-        from histogram import histogram
-        return histogram( name, axes, data = data, errors = errors, unit = data.unit() )
+        return nodes.histogram( name, axes, data = data, errors = errors )
 
     onNXroot = onHistogram # hack
 
     pass # end of Parser
 
 
-def _axis( name, unit, type, bin_centers, bin_boundaries ):
-    from histogram import *
-    if type == 'continuous':
-        return paxis( name, unit, boundaries = bin_boundaries )
-    else:
-        return IDaxis( name, bin_centers )
-    raise "Should not reach here"
-
-
 def test():
     from nx5.renderers import *
     g = graphFromHDF5File( 't.h5', '/h' )
     printGraph( g )
-    dataExtractor( 't.h5' ).render( g )
 
     h = Parser().parse( g )
 

@@ -16,7 +16,7 @@ from histogram.hdf import *
 
 
 import unittest
-from unittest import TestCase
+from unittestX import TestCase
 
 
 class hdf_TestCase(TestCase):
@@ -43,7 +43,7 @@ class hdf_TestCase(TestCase):
         h = load( 'testload.h5', '/h' )
         return
 
-    def testload3(self):
+    def testload1(self):
         'load histogram with unit'
         h = load( 'testload.h5', '/h1' )
         return
@@ -51,6 +51,45 @@ class hdf_TestCase(TestCase):
     def testload2(self):
         'load histogram with one path string'
         h = load( 'testload.h5/h' )
+        return
+
+    def testload3(self):
+        'load a slice of a histogram '
+        tmpfile = "tmp.h5"
+        import os
+        if os.path.exists( tmpfile): os.remove(tmpfile)
+
+        cmd = "from histogram.hdf import dump; from histogram import histogram, arange; h = histogram( 'h', [ ('xID', range(10)), ('y', arange(0, 1,0.1)) ] ); from numpy import array; d = array(range(100)); d.shape = 10,10; h[{}] = d, 0; dump(h, %r, '/', 'c') " % tmpfile
+        os.system( 'python -c %r' % cmd )
+        if not os.path.exists( tmpfile ): raise "failed to create tmp h5 file of historam"
+
+        h1 = load( tmpfile, 'h', xID=(3,6) )
+        assert h1.shape() == (4,10)
+        d = h1.data().storage().asNumarray().copy()
+        d.shape = 40,
+        self.assertVectorAlmostEqual( d, range(30,70) )
+
+        self.assertVectorEqual(
+            h1.axisFromId(1).binCenters(), (3,4,5,6) )
+
+        from numpy import arange
+        self.assertVectorAlmostEqual(
+            h1.axisFromId(2).binCenters(), arange(0,1,0.1) )
+
+        
+        h2 = load( tmpfile, 'h', xID=(3,6), y=(0.4,0.5) )
+        assert h2.shape() == (4,2)
+        d = h2.data().storage().asNumarray().copy()
+        d.shape = 8,
+        self.assertVectorAlmostEqual(
+            d, (34,35,44,45,54,55,64,65) )
+
+        self.assertVectorEqual(
+            h2.axisFromId(1).binCenters(), (3,4,5,6) )
+
+        from numpy import arange
+        self.assertVectorAlmostEqual(
+            h2.axisFromId(2).binCenters(), (0.4,0.5) )
         return
 
     pass # end of Dataset_TestCase

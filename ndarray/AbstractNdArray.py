@@ -243,6 +243,9 @@ class NdArray(object):
         self._nie( "size" )
 
 
+    def __len__(self): return self.size()
+
+
     def datatype(self):
         """
         float.......5

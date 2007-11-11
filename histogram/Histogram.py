@@ -95,7 +95,7 @@ class Histogram( AttributeCont):
 
         # We also allow use of dictionary. This is a convenient and flexible way
         # to get or set a slice.
-        if isinstance(s, dict): s = _slicingInfosFromDictionary(s, self)
+        if isinstance(s, dict): s = _slicingInfosFromDictionary(s, self.axes())
         else: s = _makeSlicingInfos( s, self.dimension() )
         #at this point, s is a tuple of SlicingInfo instances.
 
@@ -170,7 +170,7 @@ class Histogram( AttributeCont):
         # We also allow use of dictionary. This is a convenient and flexible way
         # to get or set a slice.
         if isinstance(indexes_or_slice, dict):
-            s = _slicingInfosFromDictionary(indexes_or_slice, self)
+            s = _slicingInfosFromDictionary(indexes_or_slice, self.axes())
         else:
             s = _makeSlicingInfos( indexes_or_slice, self.dimension() )
             pass # end if
@@ -931,17 +931,17 @@ def _makeSlicingInfo( inputs ):
     except: return inputs
 
 
-def _slicingInfosFromDictionary( d, histogram ):
+def _slicingInfosFromDictionary( d, axes ):
     """
     for I(detID, pixID, tof)
     _slicingInfosFromDictionary( {'detID': (2,10), 'pixID': (3,7) } )
       --> SlicingInfo(2,10), SlicingInfo(3,7), SlicingInfo(front, back)
     """
-    axisnames = histogram.axisNameList()
+    axisnames = [ axis.name() for axis in axes ]
 
     for n in d.keys():
-        assert n in axisnames, "%s is not a valid axis for histogram %s" % (
-            n, histogram)
+        assert n in axisnames, "%s is not a valid axis. axes = %s" % (
+            n, axisnames)
         
     ret = []
     for n in axisnames:

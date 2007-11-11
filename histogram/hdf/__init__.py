@@ -11,16 +11,15 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 
-def load( filename, pathinfile=None ):
+def load( filename, pathinfile=None, **kwds ):
     if pathinfile is None:
         import os
         filename, pathinfile = os.path.split( filename )
     from nx5.renderers import *
     g = graphFromHDF5File( filename, pathinfile )
-    dataExtractor( filename ).render( g )
     from Parser import Parser
-    h = Parser().parse( g )
-    return h
+    h = Parser(filename).parse( g )
+    return h.fetch(**kwds)
 
 
 def dump( histogram, filename, pathinfile, mode = 'w' ):
