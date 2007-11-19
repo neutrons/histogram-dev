@@ -1,0 +1,70 @@
+// -*- C++ -*-
+//
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+//                                   Jiao Lin
+//                      California Institute of Technology
+//                        (C) 2007  All Rights Reserved
+//
+// {LicenseText}
+//
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+
+#ifndef DANSE_HISTOGRAM_NDARRAY_ICC
+#error NdArray.icc meaningless outside NdArray.h
+#endif
+
+#include <sstream>
+
+
+namespace DANSE { 
+
+  namespace Histogram {
+
+    template <typename Iterator, typename DataType, typename Size, typename SuperSize,
+	      unsigned int NDimension>
+    SuperSize
+    NdArray<Iterator, DataType, Size, SuperSize, NDimension>::_1dindex
+    ( Size indexes[NDimension] ) 
+      const 
+      throw (OutOfBound) 
+    {
+      SuperSize ind = 0; // what if this get out of bound of largest integer?
+      SuperSize N = 1;
+      for (int i=NDimension-1; i>=0; i--  ) {
+	if (indexes[i]<0 || indexes[i]>=m_shape[i]) _throw_out_of_bound(indexes);
+	ind += N * indexes[ i ]; 
+	N *= m_shape[ i ];
+      }
+      return ind;
+    }
+    
+    template <typename Iterator, typename DataType, typename Size, typename SuperSize,
+	      unsigned int NDimension>
+    void 
+    NdArray<Iterator, DataType, Size, SuperSize, NDimension>::_throw_out_of_bound
+    (Size * indexes) 
+      const
+      throw (OutOfBound)
+    {
+      std::ostringstream oss;
+      oss << "NdArray: "
+	  << "indexes = ";
+      for (unsigned int i=0; i<NDimension; i++) 
+	oss << indexes[i] << ", ";
+      oss << "shape = ";
+      for (unsigned int i=0; i<NDimension; i++) 
+	oss << m_shape[i] << ", ";
+      
+      throw OutOfBound( oss.str().c_str() );
+    }
+    
+  } // Histogram:
+} // DANSE:
+
+
+// version
+// $Id$
+
+// End of file 

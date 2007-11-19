@@ -16,8 +16,12 @@ PACKAGE = tests
 PROJ_CLEAN += $(PROJ_CPPTESTS)
 
 PROJ_PYTESTS = 
-PROJ_CPPTESTS = test_NdArray test_DataGrid1D test_DataGrid2D test_Itof test_Ix \
-	test_Ixy
+PROJ_CPPTESTS = test_NdArray \
+	test_GridData_1D \
+	test_GridData_2D \
+	test_EvenlySpacedGridData_1D \
+	test_EvenlySpacedGridData_2D \
+
 PROJ_TESTS = $(PROJ_PYTESTS) $(PROJ_CPPTESTS)
 PROJ_LIBRARIES = -L$(BLD_LIBDIR) -lhistogram
 
@@ -42,20 +46,17 @@ update: clean
 test_NdArray: test_NdArray.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
 	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_NdArray.cc $(PROJ_LIBRARIES)
 
-test_DataGrid1D: test_DataGrid1D.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
-	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_DataGrid1D.cc $(PROJ_LIBRARIES)
+test_GridData_1D: test_GridData_1D.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
+	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_GridData_1D.cc $(PROJ_LIBRARIES)
 
-test_DataGrid2D: test_DataGrid2D.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
-	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_DataGrid2D.cc $(PROJ_LIBRARIES)
+test_GridData_2D: test_GridData_2D.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
+	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_GridData_2Dm.cc $(PROJ_LIBRARIES)
 
-test_Itof: test_Itof.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
-	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_Itof.cc $(PROJ_LIBRARIES)
+test_EvenlySpacedGridData_1D: test_EvenlySpacedGridData_1D.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
+	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_EvenlySpacedGridData_1D.cc $(PROJ_LIBRARIES)
 
-test_Ix: test_Ix.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
-	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_Ix.cc $(PROJ_LIBRARIES)
-
-test_Ixy: test_Ixy.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
-	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_Ixy.cc $(PROJ_LIBRARIES)
+test_EvenlySpacedGridData_2D: test_EvenlySpacedGridData_2D.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
+	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_EvenlySpacedGridData_2D.cc $(PROJ_LIBRARIES)
 
 
 # version

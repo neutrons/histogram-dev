@@ -2,30 +2,27 @@
 #include <cstring>
 #include <iostream>
 
-#include "histogram/NdArray.h"
+#include "histogram/Array_1D.h"
 #include "histogram/EvenlySpacedAxisMapper.h"
-#include "histogram/DataGrid1D.h"
+#include "histogram/GridData_1D.h"
 
 
 int main()
 
 {
 
-  using namespace DANSE;
+  using namespace DANSE::Histogram;
 
   unsigned int counts [ 10 ];
   for (int i=0; i<10; i++) counts[i] = 0;
 
-  short shape[1];
-  shape[0] = 10;
-
-  typedef NdArray<unsigned int *, unsigned int, short, size_t> YArray;
-  YArray yarr(counts, shape, 1);
+  typedef Array_1D<unsigned int *, unsigned int, size_t> YArray;
+  YArray yarr(counts, 10);
 
   typedef EvenlySpacedAxisMapper< double, short > XMapper;
   XMapper xmapper( 3., 13., 1. );
   
-  DataGrid1D< short, double, XMapper, unsigned int, YArray > g( xmapper, yarr );
+  GridData_1D< double, XMapper, unsigned int, YArray > g( xmapper, yarr );
 
   assert ( g(5.5) == 0. );
   counts[2] = 1;

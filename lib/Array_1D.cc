@@ -11,33 +11,17 @@
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-#ifndef DANSE_HISTOGRAM_AXISMAPPER_H
-#define DANSE_HISTOGRAM_AXISMAPPER_H
+
+#include "Array_1D.h"
 
 
-#include "OutOfBound.h"
-
-namespace DANSE {
-
+namespace DANSE { 
   namespace Histogram {
 
-  // map data value to index
-  template <typename DataType, typename IndexType>
-  class AxisMapper {
-
-  public:
-    
-    typedef DataType datatype;
-    typedef IndexType indextype;
-  
-    virtual IndexType operator() ( const DataType & data ) const = 0;
-    virtual ~AxisMapper() {};
-  };
+    typedef Array_1D<unsigned int*, unsigned int, size_t> UIntArray_1D;
 
   }
 }
-
-#endif // DANSE_HISTOGRAM_AXISMAPPER_H
 
 
 // version

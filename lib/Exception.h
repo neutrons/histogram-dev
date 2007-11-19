@@ -12,27 +12,33 @@
 //
 
 
-#ifndef H_DANSE_EXCEPTION
-#define H_DANSE_EXCEPTION
+#ifndef DANSE_HISTOGRAM_EXCEPTION_H
+#define DANSE_HISTOGRAM_EXCEPTION_H
+
+
+#include <string>
 
 
 namespace DANSE {
 
-  struct Exception{ //: public std::exception {
-  public:
-  
-    Exception(const char *m) {_msg = std::string(m);}
-    const char *what() const throw()  { return _msg.c_str(); }
-    ~Exception() throw() {}
+  namespace Histogram {
 
-  private:
-    std::string _msg;
+    struct Exception{ 
+    public:
+      
+      Exception(const char *m) {_msg = std::string(m);}
+      const char *what() const throw()  { return _msg.c_str(); }
+      ~Exception() throw() {}
+      
+    private:
+      std::string _msg;
+      
+    };
+  } //Histogram:
+} // DANSE:
 
-  };
 
-}
-
-#endif
+#endif // DANSE_HISTOGRAM_EXCEPTION_H
 
 // version
 // $Id$

@@ -11,72 +11,113 @@
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-#ifndef H_DANSE_NDARRAY
-#define H_DANSE_NDARRAY
+#ifndef DANSE_HISTOGRAM_NDARRAY_H
+#define DANSE_HISTOGRAM_NDARRAY_H
+
+
+#include "OutOfBound.h"
 
 
 namespace DANSE {
 
-  template <typename Iterator, typename DataType, typename Size, typename SuperSize>
+namespace Histogram{
+
+  /// Multiple dimensional array.
+  /// template class for multiple-dimensional array
+  /// This m-D array takes a 1D array iterator and pretend it to be a 
+  /// m-D array.
+  /// This is probably not flexible enough, but it should be doing quite well
+  /// for many forseeable applications.
+  /// 
+  /// tempalate parameters:
+  ///  Iterator: 1D array iterator type
+  ///  DataType: data type of 1D array elements
+  ///  Size: type of the shape array
+  ///  SuperSize: type of the size of the array if casted to 1D
+  ///  NDimension: number of dimensions
+  /// 
+  /// CAUTION:
+  ///  This class is not responsible for checking if the given iterator is sane.
+  ///  If the iterator does not have the right size, core dump will happen.
+  ///
+  /// Implementation:
+  ///  The input 1D array is treated as mD array by the convention that
+  ///  the last index runs the fastest.
+  ///
+  template <typename Iterator, typename DataType, typename Size, typename SuperSize,
+	    unsigned int NDimension>
   class NdArray {
 
   public:
     
     typedef DataType datatype;
     
-    // array shape must have 'ndim' elements
-    NdArray( Iterator it, Size * shape, int ndim) :
-      m_it(it), m_ndim( ndim ), m_shape( new Size[ndim] ) {
-
+    /// ctor.
+    ///
+    /// Parameters:
+    ///   it: 1D array iterator. The 1D array must have been allocated with sufficient
+    ///       memory.
+    ///   shape: an array of integers specifiying the size of each dimension
+    ///
+    /// CAUTION:
+    ///   array shape must have 'NDimension' elements
+    ///
+    NdArray( Iterator it, Size shape[NDimension] ) :
+      m_it(it) 
+    {
       m_size1D = 1;
-
-      for (int i=0; i<ndim; i++) {
+      
+      for (unsigned int i=0; i<NDimension; i++) {
 	m_shape[i] = shape[i];
 	m_size1D *= shape[i];
       }
     }
-
-    ~NdArray() { delete [] m_shape; }
-
-    // indexes must have 'ndim' elements
-    const DataType & operator [] ( Size *indexes ) const
+    
+    /// dtor.
+    ~NdArray() { }
+    
+    /// get element.
+    /// indexes must have 'NDimension' elements
+    const DataType & operator [] ( Size indexes[NDimension] ) const
+    {
+      SuperSize ind = _1dindex( indexes );
+      return *(m_it+ind);
+    }
+    
+    /// set element.
+    /// indexes must have 'NDimension' elements
+    DataType & operator [] ( Size indexes[NDimension] ) 
     {
       SuperSize ind = _1dindex( indexes );
       return *(m_it+ind);
     }
 
-    DataType & operator [] ( Size *indexes ) 
-    {
-      SuperSize ind = _1dindex( indexes );
-      return *(m_it+ind);
-    }
-
+    /// set all elements to zero.
     void clear() 
     {
       for (Iterator it = m_it; it < m_it + m_size1D; it++ ) 
 	*it = 0;
     }
-
+    
   private:
     Iterator m_it;
-    int  m_ndim;
-    Size *m_shape;
+    Size m_shape[NDimension];
     SuperSize m_size1D;
-    SuperSize _1dindex( Size *indexes ) const 
-    {
-      SuperSize ind = 0; // what if this get out of bound of largest integer?
-      SuperSize N = 1;
-      for (int i=m_ndim-1; i>=0; i--  ) {
-        ind += N * indexes[ i ]; 
-        N *= m_shape[ i ];
-      }
-      return ind;
-    }
-};
+    SuperSize _1dindex( Size indexes[NDimension] ) const throw (OutOfBound) ;
+    void _throw_out_of_bound(Size indexes[NDimension]) const throw (OutOfBound) ;
 
-}
+  }; // NdArray:
 
-#endif
+} // Histogram:  
+} // DANSE:
+
+
+#define DANSE_HISTOGRAM_NDARRAY_ICC
+#include "NdArray.icc"
+#undef DANSE_HISTOGRAM_NDARRAY_ICC
+
+
+#endif // DANSE_HISTOGRAM_NDARRAY_H
 
 
 // version

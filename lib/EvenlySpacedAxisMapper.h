@@ -11,12 +11,14 @@
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-#ifndef H_DANSE_EVENLYSPACEDAXISMAPPER
-#define H_DANSE_EVENLYSPACEDAXISMAPPER
+#ifndef DANSE_HISTOGRAM_EVENLYSPACEDAXISMAPPER_H
+#define DANSE_HISTOGRAM_EVENLYSPACEDAXISMAPPER_H
 
 #include "AxisMapper.h"
 
 namespace DANSE {
+
+  namespace Histogram {
 
   // map data value to index
   template <typename NumberType, typename IndexType>
@@ -39,9 +41,10 @@ namespace DANSE {
     NumberType m_begin, m_end, m_step;
   };
 
+  }
 }
 
-#endif
+#endif // DANSE_HISTOGRAM_EVENLYSPACEDAXISMAPPER_H
 
 
 // version

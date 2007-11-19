@@ -11,33 +11,27 @@
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-#ifndef DANSE_HISTOGRAM_AXISMAPPER_H
-#define DANSE_HISTOGRAM_AXISMAPPER_H
+#ifndef DANSE_HISTOGRAM_OUTOFBOUND_H
+#define DANSE_HISTOGRAM_OUTOFBOUND_H
 
 
-#include "OutOfBound.h"
+#include "Exception.h"
 
 namespace DANSE {
 
   namespace Histogram {
 
-  // map data value to index
-  template <typename DataType, typename IndexType>
-  class AxisMapper {
+    struct OutOfBound : public Exception
+    {
+      OutOfBound() : Exception( "out of bound" ) {}
+      OutOfBound(const char *msg) : Exception( msg ) {}
+    };
 
-  public:
-    
-    typedef DataType datatype;
-    typedef IndexType indextype;
+  } // Histogram:
   
-    virtual IndexType operator() ( const DataType & data ) const = 0;
-    virtual ~AxisMapper() {};
-  };
+} // DANSE:
 
-  }
-}
-
-#endif // DANSE_HISTOGRAM_AXISMAPPER_H
+#endif // DANSE_HISTOGRAM_OUTOFBOUND_H
 
 
 // version

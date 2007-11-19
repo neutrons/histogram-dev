@@ -20,7 +20,9 @@ PROJ_TMPDIR = $(BLD_TMPDIR)/$(PROJECT)/$(PACKAGE)
 PROJ_CLEAN += $(PROJ_SAR) $(PROJ_DLL)
 
 PROJ_SRCS = \
-    NdArray.cc
+	Array_1D.cc \
+	NdArray.cc \
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # build the library
@@ -51,14 +53,18 @@ export:: export-headers export-libraries
 endif
 
 EXPORT_HEADERS = \
+	Array_1D.h \
+	Array_1D.icc \
 	AxisMapper.h \
-	DataGrid1D.h \
-	DataGrid2D.h \
+	GridData_1D.h \
+	GridData_2D.h \
 	EvenlySpacedAxisMapper.h \
+	EvenlySpacedGridData_1D.h \
+	EvenlySpacedGridData_2D.h \
 	Exception.h\
-	Ix.h \
-	Ixy.h \
 	NdArray.h \
+	NdArray.icc \
+	OutOfBound.h\
 
 EXPORT_LIBS = $(PROJ_SAR)
 EXPORT_BINS = $(PROJ_DLL)
