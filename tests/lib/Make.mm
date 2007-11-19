@@ -50,7 +50,7 @@ test_GridData_1D: test_GridData_1D.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
 	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_GridData_1D.cc $(PROJ_LIBRARIES)
 
 test_GridData_2D: test_GridData_2D.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
-	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_GridData_2Dm.cc $(PROJ_LIBRARIES)
+	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_GridData_2D.cc $(PROJ_LIBRARIES)
 
 test_EvenlySpacedGridData_1D: test_EvenlySpacedGridData_1D.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
 	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_EvenlySpacedGridData_1D.cc $(PROJ_LIBRARIES)
