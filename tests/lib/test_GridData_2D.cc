@@ -28,17 +28,18 @@ int main()
   YMapper ymapper( 100, 500, 100 );
   
   
-  GridData_2D< 
-    double, XMapper, 
-    int, YMapper,
-    unsigned int, ZArray > g( xmapper, ymapper, zarr );
+  typedef GridData_2D<double, XMapper, int, YMapper, unsigned int, ZArray > GD2;
+  GD2 g( xmapper, ymapper, zarr );
+  const GD2 & cg = g;
 
-  assert ( g(5.5, 100) == 0 );
+  assert ( cg(5.5, 100) == 0 );
 
   counts [20] = 20;
-  assert ( g(8.5, 150) == 20 );
+  assert ( cg(8.5, 150) == 20 );
 
   g(8.5, 150) = 30;
+  assert ( cg(8.5, 150) == 30 );
   return 0;
+
 }
 

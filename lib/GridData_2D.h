@@ -57,24 +57,26 @@ namespace DANSE {
 
       void clear() { m_zarray.clear(); }
 
-//       /// function-like interface. get value.
-//       ///  f(x,y) --> z
-//       const ZDataType & operator () ( const XDataType & x, const YDataType &y ) const
-//       {
-// 	m_indexes[0] = m_xmapper( x );
-// 	m_indexes[1] = m_ymapper( y );
+      /// function-like interface. get value.
+      ///  f(x,y) --> z
+      const ZDataType & operator () ( const XDataType & x, const YDataType &y ) const
+      {
+	static IndexType indexes[2];
+	indexes[0] = m_xmapper( x );
+	indexes[1] = m_ymapper( y );
 	
-// 	return m_zarray[ m_indexes ];
-//       }
+	return m_zarray[ indexes ];
+      }
 
       /// function-like interface. set value.
       ///  f(x,y) = z
       ZDataType & operator () ( const XDataType & x, const YDataType & y )
       {
-	m_indexes[0] = m_xmapper( x );
-	m_indexes[1] = m_ymapper( y );
+	static IndexType indexes[2];
+	indexes[0] = m_xmapper( x );
+	indexes[1] = m_ymapper( y );
 
-	return m_zarray[ m_indexes ];
+	return m_zarray[ indexes ];
       }
 
     private:
@@ -82,9 +84,6 @@ namespace DANSE {
       const YAxisMapper & m_ymapper;
       ZArray & m_zarray;
 
-      // temp data
-      IndexType m_indexes[2];
-      
     };
     
   }

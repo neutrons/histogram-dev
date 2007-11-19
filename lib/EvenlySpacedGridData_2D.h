@@ -96,6 +96,9 @@ namespace DANSE {
 	m_dg = new DG( *m_xmapper, *m_ymapper, *m_zarray );
       } 
 
+      const ZDataType & operator () ( const XDataType & x, const YDataType & y ) const 
+      { return (*m_dg)( x,y ) ; }
+
       ZDataType & operator () ( const XDataType & x, const YDataType & y ) 
       { return (*m_dg)( x,y ) ; }
 

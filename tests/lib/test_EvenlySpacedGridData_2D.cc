@@ -15,14 +15,15 @@ int test2()
   Iqe  iqe( 1.0, 10.0, 1.0,
 	    -50, 50, 1. ,
 	    intensities);
+  const Iqe & ciqe = iqe;
 
   assert (sizeof(intensities)/sizeof(Iqe::zdatatype) == iqe.size );
   
   iqe.clear();
-  assert( iqe(5., 10) == 0 );
+  assert( ciqe(5., 10) == 0 );
 
   iqe( 5., 10 ) = 5;
-  assert( iqe(5., 10) == 5 );
+  assert( ciqe(5., 10) == 5 );
 
   return 0;
 }
