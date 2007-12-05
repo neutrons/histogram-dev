@@ -111,8 +111,17 @@ class Parser:
             exec '%s = e.identify(self)' % name
             continue
 
-        axes = grid
-        #print axes, name, data, errors
+        try:
+            axes = grid
+        except:
+            raise ValueError, "This graph does not contain 'grid' node: %s" %(
+                histogram.name() )
+
+        try:
+            data
+        except:
+            raise ValueError, "This graph does not contain 'data' node: %s" %(
+                histogram.name() )
 
         name = histogram.name() 
 

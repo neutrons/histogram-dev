@@ -370,7 +370,10 @@ class Dataset( DatasetBase):
         else:
             raise IndexError , "Don't know how to do indexing by %s" % (s,)
         
-        if slicing: return self._copy( self._storage[s], slicing = True )
+        if slicing:
+            ret = self._copy( self._storage[s], slicing = True )
+            ret._original = self
+            return ret
         return self._storage[s] * self.unit()
         
 

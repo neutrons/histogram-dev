@@ -63,8 +63,7 @@
 ##  - axis
 
 
-#public interface
-
+#factories
 def pqvalue( *args ):
     """create an instance that represents a value of a physical quantity,
     probably with an error bar"""
@@ -168,7 +167,46 @@ def histogram( name, axes, data = None, errors = None, unit="1",
     return h
 
 
+#methods
+def getSliceCopyFromHistogram( name, axes, hist ):
+    """retrieve a slice (copy) of a histogram
 
+    xaxis = axis('x', [0.1, 0.5,0.6])
+    yaxis = axis('y', [3.,4.,5.,100])
+    getSliceCopyFromHistogram( Ixyz, [xaxis, yaxis] )
+    """
+    #get axes that are not touched
+    axisnames = [ axis.name() for axis in axes ]
+    allaxes = hist.axes()
+    remainedaxes = []
+    for axis in allaxes:
+        if axis.name() in axisnames: continue
+        remainedaxes.append( axis )
+        continue
+
+    #histogram to return
+    ret = histogram( name, axes+remainedaxes, unit = hist.unit() )
+
+    #
+    def _( *args ):
+        d = {}
+        for i, axis in enumerate(axes):
+            d[axis.name()] = args[i]
+            continue
+        ret[ d ] = hist[ d ]
+        return
+    
+    axisBinCenters = [ axis.binCenters() for axis in axes ]
+
+    from _loop import loop
+    loop( axisBinCenters, _ )
+    
+    return ret
+
+
+
+
+#less convenient factories
 def datasetFromFunction( func, axes, *args, **kwds):
     shape = [ axis.size() for axis in axes ]
 

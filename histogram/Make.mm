@@ -59,6 +59,7 @@ EXPORT_PYTHON_MODULES = \
 	paths.py  \
 	plotter.py   \
 	hpickle.py  \
+	_loop.py \
 	_units.py \
 	__init__.py  \
 

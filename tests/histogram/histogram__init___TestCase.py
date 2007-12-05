@@ -191,6 +191,24 @@ class Histogram_TestCase(TestCase):
         return
 
 
+    def test_getSliceCopyFromHistogram(self):
+        '''Histogram.__init__: getSliceCopyFromHistogram'''
+        h = histogram(
+            'h',
+            [
+            ('x', [1,2,3] ),
+            ('y', [0.1,0.2,0.3] ),
+            ('z', range(0,1000,100) ),
+            ],
+            unit = 'meter',
+            )
+        xaxis = axis('x', [1, 2])
+        yaxis = axis('y', [0.2, 0.3])
+        s = getSliceCopyFromHistogram( 's', [xaxis, yaxis], h )
+        self.assertVectorEqual( s.shape(), (2,2,10) )
+        return
+
+
     def test_meshgrid(self):
         """Histogram.__init__: meshgrid"""
         x, y, z = [1,2], [3,4,5], [6,7,8,9]
@@ -302,7 +320,7 @@ class Histogram_TestCase(TestCase):
         self.assertEqual( name, hist.name() )
         return
 
-    
+
     pass # end of Histogram_TestCase
 
     

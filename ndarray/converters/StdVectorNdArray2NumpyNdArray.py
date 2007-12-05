@@ -15,6 +15,7 @@ def StdVectorNdArray2NumpyNdArray( src ):
 
     na = src.asNumarray()
     rt = ndarrayFromNumpyArray( na )
+    rt._original = src
     return rt
 
 
