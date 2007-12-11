@@ -100,6 +100,7 @@ def pysuite():
     suite1 = unittest.makeSuite(hdf_TestCase)
     return unittest.TestSuite( (suite1,) )
 
+
 def main():
     import journal
     pytests = pysuite()
