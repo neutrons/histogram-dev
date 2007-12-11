@@ -585,6 +585,13 @@ class NdArray_TestCase(TestCase):
         import numpy
         self.assert_( isinstance( na, numpy.ndarray ) )
         self.assert_( v.compare( self.NdArray( "double", list(na) ) ) )
+
+        v = self.NdArray('double', range(12) )
+        v.setShape( (3,4) )
+        na = v.asNumarray()
+        shape = na.shape
+        self.assertEqual( shape[0], 3 )
+        self.assertEqual( shape[1], 4 )
         return
 
 

@@ -143,13 +143,8 @@ class NdArray(StdVector, AbstractNdArray):
 
 
     def asNumarray(self):
-        r = StdVector.asNumarray(self)
-        try:
-            r.shape = self.shape()
-        except Exception, e:
-            msg = "%s: %s" % ( e.__class__, e)
-            msg +=  "shape mismatch: %s, %s" % (r.shape, self.shape())
-            raise ValueError , msg
+        shape = self.shape()
+        r = StdVector.asNumarray(self, shape)
         return r
 
 
