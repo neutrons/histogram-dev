@@ -15,10 +15,9 @@
 tutorial_url = "http://wiki.cacr.caltech.edu/danse/index.php/HistogramViewer-tutorial"
 
 about_msg = """
-Histogram viewer is a GUI application in the ARCS
-inelastic neutron scattering (INS) reduction software.
-It can be used to plot histograms created from a
-reduction procedure.
+Histogram viewer is a GUI application that
+automatically plot histograms loaded from file
+or created in the embedded python command line. 
 
         DANSE team INS subgroup
    California Institute of Technology
