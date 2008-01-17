@@ -48,6 +48,29 @@ class hdf_TestCase(TestCase):
         h = load( 'testload.h5', '/h1' )
         return
 
+    def testdump_and_load(self):
+        'dump and load'
+        tmpfile = 'test_dump_load_hdf5.h5'
+        cmd = '''
+from histogram import histogram
+x = y = range(10)
+h = histogram( 
+    'h',
+    [ ('x', x) ],
+    data = y, errors = y )
+import histogram.hdf as hh
+hh.dump( h, '%s', '/', 'c' )
+''' % tmpfile
+        import os
+        if os.path.exists(tmpfile): os.remove( tmpfile )
+        
+        cmd =  'python -c "%s"' % cmd 
+        if os.system( cmd ): raise "%s failed" % cmd
+
+        h = load( tmpfile, 'h' )
+        self.assertVectorAlmostEqual( h[1], (1,1) )
+        return
+
     def testload2(self):
         'load histogram with one path string'
         h = load( 'testload.h5/h' )

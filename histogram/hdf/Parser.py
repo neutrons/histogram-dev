@@ -104,7 +104,7 @@ class Parser:
 
 
     def onHistogram(self, histogram):
-        errors = None
+        errs = None
         
         for e in histogram.children():
             name = e.name()
@@ -125,7 +125,7 @@ class Parser:
 
         name = histogram.name() 
 
-        return nodes.histogram( name, axes, data = data, errors = errors )
+        return nodes.histogram( name, axes, data = data, errors = errs )
 
     onNXroot = onHistogram # hack
 
