@@ -88,9 +88,13 @@ class HistogramMplPlotter(HistogramPlotter):
     def plot1d(self, hist, **kwds ):
         figure = self.dp1.get_figure()
         assert hist.dimension() == 1, "dimension error: %s" % hist.dimension()
+
+        size = hist.shape()[0]
+        if size > (display_size*10) : hist = resample( hist, display_size )
+        
         xaxis = hist.axisFromId(1)
         x = xaxis.binCenters()
-        y = hist.data().storage().asList()
+        y = hist.data().storage().asNumarray()
         from numpy import sqrt
         eb = sqrt(hist.errors().storage().asNumarray())
         self.dp1.plot(x,y, yerr = eb, **kwds)
@@ -150,6 +154,37 @@ def plot2d( histogram, *args, **kwds ):
     defaultPlotter.plot2d( histogram, *args, **kwds )
     return
 
+
+
+
+display_size = 1000
+def resample( hist1, size ):
+
+    import histogram as H
+    
+    assert hist1.dimension() == 1
+    assert hist1.shape()[0] > display_size*10
+    xaxis = hist1.axes()[0]
+    xbb = xaxis.binBoundaries().asNumarray()
+    front, back = xbb[0], xbb[-1]
+    step = (back-front)/size
+    newxbb = H.arange( front, back+step/2, step)
+    newxaxis = H.axis( xaxis.name(), boundaries = newxbb, unit = xaxis.unit() )
+
+    newhist = H.histogram(
+        hist1.name(),
+        [ newxaxis ] )
+
+    newxc = newxaxis.binCenters()
+    for x in newxc[1:-1] :
+        newhist[ x ] = hist1[ (x-step/2, x+step/2) ].sum()
+        continue
+
+    newhist[ newxc[0] ]= hist1[ (newxbb[0], newxc[0] + step/2) ].sum()
+    newhist[ newxc[-1] ]= hist1[ (newxc[-1]-step/2, newxbb[-1]-step*1.e-10) ].sum()
+
+    return newhist
+        
 
 # version
 __id__ = "$Id: Plot2dHist.py,v 1.4 2005/11/07 23:03:44 linjiao Exp $"

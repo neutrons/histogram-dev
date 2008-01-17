@@ -32,6 +32,15 @@ class plotter_TestCase(TestCase):
         pylab.close()
         return
         
+    def test1D_largearray(self):
+        "pylab plotter: 1D large array"
+        h = histogram('h', [('x', arange(100000))], fromfunction=lambda x: x*x)
+        defaultPlotter.plot(h)
+        raw_input('Press ENTER to continue')
+        pylab.clf()
+        pylab.close()
+        return
+        
     def test2D(self):
         "pylab plotter: 2D"
         h = histogram(

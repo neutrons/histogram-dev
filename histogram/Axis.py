@@ -63,13 +63,12 @@ class Axis( Dataset):
         """list of bin centers"""
         keyword = 'binCenters'
         if keyword not in self._cache:
-            bblist = self._storage.asList()
+            bblist = self._storage.asNumarray()
             if self.isDiscrete():
                 self._cache[keyword] = bblist[:-1]
             else:
                 numcells = len(bblist) - 1
-                self._cache[keyword] = [
-                    (bblist[i+1] + bblist[i])/2.0 for i in range(numcells)]
+                self._cache[keyword] = (bblist[1:]+bblist[:-1])/2.
                 pass
             pass
         return self._cache[ keyword ]
