@@ -129,6 +129,22 @@ class Histogram_TestCase(TestCase):
         detaxis = axis('detectorID', range(10) )
         pixaxis = axis('pixelID', range(10) )
         mask = histogram( 'mask', (detaxis, pixaxis), data_type = 'char' )
+
+        from numpy import ones
+        data = createDataset(
+            'data', shape = (10,10), data = ones( (10,10), int ),
+            data_type = 'int' )
+        counts = histogram(
+            'counts', (detaxis, pixaxis),
+            data = data,
+            errors = None)
+
+        counts1 = histogram(
+            'counts', (detaxis, pixaxis),
+            data = ones( (10, 10), int ),
+            errors = ones( (10,10), int ),
+            data_type = 'double')
+        self.assertEqual( counts1.errors().name(), 'errors' )
         return
 
 
@@ -178,7 +194,7 @@ class Histogram_TestCase(TestCase):
 
 
     def test_histogram6(self):
-        """Histogram.__init__: erros = None"""
+        """Histogram.__init__: errors = None"""
         h = histogram(
             'h',
             [
@@ -277,7 +293,7 @@ class Histogram_TestCase(TestCase):
         
         bb = axis.binBoundaries().asList()
         bc = axis.binCenters()
-        self.assertEqual( bc, items )
+        self.assertVectorEqual( bc, items )
         self.assertEqual( len(bb), len(items)+1 )
         return
 

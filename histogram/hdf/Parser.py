@@ -104,7 +104,7 @@ class Parser:
 
 
     def onHistogram(self, histogram):
-        errs = None
+        errors = None
         
         for e in histogram.children():
             name = e.name()
@@ -123,9 +123,9 @@ class Parser:
             raise ValueError, "This graph does not contain 'data' node: %s" %(
                 histogram.name() )
 
-        name = histogram.name() 
+        name = histogram.name()
 
-        return nodes.histogram( name, axes, data = data, errors = errs )
+        return nodes.histogram( name, axes, data = data, errors = errors )
 
     onNXroot = onHistogram # hack
 

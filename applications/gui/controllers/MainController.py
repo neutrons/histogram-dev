@@ -172,13 +172,38 @@ class MainController(ControllerBase):
     
     def OnOpenHistogramFile( self, evt ):
         open_data_default_dir = self.open_data_default_dir
-        pklfile = self.toolkit.loadfileDialog(
+        filename = self.toolkit.loadfileDialog(
             None, "Open histogram data file" ,
             defaultDir = open_data_default_dir )
-        self.open_data_default_dir = os.path.dirname( pklfile )
-        
-        from histogram.hpickle import load
-        hist = load( pklfile )
+        self.open_data_default_dir = os.path.dirname( filename )
+
+        if filename.endswith('.pkl'): 
+            from pickle import load
+            hist = load( open(filename ) )
+        elif filename.endswith( 'h5' ) or filename.endswith( 'hdf5' ):
+            from hdf5fs.h5fs import H5fs
+            fs = H5fs( filename, 'r' )
+            root = fs.open('/')
+            entries = root.read()
+            if len(entries)>1:
+                toolkit = self.toolkit
+                msg = "Hdf5 file %s has multiple entries. Please use \n"\
+                      "embedded python shell to open this file." % (
+                    filename, )
+                toolkit.messageDialog( None, "Error",  msg)
+                return
+            entry = entries[0]
+            from histogram.hdf import load
+            hist = load( filename, entry )
+        else:
+            toolkit = self.toolkit
+            msg = "Don't know how to open file %s\n" \
+                  "Supported formats : \n" \
+                  "  - python pickle\n"\
+                  "  - hdf5\n" % filename
+            toolkit.messageDialog( None, "Error",  msg)
+            return
+            
         name = hist.name()
         name = _validVariableName( name )
         name = newHistName( name, self.histograms.keys() )

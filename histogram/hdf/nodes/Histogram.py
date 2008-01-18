@@ -41,8 +41,7 @@ class Histogram(AbstractNode):
         if self.errors is not None:
             errors = self.errors.fetch( indexSlices )
         else:
-            import numpy
-            errors = numpy.zeros( data.shape() )
+            errors = None
             pass
 
         newaxes = [axis[si] for axis, si in zip(axes, slicingInfos) ]

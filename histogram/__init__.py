@@ -501,20 +501,20 @@ def makeHistogram( name, axes, data, errs, unit="1", data_type = 'double'):
     # unit
     unit = unitFromString( unit )
 
-    # data and error bars
+    # data
     shape = [ _axis.size() for _axis in _axes ]
     if data is None: data=createDataset(
         'data', unit, shape = shape,
         data_type = data_type )
-    if errs is None: errs=createDataset(
-        'errors', unit*unit, shape = shape,
-        data_type = data_type )
-
     from DatasetBase import DatasetBase
     if isinstance( data, DatasetBase ): dataDS = data
     else: dataDS = createDataset( "data", unit, data = data, data_type = data_type )
+
+    if errs is None: errs=createDataset(
+        'errors', unit*unit, shape = shape,
+        data_type = dataDS.typecode() )
     if isinstance( errs, DatasetBase ): errsDS = errs
-    else: errsDS = createDataset( "errs", unit**2, data = errs, data_type = data_type )
+    else: errsDS = createDataset( "errors", unit**2, data = errs, data_type = data_type )
     
     from Histogram import Histogram
     h = Histogram( name = name, unit = unit,
