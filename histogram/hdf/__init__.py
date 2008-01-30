@@ -25,7 +25,7 @@ def load( filename, pathinfile=None, **kwds ):
     if pathinfile is None:
         import os
         filename, pathinfile = os.path.split( filename )
-    from nx5.renderers import *
+    from nx5.renderers import graphFromHDF5File
     g = graphFromHDF5File( filename, pathinfile )
     from Parser import Parser
     h = Parser(filename).parse( g )
@@ -50,7 +50,7 @@ def dump( histogram, filename, pathinfile, mode = 'w' ):
 
     g = Renderer().render(histogram)
 
-    from nx5.renderers import *
+    from nx5.renderers import setPath, writeGraph, printGraph
     pathinfile = pathinfile.split( '/' )
     p = pathinfile + [histogram.name()]
     p = '/'.join( p )

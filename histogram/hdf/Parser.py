@@ -133,7 +133,7 @@ class Parser:
 
 
 def test():
-    from nx5.renderers import *
+    from nx5.renderers import graphFromHDF5File, printGraph
     g = graphFromHDF5File( 't.h5', '/h' )
     printGraph( g )
 
