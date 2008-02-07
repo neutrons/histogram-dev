@@ -291,8 +291,10 @@ def _guessMinMax(z):
     otherwise, many details would be missed. This function provides
     a guess for the plotting region.
     """
+    # copy to make sure we can change the shape
+    # this will cause problem if the data is huge.
     z = z.copy()
-    return _min(z), _guessMax(z)
+    return _guessMin(z), _guessMax(z)
 
 
 def _guessMax(z):
@@ -302,33 +304,39 @@ def _guessMax(z):
     """
     #calculate average of z
     ave = _average( z )
-    #set maximum of z. 3.0 is a reasonable? number
-    max = ave * 3.0
+    if ave > 0:
+        #set maximum of z. 3.0 is a reasonable? number
+        max = ave * 3.0
+    else:
+        max = N.max( z )
     return max
+
+
+def _guessMin(z):
+    """ return minimum of z """
+    save = z.shape
+    try:
+        z.shape = -1,
+    except Exception, err:
+        msg = "%s. z is a %s, z.shape = %s" % (err, type(z), z.shape)
+        raise err.__class__, msg
+    ave = N.average( z )
+    if ave > 0: 
+        ret = N.min(z)
+    else:
+        #set minimum of z. 3.0 is a reasonable? number
+        ret = ave * 3.0 
+    z.shape = save
+    return ret
 
 
 def _average( z ):
     """return average of z"""
-    ave = N.average( N.average( z ) )
-    return ave
-
-
-def volume(shape):
-    from operator import mul
-    return reduce(mul, shape)
-
-
-def _min(z):
-    """ return minimum of z """
     save = z.shape
-    try:
-        z.shape = volume( save ),
-    except Exception, err:
-        msg = "%s. z is a %s, z.shape = %s" % (err, type(z), z.shape)
-        raise err.__class__, msg
-    res = min(z)
+    z.shape = -1, 
+    ave = N.average(z)
     z.shape = save
-    return res
+    return ave
 
 
 def _clear(figure):

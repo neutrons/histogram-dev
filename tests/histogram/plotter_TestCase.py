@@ -41,14 +41,30 @@ class plotter_TestCase(TestCase):
         pylab.close()
         return
         
-    def test2D(self):
-        "pylab plotter: 2D"
+    def test2Da(self):
+        "pylab plotter: 2D. z<0"
         h = histogram(
             'h',
             [('x', arange(10)),
              ('y', arange( 5 )),
              ],
-            fromfunction=lambda x,y: x*x + y*y)
+            fromfunction=lambda x,y: -(x*x + y*y),
+            )
+        defaultPlotter.plot(h)
+        raw_input('Press ENTER to continue')
+        pylab.clf()
+        pylab.close()
+        return
+    
+    def test2Db(self):
+        "pylab plotter: 2D. z>0"
+        h = histogram(
+            'h',
+            [('x', arange(10)),
+             ('y', arange( 5 )),
+             ],
+            fromfunction=lambda x,y: x*x + y*y,
+            )
         defaultPlotter.plot(h)
         raw_input('Press ENTER to continue')
         pylab.clf()
