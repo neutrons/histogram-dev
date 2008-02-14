@@ -14,6 +14,9 @@
 #ifndef DANSE_HISTOGRAM_EVENLYSPACEDAXISMAPPER_H
 #define DANSE_HISTOGRAM_EVENLYSPACEDAXISMAPPER_H
 
+
+#include <sstream>
+
 #include "AxisMapper.h"
 
 namespace DANSE {
@@ -31,7 +34,13 @@ namespace DANSE {
 
     virtual IndexType operator() ( const NumberType & data ) const 
     {
-      if (data>=m_end || data<m_begin) { throw OutOfBound(); }
+      if (data>=m_end || data<m_begin) {
+	std::ostringstream oss;
+	oss << "data " << data 
+	    << " is out of bound (" << m_begin << ", " << m_end
+	    << " )";
+	throw OutOfBound(oss.str());
+      }
       //std::cout << data << std::endl;
       //std::cout << IndexType( (data-m_begin)/m_step ) << std::endl;
       return IndexType( (data-m_begin)/m_step );

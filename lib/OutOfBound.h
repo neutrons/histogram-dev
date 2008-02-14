@@ -25,6 +25,7 @@ namespace DANSE {
     {
       OutOfBound() : Exception( "out of bound" ) {}
       OutOfBound(const char *msg) : Exception( msg ) {}
+      OutOfBound(const std::string &msg) : Exception( msg ) {}
     };
 
   } // Histogram:
