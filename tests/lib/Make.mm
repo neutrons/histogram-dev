@@ -17,6 +17,7 @@ PROJ_CLEAN += $(PROJ_CPPTESTS)
 
 PROJ_PYTESTS = 
 PROJ_CPPTESTS = test_NdArray \
+	test_NdArraySlice \
 	test_GridData_1D \
 	test_GridData_2D \
 	test_EvenlySpacedGridData_1D \
@@ -45,6 +46,9 @@ update: clean
 
 test_NdArray: test_NdArray.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
 	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_NdArray.cc $(PROJ_LIBRARIES)
+
+test_NdArraySlice: test_NdArraySlice.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
+	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_NdArraySlice.cc $(PROJ_LIBRARIES)
 
 test_GridData_1D: test_GridData_1D.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
 	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_GridData_1D.cc $(PROJ_LIBRARIES)

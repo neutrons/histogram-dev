@@ -26,7 +26,7 @@ namespace DANSE {
 	      unsigned int NDimension>
     SuperSize
     NdArray<Iterator, DataType, Size, SuperSize, NDimension>::_1dindex
-    ( Size indexes[NDimension] ) 
+    ( const Size * indexes ) 
       const 
       throw (OutOfBound) 
     {
@@ -44,7 +44,7 @@ namespace DANSE {
 	      unsigned int NDimension>
     void 
     NdArray<Iterator, DataType, Size, SuperSize, NDimension>::_throw_out_of_bound
-    (Size * indexes) 
+    (const Size * indexes) 
       const
       throw (OutOfBound)
     {

@@ -22,6 +22,7 @@ PROJ_CLEAN += $(PROJ_SAR) $(PROJ_DLL)
 PROJ_SRCS = \
 	Array_1D.cc \
 	NdArray.cc \
+	NdArraySlice.cc \
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -64,6 +65,8 @@ EXPORT_HEADERS = \
 	Exception.h\
 	NdArray.h \
 	NdArray.icc \
+	NdArraySlice.h \
+	NdArraySlice.icc \
 	OutOfBound.h\
 
 EXPORT_LIBS = $(PROJ_SAR)

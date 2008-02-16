@@ -15,6 +15,7 @@
 #define DANSE_HISTOGRAM_NDARRAY_H
 
 
+#include <vector>
 #include "OutOfBound.h"
 
 
@@ -44,14 +45,16 @@ namespace Histogram{
   ///  The input 1D array is treated as mD array by the convention that
   ///  the last index runs the fastest.
   ///
-  template <typename Iterator, typename DataType, typename Size, typename SuperSize,
+  template <typename Iterator, typename DataType,
+	    typename Size, typename SuperSize,
 	    unsigned int NDimension>
   class NdArray {
 
   public:
     
     typedef DataType datatype;
-    
+    typedef Size index_t;
+
     /// ctor.
     ///
     /// Parameters:
@@ -76,20 +79,35 @@ namespace Histogram{
     /// dtor.
     ~NdArray() { }
     
+    /// shape
+    Size dimension() const { return NDimension; }
+    const Size * shape() const { return m_shape; }
+    
+    
     /// get element.
     /// indexes must have 'NDimension' elements
-    const DataType & operator [] ( Size indexes[NDimension] ) const
+    const DataType & operator [] ( const Size *indexes ) const
     {
       SuperSize ind = _1dindex( indexes );
       return *(m_it+ind);
     }
+    const DataType & operator [] ( const std::vector<Size> & indexes ) const
+    {
+      assert (indexes.size() == NDimension);
+      return this->operator[]( &(indexes[0]) );
+    }
     
     /// set element.
     /// indexes must have 'NDimension' elements
-    DataType & operator [] ( Size indexes[NDimension] ) 
+    DataType & operator [] ( const Size *indexes ) 
     {
       SuperSize ind = _1dindex( indexes );
       return *(m_it+ind);
+    }
+    DataType & operator [] ( const std::vector<Size> & indexes ) 
+    {
+      assert (indexes.size() == NDimension);
+      return this->operator[]( &(indexes[0]) );
     }
 
     /// set all elements to zero.
@@ -103,8 +121,8 @@ namespace Histogram{
     Iterator m_it;
     Size m_shape[NDimension];
     SuperSize m_size1D;
-    SuperSize _1dindex( Size indexes[NDimension] ) const throw (OutOfBound) ;
-    void _throw_out_of_bound(Size indexes[NDimension]) const throw (OutOfBound) ;
+    SuperSize _1dindex( const Size *indexes ) const throw (OutOfBound) ;
+    void _throw_out_of_bound(const Size * indexes) const throw (OutOfBound) ;
 
   }; // NdArray:
 
