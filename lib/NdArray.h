@@ -65,7 +65,7 @@ namespace Histogram{
     /// CAUTION:
     ///   array shape must have 'NDimension' elements
     ///
-    NdArray( Iterator it, Size shape[NDimension] ) :
+    NdArray( Iterator it, const Size shape[NDimension] ) :
       m_it(it) 
     {
       m_size1D = 1;
