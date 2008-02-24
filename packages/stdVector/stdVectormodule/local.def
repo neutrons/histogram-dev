@@ -1,0 +1,22 @@
+# -*- Makefile -*-
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+#                               T. M. Kelley
+#                        California Institute of Technology
+#                        (C) 1998-2004  All Rights Reserved
+#
+# <LicenseText>
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+
+# C++
+
+    PROJ_CXX_INCLUDES = .
+    PROJ_CXX_INCLUDES += $(NUMPY_INCDIR)
+
+# version
+# $Id: local.def 123 2006-08-04 20:08:31Z linjiao $
+
+# End of file

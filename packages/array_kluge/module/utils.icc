@@ -1,0 +1,49 @@
+// Copyright (C) 2004 Tim Kelley, Jiao Lin California Institute of Technology
+
+#ifndef H_ARRAY_KLUGE_UTILS
+#error utils.icc has no meaning outside utils.h
+#else
+
+#ifdef DEBUG
+#include <portinfo>
+//#include "journal/info.h"
+#include "journal/debug.h"
+#endif
+
+
+namespace 
+{
+  template <typename T>
+  void deleteObjectWDesc( void *ptr, void *desc)
+  {
+    T* oldT = static_cast<T *>( ptr);
+    delete oldT;
+#ifdef DEBUG
+    journal::debug_t debug(journal_channel);
+    debug << journal::at(__HERE__) << "deleted pointer" << oldT << journal::endl;
+#endif
+    return;
+  }
+
+  template <typename T>
+  void deleteObject( void *ptr)
+  {
+    T* oldT = static_cast<T *>( ptr);
+    delete oldT;
+#ifdef DEBUG
+    journal::debug_t debug(journal_channel);
+    debug << journal::at(__HERE__) << "deleted pointer" << oldT << journal::endl;
+#endif
+    return;
+  }
+
+} // anonymous namespace a slight improvement over static
+
+#endif // H_ARRAY_KLUGE_UTILS
+
+
+// version 
+// $Id: array_kluge.h 375 2005-08-16 18:44:57Z linjiao $
+
+// End of file 
+

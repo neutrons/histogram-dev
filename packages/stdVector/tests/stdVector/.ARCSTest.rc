@@ -1,0 +1,7 @@
+#!/usr/bin/env python
+
+# ARCSTest resource file
+package = "stdVector"
+
+
+# End of file
