@@ -468,6 +468,16 @@ class Histogram( AttributeCont):
         return self
 
 
+    def __getattribute__(self, name):
+        try: return object.__getattribute__(self, name)
+        except AttributeError:
+            if name in self.axisNameList():
+                return self.axisFromName(name).binCenters()
+            raise
+        raise "Should not reach here"
+
+
+
     def clear(self):
         '''set data and errorbars to zero'''
         shape = self.shape()
@@ -794,6 +804,16 @@ class Histogram( AttributeCont):
         self._setShape( newShape )
         return
 
+
+    def _getInpyarr(self): return self.data().storage().asNumarray()
+    def _setInpyarr(self, rhs): self.data().storage().asNumarray()[:] = rhs
+    I = property( _getInpyarr, _setInpyarr ) # "intensities" as numpy array
+    
+
+    def _getErr2npyarr(self): return self.errors().storage().asNumarray()
+    def _setErr2npyarr(self, rhs): self.errors().storage().asNumarray()[:] = rhs
+    E2 = property( _getErr2npyarr, _setErr2npyarr ) # square of error bars of "intensities"
+    
 
     def _setShape(self, shape):
         self._shape = shape

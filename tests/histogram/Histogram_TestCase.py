@@ -534,6 +534,26 @@ class Histogram_TestCase(TestCase):
         h = histogram('h', (x,y) )
         self.assertVectorEqual( h.values2indexes( (2, 0.2) ), (1,12) )
         return
+
+
+    def test_getattribute(self):
+        'Histogram: __getattribute__'
+        from histogram import histogram, axis, arange
+        x = axis( 'x', arange(1., 10., 1.) )
+        y = axis( 'y', arange(-1., 1., 0.1) )
+        h = histogram('h', (x,y) )
+        self.assertVectorEqual( h.x, x.binCenters() )
+        self.assertVectorEqual( h.y, y.binCenters() )
+        
+        t1 = h.I; t2 = h.data().storage().asNumarray() 
+        t1.shape = t2.shape = -1, 
+        self.assertVectorEqual( t1, t2 )
+        
+        t1 = h.E2; t2 = h.errors().storage().asNumarray() 
+        t1.shape = t2.shape = -1, 
+        self.assertVectorEqual( t1, t2 )
+
+        return
     
 
     pass # end of Histogram_TestCase
