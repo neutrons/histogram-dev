@@ -42,6 +42,7 @@ tidy::
 
 EXPORT_PYTHON_MODULES = \
 	PRL.py \
+	colormap.py \
 	__init__.py \
 
 

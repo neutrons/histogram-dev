@@ -206,7 +206,14 @@ class MainController(ControllerBase):
             
         name = hist.name()
         name = _validVariableName( name )
-        name = newHistName( name, self.histograms.keys() )
+        if name in self.histograms.keys():
+            msg = 'Histogram of name "%s" already exists. \n'\
+                  'Please rename or delete the existing histogram. \n' \
+                  % (name, )
+            toolkit = self.toolkit
+            toolkit.messageDialog( None, "Error",  msg)
+            return
+        
         self.addNewHistogram( name, hist )
         return
 
@@ -271,7 +278,8 @@ class MainController(ControllerBase):
                     focus = self.focus
                     if focus:
                         history = self.plotCmdHistory.get(focus) or []
-                        history.append( lastcommand )
+                        if lastcommand not in history:
+                            history.append( lastcommand )
                         self.plotCmdHistory[ focus ] = history
                         pass # end if focus
                     pass # end if lastcommand
@@ -335,8 +343,8 @@ class MainController(ControllerBase):
         self.focus = key
         names = self.histograms.keys()
         histogram = self.histograms.get( key ) 
-        self.view.getSubview("histogramfigure").update( histogram )
         self.view.getSubview("histogramList").select( names.index( key ) )
+        self.view.getSubview("histogramfigure").update( histogram )
         # rerun commands 
         if histogram:
             history = self.plotCmdHistory.get(key) or []
@@ -356,18 +364,6 @@ class MainController(ControllerBase):
 
 
 
-def newHistName(name, names):
-    "return a unique name for the new histogram"
-    #not a good algorithm, but it works for now.
-    if name not in names: return name
-    # h0, h1, ..., h99 
-    for i in range(100):
-        new = "%s%d" % (name, i)
-        if new not in names: return new
-        continue
-    raise RuntimeError, "Cannot find a good name for the new histogram '%s'. Existing histograms: %s" %(name, hists.keys() )
-
-
 
 def getpylabcmds():
     import pylab
@@ -377,10 +373,10 @@ def getpylabcmds():
 
 def _validVariableName( name ):
     import string
-    good = string.ascii_letters + string.digits + '_' 
+    good = string.ascii_letters + string.digits
     ret = []
     for i in name:
-        if i not in good: i = '_'
+        if i not in good: i = ''
         ret.append(i)
         continue
     return ''.join( ret )

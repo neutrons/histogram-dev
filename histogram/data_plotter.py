@@ -302,14 +302,16 @@ def _guessMax(z):
     This max value should usually be samller than the real max value of z matrix
     because otherwise many details could be missing from the plot
     """
-    #calculate average of z
-    ave = _average( z )
-    if ave > 0:
-        #set maximum of z. 3.0 is a reasonable? number
-        max = ave * 3.0
+    save = z.shape
+    z.shape = -1,
+    max = N.max(z)
+    if max <= 0:
+        ret = max
     else:
-        max = N.max( z )
-    return max
+        positive_average = N.average( z[ z>0 ] )
+        ret = min( positive_average*10, max )
+    z.shape = save
+    return ret
 
 
 def _guessMin(z):
@@ -320,12 +322,12 @@ def _guessMin(z):
     except Exception, err:
         msg = "%s. z is a %s, z.shape = %s" % (err, type(z), z.shape)
         raise err.__class__, msg
-    ave = N.average( z )
-    if ave > 0: 
-        ret = N.min(z)
+    min = N.min(z)
+    if min >= 0: 
+        ret = min
     else:
-        #set minimum of z. 3.0 is a reasonable? number
-        ret = ave * 3.0 
+        negative_ave = N.average( z[ z<0 ] )
+        ret = max( negative_ave*10, min )
     z.shape = save
     return ret
 
@@ -340,7 +342,6 @@ def _average( z ):
 
 
 def _clear(figure):
-    return
     figure.clf()
     try: figure.gca()
     except: pass
@@ -349,6 +350,38 @@ def _clear(figure):
 
 pylabPlotter2D = defaultPlotter2D = MplPlotter2D()
 
+
+
+def test_guessMin( ):
+    assert( _guessMin( N.arange(100) ) == 0 )
+    assert( _guessMin( N.arange(-10, 10) ) == -10 )
+    a = N.arange( -10, 10 )
+    a[0] = -1000000
+    assert( _guessMin( N.arange(-10, 10) ) > -100 )
+    assert( _guessMin( N.arange(-10, 10) ) <= -10 )
+    a[-1] = 10000000
+    assert( _guessMin( N.arange(-10, 10) ) > -100 )
+    assert( _guessMin( N.arange(-10, 10) ) <= -10 )
+    return
+
+
+def test_guessMax( ):
+    assert( _guessMax( N.arange(100) ) == 100 )
+    assert( _guessMax( -N.arange(100) ) == 0 )
+    assert( _guessMax( N.arange(-10, 10) ) == 10 )
+    a = N.arange( -10, 10 )
+    a[-1] = 1000000
+    assert( _guessMax( N.arange(-10, 10) ) < 100 )
+    assert( _guessMax( N.arange(-10, 10) ) >= 10 )
+    a[0] = -10000000
+    assert( _guessMax( N.arange(-10, 10) ) < 100 )
+    assert( _guessMax( N.arange(-10, 10) ) >= 10 )
+    return
+
+
+
+if __name__ == '__main__':
+    test_guessMin()
 
 
 

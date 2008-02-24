@@ -145,7 +145,12 @@ class Axis( Dataset):
         if storage is None: storage = self.storage().copy()
 
         if mapper is None:
-            mapper = createMapper( storage.asList(), self._mapper.__class__ )
+            try:
+                mapper = createMapper( storage.asList(), self._mapper.__class__ )
+            except NotImplementedError, err:
+                raise 'Unable to create copy of axis %s: %s, %s' % (
+                    self, err.__class__.__name__, err )
+                
 
         copy = self.__class__(
             name=self.name(), unit=self.unit(), attributes = attrs,

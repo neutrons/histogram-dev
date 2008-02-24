@@ -25,7 +25,8 @@ class plotter_TestCase(TestCase):
 
     def test1D(self):
         "pylab plotter: 1D"
-        h = histogram('h', [('x', arange(10))], fromfunction=lambda x: x*x)
+        h = histogram('h', [('x', arange(10))], fromfunction=lambda x: x*x,
+                      unit = "10" )
         defaultPlotter.plot(h)
         raw_input('Press ENTER to continue')
         pylab.clf()

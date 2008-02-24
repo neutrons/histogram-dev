@@ -102,6 +102,7 @@ class HistogramMplPlotter(HistogramPlotter):
         axes = f.gca()
         axes.set_title( hist.name() )
         axes.set_xlabel( axis_label(xaxis) )
+        axes.set_ylabel( "Intensity (unit: %s)" % hist.unit() )
         self._image = self.dp1.get_image()
         return
 
