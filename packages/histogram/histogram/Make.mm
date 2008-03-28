@@ -55,13 +55,14 @@ EXPORT_PYTHON_MODULES = \
 	SlicingInfo.py   \
 	ValueWithError.py \
 	ErrorPropagator.py \
+	_loop.py \
+	_units.py \
+	__init__.py  \
 	data_plotter.py  \
 	paths.py  \
 	plotter.py   \
 	hpickle.py  \
-	_loop.py \
-	_units.py \
-	__init__.py  \
+	pylab_extensions.py  \
 
 #    MonitorData.py       \
 

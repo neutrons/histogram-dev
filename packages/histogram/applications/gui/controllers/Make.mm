@@ -45,7 +45,7 @@ EXPORT_PYTHON_MODULES = \
 	MainController.py \
 	ControllerBase.py \
 	Tools.py \
-
+	pylab_extensions.py \
 
 
 export:: export-package-python-modules 

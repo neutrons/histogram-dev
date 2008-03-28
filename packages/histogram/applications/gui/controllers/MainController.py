@@ -74,6 +74,7 @@ class MainController(ControllerBase):
         plotwindow.makePylabUsable()
 
         self.pyshell_locals['refresh'] = self.refreshPlot
+        
         self.plotCmdHistory = {}
 
         #add "." to sys.path
@@ -382,8 +383,9 @@ def _validVariableName( name ):
     return ''.join( ret )
 
 
-import os
 
+import os
+import pylab_extensions
 
 # version
 __id__ = "$Id$"
