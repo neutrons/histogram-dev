@@ -297,6 +297,7 @@ def _guessMinMax(z):
     return _guessMin(z), _guessMax(z)
 
 
+_scaler = 10
 def _guessMax(z):
     """make a guess of the max z value that should be used in plot.
     This max value should usually be samller than the real max value of z matrix
@@ -308,8 +309,8 @@ def _guessMax(z):
     if max <= 0:
         ret = max
     else:
-        positive_average = N.average( z[ z>0 ] )
-        ret = min( positive_average*10, max )
+        positive_median = N.median( z[ z>0 ] )
+        ret = min( positive_median*_scaler, max )
     z.shape = save
     return ret
 
@@ -326,19 +327,10 @@ def _guessMin(z):
     if min >= 0: 
         ret = min
     else:
-        negative_ave = N.average( z[ z<0 ] )
-        ret = max( negative_ave*10, min )
+        negative_median = N.median( z[ z<0 ] )
+        ret = max( negative_median*_scaler, min )
     z.shape = save
     return ret
-
-
-def _average( z ):
-    """return average of z"""
-    save = z.shape
-    z.shape = -1, 
-    ave = N.average(z)
-    z.shape = save
-    return ave
 
 
 def _clear(figure):
