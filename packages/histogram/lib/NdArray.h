@@ -18,6 +18,8 @@
 #include <vector>
 #include "OutOfBound.h"
 
+#include "journal/debug.h"
+
 
 namespace DANSE {
 
@@ -69,11 +71,24 @@ namespace Histogram{
       m_it(it) 
     {
       m_size1D = 1;
+#ifdef DEBUG
+      journal::debug_t debug("NdArray");
+      debug << journal::at(__HERE__)
+	    << "dimension: " << dimension() << journal::endl
+	    << "shape: " ;
+#endif
       
       for (unsigned int i=0; i<NDimension; i++) {
 	m_shape[i] = shape[i];
 	m_size1D *= shape[i];
+#ifdef DEBUG
+      debug 
+	<< shape[i] << ", ";
+#endif
       }
+#ifdef DEBUG
+      debug << journal::endl; 
+#endif
     }
     
     /// dtor.
