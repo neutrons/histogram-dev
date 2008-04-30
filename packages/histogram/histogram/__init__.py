@@ -357,10 +357,17 @@ def createContinuousAxis( name, unit, centers = None, boundaries = None,
 
     unit = unitFromString( unit )
 
+    from histogram.EvenlyContinuousAxisMapper import \
+         EvenlyContinuousAxisMapper as AxisMapper, NotEvenlySpaced
     try:
-        from histogram.EvenlyContinuousAxisMapper import EvenlyContinuousAxisMapper as AxisMapper
         axisMapper = AxisMapper( binBoundaries = boundaries )
-    except:
+    except NotEvenlySpaced:
+        import traceback
+        import journal
+        debug = journal.debug('histogram.createContinuousAxis')
+        #debug.log( traceback.format_exc() )
+        debug.log( 'createContinuousAxis(name = %r, unit = %r, centers= %r, boundaries = %r' % (
+            name, unit, centers, boundaries ) )
         from histogram.ContinuousAxisMapper import ContinuousAxisMapper as AxisMapper
         axisMapper = AxisMapper( boundaries )
 
@@ -626,6 +633,10 @@ def _grid( arr, i, shape ):
     rt = rt.transpose( axes )
     return rt
 
+
+
+import journal
+debug = journal.debug( 'histogram' )
 
 
 # version

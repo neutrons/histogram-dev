@@ -54,6 +54,9 @@ def assertEvenlySpaced ( bb ):
     d0 = bb[1] - bb[0]
     for i in range( 1, len(bb) - 1 ):
         d = bb[i+1] - bb[i]
-        if abs((d-d0)/d0) > 1e-8: raise NotEvenlySpaced, "%s is not a evenly spaced array" % (bb,)
+        if abs((d-d0)/d0) > epsilon: raise NotEvenlySpaced, "%s is not a evenly spaced array" % (bb,)
         continue
     return
+
+
+epsilon = 1e-5
