@@ -136,10 +136,16 @@ class Histogram_TestCase(TestCase):
         self.assertVectorEqual(slice5.shape(), (2,3) )
         
         slice6 = histogram[SlicingInfo( (front,1.5) ), all]
-        self.assertVectorEqual(slice5.shape(), (2,3) )
+        self.assertVectorEqual(slice6.shape(), (2,3) )
         
         slice6 = histogram[(None,1.5), ()]
-        self.assertVectorEqual(slice5.shape(), (2,3) )
+        self.assertVectorEqual(slice6.shape(), (2,3) )
+
+        #getitem with units
+        from histogram._units import length
+        meter = length.meter
+        slice8 = histogram[ {'E':(0.5*meter, 1.5*meter), 'tubeId':(1,3)} ]
+        self.assertVectorEqual(slice8.shape(), (2,2))
 
         #getitem for 1D histogram
         number7 = histogram[ 1.5, () ][3]

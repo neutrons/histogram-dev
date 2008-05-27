@@ -127,6 +127,10 @@ class Axis( Dataset):
         note: slicing is inclusive
         """
         start, end = slicingInfo.start, slicingInfo.end
+        unit = self.unit()
+        if isDimensional( start ): start = start/unit
+        if isDimensional( end ): end = end/unit
+        
         bc = self.binCenters()
         if start == front: start = bc[0]
         if end == back: end = bc[-1]
@@ -159,6 +163,10 @@ class Axis( Dataset):
     
 
     pass # end of Axis
+
+
+
+from _units import isDimensional
 
 
 from AxisMapperCreater import creater

@@ -4,7 +4,7 @@
 #
 #                                   Jiao Lin
 #                      California Institute of Technology
-#              (C) 2005 All Rights Reserved  All Rights Reserved
+#                        (C) 2005 All Rights Reserved 
 #
 # {LicenseText}
 #
@@ -92,6 +92,14 @@ class Axis_TestCase(TestCase):
 
         
         self.assertRaises( IndexError,  axis.__getitem__, SlicingInfo( (1.0, 2.0) )  )
+
+        # dimensional sliciing
+        from histogram._units import length
+        meter = length.meter
+        new = axis[ SlicingInfo( (1.0*meter, 1.9*meter) ) ]
+        self.assertVectorAlmostEqual(
+            new.storage().asList(),
+            axis.storage().asList() )
         return
 
 
