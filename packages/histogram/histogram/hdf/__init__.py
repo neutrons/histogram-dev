@@ -26,7 +26,12 @@ def load( filename, pathinfile=None, **kwds ):
         import os
         filename, pathinfile = os.path.split( filename )
     from nx5.renderers import graphFromHDF5File
-    g = graphFromHDF5File( filename, pathinfile )
+    try:
+        g = graphFromHDF5File( filename, pathinfile )
+    except IOError, msg:
+        raise IOError, "unable to load histogram. filename=%s, "\
+              "pathinfile=%s, kwds=%s" % (
+            filename, pathinfile, kwds)
     from Parser import Parser
     h = Parser(filename).parse( g )
     return h.fetch(**kwds)
