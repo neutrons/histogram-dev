@@ -15,7 +15,7 @@
 <chapter id="histogram.CommandlineInterface">
   
   <title >
-    Histogram Scripting Interface
+    Histogram Python Interface
   </title>
 
 
@@ -370,11 +370,15 @@ then transpose the x and y axes.
     <title>Miscellaneous</title>
 
 <sect2>   
-  <title>axisFromName</title>
+  <title>axes</title>
   
   <sect3>
     <title> Description </title>
-    Given axis name, return an axis instance of a histogram.
+    You can retrieve information about axes of a histogram
+    in a variety of ways. 
+    Method "axes" return a list of all axes of a histogram.
+    Method "axisNameList" return a list of names of axes of a histogram.
+    Method "axisFromName" return the axis given the axis' name.
   </sect3>    
   
   <sect3>
@@ -384,9 +388,13 @@ then transpose the x and y axes.
   x = 'x', arange(-1, 1, 0.05 )
   y = 'y', arange(0, 5, 0.05 )
   h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
+  print h.axes()
+  print h.axisNameList()
   xaxis = h.axisFromName( 'x' )
   print xaxis.binCenters()
   print xaxis.binBoundaries()
+  print h.x  # bin centers of x axis
+  print h.y  # bin cetners of y axis
 </programlisting>
   </sect3>
   
@@ -401,10 +409,7 @@ Sometimes it may be necessary to develop new numeric
 operators and methods for customized computation
 on  the data array encapsulated in the
 histogram object. 
-Here are examples to get you started. 
-We believe this approach can become sophisticated, 
-and we would be interested in hearing back from you
-about it.
+They are accessible as attributes 'I' and 'E2'.
 </sect3>    
   
 <sect3>
@@ -414,8 +419,8 @@ about it.
   x = 'x', arange(-1, 1, 0.05 )
   y = 'y', arange(0, 5, 0.05 )
   h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
-  dataarr = h.data().storage().asNumarray()
-  errsarr = h.errors().storage().asNumarray()
+  dataarr = h.I
+  errsarr = h.E2
 </programlisting>
 Both "dataarr" and "errsarr" are numpy arrays that reference to 
 the underlying data stored in the histogram. You can work directly 
@@ -425,7 +430,7 @@ Please see
 numpy
 </ulink>
  documentation to learn of other methods
-that are available.
+that are available in the numpy package.
   </sect3>
   
 </sect2>
