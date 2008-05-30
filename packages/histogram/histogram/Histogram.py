@@ -70,6 +70,23 @@ class Histogram( AttributeCont):
         return
 
 
+    def as_floattype(self):
+        '''return a copy of this histogram in float type
+
+        Some histograms are created in integer types.
+        But integer types are often not good for further data analysis.
+        This method creates a new histogram with the
+        exact same axes and data and error bars, but in
+        float type.
+        '''
+        if self.typeCode() in integer_typecodes:
+            from histogram import histogram
+            return histogram( self.name(), self.axes(), data = self.I, errors = self.E2)
+        elif self.typeCode() in float_typecodes :
+            return self.copy()
+        raise TypeError, 'histogram of type %r cannot be converted to float type' % self.typeCode()
+
+
     def unit(self): return self.getAttribute( 'unit' )
 
 
@@ -967,6 +984,14 @@ def _short_list_str(l):
     if len(l) <  10: return str(l)
     else: return "[ %s, %s, ... %s, %s ]"%(l[0],l[1], l[-2], l[-1])
 
+
+integer_typecodes = [
+    24, 25,
+    ]
+
+float_typecodes = [
+    5, 6,
+    ]
 
 
 def test_equalUnit():

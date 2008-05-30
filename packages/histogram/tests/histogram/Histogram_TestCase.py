@@ -56,6 +56,14 @@ class Histogram_TestCase(TestCase):
         histogram = self._histogram
         print histogram
         return
+
+
+    def test_as_floattype(self):
+        from histogram import histogram, arange
+        h = histogram( 'h', [ ('x',arange(10)) ], data_type = 'int')
+        h1 = h.as_floattype()
+        self.assertEqual( h1.typeCode(), 6 )
+        return
     
 
     def testindexes(self):
