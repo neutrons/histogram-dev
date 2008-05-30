@@ -104,6 +104,21 @@ class NdArrayDataset_TestCase(TestCase):
         return
 
 
+    def test__rdiv__(self):
+        "Dataset: operator 'number/b'"
+        ds = self.Dataset(name = "distance", unit = "meter",
+                          attributes = { },
+                          shape = [3], storage = NdArray( 'double', [1,2,3] ) )
+        dsunit = ds.unit()
+
+        ds2 = 1./ds
+        v = ds2.storage().asNumarray()
+        self.assertVectorAlmostEqual( v, [1.,1./2,1./3] )
+        self.assertEqual( ds2.unit(), 1./ds.unit() )
+        self.assertEqual( ds.unit(), dsunit )
+        return
+
+
     def test__div__(self):
         "Dataset: operator 'a/b'"
         ds = self.Dataset(name = "distance", unit = "meter",
@@ -114,8 +129,8 @@ class NdArrayDataset_TestCase(TestCase):
         self.assertVectorAlmostEqual( v, [0.5,1,1.5] ) 
         
         ds2 = 1 / ds
-        v = ds2.storage().asNumarray() * ds2.unit() / meter
-        self.assertVectorAlmostEqual( v, [1,1./2,1./3] ) 
+        v = ds2.storage().asNumarray() * ds2.unit() * meter
+        self.assertVectorAlmostEqual( v, [1.,1./2,1./3] ) 
         return
 
 

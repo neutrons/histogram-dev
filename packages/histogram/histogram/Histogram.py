@@ -365,32 +365,29 @@ class Histogram( AttributeCont):
         
         if isNumberPair(other) or isDimensionalPair(other):
             
-            x,  dx2 = other
-            dx = sqrt(dx2)
-            #(xdy+ydx)^2 
-            errs.sqrt(); dy = errs;
-            y = data
-            dy *= x
-            errs += y * dx
-            errs.square()
+            y, dy2 = other
+            y, dy2 = float(y), float(dy2)
+
+            #B**2*sigmaA**2 + A**2*sigmaB**2
+            #term2 = dy2 * data * data
+            #term1 = errs * y * y
+            errs *= y*y
+            errs += dy2*data*data
             
-            data *= x
+            data *= y
             pass
 
         
         elif isHistogram(other):
-            
-            x = other._data; dx2 = other._errors
+            y = other.data(); dy2 = other.errors()
             #
-            dx = dx2.copy(); dx.sqrt()
-            errs.sqrt(); dy = errs;
-            y = data
-            dy *= x
-            errs += y * dx
-            errs.square()
+            errs *= y*y
+            errs += dy2 * data*data
 
-            data *= x            
+            data *= y
 
+            self._setunit( self.unit() * other.unit() )
+            
         else:
             
             raise NotImplementedError , "__mul__ is not defined for %s and %s" % (
@@ -405,22 +402,18 @@ class Histogram( AttributeCont):
         b is a pair of numbers (x, xerr_square) or another histogram
         """
         data = self._data; errs = self._errors
-        #((xdy+ydx)/y^2
+        # sigmaA**2/B**2 + A**2*sigmaB**2/B**4
         
         if isNumberPair(other):
             y,  dy2 = other
+            y, dy2 = float(y), float(dy2)
             if dy2 == 0 or dy2 == 0.0: #special case
                 #ydx/y^2
                 self._setunit(1.*self.unit()/y)
                 return self
 
-            dy = sqrt(dy2)
-            errs.sqrt(); dx = errs;
-            x = data
-            dx *= y
-            errs += x * dy
             errs /= y*y
-            errs.square()
+            errs += dy2 * data * data / y**4
             
             data /= y
             pass
@@ -434,8 +427,6 @@ class Histogram( AttributeCont):
         
         elif isHistogram(other):
 
-            self._setunit( self.unit()/other.unit() )
-            
             y = other._data; dy2 = other._errors
             
             if dy2 == None: #special case
@@ -444,19 +435,13 @@ class Histogram( AttributeCont):
                 data /= y
                 return self
 
-            dy = dy2.copy(); dy.sqrt()
-            
-            errs.sqrt(); dx = errs;
-            x = data
-            dx *= y
-            
-            errs += x * dy
-            
-            errs /= y; errs /= y
-            errs.square()
+            errs /= y*y
+            errs += dy2 * data * data /y/y/y/y
             
             data /= y
 
+            self._setunit( self.unit()/other.unit() )
+            
         else:
             
             raise NotImplementedError , "__div__ is not defined for %s and %s. "\
@@ -810,8 +795,13 @@ class Histogram( AttributeCont):
     I = property( _getInpyarr, _setInpyarr ) # "intensities" as numpy array
     
 
-    def _getErr2npyarr(self): return self.errors().storage().asNumarray()
-    def _setErr2npyarr(self, rhs): self.errors().storage().asNumarray()[:] = rhs
+    def _getErr2npyarr(self):
+        if self.errors(): return self.errors().storage().asNumarray()
+        return 0
+    def _setErr2npyarr(self, rhs):
+        if self.errors() is None: raise "cannot set error because the histogram does not have error bars originally"
+        self.errors().storage().asNumarray()[:] = rhs
+        return
     E2 = property( _getErr2npyarr, _setErr2npyarr ) # square of error bars of "intensities"
     
 

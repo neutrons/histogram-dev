@@ -324,7 +324,7 @@ class Histogram_TestCase(TestCase):
         h = self._histogram.copy()
         h *= (2,1)
         self.assertVectorEqual( h[0.5, 1], (0,0) )
-        self.assertVectorEqual( h[0.5, 3], (2,9) )
+        self.assertVectorEqual( h[0.5, 3], (2,5) )
         return
 
 
@@ -333,7 +333,18 @@ class Histogram_TestCase(TestCase):
         h = self._histogram.copy()
         h2 = self._histogram2
         h *= h2
-        self.assertVectorEqual( h[1.5,1], (9,108) )
+        self.assertVectorEqual( h[1.5,1], (9,54) )
+
+        import histogram
+        h3 = self._histogram.copy()
+        h4 = histogram.histogram('h3', h2.axes(), data = h2.I, errors = h2.E2, unit = 'meter' )
+        h3 *= h4
+        self.assertEqual( h3.unit(), h4.unit() )
+        self.assertEqual( h3.unit(), h3.data().unit() )
+        self.assertEqual( h3.unit()**2, h3.errors().unit() )
+        from histogram._units import length
+        meter = length.meter
+        self.assertVectorEqual( h3[1.5,1], (9*meter,54*meter**2) )
         return
     
     
@@ -342,7 +353,7 @@ class Histogram_TestCase(TestCase):
         h = self._histogram.copy()
         h /= (2,1)
         self.assertVectorEqual( h[0.5, 1], (0,0) )
-        self.assertVectorEqual( h[0.5, 3], (0.5,9./16) )
+        self.assertVectorEqual( h[0.5, 3], (0.5,5./16) )
 
         h = self._histogram.copy()
         h /= (2,0)
@@ -356,7 +367,7 @@ class Histogram_TestCase(TestCase):
         h = self._histogram.copy()
         h2 = self._histogram2
         h /= h2
-        self.assertVectorAlmostEqual( h[1.5,1], (1,4.0/3) )
+        self.assertVectorAlmostEqual( h[1.5,1], (1,2.0/3) )
 
         h = self._histogram.copy()
         h2 = createHistogram( noerror = True )
@@ -404,6 +415,9 @@ class Histogram_TestCase(TestCase):
             errors = [1,1,1],
             unit = 'second',
             )
+        h3 = h1/h2
+        self.assertVectorAlmostEqual( h3.I, (1,2,3) )
+        self.assertVectorAlmostEqual( h3.E2, (2,6,12) )
         return
 
 
@@ -444,12 +458,12 @@ class Histogram_TestCase(TestCase):
     
     def test__mul__(self):
         "histogram: h*b"
-        h = self._histogram * (2,1)
+        h = self._histogram * (2.,1.)
         self.assertVectorEqual( h[0.5, 1], (0,0) )
-        self.assertVectorEqual( h[0.5, 3], (2,9) )
+        self.assertVectorEqual( h[0.5, 3], (2,5) )
 
         h = self._histogram * self._histogram2
-        self.assertVectorEqual( h[1.5,1], (9,108) )
+        self.assertVectorEqual( h[1.5,1], (9,54) )
         return
     
     
@@ -457,13 +471,13 @@ class Histogram_TestCase(TestCase):
         "histogram: h/b"
         h = self._histogram / (2,1)
         self.assertVectorEqual( h[0.5, 1], (0,0) )
-        self.assertVectorEqual( h[0.5, 3], (0.5,9./16) )
+        self.assertVectorEqual( h[0.5, 3], (0.5,5./16) )
 
         h = (2,1) / self._histogram 
-        self.assertVectorEqual( h[0.5, 3], (2,9.) )
+        self.assertVectorEqual( h[0.5, 3], (2,5.) )
 
         h = self._histogram / self._histogram2
-        self.assertVectorAlmostEqual( h[1.5,1], (1,4./3) )
+        self.assertVectorAlmostEqual( h[1.5,1], (1,2./3) )
         return
 
 

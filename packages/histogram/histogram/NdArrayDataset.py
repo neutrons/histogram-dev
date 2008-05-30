@@ -213,6 +213,7 @@ class Dataset( DatasetBase):
             r = self.copy()
             stor = r.storage()
             stor[:] = other/self.storage()
+            r.setAttribute('unit', 1/self.unit())
             return r
         raise NotImplementedError , "__rdiv__ is not defined for %s and %s" % (
             other.__class__.__name__, self.__class__.__name__, )
@@ -232,7 +233,7 @@ class Dataset( DatasetBase):
         elif isUnitCompatibleDataset(self, other):
             stor += other.storage() * (other.unit()/self.unit())
         elif isDataset(other):
-            raise ValueError, "Incompatible datasets: %s, %s" (
+            raise ValueError, "Incompatible datasets: %s, %s" % (
                 self, other)
         else:
             raise NotImplementedError , "%s + %s" % (
