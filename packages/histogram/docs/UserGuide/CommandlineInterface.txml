@@ -267,6 +267,72 @@ following ususal Python syntax.
 </para>
 </sect2>
 
+<sect2>
+<title>Error Propagation</title>
+<para>
+It is assumed that the physical quantites represented by the histograms
+involved in compuations are uncorrelated, and the error propagations
+are defined by the following formulas:
+</para>
+
+<equation id="error-propagation-formula1">
+  <title>Error propagation formula1</title>
+  <mediaobject>
+    <imageobject role="html">
+      <imagedata fileref="figures/equations/error-propagation-formula1.png" format="PNG"/>
+    </imageobject>
+    <textobject role="tex">
+      <phrase>
+	z=x + y; \; \sigma_z^2 = \sigma_x^2 + \sigma_y^2 
+      </phrase>
+    </textobject>
+  </mediaobject>
+</equation>
+
+<equation id="error-propagation-formula2">
+  <title>Error propagation formula2</title>
+  <mediaobject>
+    <imageobject role="html">
+      <imagedata fileref="figures/equations/error-propagation-formula2.png" format="PNG"/>
+    </imageobject>
+    <textobject role="tex">
+      <phrase>
+	z=x - y; \; \sigma_z^2 = \sigma_x^2 + \sigma_y^2
+      </phrase>
+    </textobject>
+  </mediaobject>
+</equation>
+
+<equation id="error-propagation-formula3">
+  <title>Error propagation formula3</title>
+  <mediaobject>
+    <imageobject role="html">
+      <imagedata fileref="figures/equations/error-propagation-formula3.png" format="PNG"/>
+    </imageobject>
+    <textobject role="tex">
+      <phrase>
+	z=x \times y; \; \frac{\sigma_z^2}{z^2} = \frac{\sigma_x^2}{x^2} + \frac{\sigma_y^2}{y^2}
+      </phrase>
+    </textobject>
+  </mediaobject>
+</equation>
+
+<equation id="error-propagation-formula3">
+  <title>Error propagation formula3</title>
+  <mediaobject>
+    <imageobject role="html">
+      <imagedata fileref="figures/equations/error-propagation-formula3.png" format="PNG"/>
+    </imageobject>
+    <textobject role="tex">
+      <phrase>
+	z=x / y; \; \frac{\sigma_z^2}{z^2} = \frac{\sigma_x^2}{x^2} + \frac{\sigma_y^2}{y^2}
+      </phrase>
+    </textobject>
+  </mediaobject>
+</equation>
+
+</sect2>
+
 </sect1>
 
 <sect1>
