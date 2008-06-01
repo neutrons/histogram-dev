@@ -33,7 +33,7 @@ def load( filename, pathinfile=None, fs = None, **kwds ):
               "pathinfile=%s, kwds=%s" % (
             filename, pathinfile, kwds)
     from Parser import Parser
-    h = Parser(filename).parse( g )
+    h = Parser(filename, fs = fs).parse( g )
     return h.fetch(**kwds)
 
 

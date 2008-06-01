@@ -13,6 +13,7 @@
 
 
 from histogram.hdf import *
+import os
 
 
 import unittest
@@ -59,6 +60,37 @@ class hdf_TestCase(TestCase):
         return
 
 
+    def testdump2(self):
+        'dump two histograms to one hdf'
+        filename = 'testdump1.h5'
+        import os
+        if os.path.exists( filename): os.remove( filename )
+
+        from hdf5fs.h5fs import H5fs
+        fs = H5fs( filename, 'c' )
+        
+        from histogram import histogram, arange
+        h = histogram('h',
+                      [('x', arange(0,100, 1.) ),
+                       ('y', arange(100, 180, 1.) ),],
+                      unit = 'meter',
+                      )
+        dump( h, None, '/', fs = fs )
+        
+        h2 = histogram('h2',
+                      [('x', arange(0,100, 1.) ),
+                       ('y', arange(100, 180, 1.) ),],
+                      unit = 'meter',
+                      )
+        dump( h2, None, '/', fs = fs )
+
+        #load histogram
+        h2c = load( filename, '/h2', fs = fs )
+        print h2c
+
+        self.assert_( os.path.exists( filename ))
+        return
+
     def testload(self):
         'load simplest histogram'
         h = load( 'testload.h5', '/h' )
@@ -89,6 +121,27 @@ hh.dump( h, '%s', '/', 'c' )
         if os.system( cmd ): raise "%s failed" % cmd
 
         h = load( tmpfile, 'h' )
+        self.assertVectorAlmostEqual( h[1], (1,1) )
+        return
+
+    def testdump_and_load2(self):
+        'dump and load in the same process'
+        tmpfile = 'test_dump_load2.h5'
+        if os.path.exists( tmpfile ): os.remove( tmpfile )
+
+        from hdf5fs.h5fs import H5fs
+        fs = H5fs( tmpfile, mode = 'c' )
+        
+        from histogram import histogram
+        x = y = range(10)
+        h = histogram( 
+            'h',
+            [ ('x', x) ],
+            data = y, errors = y )
+        import histogram.hdf as hh
+        hh.dump( h, tmpfile, '/',  fs = fs )
+
+        h = load( tmpfile, 'h', fs = fs )
         self.assertVectorAlmostEqual( h[1], (1,1) )
         return
 

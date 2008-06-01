@@ -22,9 +22,9 @@ import nodes
 class Parser:
     
     
-    def __init__( self, filename):
+    def __init__( self, filename, fs = None):
         import nx5.file
-        self._nxf = nx5.file.file( filename, 'r')
+        self._nxf = nx5.file.file( filename, 'r', fs = fs)
 
         from nx5.file.VectorReader import Reader
         self._reader = Reader()
