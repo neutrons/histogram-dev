@@ -38,6 +38,27 @@ class hdf_TestCase(TestCase):
         return
 
 
+    def testdump1(self):
+        """ histogram.hdf: dump with fs specified"""
+        filename = 'test1.h5'
+        import os
+        if os.path.exists( filename): os.remove( filename )
+
+        from hdf5fs.h5fs import H5fs
+        fs = H5fs( filename, 'c' )
+        
+        from histogram import histogram, arange
+        h = histogram('h',
+                      [('x', arange(0,100, 1.) ),
+                       ('y', arange(100, 180, 1.) ),],
+                      unit = 'meter',
+                      )
+        #fs will take over
+        dump( h, 'abc', '/', mode = 'r', fs = fs )
+        self.assert_( os.path.exists( filename ))
+        return
+
+
     def testload(self):
         'load simplest histogram'
         h = load( 'testload.h5', '/h' )
@@ -113,6 +134,27 @@ hh.dump( h, '%s', '/', 'c' )
         from numpy import arange
         self.assertVectorAlmostEqual(
             h2.axisFromId(2).binCenters(), (0.4,0.5) )
+        return
+
+    def testload5(self):
+        'load with fs specified'
+        filename = 'testload.h5'
+        from hdf5fs.h5fs import H5fs
+        fs = H5fs( filename, 'r' )
+        
+        h = load( filename, '/h', fs = fs )
+        return
+
+    def testload6(self):
+        'load with fs specified'
+        orig = 'testload.h5'
+        filename = 'testload6.h5'
+        import shutil
+        shutil.copyfile( orig, filename )
+        from hdf5fs.h5fs import H5fs
+        fs = H5fs( filename, 'c' )
+
+        self.assertRaises( IOError, load, filename, '/h', fs )
         return
 
     pass # end of Dataset_TestCase

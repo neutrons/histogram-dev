@@ -14,6 +14,11 @@
 
 #render a histogram to a nx5 graph
 
+
+import journal
+jrnltag = 'histogram.hdf.Renderer'
+debug = journal.debug( jrnltag )
+
 import nx5.nexml.elements as nx5elements
 
 class Renderer(object):
@@ -90,6 +95,7 @@ class Renderer(object):
         bcsnode = self.onVector(
             StdVectorNdArray(bbs.datatype(), bcs),
             'bin centers', 'NdArray', [ len(bcs) ] )
+        debug.log( 'bcs=%s' % (bcs,) )
         node.addChild( bcsnode )
         return node
     

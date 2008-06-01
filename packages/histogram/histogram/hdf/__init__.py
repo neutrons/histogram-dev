@@ -11,7 +11,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 
-def load( filename, pathinfile=None, **kwds ):
+def load( filename, pathinfile=None, fs = None, **kwds ):
     '''load( hdf_filename, path_in_hdf_file ): load histogram from a hdf file
 
     hdf_filename:
@@ -27,7 +27,7 @@ def load( filename, pathinfile=None, **kwds ):
         filename, pathinfile = os.path.split( filename )
     from nx5.renderers import graphFromHDF5File
     try:
-        g = graphFromHDF5File( filename, pathinfile )
+        g = graphFromHDF5File( filename, pathinfile, fs = fs )
     except IOError, msg:
         raise IOError, "unable to load histogram. filename=%s, "\
               "pathinfile=%s, kwds=%s" % (
@@ -37,7 +37,7 @@ def load( filename, pathinfile=None, **kwds ):
     return h.fetch(**kwds)
 
 
-def dump( histogram, filename, pathinfile, mode = 'w' ):
+def dump( histogram, filename = None, pathinfile = '/', mode = 'w', fs = None):
     '''dump( histogram, hdf_filename, path_in_hdf_file, mode ) -> save histogram into a hdf file.
 
     histogram:
@@ -63,7 +63,7 @@ def dump( histogram, filename, pathinfile, mode = 'w' ):
     setPath(g, p)
     #printGraph( g )
 
-    writeGraph( g, filename, mode )
+    writeGraph( g, filename, mode = mode, fs = fs )
     return
 
 
