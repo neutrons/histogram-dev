@@ -56,14 +56,14 @@ class MainController(ControllerBase):
 
     def main(self):
 
-        self.pyshell_locals['controller'] = self
+        self.pyshell_locals['_controller'] = self
         
         gmlfile = self.gmlfile
         toolkit = self.toolkit
         
         self.view = view = toolkit.mainView()
         view.controller = self
-        self.pyshell_locals[ 'view' ] = view
+        self.pyshell_locals[ '_view' ] = view
         
         from luban.gml import gml2gui
         view = gml2gui( gmlfile, self, toolkit.renderer() )
@@ -74,6 +74,8 @@ class MainController(ControllerBase):
         plotwindow.makePylabUsable()
 
         self.pyshell_locals['refresh'] = self.refreshPlot
+        def _plot(): return plotwindow.plot
+        self.pyshell_locals['_plot'] = _plot
         
         self.plotCmdHistory = {}
 
