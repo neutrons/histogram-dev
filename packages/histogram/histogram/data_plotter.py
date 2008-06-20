@@ -54,7 +54,9 @@ class MplPlotter:
         pass
     
     def __init__(self, mpl_figure = None):
-        mpl_figure = None # a hack
+        #passing mpl figure to this does not seem to work very well
+        #directly use pylab seems to be the best solution.
+        mpl_figure = None 
         
         #self.interactive(True)
         self.interactive(False)
