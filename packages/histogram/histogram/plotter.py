@@ -103,7 +103,6 @@ class HistogramMplPlotter(HistogramPlotter):
         axes.set_title( hist.name() )
         axes.set_xlabel( axis_label(xaxis) )
         axes.set_ylabel( "Intensity (unit: %s)" % hist.unit() )
-        self._image = self.dp1.get_image()
         return
 
 
@@ -136,11 +135,12 @@ class HistogramMplPlotter(HistogramPlotter):
         axes.set_title( hist.name() )
         axes.set_xlabel( axis_label(xaxis) )
         axes.set_ylabel( axis_label(yaxis) )
-        self._image = self.dp2.get_image()
         return
 
 
-    def image(self): return self._image
+    def image(self):
+        from data_plotter import MplPlotter
+        return MplPlotter._image
 
     pass # end of HistogramMplPlotter
 

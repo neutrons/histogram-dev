@@ -52,6 +52,9 @@ class MplPlotter:
     except ImportError:
         _engine = None
         pass
+
+    #_image is the current image kept for pylab
+    _image = None
     
     def __init__(self, mpl_figure = None):
         #passing mpl figure to this does not seem to work very well
@@ -112,9 +115,9 @@ class MplPlotter1D(MplPlotter, Plotter1D):
         fmtstr = color+symbol
         
         if kwds.has_key( "yerr" ):
-            self._image = self.errorbar( x, y, yerr = kwds["yerr"], fmt = fmtstr)
+            MplPlotter._image = self.errorbar( x, y, yerr = kwds["yerr"], fmt = fmtstr)
         else:
-            self._image = self._plot(x,y, fmtstr)
+            MplPlotter._image = self._plot(x,y, fmtstr)
             pass
         return
 
@@ -209,7 +212,7 @@ class MplPlotter2D(MplPlotter, Plotter2D):
         '''
         figure = self.get_figure()
         _clear( figure )
-        self._image = self.plot_(x,y,z, min = min, max = max)
+        MplPlotter._image = self.plot_(x,y,z, min = min, max = max)
         if self._usePylab and not self._interactive: self._engine.show()
         return
 
@@ -230,15 +233,19 @@ class MplPlotter2D(MplPlotter, Plotter2D):
         if min is None: min = _min
         if max is None: max = _max
 
-        zcopy = _restrictedZ( z, min, max)
+        #zcopy = _restrictedZ( z, min, max)
 
         #please read notes in docstring of method "plot"
-        zcopy = zcopy.transpose()
+        zt = z.transpose()
 
         print "plot z in (%s, %s)" % (min, max)
         X,Y = self._engine.meshgrid(x,y)
-        if self._usePylab: rt = self._engine.pcolormesh( X,Y, zcopy, shading="flat")
-        else: rt = figure.gca().pcolormesh( X,Y, zcopy, shading="flat")
+
+        if self._usePylab: engine = self._engine
+        else: engine = figure.gca()
+
+        rt = MplPlotter._image = engine.pcolormesh( X,Y, zt, shading="flat")
+        engine.clim( min, max )
         return rt
 
 
