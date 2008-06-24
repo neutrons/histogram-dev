@@ -94,15 +94,18 @@ class HistogramMplPlotter(HistogramPlotter):
         
         xaxis = hist.axisFromId(1)
         x = xaxis.binCenters()
-        y = hist.data().storage().asNumarray()
+
+        scale_factor, Iunit = process_Iaxis_unit( hist.unit() )
+        
+        y = hist.I * scale_factor
         from numpy import sqrt
-        eb = sqrt(hist.errors().storage().asNumarray())
+        eb = sqrt(hist.E2) * scale_factor 
         self.dp1.plot(x,y, yerr = eb, **kwds)
         f = figure
         axes = f.gca()
         axes.set_title( hist.name() )
         axes.set_xlabel( axis_label(xaxis) )
-        axes.set_ylabel( "Intensity (unit: %s)" % hist.unit() )
+        axes.set_ylabel( "Intensity (unit: %s)" % Iunit )
         return
 
 
@@ -156,6 +159,40 @@ def plot2d( histogram, *args, **kwds ):
     return
 
 
+
+
+def process_Iaxis_unit( unit ):
+    '''deal with the unit of intensity axis
+
+    If the intensity axis unit is really unitless, for example, 10. Then just
+    return that number (to scale the intensity), and 1
+    (to be printed out as "unit" of the axis)
+
+    If the intensity axis has a unit, for example, 30*meter. Then return the
+    number 30 (to scale the intensity), and meter (to be printed out as "unit"
+    of the axis)
+    '''
+    try:
+        unit + 1
+        unitless = True
+    except:
+        unitless = False
+        
+    if unitless: return unit, 1
+
+    str_repr = str( unit )
+
+    pos_star = str_repr.find( '*' ) # position of '*'
+    number = eval( str_repr[:pos_star] )
+    unit = parse_unit( str_repr[ pos_star+1: ] )
+    return number, unit
+
+
+
+def parse_unit( s ):
+    from _units import parser
+    unit_parser = parser()
+    return unit_parser.parse( s )
 
 
 display_size = 1000

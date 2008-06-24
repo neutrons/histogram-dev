@@ -20,11 +20,16 @@ def plothist( histogram, **kwds ):
     if dim != 1:
         raise NotImplementedError, "dimension: %s" % dim
     x = histogram.axes()[0].binCenters()
-    y = histogram.I
-    yerr2 = histogram.E2
-    yerr = N.sqrt( yerr2 )
+
+    scale_factor, Iunit = process_Iaxis_unit( histogram.unit() )
+    y = histogram.I * scale_factor
+    yerr2 = histogram.E2 
+    yerr = N.sqrt( yerr2 ) * scale_factor
     pylab.errorbar( x, y, yerr = yerr, **kwds )
-    return 
+    return
+
+
+from plotter import process_Iaxis_unit
 
 
 _plot = pylab.plot
