@@ -121,6 +121,15 @@ class Axis_TestCase(TestCase):
                                       [0, 1000, 2000] )
         self.assertEqual( taxis.cellIndexFromValue( 0 ), 0 )
         return
+
+
+    def test_combined_1(self):
+        'Axis: slice and changeUnit'
+        taxis= axis('t', range(10), unit='second' )
+        from histogram.SlicingInfo import SlicingInfo
+        slice = taxis[ SlicingInfo( (3,9) ) ]
+        self.assertRaises( RuntimeError, slice.changeUnit, 'millisecond' )
+        return 
     
     
     #def test_0(self): self._run_oldtest(0)

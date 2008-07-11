@@ -81,9 +81,15 @@ class Histogram( AttributeCont):
         '''
         if self.typeCode() in integer_typecodes:
             from histogram import histogram
-            return histogram( self.name(), self.axes(), data = self.I, errors = self.E2)
+            axescopy = []
+            for axis in self.axes():
+                axescopy.append( axis.copy() )
+                continue
+            return histogram( self.name(), axescopy, data = self.I, errors = self.E2)
+        
         elif self.typeCode() in float_typecodes :
             return self.copy()
+        
         raise TypeError, 'histogram of type %r cannot be converted to float type' % self.typeCode()
 
 

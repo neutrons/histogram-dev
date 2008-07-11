@@ -63,6 +63,7 @@ class Histogram_TestCase(TestCase):
         h = histogram( 'h', [ ('x',arange(10)) ], data_type = 'int')
         h1 = h.as_floattype()
         self.assertEqual( h1.typeCode(), 6 )
+        self.assert_( h1.axisFromName( 'x' ) is not h.axisFromName( 'x' ) )
         return
     
 

@@ -45,6 +45,7 @@ class Axis( Dataset):
         else: self._isDiscrete = False
 
         self._cache = {}
+        self.__isslice = False
         return
 
 
@@ -88,6 +89,10 @@ class Axis( Dataset):
 
 
     def changeUnit(self, unit):
+        if self.__isslice:
+            msg =  "This axis %r is a slice. cannot change unit." % self.name()
+            raise RuntimeError, msg
+        
         #there is a problem with mapper!!!!
         Dataset.changeUnit(self, unit)
         #mapper need to be reset
@@ -119,7 +124,9 @@ class Axis( Dataset):
         indexStart, indexEnd = self.slicingInfo2IndexSlice( slicingInfo )
         s = slice(indexStart, indexEnd + 1 ) #inclusive
         stor = self.storage()[s]
-        return self._copy( storage = stor )
+        ret = self._copy( storage = stor )
+        ret.__isslice = True
+        return ret
 
 
     def slicingInfo2IndexSlice(self, slicingInfo):
