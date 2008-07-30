@@ -376,7 +376,7 @@ def createContinuousAxis( name, unit, centers = None, boundaries = None,
     storage = ndArray( "double", boundaries )
     
     from Axis import Axis
-    return Axis( name, unit, length = nBins, storage=storage, mapper = axisMapper)
+    return Axis( name, unit, length = nBins, storage=storage, mapper = axisMapper, centers = centers)
 
 
 def boundariesFromCenters( centers ):

@@ -17,7 +17,7 @@ class Axis( Dataset):
     """Dataset that models a HistogramAxis"""
 
     def __init__( self, name='', unit='1', attributes = {},
-                  length = 0, storage = None, mapper = None):
+                  length = 0, storage = None, mapper = None, centers = None):
         """HistogramAxis( attributes={},
         length=0, storage=None)
         Inputs:
@@ -45,6 +45,9 @@ class Axis( Dataset):
         else: self._isDiscrete = False
 
         self._cache = {}
+
+        if centers is not None: centers = N.array(centers)
+        self._centers = centers
         self.__isslice = False
         return
 
@@ -64,13 +67,7 @@ class Axis( Dataset):
         """list of bin centers"""
         keyword = 'binCenters'
         if keyword not in self._cache:
-            bblist = self._storage.asNumarray()
-            if self.isDiscrete():
-                self._cache[keyword] = bblist[:-1]
-            else:
-                numcells = len(bblist) - 1
-                self._cache[keyword] = (bblist[1:]+bblist[:-1])/2.
-                pass
+            self._cache[keyword] = self._getBinCenters()
             pass
         return self._cache[ keyword ]
 
@@ -89,16 +86,24 @@ class Axis( Dataset):
 
 
     def changeUnit(self, unit):
+        #save old unit
+        oldunit = self.unit()
+
+        #use parent class's changeUnit, but please remember:
         if self.__isslice:
             msg =  "This axis %r is a slice. cannot change unit." % self.name()
             raise RuntimeError, msg
         
         #there is a problem with mapper!!!!
         Dataset.changeUnit(self, unit)
+        
         #mapper need to be reset
         self._mapper = createMapper( self._storage.asList(), self._mapper.__class__ )
         #!!! need to remove cache!!!
         self._cache = {}
+        #also need to update centers if necssary
+        if self._centers is not None:
+            self._centers = N.array(self._centers) * (oldunit/self.unit())
         return
     
 
@@ -169,11 +174,25 @@ class Axis( Dataset):
         return copy
     
 
+    def _getBinCenters(self):
+        if self._centers is not None:
+            return self._centers
+        bblist = self._storage.asNumarray()
+        if self.isDiscrete():
+            return bblist[:-1]
+        else:
+            numcells = len(bblist) - 1
+            return (bblist[1:]+bblist[:-1])/2.
+        raise RuntimeError, "should not reach here"
+
+
     pass # end of Axis
 
 
 
 from _units import isDimensional
+
+import numpy as N
 
 
 from AxisMapperCreater import creater
