@@ -24,6 +24,11 @@ import nx5.nexml.elements as nx5elements
 class Renderer(object):
 
 
+    def __init__(self, compression_level=0):
+        self._compression_level = compression_level
+        return
+
+
     def render(self, histogram):
         return self.onHistogram(histogram)
 
@@ -63,7 +68,8 @@ class Renderer(object):
         arrnode = self.onVector(
             dataset.storage().as('StdVectorNdArray'),
             'storage', 'NdArray', dataset.shape() )
-
+        if self._compression_level:
+            arrnode.setCompression(self._compression_level)
         node.addChild( arrnode )
 
         return node

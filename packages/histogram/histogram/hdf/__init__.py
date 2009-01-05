@@ -37,7 +37,7 @@ def load( filename, pathinfile=None, fs = None, **kwds ):
     return h.fetch(**kwds)
 
 
-def dump( histogram, filename = None, pathinfile = '/', mode = 'w', fs = None):
+def dump( histogram, filename = None, pathinfile = '/', mode = 'w', fs = None, compression = 0):
     '''dump( histogram, hdf_filename, path_in_hdf_file, mode ) -> save histogram into a hdf file.
 
     histogram:
@@ -53,7 +53,7 @@ def dump( histogram, filename = None, pathinfile = '/', mode = 'w', fs = None):
     '''
     from Renderer import Renderer
 
-    g = Renderer().render(histogram)
+    g = Renderer(compression).render(histogram)
 
     from nx5.renderers import setPath, writeGraph, printGraph
     pathinfile = pathinfile.split( '/' )
@@ -63,7 +63,7 @@ def dump( histogram, filename = None, pathinfile = '/', mode = 'w', fs = None):
     setPath(g, p)
     #printGraph( g )
 
-    writeGraph( g, filename, mode = mode, fs = fs )
+    writeGraph(g, filename, mode=mode, fs=fs)
     return
 
 

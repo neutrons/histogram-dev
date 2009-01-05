@@ -23,7 +23,7 @@ from unittestX import TestCase
 class hdf_TestCase(TestCase):
 
 
-    def testdump(self):
+    def testdump0(self):
         """ histogram.hdf: dump """
         from histogram import histogram, arange
         h = histogram('h',
@@ -32,10 +32,26 @@ class hdf_TestCase(TestCase):
                       unit = 'meter',
                       )
 
-        filename = 'test.h5'
+        filename = 'test0.h5'
         import os
         if os.path.exists( filename): os.remove( filename )
         dump( h, filename, '/', mode = 'c' )
+        return
+
+
+    def testdump0a(self):
+        """ histogram.hdf: dump with compression"""
+        from histogram import histogram, arange
+        h = histogram('h',
+                      [('x', arange(0,100, 1.) ),
+                       ('y', arange(100, 180, 1.) ),],
+                      unit = 'meter',
+                      )
+
+        filename = 'test0-compressed.h5'
+        import os
+        if os.path.exists( filename): os.remove( filename )
+        dump( h, filename, '/', mode = 'c', compression=6 )
         return
 
 
