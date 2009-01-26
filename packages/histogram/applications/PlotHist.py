@@ -1,26 +1,42 @@
 #!/usr/bin/env python
 
 
-def plotHist( h, min = None, max = None ):
+def plotHist( h, min = None, max = None, output='window' ):
+    if output != 'window':
+        import matplotlib
+        matplotlib.use('PS')
+        
     from histogram.plotter import defaultPlotter
     defaultPlotter.interactive( 0 )
     defaultPlotter.plot( h, min = min, max = max)
+
+    if output != 'window':
+        import pylab
+        import os
+        eps = os.path.splitext(output)[0] + '.eps'
+        pylab.savefig(eps)
+
+        if eps != output:
+            #!!! should check if "convert" exists
+            cmd = 'convert %s %s' % (eps, output)
+            if os.system(cmd):
+                raise RuntimeError
     return
 
 
-def plotPklFile( filename, min = None, max = None ):
+def plotPklFile( filename, min = None, max = None, output=None ):
     from histogram.hpickle import load
     h = load( filename )
-    plotHist( h, min = min, max = max )
+    plotHist( h, min = min, max = max, output=output )
     return
 
 
-def plotH5File( h5filename, pathinh5file = None, min = None, max = None ):
+def plotH5File( h5filename, pathinh5file = None, min = None, max = None, output=None ):
     if pathinh5file is None:
         pathinh5file = _getOnlyEntry( h5filename )
     from histogram.hdf import load
     h = load( h5filename, pathinh5file )
-    plotHist( h , min = min, max = max )
+    plotHist( h , min = min, max = max, output=output )
     return
 
 
@@ -50,6 +66,8 @@ def main():
                       type = "float", help="minimum")
     parser.add_option("", "--max", dest="max", default = None,
                       type = "float", help="maximum")
+    parser.add_option("", '--output', dest='output', default='window',
+                      help='window or filename.png')
 
     (options, args) = parser.parse_args()
     if not len(args) in [1,2]:
@@ -59,6 +77,7 @@ def main():
     filename = args[0]
     min = options.min
     max = options.max
+    output = options.output
     
     if filename.endswith( 'h5' ):
         msg = "path to the histogram inside the h5 file '%s' is needed\n\n" % (
@@ -69,10 +88,10 @@ def main():
             entry = None
         else:
             entry = args[1]
-        plotH5File( filename, entry, min = min, max = max )
+        plotH5File( filename, entry, min = min, max = max, output = output )
         return
     
-    plotPklFile( filename, min = min, max = max )
+    plotPklFile( filename, min = min, max = max, output = output )
     return
 
 
