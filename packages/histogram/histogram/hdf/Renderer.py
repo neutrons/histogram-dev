@@ -136,7 +136,7 @@ def test():
 
     g = Renderer().render(h)
     
-    from nx5.renderers import *
+    from nx5.renderers import setPath, printGraph, writeGraph
     setPath(g, h.name())
     printGraph( g )
 
