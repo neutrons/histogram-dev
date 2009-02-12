@@ -213,7 +213,10 @@ def datasetFromFunction( func, axes, *args, **kwds):
     xs = [ axis.binCenters() for axis in axes ]
 
     try: return applyFunction_fast( func, xs, *args, **kwds )
-    except: return applyFunction_slow( func, xs, *args, **kwds )
+    except:
+        import traceback
+        debug.log(traceback.format_exc())
+        return applyFunction_slow( func, xs, *args, **kwds )
     raise "should not reach here"
 
 
@@ -239,6 +242,7 @@ def applyFunction_fast( func, xs, *args, **kwds ):
     """
     mg = meshgrid( *xs ) 
     targs = mg + list(args)
+    debug.log('%s' % (targs,))
     return func( *targs, **kwds )
 
 
@@ -258,9 +262,12 @@ def applyFunction_slow( func, xs, *args, **kwds):
     dim = len(xs) # dimension of x space
 
     #get a list of grid points
-    mg = array(meshgrid( *xs ))
-    Xs = mg.transpose( range(1,len(xs)+1) + [0] )
-    shape = Xs.shape #save the shape
+    mg = meshgrid( *xs )
+    #flatten it so that we can easily transpose
+    mg = [item.flatten() for item in mg]
+    mg = array(mg)
+    #
+    Xs = mg.transpose()
     Xs.shape = -1, dim
 
     # create result array
@@ -270,7 +277,7 @@ def applyFunction_slow( func, xs, *args, **kwds):
         ret[i] = func( *targs, **kwds )
 
     # adjust shape
-    ret.shape = shape[:-1]
+    ret.shape = [len(x) for x in xs]
     return ret
 
 
@@ -631,6 +638,8 @@ def _grid( arr, i, shape ):
     axes[ -1 ] = i; axes[i] = -1
     
     rt = rt.transpose( axes )
+    rt = rt.flatten()
+    rt.shape = shape
     return rt
 
 

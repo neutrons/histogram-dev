@@ -236,6 +236,8 @@ class Histogram_TestCase(TestCase):
         X1 = array( x*len(y)*len(z) )
         X1.shape = len(y), len(z), len(x)
         X1 = X1.transpose( 2,1,0 )
+        X1 = X1.flatten()
+        X1.shape = len(x), len(y), len(z)
         self.assert_( (X==X1).all() )
 
         X = meshgrid( [x] )
