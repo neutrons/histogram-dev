@@ -46,6 +46,7 @@ EXPORT_PYTHON_MODULES = \
 
 EXPORT_BINS = \
 	PlotHist.py \
+	compressHistogram.py \
 
 
 export:: export-binaries release-binaries export-package-python-modules #export-docs
