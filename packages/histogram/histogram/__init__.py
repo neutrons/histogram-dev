@@ -78,7 +78,7 @@ def axis( name, centers = None, unit = None, boundaries = None):
     axis( name, centers, unit = None )
     """
     if centers is not None and len(centers) < 1: raise ValueError , "Invalid axis %s" % (centers, )
-    if 'ID' in name and centers and _isIntegers(centers) and unit is None:
+    if 'ID' in name and centers is not None and _isIntegers(centers) and unit is None:
         return IDaxis( name, centers )
     if centers is None: return paxis( name, unit, boundaries = boundaries )
     return paxis( name, unit, centers = centers )
