@@ -56,7 +56,7 @@ class DatasetContainer( object):
         return
 
 
-    def replaceDataset( self, name, dataset):
+    def replaceDataset( self, name=None, dataset=None, id=None):
         """replaceDataset( name, dataset) -> None
         replace the dataset in this container.
         Inputs:
@@ -65,17 +65,22 @@ class DatasetContainer( object):
             None
         Exceptions: ValueError
         """
-        # by name
-        if name not in self._byNames:
-            msg = "container does not have dataset named %s" % name
-            raise ValueError, msg
-        else:
-            self._byNames[ name] = dataset
-            debug.log("%s replaced dataset %s" % ( self, name))
-            pass
+        if dataset is None:
+            raise ValueError, 'dataset is not specified'
+        
+        if name is None and id is None: return
 
-        # find id
-        id = self._name2id[ name ]
+        if name and name not in self._byNames:
+            raise ValueError , "dataset %s not found in container" % name
+        if id and id not in self._byIds:
+            raise ValueError , "dataset %s not found in container" % id
+        
+        name = name or self._id2name[id]
+        id = id or self._name2id[name]
+
+        debug.log("%s replaced dataset %s (id=%s)" % ( self, name, id))
+        
+        self._byNames[ name] = dataset
         self._byIds[id] = [name, dataset]
         return 
 

@@ -102,6 +102,11 @@ class Histogram( AttributeCont):
     def isslice(self): return self._isslice
 
 
+    def replaceAxis(self, name='', id=None, axis=None):
+        self._axisCont.replaceDataset(name=name, id=id, dataset=axis)
+        return self
+
+
     def __getitem__(self, s):
         """Slicing
         h[ (3.0, 4.0), () ]

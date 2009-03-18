@@ -189,6 +189,18 @@ class Histogram_TestCase(TestCase):
         sh.clear()
         self.assertVectorAlmostEqual( h[1,4], (0,0) )
         return
+
+
+    def testReplaceAxis(self):
+        'Hisogram: replaceAxis'
+        from histogram import histogram, axis, arange
+        a = axis('a', arange(1,10,1.0))
+        b = axis('b', arange(1,100,10.))
+        h = histogram( 'h', [a] )
+        self.assert_(a is h.axisFromName('a'))
+        h.replaceAxis(name='a', axis=b)
+        self.assert_(b is h.axisFromName('a'))
+        return
     
         
     def testSetItem(self):
