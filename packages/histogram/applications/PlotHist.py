@@ -33,29 +33,12 @@ def plotPklFile( filename, min = None, max = None, output=None ):
 
 def plotH5File( h5filename, pathinh5file = None, min = None, max = None, output=None ):
     if pathinh5file is None:
-        pathinh5file = _getOnlyEntry( h5filename )
+        from histogram.hdf.utils import getOnlyEntry
+        pathinh5file = getOnlyEntry( h5filename )
     from histogram.hdf import load
     h = load( h5filename, pathinh5file )
     plotHist( h , min = min, max = max, output=output )
     return
-
-
-def _getOnlyEntry( h5filename ):
-    from hdf5fs.h5fs import H5fs
-    fs = H5fs( h5filename, 'r' )
-    root = fs.open('/')
-    entries = root.read()
-    if len(entries)>1:
-        msg = "Hdf5 file %s has multiple entries: %s. Please specify"\
-              "the entry you want to open." % (
-            h5filename, entries )
-        raise RuntimeError, msg
-    if len(entries)==0:
-        msg = "Hdf5 file %s has no entry." % h5filename
-        raise RuntimeError, msg
-    
-    entry = entries[0]
-    return entry
 
 
 def main():

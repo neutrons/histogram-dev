@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # Timothy M. Kelley Copyright (c) 2005 All rights reserved
-# Jiao Lin Copyright (c) 2006 All rights reserved
+# Jiao Lin Copyright (c) 2006-2009 All rights reserved
 
 
 ## \package histogram.Axis

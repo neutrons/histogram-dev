@@ -42,6 +42,7 @@ EXPORT_PYTHON_MODULES = \
 	Renderer.py \
 	Parser.py \
 	__init__.py  \
+	utils.py \
 
 
 
