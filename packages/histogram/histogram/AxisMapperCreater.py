@@ -8,6 +8,7 @@ debug = journal.debug('ins.histogram.AxisMapperCreater')
 
 from EvenlyContinuousAxisMapper import EvenlyContinuousAxisMapper
 from DiscreteAxisMapper import DiscreteAxisMapper
+from ContinuousAxisMapper import ContinuousAxisMapper
 
 
 class AxisMapperCreater:
@@ -31,6 +32,9 @@ class AxisMapperCreater:
             binSize = binBoundaries[1]-binBoundaries[0]
             nBB = len(binBoundaries)
             return mapperClass( minBinBoundaries=minBB, binSize=binSize, nBinBoundaries=nBB )
+
+        elif mapperClass is ContinuousAxisMapper:
+            return mapperClass(binBoundaries)
 
         else:
 
