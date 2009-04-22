@@ -66,7 +66,7 @@ class Renderer(object):
             )
         
         arrnode = self.onVector(
-            dataset.storage().as('StdVectorNdArray'),
+            dataset.storage().as_('StdVectorNdArray'),
             'storage', 'NdArray', dataset.shape() )
         if self._compression_level:
             arrnode.setCompression(self._compression_level)
@@ -91,7 +91,7 @@ class Renderer(object):
 
         bbs = axis.binBoundaries()
         bbsnode = self.onVector(
-            bbs.as('StdVectorNdArray'),
+            bbs.as_('StdVectorNdArray'),
             'bin boundaries', 'NdArray', [ bbs.size() ] )
 
         node.addChild( bbsnode )

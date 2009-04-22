@@ -62,7 +62,7 @@ class NdArray(StdVector, AbstractNdArray):
     def __iadd__(self, other):
         if self._big: t = self[:]; t+=other; return self
         if isNumber(other): self.addScalar( other ); return self
-        if isNdArray(other): self.plusEquals( other.as( thistype ) ); return self
+        if isNdArray(other): self.plusEquals( other.as_( thistype ) ); return self
         raise NotImplementedError , "__iadd__ is not defined for %s and %s" % (
             self.__class__.__name__, other.__class__.__name__ )
 
@@ -70,7 +70,7 @@ class NdArray(StdVector, AbstractNdArray):
     def __isub__(self, other):
         if self._big: t = self[:]; t-=other; return self
         if isNumber(other): self.addScalar( -other ); return self
-        if isNdArray(other): self.minusEquals( other.as( thistype ) ); return self
+        if isNdArray(other): self.minusEquals( other.as_( thistype ) ); return self
         raise NotImplementedError , "__isub__ is not defined for %s and %s" % (
             self.__class__.__name__, other.__class__.__name__ )
 
@@ -78,7 +78,7 @@ class NdArray(StdVector, AbstractNdArray):
     def __imul__(self, other):
         if self._big: t = self[:]; t*=other; return self
         if isNumber(other): self.multScalar( other ); return self
-        if isNdArray(other): self.timesEquals( other.as(thistype) ); return self
+        if isNdArray(other): self.timesEquals( other.as_(thistype) ); return self
         raise NotImplementedError , "__imul__ is not defined for %s and %s" % (
             self.__class__.__name__, other.__class__.__name__ )
 
@@ -86,7 +86,7 @@ class NdArray(StdVector, AbstractNdArray):
     def __idiv__(self, other):
         if self._big: t = self[:]; t/=other; return self
         if isNumber(other): self.multScalar( 1./other ); return self
-        if isNdArray(other): self.divideEquals( other.as( thistype ) ); return self
+        if isNdArray(other): self.divideEquals( other.as_( thistype ) ); return self
         raise NotImplementedError , "__idiv__ is not defined for %s and %s" % (
             self.__class__.__name__, other.__class__.__name__ )
 
@@ -95,7 +95,7 @@ class NdArray(StdVector, AbstractNdArray):
     def sum(self, axis = None):
         if axis is None: return StdVector.sum(self, 0, self.size())
         else:
-            r = self.as("NumpyNdArray")
+            r = self.as_("NumpyNdArray")
             return r.sum( axis= axis )
         raise
     
@@ -107,7 +107,7 @@ class NdArray(StdVector, AbstractNdArray):
 
 
     def transpose(self, *args):
-        rt = self.as( "NumpyNdArray" )
+        rt = self.as_( "NumpyNdArray" )
         return rt.transpose( *args )
 
 
@@ -150,7 +150,7 @@ class NdArray(StdVector, AbstractNdArray):
 
     def __getitem__(self, s):
         #convert to  NumpyNdArray
-        t = self.as( "NumpyNdArray" )
+        t = self.as_( "NumpyNdArray" )
         return t[s]
     
 

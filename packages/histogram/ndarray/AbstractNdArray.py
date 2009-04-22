@@ -48,7 +48,7 @@
 class NdArray(object):
 
 
-    def as(self, NdArrayTypeName):
+    def as_(self, NdArrayTypeName):
         return converters.convert( self, NdArrayTypeName )
 
 

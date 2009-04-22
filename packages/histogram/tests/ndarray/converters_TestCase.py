@@ -12,7 +12,7 @@ class converters_TestCase(unittest.TestCase):
         from ndarray.StdVectorNdArray import NdArray
         v = [1,2,3] 
         a = NdArray( 'int', v )
-        n = a.as( "NumpyNdArray" )
+        n = a.as_( "NumpyNdArray" )
         self.assertEqual( n.size(), 3 )
         l = n.asList()
         for a, b in zip( l, v ):
@@ -23,7 +23,7 @@ class converters_TestCase(unittest.TestCase):
         v = range(12)
         a = NdArray( 'int', v )
         a.setShape( (3,4) )
-        n = a.as( "NumpyNdArray" )
+        n = a.as_( "NumpyNdArray" )
         self.assertEqual( n.size(), 12 )
         self.assertEqual( n.shape(), (3,4) )
         
@@ -41,7 +41,7 @@ class converters_TestCase(unittest.TestCase):
         from ndarray.NumpyNdArray import NdArray
         v = [1,2,3] 
         a = NdArray( 'int', v )
-        n = a.as( "StdVectorNdArray" )
+        n = a.as_( "StdVectorNdArray" )
         self.assertEqual( n.size(), 3 )
         l = n.asList()
         for a, b in zip( l, v ):
@@ -52,7 +52,7 @@ class converters_TestCase(unittest.TestCase):
         v = range(12)
         a = NdArray( 'int', v )
         a.setShape( (3,4) )
-        n = a.as( "StdVectorNdArray" )
+        n = a.as_( "StdVectorNdArray" )
         self.assertEqual( n.size(), 12 )
         self.assertEqual( n.shape(), (3,4) )
         
