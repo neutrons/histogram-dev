@@ -67,8 +67,13 @@ class MainController(ControllerBase):
         
         from luban.gml import gml2gui
         view = gml2gui( gmlfile, self, toolkit.renderer() )
+        
         import pylab
         self.pyshell_locals[ 'pylab'] = pylab
+
+        import histogram
+        self.pyshell_locals['histogram'] = histogram.histogram
+        self.pyshell_locals['axis'] = histogram.axis
         
         plotwindow = view.getSubview('histogramfigure')
         plotwindow.makePylabUsable()
