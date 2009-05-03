@@ -74,6 +74,7 @@ class MainController(ControllerBase):
         import histogram
         self.pyshell_locals['histogram'] = histogram.histogram
         self.pyshell_locals['axis'] = histogram.axis
+        self.pyshell_locals['arange'] = histogram.arange
         
         plotwindow = view.getSubview('histogramfigure')
         plotwindow.makePylabUsable()
@@ -364,6 +365,8 @@ class MainController(ControllerBase):
                 except: pass
                 continue
             self.plotCmdHistory[key] = goodhistory
+
+            self.refreshPlot()
         return
         
 
