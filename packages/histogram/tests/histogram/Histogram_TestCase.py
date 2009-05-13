@@ -225,6 +225,16 @@ class Histogram_TestCase(TestCase):
 
 
 
+    def testIadd_and_SetItem(self):
+        "Histogram: h[ x,y,z ] += sth"
+        from histogram import histogram
+        h = histogram( 'h', [('a', [1,2,3]),('b', [4,5])] )
+        import numpy as N
+        h[ 1,5 ] = N.array( [1,1] )
+        return
+
+
+
     def testClear(self):
         "Histogram: h.clear()"
         from histogram import histogram
