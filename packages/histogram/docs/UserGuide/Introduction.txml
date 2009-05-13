@@ -20,23 +20,25 @@
   <title>Introduction</title>
 
 <para>
-The methods of the Histogram package
-allow powerful versatility in customizing data 
-manipulations. 
-Think of these methods as calculator functions 
-such as arithmetic, boolean, or slicing operations
- that can be performed on large data sets.  
-These can be put together in scripts for customized
-data reduction, as explained in 
-<xref linkend='reduction.Scripting'/>.
-These methods can be used for appliations other
-than reduction as well.
-A histogram is the fundamental data object of 
+This python package provides a fundamental data object
+for scientific computing: histogram.
+A histogram object is a container of data, error bars, and axes.
+With this package, you can create and manipulate histograms,
+and apply numerical operators to histograms.
+The datasets in a histogram can be easily retrieved as 
+<ulink url='http://numpy.org'>numpy</ulink> arrays.
+The meta data of a histogram are accessible through member
+functions of the histogram and the associated data objects.
+</para>
+
+<para>
+This package is developed in the 
+<ulink url="http://danse.us">DANSE</ulink> package
+as the fundamental data object for 
     <ulink url='xxxWEBSITExxx/reduction/Software-UserGuide/html/index.html'>
-      DRCS
+      DrChops
     </ulink>
-    .
-    It is a container of data, error bars, and axes.
+, a reduction software for direct-geometry neutron chopper spectrometers.
   </para>
 
   <para>
@@ -46,8 +48,8 @@ A histogram is the fundamental data object of
   </para>
 
   <programlisting>
-    from histogram import histogram
-    taxis = 't', [1.,2.,3.], 'second'
+    from histogram import histogram, axis
+    taxis = axis('t', [1.,2.,3.], unit='second')
     axes = [taxis]
     data = [3, 10, 5]
     errs = [3, 10, 5]
