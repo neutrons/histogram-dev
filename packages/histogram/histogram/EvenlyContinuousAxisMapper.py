@@ -33,13 +33,19 @@ class EvenlyContinuousAxisMapper(AxisMapper):
         self._binSize = binSize
         self._nBB = nBinBoundaries
         self._maxBB = minBinBoundaries + (nBinBoundaries-1)*binSize
+        self._positveStep = self._binSize>0
         return
     
 
     def __call__(self, value):
-        if value < self._minBB or value >= self._maxBB:
-            raise IndexError, "%s out of bounds (%s,%s)" % (
-                value, self._minBB, self._maxBB)
+        if self._positveStep:
+            if value < self._minBB or value >= self._maxBB:
+                raise IndexError, "%s out of bounds (%s,%s)" % (
+                    value, self._minBB, self._maxBB)
+        else:
+            if value > self._minBB or value <= self._maxBB:
+                raise IndexError, "%s out of bounds (%s,%s)" % (
+                    value, self._maxBB, self._minBB)
         from math import floor
         return int ( floor ( (value-self._minBB)/self._binSize) ) 
         

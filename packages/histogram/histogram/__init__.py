@@ -394,9 +394,10 @@ def boundariesFromCenters( centers ):
     if len(centers) < 2:
         raise ValueError , "Cannot create boundaries from centers %s" %(centers, )
 
-    msg =  "centers array must be ascending: %s" % (centers, )
-    for i in range(len(centers)-1):
-        assert centers[i] <= centers[i+1], msg
+    msg =  "centers array must be ascending or descending: %s" % (centers, )
+    step = centers[1]-centers[0]
+    for i in range(1,len(centers)-1):
+        assert step*(centers[i+1]-centers[i])>=0, msg
         continue
     try: return _boundariesFromEvenlySpacedCenters( centers )
     except ArrayNotEvenlySpaced: return _boundariesFromCenters( centers )

@@ -133,25 +133,54 @@ class Axis( Dataset):
         ret.__isslice = True
         return ret
 
+    def __neg__(self): return self._overloaded_operator('__neg__')
+    def __add__(self, other): return self._overloaded_operator('__add__', other)
+    __radd__ = __add__
+    def __sub__(self, other): return self._overloaded_operator('__sub__', other)
+    def __rsub__(self, other):return self._overloaded_operator('__rsub__', other)
+    def __mul__(self, other): return self._overloaded_operator('__mul__', other)
+    __rmul__ = __mul__
+    def __div__(self, other): return self._overloaded_operator('__div__', other)
+    def __rdiv__(self, other):return self._overloaded_operator('__rdiv__', other)
+    def __iadd__(self, other):return self._overloaded_operator('__iadd__', other)
+    def __isub__(self, other):return self._overloaded_operator('__isub__', other)
+    def __imul__(self, other):return self._overloaded_operator('__imul__', other)
+    def __idiv__(self, other):return self._overloaded_operator('__idiv__', other)
 
     def slicingInfo2IndexSlice(self, slicingInfo):
         """slicingInfo2Range(slicingInfo) --> slice instance
         note: slicing is inclusive
         """
         start, end = slicingInfo.start, slicingInfo.end
-        unit = self.unit()
-        if isDimensional( start ): start = start/unit
-        if isDimensional( end ): end = end/unit
-        
+
         bc = self.binCenters()
         if start == front: start = bc[0]
         if end == back: end = bc[-1]
+
+        unit = self.unit()
+        if isDimensional(start) ^ isDimensional(end):
+            raise RuntimeError, "start and end should all be dimensionals or numbers: start=%s, end=%s" % (start, end)
+        
+        if isDimensional( start ) or isNumber(unit):
+            start = start/unit
+            end = end/unit
+        
         #slice. +1 is due to the difference of bin boundaries and bin centers
         s = ( self.cellIndexFromValue( start ),
               self.cellIndexFromValue( end ) + 1 )
         return s
 
         
+    def _overloaded_operator(self, operator, *args, **kwds):
+        ret = getattr(super(Axis, self), operator)(*args, **kwds)
+        # the parent class, NdArrayDataset, does not know about axis mapper
+        # we need to reinitialize the axis mapper.
+        # the way this is done here is to call method changeUnit, which
+        # recalculates the axis mapper
+        ret.changeUnit(ret.unit())
+        return ret
+    
+
     def _copy(self, storage = None, mapper = None):
         keys = self.listAttributes()
         attrs = {}
@@ -191,6 +220,15 @@ class Axis( Dataset):
 
 
 from _units import isDimensional
+def isNumber(candidate):
+    return isFloat(candidate) or isInteger(candidate)
+
+import types
+def isFloat(candidate):
+    return isinstance(candidate, types.FloatType)
+def isInteger(candidate):
+    return isinstance(candidate, types.IntType)
+
 
 import numpy as N
 

@@ -108,6 +108,15 @@ class Axis_TestCase(TestCase):
         taxis= axis('t', range(10) )
         t1axis = 10-taxis
         self.assert_( isinstance( t1axis, Axis) )
+        centers = t1axis.binCenters()
+        self.assertAlmostEqual(t1axis.unit(), -1)
+        self.assertAlmostEqual(centers[0], -10)
+        self.assertAlmostEqual(centers[1], -9)
+        self.assertAlmostEqual(centers[9], -1)
+
+        from histogram.SlicingInfo import SlicingInfo
+        si = SlicingInfo((10,9))
+        self.assertEqual(t1axis.slicingInfo2IndexSlice(si), (0,2))
         return
 
 
@@ -129,8 +138,13 @@ class Axis_TestCase(TestCase):
         from histogram.SlicingInfo import SlicingInfo
         slice = taxis[ SlicingInfo( (3,9) ) ]
         self.assertRaises( RuntimeError, slice.changeUnit, 'millisecond' )
-        return 
-    
+        return
+
+
+    def test_descending(self):
+        'Axis: descending'
+        taxis= axis('t', range(10,0,-1), unit='second' )
+        return
     
     #def test_0(self): self._run_oldtest(0)
     #def test_1(self): self._run_oldtest(1)

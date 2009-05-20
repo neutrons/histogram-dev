@@ -220,7 +220,6 @@ class Histogram( AttributeCont):
         #or just an element
         #this is done by trying to get a slice of the dataset self._data
         aslice = self._data[indexSlices]
-
         #1. element, not slice
         if isNumber(aslice) and isNumberList(v) :
             if len(v) == 2:
