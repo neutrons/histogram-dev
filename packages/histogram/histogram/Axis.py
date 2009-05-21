@@ -151,13 +151,14 @@ class Axis( Dataset):
         """slicingInfo2Range(slicingInfo) --> slice instance
         note: slicing is inclusive
         """
+        unit = self.unit()
+
         start, end = slicingInfo.start, slicingInfo.end
 
         bc = self.binCenters()
-        if start == front: start = bc[0]
-        if end == back: end = bc[-1]
+        if start == front: start = bc[0]*unit
+        if end == back: end = bc[-1]*unit
 
-        unit = self.unit()
         if isDimensional(start) ^ isDimensional(end):
             raise RuntimeError, "start and end should all be dimensionals or numbers: start=%s, end=%s" % (start, end)
         

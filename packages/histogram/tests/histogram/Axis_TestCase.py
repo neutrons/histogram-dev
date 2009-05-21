@@ -120,6 +120,14 @@ class Axis_TestCase(TestCase):
         return
 
 
+    def test_slicingInfo2IndexSlice(self):
+        'Axis: slicingInfo2IndexSlice'
+        t = axis('t', range(10), unit=0.01)
+        from histogram.SlicingInfo import all
+        self.assertEqual(t.slicingInfo2IndexSlice(all), (0,10))
+        return
+
+
     def test_changeUnit(self):
         'Axis: changeUnit'
         taxis= axis('t', range(3), unit='second' )
