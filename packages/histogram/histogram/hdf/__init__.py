@@ -50,6 +50,9 @@ def dump( histogram, filename = None, pathinfile = '/', mode = 'w', fs = None, c
       The mode to be used to write to the hdf file.
       'c': create new hdf file. If hdf file of the same name exists, this command will fail.
       'w': write to existing hdf file. If the path_in_hdf_file already exists in the hdf file, this command will fail.
+    compression:
+      The compression ratio. If it is 0, no compression will be done.
+      The valid values are integers from 0 to 9 (inclusive).
     '''
     from Renderer import Renderer
 

@@ -22,13 +22,18 @@
 ## Classes:
 ##   - %Histogram: histogram::Histogram::Histogram
 ##   - %Axis: histogram::Axis::Axis
+##
+## I/O methods:
+##   - %histogram.hdf.dump: histogram::hdf::__init__::dump
+##   - %histogram.hdf.load: histogram::hdf::__init__::load
 ## 
 ## \section intro_sec Introduction
-## histogram package provides the fundamental data structure for
-## <a href="../../../reduction/reduction/html/index.html"> reduction </a> software.
+## histogram package provides a fundamental data structure for data reduction
+## and data analysis.
 ##
-## Here, let us  first make sure we have the same understanding of the word
-## "histogram". The result of any measurement is actually a histogram, by which we mean
+## Here, let us explain our definition of 
+## "histogram". The result of a scientific measurement is usually a histogram(s),
+## by which we mean
 ## we have data in some bins. For example, if we measure a spectrum as a function of
 ## time-of-flight, we will get an array of counts, while each element in that array represents
 ## the number of counts measured in a predefined time slot (bin).
@@ -38,7 +43,7 @@
 ##
 ## where \f$\frac{dI}{dx}\f$ is a density function and \f$ \Delta x \f$ is bin size.
 ##
-## From this little discussion, we can know there are two pieces of critical information
+## From this little discussion, we see that there are two pieces of critical information
 ## in a histogram: the data, and the axis (or axes), which is about bin sizes. Some time we
 ## need to know the context that the histogram is in, and that brings us meta-data.
 ## Following is a bit of definitions:
@@ -51,7 +56,7 @@
 ##   - (1) a dataset whose elements represent the number of counts in some range of axis
 ##         or axes values;
 ##   - (2) a set of associations concerning a histogram in the sense of (1) and
-##         potentially everything that can be known about it: errors, axes, history.
+##         potentially everything that can be known about it: error bars, axes, history.
 ## - metadata: data which provides context for other data: data about data.
 ##
 ## \section Design
