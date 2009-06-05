@@ -35,7 +35,7 @@ functions of the histogram and the associated data objects.
 This package is developed in the 
 <ulink url="http://danse.us">DANSE</ulink> package
 as the fundamental data object for 
-    <ulink url='xxxWEBSITExxx/reduction/Software-UserGuide/html/index.html'>
+    <ulink url='http://danse.us/trac/DrChops'>
       DrChops
     </ulink>
 , a reduction software for direct-geometry neutron chopper spectrometers.

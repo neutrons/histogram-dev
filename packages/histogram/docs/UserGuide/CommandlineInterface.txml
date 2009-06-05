@@ -63,7 +63,7 @@ is put into a list.
 <note>
 In most cases, histograms
 are multi-dimensional. For a multi-dimensional histogram, 
-we need a list, in which each item describes an axis.
+we need a list of axes, in which each item describes an axis.
 So, even for a 1D histogram, we 
 require user to supply a single-item list, 
 in which the only item describes the only axis for the
