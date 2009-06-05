@@ -19,7 +19,7 @@
 ##   - %histogram: histogram::__init__::histogram
 ##   - %axis: histogram::__init__::axis
 ##
-## Classes:
+## Data objects:
 ##   - %Histogram: histogram::Histogram::Histogram
 ##   - %Axis: histogram::Axis::Axis
 ##
