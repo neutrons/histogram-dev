@@ -14,7 +14,17 @@ from NdArrayDataset import Dataset
 
 class Axis( Dataset):
     
-    """Dataset that models a HistogramAxis"""
+    """Axis
+
+    Public interface:
+      axis.unit(): return the unit
+      axis.binCenters(): return bin centers as an array
+      axis.binBoundariesAsList(): return bin boundaries as a list.
+      axis.name(): return the name
+      axis.changeUnit(newunit): change the unit of this axis to new unit.
+        The new unit must be compatible with the old unit.
+      numerical operators: + - * /
+    """
 
     def __init__( self, name='', unit='1', attributes = {},
                   length = 0, storage = None, mapper = None, centers = None):

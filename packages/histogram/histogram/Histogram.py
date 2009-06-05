@@ -24,8 +24,35 @@ class Histogram( AttributeCont):
 
     """Histogram
 
-  Histogram is a fundamental data object. It contains
-  information about axes and data and errorbars.
+  Histogram is the most important data object of the histogram package.
+  Public interface:
+    h.axes(): return a list of axes
+    h.I: return the reference to the data in a numpy array
+    h.E2: return the reference to the error bar squares in a numpy array
+    h.unit(): return the unit of the data of this histogram
+    h.axisNameList(): return a list of names of the axes.
+    h.<axis name>: return the bin centers of the axis for the given axis name.
+    numeric operators: + - * /
+    h.copy: create a deep copy of the given histogram
+    slicing: use operator []
+
+  Examples:
+    >>> from histogram import histogram, axis, arange
+    >>> daxis = axis('dspacing', arange(0,4,0.01))
+    >>> h = histogram('h', [daxis])
+    >>> print h.axes()
+    >>> print h.axisNameList()
+    >>> print h.unit()
+    >>> print h.dspacing
+    >>> print h.I
+    >>> print h.E2
+    >>> h1 = h.copy()
+    >>> h2 = h + h1
+    >>> h3 = h2*(2.0, 2.0)
+    >>> h4 = h3*h4
+    >>> h4 /= (10.0, 0.0)
+    >>> h5 = h4[(0,2)]
+    >>> h4[2,4] = 0,0
     """
 
     def __init__( self, name = '', data = None, errors = None,
