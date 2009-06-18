@@ -86,7 +86,7 @@ def pqvalue( *args ):
     return toVE( args )
 
 
-def axis( name, centers = None, unit = None, boundaries = None):
+def axis( name, centers = None, unit = None, boundaries = None, attributes=None):
     """axis( name, centers=None, unit = None, boundaries=None): create an axis
     
     name: The name of the axis.
@@ -104,9 +104,9 @@ def axis( name, centers = None, unit = None, boundaries = None):
     
     if centers is not None and len(centers) < 1: raise ValueError , "Invalid axis %s" % (centers, )
     if 'ID' in name and centers is not None and _isIntegers(centers) and unit is None:
-        return IDaxis( name, centers )
+        return IDaxis( name, centers, attributes=attributes )
     if centers is None: return paxis( name, unit, boundaries = boundaries )
-    return paxis( name, unit, centers = centers )
+    return paxis( name, unit, centers = centers, attributes=attributes )
 
 
 
@@ -389,7 +389,7 @@ def paxis( *args, **kwds ):
     return createContinuousAxis( *args, **kwds )
 
 
-def IDaxis(name, ids):
+def IDaxis(name, ids, attributes=None):
     """create an 'ID' axis such as detector IDs and pixel IDs
 
     IDaxis( name, ids )
@@ -398,7 +398,7 @@ def IDaxis(name, ids):
       ids:  a list of ids
       datatype: should be integer
     """
-    return createDiscreteAxis( name, ids, "int" )
+    return createDiscreteAxis( name, ids, "int", attributes=attributes )
 
 
 
@@ -413,7 +413,7 @@ def calcBinBoundaries( min, delta, nBins ):
 
 
 def createContinuousAxis( name, unit, centers = None, boundaries = None,
-                          centersCreationArgs = None ):
+                          centersCreationArgs = None, attributes=None ):
     """create a continuous axis
 
     a continuos axis represents a continuous physics quantity like energy, time of flight, etc.
@@ -458,7 +458,9 @@ def createContinuousAxis( name, unit, centers = None, boundaries = None,
     storage = ndArray( "double", boundaries )
     
     from Axis import Axis
-    return Axis( name, unit, length = nBins, storage=storage, mapper = axisMapper, centers = centers)
+    return Axis( name, unit, length = nBins, storage=storage,
+                 mapper = axisMapper, centers = centers,
+                 attributes = attributes)
 
 
 def boundariesFromCenters( centers ):
@@ -521,7 +523,7 @@ def _boundariesFromEvenlySpacedCenters( centers ):
     return calcBinBoundaries( min, delta, n )
 
 
-def createDiscreteAxis( name, items, datatype):
+def createDiscreteAxis( name, items, datatype, attributes=None):
     """create an axis of discrete numbers.
 
     a mapper is created and attached to the axis
@@ -536,7 +538,8 @@ def createDiscreteAxis( name, items, datatype):
     storage = ndArray( datatype, list(items) + [-1] ) # -1 is a patch
     from histogram.Axis import Axis
     axis = Axis( name = name, length = len(items),
-                 storage = storage, mapper = axisMapper )
+                 storage = storage, mapper = axisMapper,
+                 attributes=attributes)
     return axis
 
 

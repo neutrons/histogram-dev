@@ -12,7 +12,7 @@
 from NdArrayDataset import Dataset
 
 
-class Axis( Dataset):
+class Axis(Dataset):
     
     """Axis
 
@@ -26,7 +26,7 @@ class Axis( Dataset):
       numerical operators: + - * /
     """
 
-    def __init__( self, name='', unit='1', attributes = {},
+    def __init__( self, name='', unit='1', attributes = None,
                   length = 0, storage = None, mapper = None, centers = None):
         """HistogramAxis( attributes={},
         length=0, storage=None)
@@ -165,17 +165,25 @@ class Axis( Dataset):
 
         start, end = slicingInfo.start, slicingInfo.end
 
-        bc = self.binCenters()
-        if start == front: start = bc[0]*unit
-        if end == back: end = bc[-1]*unit
+        # if axis has dimensional unit, convert start and end to pure numbers if necessary
+        if isDimensional(unit):
+            if isDimensional(start): start = start/unit
+            if isDimensional(end): end = end/unit
 
-        if isDimensional(start) ^ isDimensional(end):
-            raise RuntimeError, "start and end should all be dimensionals or numbers: start=%s, end=%s" % (start, end)
-        
-        if isDimensional( start ) or isNumber(unit):
-            start = start/unit
-            end = end/unit
-        
+        # if axis' unit is a number. it is assumed that the start and end are always given with unit
+        # so we need to divide them by the unit
+        if isNumber(unit) and unit not in [1, 1.0]:
+            if isNumber(start): start = start/unit
+            if isNumber(end): end = end/unit
+
+        # if start and end are special objects, convert to numbers as well
+        bc = self.binCenters()
+        if start == front: start = bc[0]
+        if end == back: end = bc[-1]
+
+        # at this point, start and end should all be numbers
+        if not isNumber(start) or not isNumber(end):
+            raise RuntimeError, "At this point, start and end should all be numbers: start=%s, end=%s" % (start, end)
         #slice. +1 is due to the difference of bin boundaries and bin centers
         s = ( self.cellIndexFromValue( start ),
               self.cellIndexFromValue( end ) + 1 )
@@ -228,6 +236,9 @@ class Axis( Dataset):
 
     pass # end of Axis
 
+
+
+class LogicError(Exception): pass
 
 
 from _units import isDimensional

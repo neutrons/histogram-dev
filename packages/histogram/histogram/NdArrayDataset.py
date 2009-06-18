@@ -9,7 +9,7 @@ debug = journal.debug("NdArrayDataset")
 class Dataset( DatasetBase):
     """datasets that use stdVectors"""
 
-    def __init__( self, name='', unit='1', attributes = {},
+    def __init__( self, name='', unit='1', attributes = None,
                   shape = [], storage = None, isslice = False):
         """DatasetBase( name='', unit='', attributes={},
         shape = [], storage = None)
@@ -28,6 +28,7 @@ class Dataset( DatasetBase):
         
         from DictAttributeCont import AttributeCont
         # copy user's attributes to avoid confusion
+        attributes = attributes or {}
         attributeCont = AttributeCont( dict(attributes))
 
         #debug.log("storage = %s" % str(storage))
