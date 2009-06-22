@@ -87,7 +87,19 @@ class Renderer(object):
         unit = axis.unit()
         
         node = nx5elements.group(name, 'Axis', None, None)
-        node.setAttributes( { 'type': type, 'unit': unit, 'index': index } )
+
+        # attributes of axis
+        attrs = {}
+        attrnames = axis.listAttributes()
+        for name in attrnames:
+            attrs[name] = str(axis.attribute(name))
+            continue
+
+        #
+        attrs.update(
+            { 'type': type, 'unit': unit, 'index': index }
+            )
+        node.setAttributes( attrs )
 
         bbs = axis.binBoundaries()
         bbsnode = self.onVector(

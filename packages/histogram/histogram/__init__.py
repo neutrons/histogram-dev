@@ -105,7 +105,7 @@ def axis( name, centers = None, unit = None, boundaries = None, attributes=None)
     if centers is not None and len(centers) < 1: raise ValueError , "Invalid axis %s" % (centers, )
     if 'ID' in name and centers is not None and _isIntegers(centers) and unit is None:
         return IDaxis( name, centers, attributes=attributes )
-    if centers is None: return paxis( name, unit, boundaries = boundaries )
+    if centers is None: return paxis( name, unit, boundaries = boundaries, attributes=attributes )
     return paxis( name, unit, centers = centers, attributes=attributes )
 
 

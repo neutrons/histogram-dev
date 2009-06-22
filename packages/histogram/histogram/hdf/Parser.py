@@ -70,7 +70,9 @@ class Parser:
         unit = axis.getAttribute( 'unit' )
         type = axis.getAttribute( 'type' )
 
-        ret = nodes.axis( name, unit, type, bin_centers, bin_boundaries )
+        attrs = axis.attributes()
+        
+        ret = nodes.axis( name, unit, type, bin_centers, bin_boundaries, attrs)
         
         return ret
 

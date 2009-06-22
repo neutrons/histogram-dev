@@ -14,8 +14,9 @@
 
 class AbstractNode(object):
 
-    def __init__(self, name):
+    def __init__(self, name, attributes=None):
         self.name = name
+        self.attributes = attributes or {}
         return
 
     def fetch(self, *args, **kwds):
