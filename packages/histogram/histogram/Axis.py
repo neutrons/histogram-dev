@@ -183,7 +183,7 @@ class Axis(Dataset):
 
         # at this point, start and end should all be numbers
         if not isNumber(start) or not isNumber(end):
-            raise RuntimeError, "At this point, start and end should all be numbers: start=%s, end=%s" % (start, end)
+            raise RuntimeError, "At this point, start and end should all be numbers: start=%s(%s), end=%s(%s)" % (start, type(start), end, type(end))
         #slice. +1 is due to the difference of bin boundaries and bin centers
         s = ( self.cellIndexFromValue( start ),
               self.cellIndexFromValue( end ) + 1 )
@@ -249,7 +249,7 @@ import types
 def isFloat(candidate):
     return isinstance(candidate, types.FloatType)
 def isInteger(candidate):
-    return isinstance(candidate, types.IntType)
+    return isinstance(candidate, types.IntType) or isinstance(candidate, N.int32)
 
 
 import numpy as N
