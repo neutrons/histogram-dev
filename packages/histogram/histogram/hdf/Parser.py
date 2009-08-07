@@ -110,6 +110,11 @@ class Parser:
         
         for e in histogram.children():
             name = e.name()
+            # !!!!!!!!!!!!!!!!!!!!!!!!!
+            # this is a hack
+            if name.startswith('sum of '):
+                name = name.split()[2]
+            # !!!!!!!!!!!!!!!!!!!!!!!!!
             exec '%s = e.identify(self)' % name
             continue
 
