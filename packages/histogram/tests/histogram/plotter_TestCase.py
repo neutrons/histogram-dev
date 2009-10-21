@@ -82,6 +82,16 @@ class plotter_TestCase(TestCase):
         pylab.close()
         return
     
+    def test3a(self):
+        'plot sqe with interpolation'
+        import histogram.hdf as hh
+        sqe = hh.load( 'sqe.h5/S(Q,E)' )
+        defaultPlotter.plot(sqe, interpolation='bicubic')
+        raw_input('Press ENTER to continue')
+        pylab.clf()
+        pylab.close()
+        return
+    
     pass # end of plotter_TestCase
 
     

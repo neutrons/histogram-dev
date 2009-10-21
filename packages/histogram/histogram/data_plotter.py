@@ -199,7 +199,7 @@ class MplPlotter2D(MplPlotter, Plotter2D):
         return
 
 
-    def plot(self, x, y, z, min = None, max = None):
+    def plot(self, x, y, z, min = None, max = None, **kwds):
         '''plot z(x,y)
 
         Notes:
@@ -212,12 +212,12 @@ class MplPlotter2D(MplPlotter, Plotter2D):
         '''
         figure = self.get_figure()
         _clear( figure )
-        MplPlotter._image = self.plot_(x,y,z, min = min, max = max)
+        MplPlotter._image = self.plot_(x,y,z, min = min, max = max, **kwds)
         if self._usePylab and not self._interactive: self._engine.show()
         return
 
         
-    def plot_(self,x, y, z, min = None, max = None): 
+    def plot_(self,x, y, z, min = None, max = None, **kwds): 
         figure = self.get_figure()
         if figure is None: print "missing matplotlib! "; return
 
@@ -244,7 +244,13 @@ class MplPlotter2D(MplPlotter, Plotter2D):
         if self._usePylab: engine = self._engine
         else: engine = figure.gca()
 
-        rt = MplPlotter._image = engine.pcolormesh( X,Y, zt, shading="flat")
+        #rt = MplPlotter._image = engine.pcolormesh( X,Y, zt, shading="flat")
+        targetaspect = 3./4
+        extent = x[0],x[-1], y[0],y[-1]
+        adjustedaspect = targetaspect * (x[-1]-x[0]) / (y[-1]-y[0])
+        # need to reverse order on y direction
+        zt1 = zt[::-1, :]
+        rt = MplPlotter._image = engine.imshow(zt1, extent=extent, aspect=adjustedaspect, **kwds)
         engine.clim( min, max )
         return rt
 
