@@ -11,7 +11,11 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 
-import pylab
+try:
+    import pylab
+except SystemError:
+    import matplotlib, pylab
+
 import numpy as N
 
 
@@ -21,6 +25,7 @@ def plothist( histogram, **kwds ):
         raise NotImplementedError, "dimension: %s" % dim
     x = histogram.axes()[0].binCenters()
 
+    from plotter import process_Iaxis_unit
     scale_factor, Iunit = process_Iaxis_unit( histogram.unit() )
     y = histogram.I * scale_factor
     yerr2 = histogram.E2 
@@ -28,8 +33,6 @@ def plothist( histogram, **kwds ):
     pylab.errorbar( x, y, yerr = yerr, **kwds )
     return
 
-
-from plotter import process_Iaxis_unit
 
 
 _plot = pylab.plot

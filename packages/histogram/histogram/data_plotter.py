@@ -47,9 +47,11 @@ class Plotter1D(object):
 class MplPlotter:
 
     try:
-        import pylab
+        from pylab_extensions import pylab
         _engine = pylab
     except ImportError:
+        import traceback
+        traceback.print_exc()
         _engine = None
         pass
 
@@ -252,7 +254,9 @@ class MplPlotter2D(MplPlotter, Plotter2D):
         # targetaspect = 3./4
         # adjustedaspect = targetaspect * (x[-1]-x[0]) / (y[-1]-y[0])
         # rt = MplPlotter._image = engine.imshow(zt1, extent=extent, aspect=adjustedaspect, **kwds)
-        rt = MplPlotter._image = engine.imshow(zt1, extent=extent, aspect='auto', **kwds)
+        if not kwds.has_key('aspect'): kwds['aspect'] = 'auto'
+        if not kwds.has_key('extent'): kwds['extent'] = extent
+        rt = MplPlotter._image = engine.imshow(zt1, **kwds)
         engine.clim( min, max )
         return rt
 
