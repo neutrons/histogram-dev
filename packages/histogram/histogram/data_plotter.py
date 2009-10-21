@@ -245,12 +245,14 @@ class MplPlotter2D(MplPlotter, Plotter2D):
         else: engine = figure.gca()
 
         #rt = MplPlotter._image = engine.pcolormesh( X,Y, zt, shading="flat")
-        targetaspect = 3./4
-        extent = x[0],x[-1], y[0],y[-1]
-        adjustedaspect = targetaspect * (x[-1]-x[0]) / (y[-1]-y[0])
         # need to reverse order on y direction
         zt1 = zt[::-1, :]
-        rt = MplPlotter._image = engine.imshow(zt1, extent=extent, aspect=adjustedaspect, **kwds)
+        #
+        extent = x[0],x[-1], y[0],y[-1]
+        # targetaspect = 3./4
+        # adjustedaspect = targetaspect * (x[-1]-x[0]) / (y[-1]-y[0])
+        # rt = MplPlotter._image = engine.imshow(zt1, extent=extent, aspect=adjustedaspect, **kwds)
+        rt = MplPlotter._image = engine.imshow(zt1, extent=extent, aspect='auto', **kwds)
         engine.clim( min, max )
         return rt
 
