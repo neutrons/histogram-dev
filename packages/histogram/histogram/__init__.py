@@ -242,6 +242,41 @@ def histogram( name, axes, data = None, errors = None, unit="1",
     return h
 
 
+def plot( h, min = None, max = None, output='window' ):
+    """plot a histogram
+
+    h: histogram
+    min, max: min and max I value
+    output:
+      - window: plot to a window
+      - <filename>: plot to the given filename
+    """
+    
+    if output != 'window':
+        import matplotlib
+        matplotlib.use('PS')
+        
+    from plotter import defaultPlotter
+    defaultPlotter.interactive( 0 )
+    defaultPlotter.plot( h, min = min, max = max)
+
+    if output != 'window':
+        import pylab
+        import os
+        eps = os.path.splitext(output)[0] + '.eps'
+        pylab.savefig(eps)
+
+        if eps != output:
+            #!!! should check if "convert" exists
+            cmd = 'convert %s %s' % (eps, output)
+            if os.system(cmd):
+                raise RuntimeError
+    return
+
+
+
+
+
 #methods
 def getSliceCopyFromHistogram( name, axes, hist ):
     """retrieve a slice (copy) of a histogram

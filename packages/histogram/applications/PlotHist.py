@@ -1,27 +1,7 @@
 #!/usr/bin/env python
 
 
-def plotHist( h, min = None, max = None, output='window' ):
-    if output != 'window':
-        import matplotlib
-        matplotlib.use('PS')
-        
-    from histogram.plotter import defaultPlotter
-    defaultPlotter.interactive( 0 )
-    defaultPlotter.plot( h, min = min, max = max)
-
-    if output != 'window':
-        import pylab
-        import os
-        eps = os.path.splitext(output)[0] + '.eps'
-        pylab.savefig(eps)
-
-        if eps != output:
-            #!!! should check if "convert" exists
-            cmd = 'convert %s %s' % (eps, output)
-            if os.system(cmd):
-                raise RuntimeError
-    return
+from histogram import plot as plotHist
 
 
 def plotPklFile( filename, min = None, max = None, output=None ):
