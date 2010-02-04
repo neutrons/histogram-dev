@@ -321,7 +321,7 @@ def _guessMinMax(z):
 _scaler = 10
 def _guessMax(z):
     """make a guess of the max z value that should be used in plot.
-    This max value should usually be samller than the real max value of z matrix
+    This max value should usually be smaller than the real max value of z matrix
     because otherwise many details could be missing from the plot
     """
     save = z.shape
