@@ -13,7 +13,7 @@ import journal
 debug = journal.debug('ins.histogram.Histogram')
 
 
-from math import sqrt
+from math import sqrt       
 import operator
 
 
