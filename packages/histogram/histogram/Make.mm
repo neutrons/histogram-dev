@@ -52,6 +52,7 @@ EXPORT_PYTHON_MODULES = \
 	Histogram.py \
 	NdArrayDataset.py\
 	SimpleHistCollection.py \
+	SimpleRebin.py \
 	SlicingInfo.py   \
 	ValueWithError.py \
 	ErrorPropagator.py \

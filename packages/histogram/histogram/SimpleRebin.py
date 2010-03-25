@@ -1,6 +1,9 @@
+import numpy as np
+
 class Bin:
     
-    def getNumPts(self):
+    @property
+    def numPts(self):
         return len(self.xPts)
     
     def getMidpoint(self):
@@ -14,7 +17,7 @@ class Bin:
     def value(self):
         "preserve volume during the binning"
         totalVol = 0
-        for ind,xPt in enumerate(xPts):
+        for ind,xPt,yPt in zip(range(self.numPts), self.xPts, self.yPts):
             #get leftOfBox
             if ind == 0:
                 if self.leftSide < xPt:
@@ -22,9 +25,9 @@ class Bin:
                 else:
                     leftOfBox = xPt
             else:
-                leftOfBox=xPt[ind-1]
+                leftOfBox = xPt[ind-1]
             #get rightOfBox
-            if ind == len(xPts):
+            if ind == (self.numPts-1):
                 if self.rightSide > xPt:
                     rightOfBox = self.rightSide
                 else:
@@ -37,13 +40,13 @@ class Bin:
         totalHeight = totalVol/self.spacing
         return totalHeight
     
-    def __init__(self, leftSide=None, spacing=None, numPreviousBins=None):
-        self.numPreviousBins =  numPreviousBins
+    def __init__(self, leftSide=None, spacing=None, numXPointsToBin=None):
+        self.numXPointsToBin =  numXPointsToBin
         self.value = 0.0
         self.xPts = []
         self.yPts = []
         self.leftSide = leftSide
-        self.spacing = 0.0
+        self.spacing = spacing
 
 #for each E, rebin the q's:
 class SimpleRebin:
@@ -63,22 +66,22 @@ class SimpleRebin:
 #        xData = xS
 #        yData = yS
     #first sort the data (this should be moved to parnasis or otherwise)
-    def __init__(self, xData, yData, newBins=None, binValue = 'countPoints', format = 'columns'):
-        xData = np.sort(xData)
-        sortedInds = np.argsort(xData)
-        yData = yData[sortedInds]
+    def __init__(self, xDataP, yDataP, newBins=None, binValue = 'countPoints', format = 'columns'):
+        xData = np.sort(xDataP)
+        sortedInds = np.argsort(xDataP)
+        yData = yDataP[sortedInds]
         
         self.bins=[]
         if type(newBins) is type(1):
             # this algorithm is for data that has already been binned and we're going over the bins to rebin
             import math
-            leftOverPts, numXdataInBin = math.modf(len(xData)/numBins)
-            currentBin = Bin(numPreviousBins = int(numXdataInBin))
+            leftOverPts, numXdataInBin = math.modf(len(xData)/len(newBins))
+            currentBin = Bin(numXPointsToBin = int(numXdataInBin))
             for xPt,yPt in zip(xData,yData):
                 if currentBin.getNumPts() >= numXdataInBin:
                     currentBin.spacing = xPt - currentBin.xPts[0]
                     self.bins.append(currentBin)
-                    currentBin = Bin(numPreviousBins = int(numXdataInBin))
+                    currentBin = Bin(numXPointsToBin = int(numXdataInBin))
                 currentBin.xPts.append(xPt)
                 if binValue=='countPoints':
                     # then add together all the y axis values that fall within the new bin
@@ -102,21 +105,22 @@ class SimpleRebin:
         # but when you plot, plot the y-axis value not at the x-axis pair, but at the midpoint between the x-axis pair
         # and the one up from it.  Assume there is an additional x-axis point at the end with the same spacing as all the others.
 
-        
-    def newYpts(self):
+    @property
+    def newYPts(self):
         return [bin.value for bin in self.bins]
     
+    @property
     def newXCenters(self):
         return [bin.getMidpoint() for bin in self.bins]
     
     def getData(self):
-        newXData = [bin.getMidpoint() for bin in bins]
-        newYData = [bin.value for bin in bins]
+        newXData = [bin.getMidpoint() for bin in self.bins]
+        newYData = [bin.value for bin in self.bins]
         columnData = newXData,newYData
         if 'columns' in format:
             return columnData
         if 'rows' in format:
-            data = n.array(columnData)
+            data = np.array(columnData)
             data = data.transpose()
             rowData = data.tolist()
             return rowData
