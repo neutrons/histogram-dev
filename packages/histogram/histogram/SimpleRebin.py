@@ -25,7 +25,7 @@ class Bin:
                 else:
                     leftOfBox = xPt
             else:
-                leftOfBox = xPt[ind-1]
+                leftOfBox = self.xPts[ind-1]
             #get rightOfBox
             if ind == (self.numPts-1):
                 if self.rightSide > xPt:
@@ -33,7 +33,7 @@ class Bin:
                 else:
                     rightOfBox = xPt
             else:
-                rightOfBox=xPt[ind+1]
+                rightOfBox = self.xPts[ind+1]
             boxLength = rightOfBox-leftOfBox
             boxVol = boxLength*yPt
             totalVol += boxVol
@@ -42,7 +42,6 @@ class Bin:
     
     def __init__(self, leftSide=None, spacing=None, numXPointsToBin=None):
         self.numXPointsToBin =  numXPointsToBin
-        self.value = 0.0
         self.xPts = []
         self.yPts = []
         self.leftSide = leftSide
@@ -96,7 +95,7 @@ class SimpleRebin:
             binSize = newBins[1] - newBins[0]
             currentBin = Bin(spacing = binSize, leftSide = newBins[binCounter])
             for xPt,yPt in zip(xData,yData):
-                if xPt >= currentBin.rightSide:
+                while xPt >= currentBin.rightSide:
                     self.bins.append(currentBin)
                     binCounter += 1
                     currentBin = Bin(spacing = binSize, leftSide = newBins[binCounter])
@@ -108,6 +107,10 @@ class SimpleRebin:
     @property
     def newYPts(self):
         return [bin.value for bin in self.bins]
+#        result=[]
+#        for bin in self.bins:
+#            result.append(bin.value)
+#        return result
     
     @property
     def newXCenters(self):
