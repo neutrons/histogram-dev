@@ -81,6 +81,10 @@ namespace DANSE {
       
       YDataType & operator () ( const XDataType & x ) 
       { return (*m_dg)( x ) ; }
+
+      bool isOutofbound(const XDataType &x) const {
+	return x<xbegin || x >= xend;
+      }
       
       void clear() {m_dg->clear();}
       
@@ -95,7 +99,6 @@ namespace DANSE {
       YArray *m_yarray; // Array_1D
       XMapper *m_xmapper;
       DG *m_dg;
-      
     };
     
   } //Histogram:

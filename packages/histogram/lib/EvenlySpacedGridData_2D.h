@@ -102,6 +102,11 @@ namespace DANSE {
       ZDataType & operator () ( const XDataType & x, const YDataType & y ) 
       { return (*m_dg)( x,y ) ; }
 
+      bool isOutofbound(const XDataType &x, const YDataType & y) const {
+	return x < xbegin || x >= xend || \
+	  y < ybegin || y >= yend;
+      }
+      
       void clear() {m_dg->clear();}
 
       ~EvenlySpacedGridData_2D() 

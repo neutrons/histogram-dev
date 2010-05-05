@@ -128,6 +128,19 @@ namespace DANSE {
 	  const X4DataType & x4) 
       { return (*m_dg)( x1,x2,x3,x4 ) ; }
 
+      bool isOutofbound
+	( const X1DataType & x1, 
+	  const X2DataType & x2,
+	  const X3DataType & x3,
+	  const X4DataType & x4) 
+	const
+      {
+	return x1 < x1begin || x1 >= x1end || \
+	  x2 < x2begin || x2 >= x2end ||      \
+	  x3 < x3begin || x3 >= x3end ||      \
+	  x4 < x4begin || x4 >= x4end ;
+      }
+      
       void clear() {m_dg->clear();}
 
       ~EvenlySpacedGridData_4D() 
