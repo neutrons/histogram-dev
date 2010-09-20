@@ -11,9 +11,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 
-from histogram.data_plotter import defaultPlotter1D, defaultPlotter2D
-import pylab
-
+interactive = False
 
 from numpy  import array, arange
 
@@ -25,46 +23,52 @@ class dataplotter_TestCase(TestCase):
 
     def test_defaultPloter2D_plot(self):
         'plot: 2d'
-        from histogram.data_plotter import defaultPlotter2D as plotter
+        import pylab
         a, b = 3,10
         x, y, z = array(arange(a)), array(arange(b)), array( arange((a-1)*(b-1)) )
         z.shape = a-1, b-1
 
-        plotter.plot( x, y, z )
-        raw_input('Press ENTER to continue')
+        self.plotter2.plot( x, y, z )
+        if interactive:
+            raw_input('Press ENTER to continue')
         pylab.clf()
         pylab.close()
         return
 
     def test_defaultPloter2D_contourplot(self):
         'contour plot: 2d'
-        from histogram.data_plotter import defaultPlotter2D as plotter
         a, b = 3,10
         x, y, z = array(arange(a)), array(arange(b)), array( arange((a)*(b)) )
         z.shape = a, b
         
-        plotter.contourPlot( x, y, z )
-        raw_input('Press ENTER to continue')
+        self.plotter2.contourPlot( x, y, z )
+        if interactive:
+            raw_input('Press ENTER to continue')
+        import pylab
         pylab.clf()
         pylab.close()
         return
 
     def test1D(self):
         "pylab plotter: 1D"
-        defaultPlotter1D.plot( [1,2,3], [1,2,3] )
-        defaultPlotter1D.plot( [1,2,3], [1,2,3], yerr = [0.1,0.1,0.1] )
-        raw_input('Press ENTER to continue')
+        self.plotter1.plot( [1,2,3], [1,2,3] )
+        self.plotter1.plot( [1,2,3], [1,2,3], yerr = [0.1,0.1,0.1] )
+        if interactive:
+            raw_input('Press ENTER to continue')
+        import pylab
         pylab.clf()
         pylab.close()
         return
-        
+    
     def test2D(self):
         "pylab plotter: 2D"
         import numpy
         I = numpy.arange( 0, 12, 1.)
         I.shape = 3,4
-        defaultPlotter2D.plot( [1,2,3], [1,2,3,4], I )
-        raw_input('Press ENTER to continue')
+        self.plotter2.plot( [1,2,3], [1,2,3,4], I )
+        if interactive:
+            raw_input('Press ENTER to continue')
+        import pylab
         pylab.clf()
         pylab.close()
         return
@@ -89,6 +93,20 @@ class dataplotter_TestCase(TestCase):
         self.assertVectorEqual(y1s[1], [8,9,7] )
         return
 
+
+    def __init__(self, *args, **kwds):
+        super(dataplotter_TestCase, self).__init__(*args, **kwds)
+        if not interactive:
+            import matplotlib
+            matplotlib.use('PS')
+        from histogram.data_plotter import defaultPlotter1D, defaultPlotter2D
+        if not interactive:
+            defaultPlotter1D.interactive(0)
+            defaultPlotter2D.interactive(0)
+        self.plotter1 = defaultPlotter1D
+        self.plotter2 = defaultPlotter2D
+        return
+
     pass # end of dataplotter_TestCase
 
     
@@ -97,6 +115,8 @@ def pysuite():
     return unittest.TestSuite( (suite1,) )
 
 def main():
+    global interactive
+    interactive = True
     pytests = pysuite()
     alltests = unittest.TestSuite( (pytests, ) )
     unittest.TextTestRunner(verbosity=2).run(alltests)

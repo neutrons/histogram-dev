@@ -12,9 +12,7 @@
 #
 
 
-from histogram.plotter import defaultPlotter
-from histogram import *
-import pylab
+interactive = False
 
 
 import unittest
@@ -25,72 +23,98 @@ class plotter_TestCase(TestCase):
 
     def test1D(self):
         "pylab plotter: 1D"
-        h = histogram('h', [('x', arange(10))], fromfunction=lambda x: x*x,
-                      unit = "10" )
-        defaultPlotter.plot(h)
-        raw_input('Press ENTER to continue')
+        import histogram as H, pylab
+        h = H.histogram(
+            'h', 
+            [('x', H.arange(10))], 
+            fromfunction=lambda x: x*x,
+            unit = "10" )
+        self.plotter.plot(h)
+        if interactive:
+            raw_input('Press ENTER to continue')
         pylab.clf()
         pylab.close()
         return
         
     def test1D_largearray(self):
         "pylab plotter: 1D large array"
-        h = histogram('h', [('x', arange(100000))], fromfunction=lambda x: x*x)
-        defaultPlotter.plot(h)
-        raw_input('Press ENTER to continue')
+        import histogram as H, pylab
+        h = H.histogram('h', [('x', H.arange(100000))], fromfunction=lambda x: x*x)
+        self.plotter.plot(h)
+        if interactive:
+            raw_input('Press ENTER to continue')
         pylab.clf()
         pylab.close()
         return
         
     def test2Da(self):
         "pylab plotter: 2D. z<0"
-        h = histogram(
+        import histogram as H, pylab
+        h = H.histogram(
             'h',
-            [('x', arange(10)),
-             ('y', arange( 5 )),
+            [('x', H.arange(10)),
+             ('y', H.arange( 5 )),
              ],
             fromfunction=lambda x,y: -(x*x + y*y),
             )
-        defaultPlotter.plot(h)
-        raw_input('Press ENTER to continue')
+        self.plotter.plot(h)
+        if interactive:
+            raw_input('Press ENTER to continue')
         pylab.clf()
         pylab.close()
         return
     
     def test2Db(self):
         "pylab plotter: 2D. z>0"
-        h = histogram(
+        import histogram as H, pylab
+        h = H.histogram(
             'h',
-            [('x', arange(10)),
-             ('y', arange( 5 )),
+            [('x', H.arange(10)),
+             ('y', H.arange( 5 )),
              ],
             fromfunction=lambda x,y: x*x + y*y,
             )
-        defaultPlotter.plot(h)
-        raw_input('Press ENTER to continue')
+        self.plotter.plot(h)
+        if interactive:
+            raw_input('Press ENTER to continue')
         pylab.clf()
         pylab.close()
         return
 
     def test3(self):
         'plot sqe'
-        import histogram.hdf as hh
+        import histogram.hdf as hh, pylab
         sqe = hh.load( 'sqe.h5/S(Q,E)' )
-        defaultPlotter.plot(sqe)
-        raw_input('Press ENTER to continue')
+        self.plotter.plot(sqe)
+        if interactive:
+            raw_input('Press ENTER to continue')
         pylab.clf()
         pylab.close()
         return
     
     def test3a(self):
         'plot sqe with interpolation'
-        import histogram.hdf as hh
+        import histogram.hdf as hh, pylab
         sqe = hh.load( 'sqe.h5/S(Q,E)' )
-        defaultPlotter.plot(sqe, interpolation='bicubic')
-        raw_input('Press ENTER to continue')
+        self.plotter.plot(sqe, interpolation='bicubic')
+        if interactive:
+            raw_input('Press ENTER to continue')
         pylab.clf()
         pylab.close()
         return
+
+
+    def __init__(self, *args, **kwds):
+        super(plotter_TestCase, self).__init__(*args, **kwds)
+        if not interactive:
+            import matplotlib
+            matplotlib.use('PS')
+        from histogram.plotter import defaultPlotter
+        if not interactive:
+            defaultPlotter.interactive(0)
+        self.plotter = defaultPlotter
+        return
+    
     
     pass # end of plotter_TestCase
 
@@ -100,6 +124,9 @@ def pysuite():
     return unittest.TestSuite( (suite1,) )
 
 def main():
+    global interactive
+    interactive = True
+    
     import journal
 ##     journal.debug('instrument').activate()
 ##     journal.debug('instrument.elements').activate()
