@@ -2,7 +2,6 @@
 # 
 #  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # 
-#                                Tim Kelley
 #                        California Institute of Technology
 #                        (C) 1998-2003 All Rights Reserved
 # 
@@ -15,7 +14,7 @@
 ## \mainpage array_kluge
 ## The array_kluge package is useful for converting c arrays. Following converters exist:
 ##
-##  - pylist__vptr: python list <-> poninter to c array
+##  - pylist__vptr: python list <-> pointer to c array
 ##  - numarray__vptr: numpy array <-- pointer to c array
 ##  - stdvector__vptr: pointer to c++ std::vector object <-- pointer to c array
 ##  - string__charPtr: python string <--> pointer to c char array

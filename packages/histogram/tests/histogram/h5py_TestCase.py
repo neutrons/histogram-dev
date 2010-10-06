@@ -66,7 +66,7 @@ class hdf_TestCase(TestCase):
         
         from histogram import histogram, arange
         h = histogram('h',
-                      [('x', arange(0,100, 1.) ),
+                      [('x', arange(0, 100, 1.) ),
                        ('y', arange(100, 180, 1.) ),],
                       unit = 'meter',
                       )

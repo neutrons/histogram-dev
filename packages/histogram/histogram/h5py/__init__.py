@@ -56,7 +56,7 @@ def dump( histogram, filename = None, pathinfile = '/', mode = 'w', fs = None, c
     '''
     from Renderer import Renderer
 
-    g = Renderer(compression).render(histogram)
+    g = Renderer(compression).render(fs, histogram)
 
     from nx5.renderers import setPath, writeGraph, printGraph
     pathinfile = pathinfile.split( '/' )

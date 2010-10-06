@@ -24,6 +24,24 @@
 from AbstractNdArray import NdArray as AbstractNdArray
 import numpy
 
+types = {'char':4, 'string':4, 'float':5, 'double':6, 'short short':20, 
+         'ushort short':21, 'short':22, 'ushort':23, 'int':24,'uint':25, 
+         'long':24, 'ulong':25,
+         }
+
+# create constants AK_CHAR, ...
+for n, v in types.iteritems(): exec "AK_%s = %d" % (n.upper().replace( ' ', '_' ), v)
+
+#'u'+<type> = 'unsigned '+<type>
+#added 9/24/2005.
+types.update(
+    {'unsigned short short': types['ushort short'],
+     'unsigned short'      : types['ushort'],
+     'unsigned int'        : types['uint'],
+     'unsigned long'       : types['ulong'],
+     'unsigned'            : types['uint'],
+     }
+    )
 
 import journal
 info = journal.info("NumpyNdArray")
@@ -350,8 +368,8 @@ def isNumber(a):
 
 
 def typename_from_aktypecode( code ):
-    from array_kluge import types as aktypes
-    for key, item in aktypes.iteritems():
+    #from array_kluge import types as aktypes
+    for key, item in types.iteritems():
         if item == code: return key
         continue
     raise ValueError , "Invalid type code %s" % code
