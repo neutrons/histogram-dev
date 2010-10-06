@@ -140,7 +140,7 @@ class Parser:
 
 
 def test():
-    from nxk5.renderers import graphFromHDF5File, printGraph
+    from nx5.renderers import graphFromHDF5File, printGraph
     g = graphFromHDF5File( 't.h5', '/h' )
     printGraph( g )
 
