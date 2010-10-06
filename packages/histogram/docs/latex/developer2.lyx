@@ -1,0 +1,676 @@
+#LyX 1.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 221
+\textclass book
+\language english
+\inputencoding auto
+\fontscheme default
+\graphics default
+\paperfontsize default
+\spacing single 
+\papersize Default
+\paperpackage a4
+\use_geometry 0
+\use_amsmath 0
+\use_natbib 0
+\use_numerical_citations 0
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\quotes_times 2
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+
+\layout Chapter
+
+Introduction
+\layout Standard
+
+This histogram package originated from the ARCS 
+\begin_inset Foot
+collapsed true
+
+\layout Standard
+
+A direct-geometry time-of-flight neutron spectrometry
+\end_inset 
+
+ reduction package, which can be used to reduce inelastic neutron scattering
+ data to 
+\begin_inset Formula $S(Q,E)$
+\end_inset 
+
+.
+ 
+\layout Standard
+
+Histograms are common in scientific and business computations.
+ In experimental science, results of measurements are usually histograms.
+ The purpose of the histogram package is to provide a python representation
+ of histogram.
+ One difficulty of implementing histogram is that a histogram usually contains
+ a large chunk of data, and such data can be represented in various ways
+ (c/fortran/c++).
+ A goal here is to factor out that detail so that the histogram class is
+ independent of array implementations.
+\layout Standard
+
+Histogram itself is mostly a container of information, including axes, data,
+ error bars, etc.
+ Histogram package is mostly intended for providing this data structure,
+ but it also provides a simple GUI interface to look at the data in the
+ histogram.
+\layout Standard
+
+For convenience, numerical operators like 
+\begin_inset Formula $+,-,\times,\div$
+\end_inset 
+
+, and simple math functions like 
+\shape italic 
+sum
+\shape default 
+ and 
+\shape italic 
+average
+\shape default 
+ should be provided for histogram class.
+ Multiple-dimensional histogram is quite common in scientific computing,
+ and should be supported.
+ Slicing is an important operation that is very useful 
+\begin_inset Foot
+collapsed true
+
+\layout Standard
+
+For example, high dimensional histogram could be reduced to lower dimension
+ for better understanding using slicing.
+\end_inset 
+
+ and should be supported too.
+ It is very important that error bars are propagated in any of these operations.
+\layout Chapter
+
+Usage of histogram (Use cases)
+\layout Standard
+
+
+\shape italic 
+Programatically
+\layout Standard
+
+We expect histogram to be used in basic data analysis procedures.
+ Reduction is one such procedure that transform measured histograms to histogram
+s that are more human-understandable.
+ A typical case of reduction is to reduce a diffraction raw data, 
+\begin_inset Formula $I(pixel)$
+\end_inset 
+
+, to a diffraction pattern, 
+\begin_inset Formula $I(2\theta)$
+\end_inset 
+
+.
+ In the procedure of reduction, various kind of operations will be done
+ to histograms, including numerical operations, slicings, and directly accessing
+ big data arrays in the histogram:
+\layout Paragraph
+
+Numerical operations:
+\layout LyX-Code
+
+h *= 3.1
+\layout LyX-Code
+
+h += h1
+\layout LyX-Code
+
+h3 = h1 - h2
+\layout Paragraph
+
+Slicing:
+\layout LyX-Code
+
+sh1 = h[SlicingInfo( (1.5, 3.5) )]
+\layout LyX-Code
+
+sh2 = h[SlicingInfo( (1, 3.5) ), 10.0]
+\layout Paragraph
+
+Acessing data:
+\layout LyX-Code
+
+datastorage = h.data().storage() # an NdArray instance
+\layout LyX-Code
+
+errsstorage = h.errors().storage() # an NdArray instance
+\layout Standard
+
+
+\shape italic 
+Interactively
+\shape default 
+ 
+\layout Standard
+
+We expect that users might want to manipulate histograms interactively and
+ perform numerical operations and slicings.
+ Users will be able to perform those operations in the python command line
+ environment or the histogram GUI.
+\layout Standard
+
+Users of histogram might also like to interactively view and investigate
+ a small portion of a histogram.
+ Plotting and zooming functionalities are needed.
+ Slicing capability is useful too.
+ Users will be able to perform those operations in the python command line
+ environment or the histogram GUI.
+\layout Standard
+
+Here is a list of operations that are useful:
+\layout Itemize
+
+Load histogram from file 
+\layout Itemize
+
+View 1-D histogram 
+\layout Itemize
+
+View 2-D histogram 
+\layout Itemize
+
+Customize plot 
+\layout Itemize
+
+Change title 
+\layout Itemize
+
+Change axis labels 
+\layout Itemize
+
+Save image to a file 
+\layout Itemize
+
+Make slices of histograms
+\layout Chapter
+
+Design
+\layout Standard
+
+To further this discussion, we need to first clearly define what do we mean
+ here by "histogram".
+ The result of any measurement is actually a histogram, by which we mean
+ we have data in some bins.
+ For example, if we measure a spectrum with 
+\begin_inset Formula $x$
+\end_inset 
+
+-axis being time-of-flight, we will get an array of counts, while each element
+ in that array represents the number of counts measured in a predefined
+ time slot (bin).
+ This array of counts can be approximated by
+\layout Standard
+
+
+\begin_inset Formula \begin{equation}
+\frac{dI}{dx}(x)\Delta x\end{equation}
+
+\end_inset 
+
+ where 
+\begin_inset Formula $\frac{dI}{dx}$
+\end_inset 
+
+ is a density function and 
+\begin_inset Formula $\Delta x$
+\end_inset 
+
+ is bin size.
+ This observation forms the base of our design of histogram classes.
+\layout Standard
+
+In a more mathematical form, we can describe a histogram as a mapping from
+ an area (rectagular) in a phase space to a 
+\begin_inset Formula $\Re^{2}$
+\end_inset 
+
+:
+\begin_inset Formula \[
+\mathcal{D}\rightarrow\Re^{2}\]
+
+\end_inset 
+
+This statement is not complete without following constraints:
+\layout Enumerate
+
+in each direction (axis) of the phase space, the axis is discretized to
+ 
+\series bold 
+bins
+\series default 
+;
+\layout Enumerate
+
+the 
+\begin_inset Formula $\Re^{2}$
+\end_inset 
+
+ represents the 2-tuple of the data and the error bar;
+\layout Standard
+
+It is apparent that two kinds of information are critical here:
+\layout Enumerate
+
+the big multiple-dimensional array that keeps the data and the error bars.
+ It maps integer indexes to floating numbers of data or error bar;
+\layout Enumerate
+
+the axis that holds the information about bins.
+ It maps bins to integer indexes.
+\layout Standard
+
+Therefore, we need at least two data structures: NdArray and Axis:
+\layout Itemize
+
+NdArray: map 
+\begin_inset Formula $N$
+\end_inset 
+
+-tuple of integer indexes to a floating number.
+ Here 
+\begin_inset Formula $N$
+\end_inset 
+
+ is the number of dimension.
+\layout Itemize
+
+Axis: map bins of physical quantity to index.
+\layout Standard
+
+Let us rethink this break-down a little bit more to see if it is reasonable.
+ First off, NdArray is a data structure that is pretty fundamental.
+ It is just a multiple-dimensional array.
+ I don't think we can break it down more.
+ We may want to add capabilities like numerical operators, iterators, slicing
+ mechanisms to this data structure, because all of them are needed by histogram,
+ and they certainly can be useful for other applications.
+ The remained data structure, Axis, deserves more thoughts.
+ Axis is the thing that brings physical meaning to histogram.
+ Up to this point, we think of an axis as a mapping from bins to indexes.
+ But if we think about Axis without the context of 
+\begin_inset Quotes eld
+\end_inset 
+
+histogram
+\begin_inset Quotes erd
+\end_inset 
+
+, then we find that the notion of 
+\begin_inset Quotes eld
+\end_inset 
+
+bins
+\begin_inset Quotes erd
+\end_inset 
+
+ are actually special for Histogram.
+ An axis should have a name and a unit to denote its physical meaning.
+ For example, name =
+\begin_inset Quotes eld
+\end_inset 
+
+Neutron Energy
+\begin_inset Quotes erd
+\end_inset 
+
+, unit=
+\begin_inset Quotes eld
+\end_inset 
+
+meV
+\begin_inset Quotes erd
+\end_inset 
+
+ should give us a pretty good idea of the meaning of an axis.
+ So one good design could be to define a more abstract Axis, and inherit
+ from it and get a special Axis for Histogram that contains info for bins.
+ So we should have AbstractAxis and AxisWithBins.
+ If we take one more minute to think about it, AxisWithBins is a special
+ case of discretized axis.
+ In many cases, an axis can be discretized to points instead of bins.
+ So we should have another class AbstractDiscretizedAxis.
+\layout Standard
+
+In summary, we have identified two fundamental data structures up to this
+ point: NdArray and Axis.
+ But that is not enough.
+ One thought is that on top of Axis and NdArray, what can we get? Actually
+ there are some similar data structures: spectrum, data grid, etc.
+ We should attack this design in a more generic sense.
+ Mathematically, we can denote a histogram as a collection of 
+\layout Standard
+
+
+\begin_inset Formula \[
+I(x_{i},\: y_{j},\: z_{k},\:...)\]
+
+\end_inset 
+
+and
+\begin_inset Formula \[
+\sigma_{I}^{2}(x_{i},\: y_{j},\: z_{k},\:...)\]
+
+\end_inset 
+
+where 
+\begin_inset Formula $i,j,k,...$
+\end_inset 
+
+ are indexes of discrete physical quantities of all axes, 
+\begin_inset Formula $x_{i},y_{j},z_{k},...$
+\end_inset 
+
+ are values of physical quantities.
+ It is quite similar to the following equation we use to describe a field:
+\begin_inset Formula \[
+f=\phi(x,\: y,\: z,\:...)\]
+
+\end_inset 
+
+Here, 
+\begin_inset Formula $f;\: x,\: y,z,\:...$
+\end_inset 
+
+ all represent physical quantities.
+ Therefore, it is natural to have a base class PhysicalQuantity.
+ And an AbstractField class would be a subclass of PhysicalQuantity, and
+ it enforces an interface with a method to return the value of 
+\begin_inset Formula $f$
+\end_inset 
+
+ given values of 
+\begin_inset Formula $x,\: y,z,\:...$
+\end_inset 
+
+, by somehow evaluating function 
+\begin_inset Formula $\phi$
+\end_inset 
+
+.
+ This is quite useful if we know the form of function 
+\begin_inset Formula $\phi$
+\end_inset 
+
+, and therefore would be useful for theoretical physics.
+ But in experimental science, what we obtain usually is physical quantity
+ 
+\begin_inset Formula $f$
+\end_inset 
+
+ in a discretized manner:
+\begin_inset Formula \[
+f_{ijk...}=\phi(x_{i},\: y_{j},\: z_{k},\:...)\]
+
+\end_inset 
+
+ Therefore, we have introduced AbstractFieldOnGrid.
+ An implementation of abstract class AbstractFieldOnGrid is FieldOnGrid,
+ which contains a NdArray instance to represent the multiple dimensional
+ array 
+\begin_inset Formula $f_{ijk...}$
+\end_inset 
+
+, and a list of axes for 
+\begin_inset Formula $\{ x_{i}\},\:\{ y_{j}\},\:\{ z_{k}\},\:...$
+\end_inset 
+
+ In implementation of FieldOnGrid, we must make it clear how indexes of
+ axes correspond to the indexes in multiple dimensional array 
+\begin_inset Formula $f_{ijk...}$
+\end_inset 
+
+
+\layout Standard
+
+Figure 
+\begin_inset LatexCommand \ref{cap:histogram-class-diagram-new}
+
+\end_inset 
+
+ is the class diagram of histogram package.
+\layout Standard
+
+
+\begin_inset Float figure
+wide false
+collapsed false
+
+\layout Standard
+
+
+\begin_inset Graphics
+	filename uml/histogram-class-diagram-new2.eps
+	width 14cm
+	keepAspectRatio
+
+\end_inset 
+
+
+\layout Caption
+
+
+\begin_inset LatexCommand \label{cap:histogram-class-diagram-new}
+
+\end_inset 
+
+Histogram class diagram
+\end_inset 
+
+
+\layout Standard
+
+In comparison, the original class diagram is in Figure 
+\begin_inset LatexCommand \ref{cap:histogram-class-diagram}
+
+\end_inset 
+
+.
+\layout Standard
+
+
+\begin_inset Float figure
+wide false
+collapsed false
+
+\layout Standard
+
+
+\begin_inset Graphics
+	filename uml/histogram-class-diagram.eps
+	width 15cm
+	keepAspectRatio
+
+\end_inset 
+
+
+\layout Caption
+
+
+\begin_inset LatexCommand \label{cap:histogram-class-diagram}
+
+\end_inset 
+
+Histogram class diagram
+\end_inset 
+
+
+\layout Standard
+
+Things to note:
+\layout Itemize
+
+Histograms have 
+\begin_inset Quotes eld
+\end_inset 
+
+meta-data
+\begin_inset Quotes erd
+\end_inset 
+
+.
+ Those 
+\begin_inset Quotes eld
+\end_inset 
+
+meta-data
+\begin_inset Quotes erd
+\end_inset 
+
+ are stored in DictAttributeCont instances.
+\layout Itemize
+
+FiledOnGrid contains a storage (NdArray instance) and represents a physical
+ quantity filed.
+\layout Itemize
+
+AxisWithBins represents a physical quantity too.
+ It contains a list of bins for that axis.
+ It has convenient methods like binCenters and binBoundaries.
+ It is an implementation of AbstractDiscretizedAxis, which represents any
+ axis that is discretized somehow.
+ AbstractDiscretizedAxis is a subclass of AbstractAxis.
+\layout Itemize
+
+Histogram contains two fileds-on-grid to store data and error bars.
+ It has a container of attributes to store meta-data.
+\layout Itemize
+
+Numerical operations on histogram are implemented by performing numerical
+ operations on FieldOnGrid.
+ Numerical operations on FieldOnGrid are implemented by performing numerical
+ operations on NdArray instances.
+ Error propagations are automatically performed for histograms.
+\layout Itemize
+
+NdArray has an abstract interface.
+ Histograms and FieldOnGrid only use those interface.
+ Solid implementations of NdArray must provide those methods defined in
+ the abstract interface.
+\layout Itemize
+
+Slicing on FieldOnGrid are implemented by performing slicing on its NdArray
+ and axes.
+ 
+\layout Itemize
+
+There are two different kinds of axis.
+ The usual case is that an axis represents a continuous physical quantity
+ (energy, time, momentum, etc.), and the axis instance contains a storage
+ of bin boundaries.
+ The size of that storage is then 
+\begin_inset Formula $n+1$
+\end_inset 
+
+, where 
+\begin_inset Formula $n$
+\end_inset 
+
+ is the number of bins.
+ In some situation an axis can represent a discrete physical quantity (detector
+ ID, pixel ID, etc.), and the axis instance contains a storage of those discrete
+ numbers.
+ At the end of that storage, a number (any number) will be appended to make
+ sure that the size of the storage is also 
+\begin_inset Formula $n+1$
+\end_inset 
+
+, where 
+\begin_inset Formula $n$
+\end_inset 
+
+ is the number of bins.
+ 
+\layout Itemize
+
+Slicing on histogram using axes coordinates actually requires mapping of
+ value to index.
+ For example, suppose we have an axis E (energy), its bin boundaries are
+ [0.5, 1.5, 2.5, 3.5].
+ We would like to map value 1.0 to index 0, 2.0 to index 1, etc etc.
+ This mapping is done in AxisMapper.
+ Because theree are two kinds of axes (continuous physical quantity and
+ discrete physical quantity), there are two different axis mappers.
+\layout Itemize
+
+Histogram can only represent a rectangular region in a phase space.
+ This is usually good enough.
+ Sometimes, however, we have to represent a dataset in a non-rectangular
+ region in a phase space.
+ In those cases, if the non-rectangular region can be easily divided to
+ several rectangular regions, we can use HistCollection.
+ HistCollection is a collection of histograms.
+\layout Itemize
+
+Histogram slicing could happen in two ways.
+ Let us suppose we have a histogram that represents 
+\begin_inset Formula $I(2\theta)$
+\end_inset 
+
+.
+ Suppose the axis 
+\begin_inset Formula $2\theta$
+\end_inset 
+
+ has bin boundaries [10., 20., 30., ..., 120.].
+ We could do a slicing using bin indexes: I[ 2:5 ] --> 
+\begin_inset Formula $I(2\theta)$
+\end_inset 
+
+ curve for 
+\begin_inset Formula $2\theta=$
+\end_inset 
+
+[30., 40., 50.].
+ We could also do a slicing using axis values: I[10.:50.]--> 
+\begin_inset Formula $I(2\theta)$
+\end_inset 
+
+ curve for 
+\begin_inset Formula $2\theta=$
+\end_inset 
+
+[10.,20.,30.,40., 50.].
+ We don't want to confuse users with these two cases.
+ Currently the solution is that we only support the latter case, and the
+ latter case will be done by using 
+\begin_inset Quotes eld
+\end_inset 
+
+SlicingInfo
+\begin_inset Quotes erd
+\end_inset 
+
+, i.e., instead of 
+\begin_inset Quotes eld
+\end_inset 
+
+I[10.:50.]
+\begin_inset Quotes erd
+\end_inset 
+
+, we require 
+\begin_inset Quotes eld
+\end_inset 
+
+I[SlicingInfo((10.,50.)]
+\begin_inset Quotes erd
+\end_inset 
+
+.
+ Please also note that slicing using axis values is inclusive at both ends
+ (compared to normal python list slicing that is inclusive at front but
+ exclusive at back: [1 : 4] = 1, 2, 3)
+\the_end

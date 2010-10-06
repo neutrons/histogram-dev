@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="us-ascii" ?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
+[
+<!ENTITY Introduction SYSTEM "Introduction.xml">
+<!ENTITY CommandlineInterface SYSTEM "CommandlineInterface.xml">
+<!ENTITY HistogramGUI SYSTEM "HistogramGUI.xml">
+]>
+
+<book>
+
+<bookinfo>
+<title> Histogram: User's Guide</title>
+</bookinfo>
+ 
+&Introduction;
+&CommandlineInterface;
+&HistogramGUI;
+
+
+</book>

@@ -1,0 +1,48 @@
+// -*- C++ -*-
+//
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+//                                   Jiao Lin
+//                      California Institute of Technology
+//                        (C) 2007  All Rights Reserved
+//
+// {LicenseText}
+//
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+
+#ifndef DANSE_HISTOGRAM_ARRAY_1D_ICC
+#error Array_1D.icc meaningless outside Array_1D.h
+#endif
+
+#include <sstream>
+
+
+namespace DANSE { 
+
+  namespace Histogram {
+
+    template <typename Iterator, typename DataType, typename Size>
+    void 
+    Array_1D<Iterator, DataType, Size>::_throw_out_of_bound
+    (const Size & index) 
+      const
+      throw (OutOfBound)
+    {
+      std::ostringstream oss;
+      oss << "Array_1D: "
+	  << "index = " << index << ", ";
+
+      oss << "size = " << m_size;
+
+      throw OutOfBound( oss.str().c_str() );
+    }
+    
+  } // Histogram:
+} // DANSE:
+
+
+// version
+// $Id$
+
+// End of file 

@@ -1,0 +1,94 @@
+// -*- C++ -*-
+//
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+//                                   Jiao Lin
+//                      California Institute of Technology
+//                        (C) 2007  All Rights Reserved
+//
+// {LicenseText}
+//
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+
+#ifndef HISTOGRAM_NDARRAYSLICE_H
+#error NdArraySlice.icc not meaningful outside of NdArraySlice.h
+#else
+
+
+
+
+template <typename NdArray, typename DataType, typename IndexType>
+DANSE::Histogram::NdArraySlice<NdArray, DataType, IndexType>::NdArraySlice
+( NdArray & data, const std::vector<int> & indexes )
+  : m_data(data)
+{
+  assert ( indexes.size() == data.dimension() );
+
+  m_t_indexes.resize( data.dimension() );
+
+  for (index_t originalaxis=0; originalaxis<data.dimension(); originalaxis++) {
+    if (indexes[originalaxis] < 0) {
+      m_axismap.push_back( originalaxis );
+      m_shape.push_back( data.shape()[ originalaxis ] );
+    } else {
+      m_t_indexes[ originalaxis ] = indexes[originalaxis] ;
+    }
+  }
+}
+
+
+template <typename NdArray, typename DataType, typename IndexType>
+IndexType
+DANSE::Histogram::NdArraySlice<NdArray, DataType, IndexType>::dimension() const
+{
+  return m_shape.size();
+}
+
+
+template <typename NdArray, typename DataType, typename IndexType>
+const IndexType *
+DANSE::Histogram::NdArraySlice<NdArray, DataType, IndexType>::shape() const
+{
+  return &(m_shape[0]);
+}
+
+
+template <typename NdArray, typename DataType, typename IndexType>
+const DataType &
+DANSE::Histogram::NdArraySlice<NdArray, DataType, IndexType>::operator [] 
+( const std::vector<index_t> & indexes) const
+{
+  static std::vector< index_t > allindexes;
+
+  assert (indexes.size() == dimension() );
+
+  allindexes = m_t_indexes;
+
+  for (index_t axis=0; axis<dimension(); axis++) {
+    allindexes[ m_axismap[axis] ] = indexes[axis];
+  }
+  return m_data[ allindexes ];
+}
+
+
+template <typename NdArray, typename DataType, typename IndexType>
+DataType & 
+DANSE::Histogram::NdArraySlice<NdArray, DataType, IndexType>::operator [] 
+( const std::vector<index_t> & indexes) 
+{
+  assert (indexes.size() == dimension() );
+  for (index_t axis=0; axis<dimension(); axis++) {
+    m_t_indexes[ m_axismap[axis] ] = indexes[axis];
+  }
+  return m_data[ m_t_indexes ];
+}
+
+
+
+#endif 
+
+// version
+// $Id$
+
+// End of file 

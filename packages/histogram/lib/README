@@ -1,0 +1,32 @@
+c++ library for histogram-related stuff
+
+A histogram is thought to be data defined on grid, or griddata.
+
+A griddata represents a mapping: 
+  lambda: x,y,... --> f
+
+A griddata is decomposed to axis mappers and a multidimensional array.
+An axis mapper maps a value (of x, or y, or ...) to index.
+The multidimensional array maps the indexes to a value of f.
+
+The data objects underlying GridData data objects are:
+
+ - AxisMapper
+ - NdArray
+
+
+AxisMapper is an abstract base class. EvenlySpacedAxisMapper is a useful implementation.
+
+NdArray is a template for multidimensional array that takes a 1D array
+and view it as a nD array.
+
+Array_1D can be seen as a special case of NdArray.
+
+The most-commonly-used GridData objects are EvenlySpacedGridData objects.
+For EvenlySpacedGridData, Axes are evenly spaced.
+They can be used to represent
+I(tof)
+I(detID, pixelID, tof)
+I(Q,E)
+etc etc.
+

@@ -1,0 +1,29 @@
+# -*- Makefile -*-
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+#                               Michael A.G. Aivazis
+#                        California Institute of Technology
+#                        (C) 1998-2003  All Rights Reserved
+#
+# <LicenseText>
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+
+# vtf
+#    VTF_PACKAGES = debug
+#    include vtf/default.def
+
+# Python
+    include Python/default.def
+
+# C++
+    PROJ_CXX_INCLUDES = ..
+#header directory of numpy
+    PROJ_CXX_INCLUDES += $(NUMPY_INCDIR)
+
+# version
+# $Id: local.def 33 2006-08-06 17:42:51Z linjiao $
+
+# End of file

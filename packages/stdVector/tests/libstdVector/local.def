@@ -1,0 +1,21 @@
+# -*- Makefile -*-
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+#                               Michael A.G. Aivazis
+#                        California Institute of Technology
+#                        (C) 1998-2003  All Rights Reserved
+#
+# <LicenseText>
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+
+PROJ_CXX_INCLUDES += . ../../libstdVector
+PROJ_CXX_INCLUDES += ${addprefix ${BLD_INCDIR}/,ARCSTest} ${addprefix ${BLD_INCDIR}/,journal} ../../../fpset/src
+
+
+# version
+# $Id: local.def 44 2005-02-07 21:14:12Z tim $
+
+# End of file

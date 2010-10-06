@@ -1,0 +1,42 @@
+>>> import histogram
+>>> import histogram as H
+>>> help(H.histogram)
+>>> h = H.histogram( 'h', [ ('x', H.arange(1,2, 0.1) ) ] )
+>>> h = H.histogram( 'h', [ ('x', H.arange(1,2, 0.1) ) ], data = H.arange(10) )
+>>> h = H.histogram( 'h', [ ('x', H.arange(1,2, 0.1) ) ], fromfunction= lambda x: x*x )
+>>> h = H.histogram( 'h', [ ('x', H.arange(1,2, 0.1) ) ], fromfunction= (lambda x: x*x, lambda x: x*x) )
+
+>>> xaxis = H.axis( 'x', centers = H.arange(10) )
+>>> xaxis = H.axis( 'x', boundaries = H.arange(10) )
+>>> xaxis = H.axis( 'x', boundaries = H.arange(10), unit= 'meter' )
+>>>  h = H.histogram( 'h', [xaxis], data = H.arange(9) )
+>>> qx = H.axis( 'Qx', arange(-10, 10) )
+Traceback (most recent call last):
+  File "<stdin>", line 1, in ?
+NameError: name 'arange' is not defined
+>>> qx = H.axis( 'Qx', H.arange(-10, 10) )
+>>> xaxis = H.axis( 'x', H.arange(0, 30), unit='angstrom' )
+>>> yaxis = H.axis( 'y', H.arange(0, 30), unit='angstrom' )
+>>> zaxis = H.axis( 'z', H.arange(0, 30), unit='angstrom' )
+>>> taxis = H.axis( 't', H.arange(0, 100), unit = 'picosecond')
+>>> grt = H.histogram( 'grt', [xaxis, yaxis, zaxis, taxis], data = rand(30,30,30 ,100) )
+Traceback (most recent call last):
+  File "<stdin>", line 1, in ?
+NameError: name 'rand' is not defined
+>>> import numpy.rand as NR
+Traceback (most recent call last):
+  File "<stdin>", line 1, in ?
+ImportError: No module named rand
+>>> import numpy.random as NR
+>>> grt = H.histogram( 'grt', [xaxis, yaxis, zaxis, taxis], data = NR.rand(30,30 ,30,100) )
+>>> from histogram.plotter import defaultPlotter
+>>> gxt = grt[ (), 0, 0, ()]
+>>> defaultPlotter.plot( gxt )
+plot z in (0.000210738134932, 0.999992650728)
+>>> grt.x
+>>> grt.I
+>>> grt2 = grt*(2,0)
+>>> grt3 = grt/(3,3)
+>>> grt4 = grt2+grt3
+
+>>> grt[0,0,0,0] = 1,2

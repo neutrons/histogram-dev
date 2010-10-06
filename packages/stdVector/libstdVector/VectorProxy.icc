@@ -1,0 +1,100 @@
+// -*- C++ -*-
+//
+// Jiao Lin
+// for connecting raw pycobject with pointer to stdvector to Tim's stdVector
+
+
+#ifndef H_STDVECTOR_VECTORPROXY
+#error  VectorProxy.icc has no meaning outside VectorProxy.h
+#else
+
+
+#include <portinfo>
+
+
+//#include "VectorProxy.h"
+#ifdef BLD_PROCEDURE
+//#include "journal/info.h"
+#include "journal/debug.h"
+#endif
+
+
+namespace
+{
+#ifdef BLD_PROCEDURE
+  using journal::at;
+  using journal::endl;
+#endif
+
+  template <typename NumT>
+  std::vector<NumT> * extractVector( PyObject *vector_pycobject )
+  {
+    std::vector<NumT> * res = 
+      static_cast< std::vector<NumT> * > 
+      ( PyCObject_AsVoidPtr( vector_pycobject ) );
+    return res;					  
+  }
+} // anonymous::
+
+
+namespace ARCSStdVector
+{
+  template <typename NumT>
+  VectorProxy<NumT>::VectorProxy( std::vector<NumT> *pvec, int type, 
+				  PyObject *vector_pycobject)
+    : VectorWrapper<NumT>( pvec, type, false ), // isowner = false
+      m_underlying_vector_pycobject( vector_pycobject )
+  {
+    Py_INCREF( m_underlying_vector_pycobject );
+#ifdef BLD_PROCEDURE
+    journal::debug_t debug("ARCSStdVector");
+    debug << at(__HERE__) << __FUNCTION__  << " type: " << type
+	  << ", pvec: " << pvec << endl;
+#endif
+  }
+  
+  // do not delete the underlying pointer
+  template <typename NumT>
+  VectorProxy<NumT>::~VectorProxy()
+  {
+    Py_DECREF( m_underlying_vector_pycobject );
+    return;
+  }
+
+
+  template <typename NumT>
+  PyObject *createVectorProxy( PyObject *vector_pycobject, int type)
+  {
+#ifdef BLD_PROCEDURE
+    journal::debug_t debug("ARCSStdVector");
+#endif
+    
+    std::vector<NumT> *pvec = extractVector<NumT>(vector_pycobject);
+
+    VectorProxy<NumT> *pvw = new VectorProxy<NumT>( pvec, type, vector_pycobject);
+
+#ifdef BLD_PROCEDURE
+    debug <<  at(__HERE__) << __FUNCTION__ << "New vector proxy is created at " << pvw << endl;
+#endif
+
+    PyObject *pobj = 
+      PyCObject_FromVoidPtr( pvw, deleteHeapObj<VectorProxy<NumT> >);
+
+
+    // this is commented out because it will look confusing it seems to be not deleted.
+    // actually it is deleted by Python API, and we won't see any message out of that.
+// #ifdef BLD_PROCEDURE
+//     debug <<  at(__HERE__) << __FUNCTION__ << "New PyCObject for the new vector proxy is created at  " << pobj << endl;
+// #endif
+
+    return pobj;
+  }
+
+}
+
+#endif
+
+// version
+// $Id: utils.cc 141 2005-07-08 22:32:11Z linjiao $
+
+// End of file

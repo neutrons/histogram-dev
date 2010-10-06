@@ -1,0 +1,59 @@
+// T. M. Kelley tkelley@caltech.edu (c) 2004
+
+#ifndef ARCSSLICE_ICC
+#error template definitions meaningless outside slice.h
+#endif
+
+#ifndef STRING_INCLUDED
+#define STRING_INCLUDED
+#include <string>
+#endif
+#ifndef STRINGSTREAM_INCLUDED
+#define STRINGSTREAM_INCLUDED
+#include <sstream>
+#endif
+
+namespace ARCSStdVector
+{
+    template <typename NumT>
+    void extractSlice( std::vector<NumT> const & source,
+                       std::vector<NumT> & target,
+                       std::slice const & slice)
+    {
+        if (source.size() <= slice.start() + (slice.size()-1)*slice.stride())
+        {
+            std::stringstream errstr;
+            errstr << "extractSlice: slice with start " << slice.start() 
+                   << ", size " << slice.size() << ", stride " 
+                   << slice.stride() << " too large for source of size "
+                   << source.size();
+            throw errstr.str();
+        }
+        if ( slice.stride() == 1)
+        {
+            target.assign( &source[ slice.start()],
+                           &source[ slice.start()+slice.size()]);
+        }
+        else
+        {
+            size_t srcIdx = slice.start();
+            size_t strd = slice.stride();
+            if( target.size() != slice.size())
+            {
+                target.resize( slice.size());
+            }
+            for( size_t trgIdx = 0; trgIdx < slice.size(); 
+                 ++trgIdx, srcIdx += strd)
+            {
+                target[trgIdx] = source[srcIdx];
+            }
+        }
+        return;
+    } // extractSlice( ...)
+}
+
+
+// version
+// $Id: slice.icc 96 2005-07-05 21:07:15Z tim $
+
+// End of file

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="us-ascii" ?>
+
+<!--
+
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                                   Jiao Lin
+                      California Institute of Technology
+                        (C) 2007 All Rights Reserved
+
+ {LicenseText}
+
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-->
+
+
+<chapter>
+
+  <title>Introduction</title>
+
+<para>
+This python package provides a fundamental data object
+for scientific computing: histogram.
+A histogram object is a container of data, error bars, and axes.
+With this package, you can create and manipulate histograms,
+and apply numerical operators to histograms.
+The datasets in a histogram can be easily retrieved as 
+<ulink url='http://numpy.org'>numpy</ulink> arrays.
+The meta data of a histogram are accessible through member
+functions of the histogram and the associated data objects.
+</para>
+
+<para>
+This package is developed in the 
+<ulink url="http://danse.us">DANSE</ulink> package
+as the fundamental data object for 
+    <ulink url='http://danse.us/trac/DrChops'>
+      DrChops
+    </ulink>
+, a reduction software for direct-geometry neutron chopper spectrometers.
+  </para>
+
+  <para>
+    A user can access a histogram through its public interface
+    using the python shell. 
+    Here is an example of a  python session:
+  </para>
+
+  <programlisting>
+    from histogram import histogram, axis
+    taxis = axis('t', [1.,2.,3.], unit='second')
+    axes = [taxis]
+    data = [3, 10, 5]
+    errs = [3, 10, 5]
+    h = histogram( "intensity", axes, data, errs)
+    print h
+    help(h)
+  </programlisting>
+
+  <para>
+    For more details about how to manipulate histograms 
+    from the python command line, please read
+    <xref linkend="histogram.CommandlineInterface"/>.
+    Histograms can also be accessed from the Histogram GUI application,
+    which may be more convenient and interactive.
+    The <xref linkend='HistogramGUI'/> has more details about that.
+  </para>
+  
+</chapter>
+

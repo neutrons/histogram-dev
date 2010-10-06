@@ -1,0 +1,27 @@
+#open histogram gui
+
+from histogram import histogram, arange
+
+h1 = histogram('h1', [('x', arange(10))], unit = 10 )
+h1.I[:] = arange(10) ** 2
+
+h2 = histogram('h2', [('x', arange(10))], unit = 1)
+h2.I[:] = arange(10) ** 2 * 10
+
+#click on h1, then
+pylab.plot( h2 )
+
+#two curves should overlap
+
+
+
+h3 = histogram('h3', [('x', arange(10))], unit = '10*meter' )
+h3.I[:] = arange(10) ** 2
+
+h4 = histogram('h4', [('x', arange(10))], unit = '1*meter' )
+h4.I[:] = arange(10) ** 2 * 10
+
+#click on h3, then
+pylab.plot( h4 )
+
+#two curves should overlap

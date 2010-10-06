@@ -1,0 +1,41 @@
+= Histogram GUI Use Cases =
+
+ * load histogram from file
+ * View 1-D histogram
+ * View 2-D histogram
+ * Customize plot 
+   * change title
+   * change axis labels
+ * Save image to a file
+ * make slices of histograms
+
+== More details about customization of plots ==
+
+(revised from Olivier's comments in ticket #130)
+
+===  Plot Raw data I(phi, pixel, tof) ===
+
+ 1. image plot of I(phi, tof) in false colors:
+   * choose orientation of plot I or I{transpose}
+   * choose range for axes
+   * (choose tick marks spacing / add minor tick marks)
+   * label axes
+   * title
+   * *add colorbar*
+   * choose range of color coding (ie: clim(min, max))
+   * choose color palette (different color palettes render the faint details better than others)
+   * choice of plotting intensity I or Sqrt(I) or Ln(I) (if no zeroes)
+ 1. simple X-Y plot of I(tof):
+   * choose the Y-range with zooming option (for example as implemented in PharosPlotI_tof.py) since the background is much smaller than elastic peak
+   * change the X-range
+
+
+=== Reduced data ===
+
+ 1. image plots for S(Q,E), S(phi, E):	
+   * all of the above for image plot of raw data
+ 1. Add:
+   * plot of S(Q) for E around the elastic line (diffraction pattern), requires choice of energy range around zero.
+   * plot of S(E) 
+   * for both S(E), S(Q), choose the Y-range
+   * especially for S(E), add error bars on plot *this is very useful to estimate wether statistics are good enough during experiment*

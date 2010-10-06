@@ -1,0 +1,215 @@
+// T. M. Kelley tkelley@caltech.edu (c) 2004
+
+
+#ifndef ARCSSTDVECTORUTILS_H
+#error  utils.icc has no meaning outside utils.h
+#else
+
+
+//#include "utils.h"
+#ifdef BLD_PROCEDURE
+//#include "journal/info.h"
+#include "journal/debug.h"
+#endif
+
+
+namespace
+{
+    using journal::at;
+    using journal::endl;
+
+// #ifdef BLD_PROCEDURE
+//    journal::info_t info("ARCSStdVector");
+//    journal::debug_t debug("ARCSStdVector");
+    bool havejournal = true;
+//     using journal::at;
+    using journal::endl;
+// #else
+//     bool havejournal = false;
+// #endif
+
+    // magic number for VectorWrapper class
+    const int VW_MAGIC = 15259362;
+    // magic number VectorIteratorWrapper
+    const int VIW_MAGIC = 13929362;
+
+
+    template <typename T>
+    void deleteHeapObj( void *ptr)
+    {
+        journal::debug_t debug("ARCSStdVector");
+        T *oldt = static_cast<T*>( ptr);
+        debug << at(__HERE__) << "deleting object at" << ptr << endl;
+        delete oldt;
+        return;
+    }
+} // anonymous::
+
+namespace ARCSStdVector
+{
+
+    template <typename NumT>
+    VectorWrapper<NumT>::VectorWrapper( std::vector<NumT> *pvec, int type, bool isowner)
+      : ObjectWrapper( VW_MAGIC, type), m_pvec( pvec), m_isowner(isowner)
+    {
+        journal::debug_t debug("ARCSStdVector");
+        if (havejournal) 
+            debug << at(__HERE__) << __FUNCTION__  << " type: " << type 
+                  << ", pvec: " << pvec << endl;
+    }
+
+    template <typename NumT>
+    VectorWrapper<NumT>::~VectorWrapper()
+    {
+        journal::debug_t debug("ARCSStdVector");
+
+        if(havejournal) 
+            debug << at(__HERE__) << __FUNCTION__ 
+                  << " Deleting vector at " << m_pvec << endl;
+        if (m_isowner) delete m_pvec;
+        return;
+    }
+
+    template <typename Iterator>
+    IteratorWrapper<Iterator>::IteratorWrapper( Iterator *pit, int type)
+    : ObjectWrapper( VIW_MAGIC, type), m_pit( pit)
+    {
+        journal::debug_t debug("ARCSStdVector");
+
+        if (havejournal) 
+            debug << at(__HERE__) << __FUNCTION__  
+                  << " IteratorWrapper::ctor type: " << type
+                  << ", pit: " << pit << endl;
+    }
+
+    template <typename Iterator>
+    IteratorWrapper<Iterator>::~IteratorWrapper()
+    {
+        journal::debug_t debug("ARCSStdVector");
+
+        if(havejournal) 
+            debug << at(__HERE__) << __FUNCTION__ 
+                  << " Deleting iterator at " << m_pit << endl;
+        delete m_pit;
+        return;
+    }
+
+
+    template <typename Iterator>
+    PyObject *wrapIterator( Iterator *pit, int type)
+    {
+        journal::debug_t debug("ARCSStdVector");
+
+        IteratorWrapper< Iterator> *piw = 
+            new IteratorWrapper<Iterator>( pit, type);
+        if(havejournal)
+        {
+            debug << at(__HERE__) << __FUNCTION__  
+                  << " IteratorWrapper addr "
+                  << piw << ", Iterator addr " << pit << endl;
+            debug << at(__HERE__) << __FUNCTION__  
+                  << " IteratorWrapper says iterator addr "
+                  << piw->m_pit << endl;
+        }
+        return PyCObject_FromVoidPtr( 
+            piw, deleteHeapObj<IteratorWrapper<Iterator> >);
+    }
+
+
+    template <typename Iterator>
+    Iterator *unwrapIterator( PyObject *pypit, int type)
+    {
+        journal::debug_t debug("ARCSStdVector");
+
+        if(havejournal)
+            debug << at(__HERE__) << __FUNCTION__  
+                  << " About to cast pointer" << endl;
+
+        IteratorWrapper< Iterator> *piw = 
+            static_cast< IteratorWrapper<Iterator>*>( 
+                PyCObject_AsVoidPtr( pypit));
+
+        if(havejournal) 
+        {
+            debug << at(__HERE__) << __FUNCTION__
+                  << " IteratorWrapper address: " 
+                  << piw << "Iterator address: " << piw->m_pit << endl;
+        }
+        if( (*piw).m_magicNumber + type == (*piw).m_type) 
+        {
+            debug << at(__HERE__) << __FUNCTION__  << endl;
+            return (*piw).m_pit;
+        }
+        else 
+        {
+            if(havejournal) 
+                debug << at(__HERE__) << __FUNCTION__ 
+                      << " bad magic number:" 
+                      << (*piw).m_type << "; VW_MAGIC + type = "
+                      << VW_MAGIC + type << endl;
+            PyErr_SetString( PyExc_TypeError, 
+                             "ARCSStdVector::unwrapIterator() type does "
+                             "not match object");
+            return 0;
+        }
+        debug << "WARNING: REACHED \"UNREACHABLE\" CODE" << endl;
+    } // Iterator *unwrapIterator( ...
+
+
+    template <typename NumT>
+    PyObject *wrapVector( std::vector<NumT> *pvec, int type)
+    {
+        journal::debug_t debug("ARCSStdVector");
+
+        VectorWrapper<NumT> *pvw = new VectorWrapper<NumT>( pvec, type);
+
+        if(havejournal)
+            debug <<  "New vector wrapper at " << pvw << endl;
+
+        PyObject *pobj = 
+            PyCObject_FromVoidPtr( pvw, deleteHeapObj<VectorWrapper<NumT> >);
+
+        if(havejournal)
+            debug <<  "New vector wrapper PyCO at " << pobj << endl;
+
+        return pobj;
+    }
+
+
+    template <typename NumT>
+    std::vector<NumT> *unwrapVector( PyObject *pyobj, int type)
+    {
+        journal::debug_t debug("ARCSStdVector");
+
+        VectorWrapper<NumT> *pvw = 
+            static_cast<VectorWrapper<NumT>*>( PyCObject_AsVoidPtr(pyobj));
+
+        if( VW_MAGIC + type == (*pvw).m_type)
+        {
+            return (*pvw).m_pvec;
+        }
+        else 
+        {
+            if(havejournal)
+                debug << at(__HERE__) << __FUNCTION__ 
+                      << " bad magic number:" 
+                      << (*pvw).m_type << "; VW_MAGIC + type = "
+                      << VW_MAGIC + type << endl;
+            PyErr_SetString( PyExc_TypeError,
+                             "ARCSStdVector::unwrapVector(): given type "
+                             "does not match object");
+            return 0;
+        }
+    }
+
+}
+
+
+#endif
+
+
+// version
+// $Id: utils.cc 101 2005-07-31 21:39:07Z tim $
+
+// End of file
+
