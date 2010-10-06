@@ -110,19 +110,37 @@ def axis( name, centers = None, unit = None, boundaries = None, attributes=None)
 
 
 
+#def use( factory ):
+#    from ndarray.StdVectorNdArray import NdArray as StdVectorNdArray
+#    from ndarray.NumpyNdArray import NdArray as NumpyNdArray
+#    table = {
+#        'default': NumpyNdArray,
+#        'StdVector': StdVectorNdArray,
+#        'numpy': NumpyNdArray,
+#        }
+#    global _array_factory
+#    _array_factory = table[ factory ]
+#    return
+#_array_factory = None
+#use( 'default' )
+
 def use( factory ):
-    from ndarray.StdVectorNdArray import NdArray as StdVectorNdArray
-    from ndarray.NumpyNdArray import NdArray as NumpyNdArray
+    def useNumpy():
+        from ndarray.NumpyNdArray import NdArray
+        return NdArray
+    def useStdVec():
+        from ndarray.StdVectorNdArray import NdArray
+        return NdArray
     table = {
-        'default': StdVectorNdArray,
-        'StdVector': StdVectorNdArray,
-        'numpy': NumpyNdArray,
+        'default': useStdVec,
+        'StdVector': useStdVec,
+        'numpy': useNumpy,
         }
     global _array_factory
-    _array_factory = table[ factory ]
+    _array_factory = table[ factory ]()
     return
 _array_factory = None
-use( 'default' )
+use( 'numpy' )
 
         
 def ndArray( *args, **kwds):
