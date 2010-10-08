@@ -2,7 +2,6 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-#                                   Jiao Lin
 #                      California Institute of Technology
 #                        (C) 2007  All Rights Reserved
 #
@@ -17,25 +16,104 @@
 
 
 import nodes
-
+from ndarray.NumpyNdArray import NdArray
 
 class Parser:
     
-    
-    def __init__( self, filename, fs = None):
-        import nx5.file
-        self._nxf = nx5.file.file( filename, 'r', fs = fs)
-
-        from nx5.file.VectorReader import Reader
-        self._reader = Reader()
-
-        self._selector = self._nxf.selector()
+    # maybe add compression keywords here...and any other "fetch" keywords
+    def __init__( self, fs = None):
         return
 
-
-    def parse( self, graph ):
-        return graph.identify(self)
+    def parse( self, fs ):
+    #def parse( self, graph ):
+        #return graph.identify(self)
+        return self.onHistogram(fs)
     
+    def onHistogram(self, fs):
+        # first get histogram
+        histogramNames = list(fs)
+        if len(histogramNames)>1:
+            raise Exception, "This file contains more than one histogram"
+        histogramName = histogramNames[0]
+        histogramGrp = fs[histogramName]
+        
+        #members = dict(histogramGrp)
+        # first get the axes
+        try:
+            #axes = members.pop('grid')
+            axes = histogramGrp['grid']
+        except:
+            raise ValueError, "This histogram does not contain a 'grid' node"
+        from histogram.Axis import Axis
+        axisList = []
+        for axisName in axes:
+            axisList.append(Axis(axisName, unit = axes[axisName].attrs['unit'],
+                                 storage = NdArray( 'double', axes[axisName]['bin boundaries'][:]),
+                                 centers = NdArray( 'double', axes[axisName]['bin centers'][:]),))
+        
+        # assume everything else is a dataset group
+        try:
+            data = histogramGrp['data']
+        except:
+            data = None
+        try: 
+            errors = histogramGrp['errors']
+        except:
+            errors=None
+
+        from histogram import histogram, arange
+        h = histogram(histogramName, axisList, data = data, errors = errors)
+        
+#        errors = None
+#        for e in histogram.children():
+#            name = e.name()
+#            # !!!!!!!!!!!!!!!!!!!!!!!!!
+#            # this is a hack
+#            if name.startswith('sum of '):
+#                name = name.split()[2]
+#            # !!!!!!!!!!!!!!!!!!!!!!!!!
+#            exec '%s = e.identify(self)' % name
+#            continue
+#
+#        try:
+#            axes = grid
+#        except:
+#            raise ValueError, "This graph does not contain 'grid' node: %s" %(
+#                histogram.name() )
+#
+#        try:
+#            data
+#        except:
+#            raise ValueError, "This graph does not contain 'data' node: %s" %(
+#                histogram.name() )
+#
+#        name = histogram.name()
+#
+#        return nodes.histogram( name, axes, data = data, errors = errors )
+        return h
+
+    def onDataset(self, dataset):
+        name = dataset.name()
+        shape = dataset.dimensions()
+        path = dataset.path()
+        datasource = nodes.h5DataSource(
+            shape, path, self._selector, self._reader )
+        ret = nodes.ndArray(name, shape, datasource )
+        return ret
+
+    def onAxis(self, axis):
+        for e in axis.children():
+            name = e.name()
+            v = e.identify(self)
+            exec '%s=v' % name.replace(' ', '_')
+        name = axis.name()
+        unit = axis.getAttribute( 'unit' )
+        type = axis.getAttribute( 'type' )
+        attrs = axis.attributes()
+        ret = nodes.axis( name, unit, type, bin_centers, bin_boundaries, attrs)
+        return ret
+    
+    onNXroot = onHistogram # hack
     
     def onGroup(self, group):
         
@@ -47,35 +125,6 @@ class Parser:
             raise NotImplementedError, "handler for %s" % klass
         
         return handler( group )
-
-
-    def onDataset(self, dataset):
-        name = dataset.name()
-        shape = dataset.dimensions()
-        path = dataset.path()
-        datasource = nodes.h5DataSource(
-            shape, path, self._selector, self._reader )
-        ret = nodes.ndArray(name, shape, datasource )
-        return ret
-
-
-    def onAxis(self, axis):
-        for e in axis.children():
-            name = e.name()
-            v = e.identify(self)
-            exec '%s=v' % name.replace(' ', '_')
-            continue
-
-        name = axis.name()
-        unit = axis.getAttribute( 'unit' )
-        type = axis.getAttribute( 'type' )
-
-        attrs = axis.attributes()
-        
-        ret = nodes.axis( name, unit, type, bin_centers, bin_boundaries, attrs)
-        
-        return ret
-
 
     def onGrid(self, grid):
         #for now, grid is a directory of axes
@@ -97,57 +146,22 @@ class Parser:
 
         return ret 
 
-
     def onValueNdArray(self, valueArray):
         valuearray = valueArray.getChild('storage').identify(self)
         name = valueArray.name()
         unit = valueArray.getAttribute( 'unit' )
         return nodes.physicalValueNdArray( name, unit, valuearray )
 
-
-    def onHistogram(self, histogram):
-        errors = None
-        
-        for e in histogram.children():
-            name = e.name()
-            # !!!!!!!!!!!!!!!!!!!!!!!!!
-            # this is a hack
-            if name.startswith('sum of '):
-                name = name.split()[2]
-            # !!!!!!!!!!!!!!!!!!!!!!!!!
-            exec '%s = e.identify(self)' % name
-            continue
-
-        try:
-            axes = grid
-        except:
-            raise ValueError, "This graph does not contain 'grid' node: %s" %(
-                histogram.name() )
-
-        try:
-            data
-        except:
-            raise ValueError, "This graph does not contain 'data' node: %s" %(
-                histogram.name() )
-
-        name = histogram.name()
-
-        return nodes.histogram( name, axes, data = data, errors = errors )
-
-    onNXroot = onHistogram # hack
-
-    pass # end of Parser
-
-
 def test():
-    from nxk5.renderers import graphFromHDF5File, printGraph
-    g = graphFromHDF5File( 't.h5', '/h' )
-    printGraph( g )
-
-    h = Parser().parse( g )
+#    from nxk5.renderers import graphFromHDF5File, printGraph
+#    g = graphFromHDF5File( 'test1.h5', '/h' )
+#    printGraph( g )
+    from h5py import File
+    filename = 'test1.h5'
+    fs = File( filename, 'r' )
+    h = Parser().parse( fs )
 
     print h
-    return
 
 
 if __name__ == '__main__': test()

@@ -25,13 +25,12 @@
 class Renderer(object):
 
 
-    def __init__(self, compression_level=0):
-        self._compression_level = compression_level
-        return
+    def __init__(self, compressionType='lzf', compressionLevel=4):
+        self.compressionType = compressionType
 
 
     def render(self, fs, histogram):
-        return self.onHistogram(fs, histogram)
+        self.onHistogram(fs, histogram)
 
 
     def onHistogram(self, fs, histogram):
@@ -58,21 +57,22 @@ class Renderer(object):
 #        node.addChild( datanode )
 #        node.addChild( errsnode )
 #        return node
+        fs.close()
 
 
     def onDataset(self, histogramGrp, dataset):
         
 #        node = nx5elements.group(
 #            dataset.name(), 'ValueNdArray', None, None)
-        data = dataset.storage().as_('NumpyNdArray')
-        dataset = histogramGrp.create_dataset(dataset.name(), 
-                    data = data)
+        data = dataset.storage().as_('NumpyNdArray').asNumarray()
+        histogramDset = histogramGrp.create_dataset(dataset.name(), data = data, 
+                                                    compression=self.compressionType,)
         unit = dataset.unit()
 #        node.setAttributes(
 #            {'unit': unit,
 #             }
 #            )
-        dataset.attrs['unit'] = unit
+        histogramDset.attrs['unit'] = unit
         
 #        arrnode = self.onVector(
 #            dataset.storage().as_('StdVectorNdArray'),
@@ -82,7 +82,6 @@ class Renderer(object):
 #        node.addChild( arrnode )
 #
 #        return node
-
 
     def onAxis(self, axesGrp, axis, index):
         #index: index of this axis in the axis array
@@ -100,9 +99,9 @@ class Renderer(object):
 
         # attributes of axis
         #attrs = {}
-        attrnames = axis.listAttributes()
-        for name in attrnames:
-            axisGrp.attrs[name] = str(axis.attribute(name))
+#        attrnames = axis.listAttributes()
+#        for name in attrnames:
+#            axisGrp.attrs[name] = str(axis.attribute(name))
 #            attrs[name] = str(axis.attribute(name))
 #            continue
 
@@ -186,10 +185,11 @@ def test():
     from histogram import histogram, arange
     h = histogram('h',
                   [('y', arange(0, 100, 1.) ),
-                   ('x', arange(100, 180, 1.) ),]
+                   ('x', arange(100, 180, 1.) ),],
+                  data = [],
                   )
     from h5py import File
-    filename = 'test1.hdf5'
+    filename = 'test1.h5'
     fs = File( filename, 'w' )
     Renderer().render(fs, h)
     
