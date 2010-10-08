@@ -184,9 +184,8 @@ types = {
 def test():
     from histogram import histogram, arange
     h = histogram('h',
-                  [('y', arange(0, 100, 1.) ),
-                   ('x', arange(100, 180, 1.) ),],
-                  data = [],
+                  [('x', arange(0, 100, 1.) ),
+                   ('y', arange(100, 180, 1.) ),],
                   )
     from h5py import File
     filename = 'test1.h5'
