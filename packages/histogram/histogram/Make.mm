@@ -17,6 +17,7 @@ PACKAGE = histogram
 # directory structure
 
 BUILD_DIRS = \
+	h5py \
     hdf \
     ins \
     pyrecomponents \

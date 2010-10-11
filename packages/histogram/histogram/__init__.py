@@ -108,22 +108,6 @@ def axis( name, centers = None, unit = None, boundaries = None, attributes=None)
     if centers is None: return paxis( name, unit, boundaries = boundaries, attributes=attributes )
     return paxis( name, unit, centers = centers, attributes=attributes )
 
-
-
-#def use( factory ):
-#    from ndarray.StdVectorNdArray import NdArray as StdVectorNdArray
-#    from ndarray.NumpyNdArray import NdArray as NumpyNdArray
-#    table = {
-#        'default': NumpyNdArray,
-#        'StdVector': StdVectorNdArray,
-#        'numpy': NumpyNdArray,
-#        }
-#    global _array_factory
-#    _array_factory = table[ factory ]
-#    return
-#_array_factory = None
-#use( 'default' )
-
 def use( factory ):
     def useNumpy():
         from ndarray.NumpyNdArray import NdArray

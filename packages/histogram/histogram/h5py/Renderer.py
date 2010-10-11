@@ -98,12 +98,11 @@ class Renderer(object):
         axisGrp = axesGrp.create_group(name)
 
         # attributes of axis
-        #attrs = {}
-#        attrnames = axis.listAttributes()
-#        for name in attrnames:
-#            axisGrp.attrs[name] = str(axis.attribute(name))
-#            attrs[name] = str(axis.attribute(name))
-#            continue
+        attrs = {}
+        attrnames = axis.listAttributes()
+        for name in attrnames:
+            axisGrp.attrs[name] = str(axis.attribute(name))
+            attrs[name] = str(axis.attribute(name))
 
         #
 #        attrs.update(
@@ -111,7 +110,7 @@ class Renderer(object):
 #            )
 #        node.setAttributes( attrs )
         axisGrp.attrs['type'] = type
-        axisGrp.attrs['unit'] = unit
+        axisGrp.attrs['unit'] = unit.value
         axisGrp.attrs['index'] = index
 
         bbs = axis.binBoundaries()
@@ -120,7 +119,8 @@ class Renderer(object):
 #            'bin boundaries', 'NdArray', [ bbs.size() ] )
 #
 #        node.addChild( bbsnode )
-        axisGrp.create_dataset('bin boundaries', data = bbs.as_('NumpyNdArray'))
+        axisGrp.create_dataset('bin boundaries', 
+                               data = bbs.as_('NumpyNdArray'))
 
         bcs = axis.binCenters()
 #        from ndarray.StdVectorNdArray import NdArray as StdVectorNdArray
@@ -183,9 +183,11 @@ types = {
 
 def test():
     from histogram import histogram, arange
+    from numpy.random import rand
     h = histogram('h',
                   [('x', arange(0, 100, 1.) ),
                    ('y', arange(100, 180, 1.) ),],
+                   data=rand(100,80)
                   )
     from h5py import File
     filename = 'test1.h5'

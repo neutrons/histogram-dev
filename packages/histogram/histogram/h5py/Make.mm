@@ -10,13 +10,28 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-PROJECT = nx5
-PACKAGE = nexml/parser
+PROJECT = histogram
+PACKAGE = h5py
+
+
+# directory structure
+
+BUILD_DIRS = \
+    nodes \
+
+OTHER_DIRS = \
+
+RECURSE_DIRS = $(BUILD_DIRS) $(OTHER_DIRS)
+
 
 #--------------------------------------------------------------------------
 #
 
 all: export
+	BLD_ACTION="all" $(MM) recurse
+
+tidy:: 
+	BLD_ACTION="tidy" $(MM) recurse
 
 
 #--------------------------------------------------------------------------
@@ -24,18 +39,21 @@ all: export
 # export
 
 EXPORT_PYTHON_MODULES = \
-	AbstractNode.py \
-	Dataset.py \
-	Document.py \
-	Group.py \
-	Nexus.py \
-	__init__.py \
+	Renderer.py \
+	Parser.py \
+	__init__.py  \
+	utils.py \
 
-include doxygen/default.def
+
 
 export:: export-package-python-modules 
 
+
+include doxygen/default.def
+docs: export-doxygen-docs
+
+
 # version
-# $Id: Make.mm 1205 2006-11-15 16:23:10Z linjiao $
+# $Id: Make.mm 1302 2007-10-01 12:34:50Z linjiao $
 
 # End of file
