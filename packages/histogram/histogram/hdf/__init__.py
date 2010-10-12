@@ -44,10 +44,11 @@ def load( filename, pathinfile=None, fs = None, **kwds ):
     from Parser import Parser
     #h = Parser(filename, fs = fs).parse( g )
     h = Parser(filename).parse(fs)
-    return h.fetch(**kwds)
+    return h
+    #return h.fetch(**kwds)
 
 
-def dump( histogram, filename = None, pathinfile = '/', mode = 'w', fs = None, compression = 'lzf'):
+def dump( histogram, filename = None, pathinfile = '/', mode = 'c', fs = None, compression = 'lzf'):
     '''dump( histogram, hdf_filename, path_in_hdf_file, mode ) -> save histogram into a hdf file.
 
     histogram:
@@ -58,15 +59,19 @@ def dump( histogram, filename = None, pathinfile = '/', mode = 'w', fs = None, c
       The path inside the hdf file where the histogram is located.
     mode:
       The mode to be used to write to the hdf file.
-      'w': create new hdf file. If hdf file of the same name exists, this command will fail.
-      'a': write to existing hdf file. If the path_in_hdf_file already exists in the hdf file, this command will fail.
+      'c': create new hdf file. If hdf file of the same name exists, this command will fail.
+      'w': write to existing hdf file. If the path_in_hdf_file already exists in the hdf file, this command will fail.
     compression:
       The compression ratio. If it is 0, no compression will be done.
       The valid values are integers from 0 to 9 (inclusive).
     '''
     from Renderer import Renderer
     from h5py import File
-    fs = File( filename, 'w')
+    #g = graphFromHDF5File( filename, pathinfile, fs = fs )
+    writeCodes = {'c':'w','w':'a'}
+    if fs is None:
+        from h5py import File
+        fs = File( filename, writeCodes[mode])
     Renderer(compression).render(fs, histogram)
 
 

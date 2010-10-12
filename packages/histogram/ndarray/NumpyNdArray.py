@@ -2,7 +2,6 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-#                                   Jiao Lin
 #                      California Institute of Technology
 #                        (C) 2005 All Rights Reserved  
 #
@@ -19,7 +18,6 @@
 ## for python. The NumpyNdArray.NdArray class here simply uses features
 ## of numpy.ndarray.
 ##
-
 
 from AbstractNdArray import NdArray as AbstractNdArray
 import numpy
@@ -47,8 +45,6 @@ import journal
 info = journal.info("NumpyNdArray")
 warning = journal.warning("NumpyNdArray")
 
-
-
 def arrayFromNumpyArray( arr ):
     "create a NumpyNdArray.NdArray instance from a numpy array"
     rt = NdArray('float', 0)
@@ -57,9 +53,7 @@ def arrayFromNumpyArray( arr ):
     rt.setShape( arr.shape )
     return rt
 
-
 class NdArray(AbstractNdArray):
-
 
     def __init__( self, datatype, arg2, initVal=0, **kwds):
         """
@@ -100,19 +94,16 @@ class NdArray(AbstractNdArray):
         self._numarr = numpy.array( arg2, t )
         return
 
-
     def __neg__(self):
         r = self.copy()
         r._numarr *= -1
         return r
-
 
     def __rsub__(self, other):
         r = self.copy()
         r._numarr *= -1
         r += other
         return r
-
 
     def __rdiv__(self, other):
         r = self.__class__( self.datatype(), [] )
@@ -124,14 +115,12 @@ class NdArray(AbstractNdArray):
         r._numarr = other/self._numarr
         return r
         
-
     def __iadd__(self, other):
         if isNdArray( other ): self._numarr += other.asNumarray()
         elif isNumber(other): self._numarr += other
         else: raise NotImplementedError , "%s + %s" % (
             self.__class__.__name__, other.__class__.__name__)
         return self
-
 
     def __isub__(self, other): 
         if isNdArray( other ): self._numarr -= other.asNumarray()
@@ -140,14 +129,12 @@ class NdArray(AbstractNdArray):
             self.__class__.__name__, other.__class__.__name__)
         return self
 
-
     def __imul__(self, other): 
         if isNdArray( other ): self._numarr *= other.asNumarray()
         elif isNumber(other): self._numarr *= other
         else: raise NotImplementedError , "%s + %s" % (
             self.__class__.__name__, other.__class__.__name__)
         return self
-
 
     def __idiv__(self, other):
         if isNdArray( other ): self._numarr /= other.asNumarray()
@@ -156,17 +143,14 @@ class NdArray(AbstractNdArray):
             self.__class__.__name__, other.__class__.__name__)
         return self
 
-
     def reverse(self):
         "array -> 1./array"
         self._numarr = 1./self._numarr
         return
 
-
     def transpose(self, *args):
         newna = self._numarr.transpose( *args )
         return arrayFromNumpyArray( newna )
-
 
     # ufuncs
     def integrate( self, start, end, dx):
@@ -182,7 +166,6 @@ class NdArray(AbstractNdArray):
         Notes: end must be <= size of vector; start must be <= end."""
         return numpy.sum(self._numarr[start:end])* dx
 
-
     def square( self):
         """square() -> None
         Square each element of this vector.
@@ -193,7 +176,6 @@ class NdArray(AbstractNdArray):
         self *= self
         return
     
-        
     def sqrt( self):
         """sqrt() -> None
         Take the square root of each element of this vector.
@@ -203,7 +185,6 @@ class NdArray(AbstractNdArray):
         """
         self._numarr = numpy.sqrt( self._numarr )
         return
-
 
     def sum( self, axis=None ):
         if axis is None: return _sum( self._numarr )
@@ -218,7 +199,6 @@ class NdArray(AbstractNdArray):
             return r
         raise
     
-        
     # utilities
     def assign( self, count, val):
         """assign( count, value) -> None
@@ -235,18 +215,15 @@ class NdArray(AbstractNdArray):
         self._numarr = numpy.ones( count, typename) * val
         return
 
-
     def asList( self):
         """asList() -> [This vector's contents in a Python list].
         """
         return list(self._numarr)
 
-
     def asNumarray( self, dims=[]):
         #if dims == []: self._numarr.shape = -1
         #else : self._numarr.shape = dims
         return self._numarr
-
 
     def compare( self, other, epsilon = 0.000001):
         """compare( other, epsilon = 0.000001) -> Boolean
@@ -269,14 +246,12 @@ class NdArray(AbstractNdArray):
         import numpy
         return not numpy.any( diff>epsilon )
 
-
     def size( self):
         """size() -> number of elements.
         """
         #return len(self._numarr)
         import operator
         return reduce(operator.mul, self.shape())
-
 
     def datatype(self):
         """
@@ -292,24 +267,19 @@ class NdArray(AbstractNdArray):
         self._shape = self._numarr.shape
         return self._shape
 
-
     def setShape(self, shape):
         self._numarr.shape = self._shape = shape
         return
-
 
     def copy(self):
         r = self.__class__( self.datatype(), [] )
         r._numarr = self._numarr.copy()
         return r
 
-    
     def castCopy(self, typename):
         r = self.__class__( typename, [] )
         r._numarr = self._numarr.astype( numpytypecode_from_typename( typename) ) 
         return r
-
-
     def __getitem__(self, s):
         if isinstance(s, list): s = tuple(s )
         
@@ -334,12 +304,10 @@ class NdArray(AbstractNdArray):
             
         return subelement
     
-
     def __setitem__(self, s, rhs):
         if isNdArray(rhs): rhs = rhs.asNumarray()
         self._numarr[s] = rhs
         return rhs
-
 
     #pickle interface    
     def __getstate__(self):
@@ -356,16 +324,11 @@ class NdArray(AbstractNdArray):
 
     pass # end of NdArray
 
-
-
 def isNdArray(a):
     return isinstance(a, AbstractNdArray)
 
-
 def isNumber(a):
     return isinstance(a, float) or isinstance(a, int)
-
-
 
 def typename_from_aktypecode( code ):
     #from array_kluge import types as aktypes
@@ -374,11 +337,9 @@ def typename_from_aktypecode( code ):
         continue
     raise ValueError , "Invalid type code %s" % code
 
-
 def numpytypecode_from_aktypecode( code ):
     name = typename_from_aktypecode( code )
     return numpytypecode_from_typename(name)
-
 
 def numpytypecode_from_typename( name ):
     table = {
@@ -392,8 +353,6 @@ def numpytypecode_from_typename( name ):
     if ret: return ret
     raise NotImplementedError , "unknow type code %s" % name
 
-
-
 def getAKTypecode( arr ):
     "get array_kluge type code of a numpy/numarray array"
     try: return getNumpyArray_aktypecode( arr )
@@ -404,7 +363,6 @@ def getAKTypecode( arr ):
             warning.log("numpy datatype unknown for ndarray: %s" % arr.dtype.name)
             return 10000+arr.dtype.num
     raise "Should not reach here"
-
 
 def getNumpyArray_aktypecode( arr ):
     dt = arr.dtype
@@ -417,7 +375,6 @@ def getNumpyArray_aktypecode( arr ):
     else: raise NotImplementedError , "don't know how to determine type of %s:%s" % (t,arr)
     raise "Should not reach here"
 
-
 def getNumericArray_aktypecode( arr ):
     c = arr.typecode()
     d = {'l': 24,
@@ -427,15 +384,11 @@ def getNumericArray_aktypecode( arr ):
          'u': 25}
     return d[c]
     
-
-
 def _sum( anumarr ):
     if isNumber(anumarr): return anumarr
     from numpy import sum
     a = sum( anumarr )
     return _sum( a )
-
-
 
 from AbstractNdArray import NdArray_TestCase as TestBase, unittest
 
@@ -448,7 +401,6 @@ class NdArray_TestCase(TestBase):
     
     pass # end of NdArray_TestCase
 
-    
 def pysuite():
     suite1 = unittest.makeSuite(NdArray_TestCase)
     return unittest.TestSuite( (suite1,) )

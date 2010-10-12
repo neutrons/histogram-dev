@@ -41,7 +41,7 @@ class Renderer(object):
         #axesNode = nx5elements.group( 'grid', 'Grid', None, None)
         #node.addChild( axesNode )
         for i, axis in enumerate(histogram.axes()):
-            self.onAxis( axesGrp, axis, i )
+            self.onAxis(axesGrp, axis, i)
             #axesNode.addChild( axisNode )
             #continue
         
@@ -71,7 +71,12 @@ class Renderer(object):
 #            {'unit': unit,
 #             }
 #            )
-        histogramDset.attrs['unit'] = unit
+        # in the tests, 'unit' is either an object or a string,
+        # so i try to handle both
+        try:
+            histogramDset.attrs['unit'] = unit.value
+        except:
+            histogramDset.attrs['unit'] = unit
         
 #        arrnode = self.onVector(
 #            dataset.storage().as_('StdVectorNdArray'),
@@ -109,7 +114,12 @@ class Renderer(object):
 #            )
 #        node.setAttributes( attrs )
         axisGrp.attrs['type'] = type
-        axisGrp.attrs['unit'] = unit.value
+        # in the tests, 'unit' is either an object or a string,
+        # so i try to handle both
+        try:
+            axisGrp.attrs['unit'] = unit.value
+        except:
+            axisGrp.attrs['unit'] = unit
         axisGrp.attrs['index'] = index
 
         bbs = axis.binBoundaries()

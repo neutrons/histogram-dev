@@ -14,9 +14,12 @@
 # render a graph consisting nodes in the "nodes" subpackage out of
 # the graph of a hdf5 file.
 
-
-import nodes
+#import nodes
 from ndarray.NumpyNdArray import NdArray
+from histogram.NdArrayDataset import Dataset
+#from histogram.Axis import Axis
+from histogram import axis
+from ndarray.NumpyNdArray import getNumpyArray_aktypecode
 
 class Parser:
     
@@ -44,13 +47,16 @@ class Parser:
             axes = histogramGrp['grid']
         except:
             raise ValueError, "This histogram does not contain a 'grid' node"
-        from histogram.Axis import Axis
         axisList = []
         for axisName in axes:
-            axisList.append(Axis(axisName, unit = axes[axisName].attrs['unit'],
-                                 storage = NdArray( 'double', axes[axisName]['bin boundaries'][:]),
-                                 centers = NdArray( 'double', axes[axisName]['bin centers'][:]),))
-        
+            binBoundaries = axes[axisName]['bin boundaries']
+            binCenters = axes[axisName]['bin centers']
+            axisList.append(axis(axisName, unit = axes[axisName].attrs['unit'],
+                    boundaries = NdArray( getNumpyArray_aktypecode(binBoundaries), binBoundaries),
+                    centers = NdArray( getNumpyArray_aktypecode(binCenters), binCenters),))
+#            axisList.append(Axis(axisName, unit = axes[axisName].attrs['unit'],
+#                    storage = NdArray( getNumpyArray_aktypecode(binBoundaries), binBoundaries),
+#                    centers = NdArray( getNumpyArray_aktypecode(binCenters), binCenters),))
         # assume everything else is a dataset group
         try:
             rawdata = histogramGrp['data']
@@ -62,23 +68,36 @@ class Parser:
         for length in lengths:
             size*=length
         #remove unit
-        attrs = rawdata.attrs
-        unit = attrs.pop('unit')
+        #attrs = rawdata.attrs
+        #unit = attrs.pop('unit')
+        unit = rawdata.attrs['unit']
         #get rest of attributes--TODO
         attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
-        dataStore = NdArray(rawdata.dtype, size, 1.0)
+        dataStore = NdArray(getNumpyArray_aktypecode(rawdata), size, 1.0)
         dataStore.setShape(lengths)
-        from histogram.NdArrayDataset import Dataset
         data = Dataset('data', unit, attributes, lengths, dataStore)
             
         try: 
-            errors = histogramGrp['errors']
+            rawerrors = histogramGrp['errors']
         except:
-            errors=None
-
-        from histogram import histogram, arange
-        h = histogram(histogramName, axisList, data = data, errors = errors)
-        
+            rawerrors=None
+        #get length and size
+        lengths = rawdata.shape
+        size=1
+        for length in lengths:
+            size*=length
+        #remove unit
+        #attrs = rawdata.attrs
+        #unit = attrs.pop('unit')
+        unit = rawdata.attrs['unit']
+        #get rest of attributes--TODO
+        attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
+        dataStore = NdArray(getNumpyArray_aktypecode(rawerrors), size, 1.0)
+        dataStore.setShape(lengths)
+        errors = Dataset('errors', unit, attributes, lengths, dataStore)
+        from histogram import histogram
+        h = histogram(histogramName, axisList, 
+                      data = data, errors = errors)
 #        errors = None
 #        for e in histogram.children():
 #            name = e.name()
