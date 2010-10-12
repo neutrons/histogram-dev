@@ -14,7 +14,7 @@
 #histogram.use('numpy')
 #from histogram.h5py import *
 import os
-from histogram.h5py import load, dump
+from histogram.hdf import load, dump
 
 import unittest
 from unittest import TestCase

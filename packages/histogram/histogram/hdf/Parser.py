@@ -53,9 +53,24 @@ class Parser:
         
         # assume everything else is a dataset group
         try:
-            data = histogramGrp['data']
+            rawdata = histogramGrp['data']
         except:
-            data = None
+            rawdata = None
+        #get length and size
+        lengths = rawdata.shape
+        size=1
+        for length in lengths:
+            size*=length
+        #remove unit
+        attrs = rawdata.attrs
+        unit = attrs.pop('unit')
+        #get rest of attributes--TODO
+        attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
+        dataStore = NdArray(rawdata.dtype, size, 1.0)
+        dataStore.setShape(lengths)
+        from histogram.NdArrayDataset import Dataset
+        data = Dataset('data', unit, attributes, lengths, dataStore)
+            
         try: 
             errors = histogramGrp['errors']
         except:
@@ -73,22 +88,17 @@ class Parser:
 #                name = name.split()[2]
 #            # !!!!!!!!!!!!!!!!!!!!!!!!!
 #            exec '%s = e.identify(self)' % name
-#            continue
-#
 #        try:
 #            axes = grid
 #        except:
 #            raise ValueError, "This graph does not contain 'grid' node: %s" %(
 #                histogram.name() )
-#
 #        try:
 #            data
 #        except:
 #            raise ValueError, "This graph does not contain 'data' node: %s" %(
 #                histogram.name() )
-#
 #        name = histogram.name()
-#
 #        return nodes.histogram( name, axes, data = data, errors = errors )
         return h
 

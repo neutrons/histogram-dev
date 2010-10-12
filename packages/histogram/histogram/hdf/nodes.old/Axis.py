@@ -33,8 +33,6 @@ class Axis(AbstractNode):
         return _axis( self.name, self.unit, self.type,
                       bin_centers, bin_boundaries,  attributes)
 
-    pass # end of Axis
-
 
 def _axis( name, unit, type, bin_centers, bin_boundaries, attrs ):
     from histogram import paxis, IDaxis
