@@ -48,7 +48,8 @@ def load( filename, pathinfile=None, fs = None, **kwds ):
     #return h.fetch(**kwds)
 
 
-def dump( histogram, filename = None, pathinfile = '/', mode = 'c', fs = None, compression = 'lzf'):
+def dump( histogram, filename = None, pathinfile = '/', 
+          mode = 'c', fs = None, compression = 'lzf'):
     '''dump( histogram, hdf_filename, path_in_hdf_file, mode ) -> save histogram into a hdf file.
 
     histogram:
@@ -71,7 +72,7 @@ def dump( histogram, filename = None, pathinfile = '/', mode = 'c', fs = None, c
     writeCodes = {'c':'w','w':'a'}
     if fs is None:
         from h5py import File
-        fs = File( filename, writeCodes[mode])
+        fs = File(filename, writeCodes[mode])
     Renderer(compression).render(fs, histogram)
 
 
