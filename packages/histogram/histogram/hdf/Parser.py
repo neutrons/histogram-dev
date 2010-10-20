@@ -22,10 +22,13 @@ from histogram import axis
 from ndarray.NumpyNdArray import getNumpyArray_aktypecode
 
 class Parser:
-    
-    # maybe add compression keywords here...and any other "fetch" keywords
-    def __init__( self, fs = None):
-        return
+
+    def __init__( self, filename=None, pathinfile='/', ):
+        self.histogramName = pathinfile.split('/')[-1]
+        if len(self.histogramName)==0: 
+            self.histogramName = None
+#        self.filename = filename
+#        self.pathinfile = pathinfile
 
     def parse( self, fs ):
     #def parse( self, graph ):
@@ -34,11 +37,16 @@ class Parser:
     
     def onHistogram(self, fs):
         # first get histogram
-        histogramNames = list(fs)
-        if len(histogramNames)>1:
-            raise Exception, "This file contains more than one histogram"
-        histogramName = histogramNames[0]
-        histogramGrp = fs[histogramName]
+        if not self.histogramName:
+            histogramNames = list(fs)
+            if len(histogramNames)>1:
+                raise Exception, "This file contains more than one histogram"
+            self.histogramName = histogramNames[0]
+        #histogramNames = list(fs)
+#        print self.histogramName
+#        print fs
+#        print list(fs)
+        histogramGrp = fs[self.histogramName]
         
         #members = dict(histogramGrp)
         # first get the axes
@@ -54,49 +62,11 @@ class Parser:
             axisList.append(axis(axisName, unit = axes[axisName].attrs['unit'],
                     boundaries = NdArray( getNumpyArray_aktypecode(binBoundaries), binBoundaries),
                     centers = NdArray( getNumpyArray_aktypecode(binCenters), binCenters),))
-#            axisList.append(Axis(axisName, unit = axes[axisName].attrs['unit'],
-#                    storage = NdArray( getNumpyArray_aktypecode(binBoundaries), binBoundaries),
-#                    centers = NdArray( getNumpyArray_aktypecode(binCenters), binCenters),))
-        # assume everything else is a dataset group
-        try:
-            rawdata = histogramGrp['data']
-        except:
-            rawdata = None
-        #get length and size
-        lengths = rawdata.shape
-        size=1
-        for length in lengths:
-            size*=length
-        #remove unit
-        #attrs = rawdata.attrs
-        #unit = attrs.pop('unit')
-        unit = rawdata.attrs['unit']
-        #get rest of attributes--TODO
-        attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
-        dataStore = NdArray(getNumpyArray_aktypecode(rawdata), size, 1.0)
-        dataStore.setShape(lengths)
-        data = Dataset('data', unit, attributes, lengths, dataStore)
-            
-        try: 
-            rawerrors = histogramGrp['errors']
-        except:
-            rawerrors=None
-        #get length and size
-        lengths = rawdata.shape
-        size=1
-        for length in lengths:
-            size*=length
-        #remove unit
-        #attrs = rawdata.attrs
-        #unit = attrs.pop('unit')
-        unit = rawdata.attrs['unit']
-        #get rest of attributes--TODO
-        attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
-        dataStore = NdArray(getNumpyArray_aktypecode(rawerrors), size, 1.0)
-        dataStore.setShape(lengths)
-        errors = Dataset('errors', unit, attributes, lengths, dataStore)
+        # take care of datasets
+        data = self.onDataset(histogramGrp, 'data')
+        errors = self.onDataset(histogramGrp, 'errors')
         from histogram import histogram
-        h = histogram(histogramName, axisList, 
+        h = histogram(self.histogramName, axisList, 
                       data = data, errors = errors)
 #        errors = None
 #        for e in histogram.children():
@@ -121,26 +91,49 @@ class Parser:
 #        return nodes.histogram( name, axes, data = data, errors = errors )
         return h
 
-    def onDataset(self, dataset):
-        name = dataset.name()
-        shape = dataset.dimensions()
-        path = dataset.path()
-        datasource = nodes.h5DataSource(
-            shape, path, self._selector, self._reader )
-        ret = nodes.ndArray(name, shape, datasource )
-        return ret
+    def onDataset(self, histogramGrp, type):
+        try:
+            dataGroup = histogramGrp[type]
+            if 'storage' in list(dataGroup): # this uses the 'storage' convention
+                rawdata = dataGroup['storage']
+            else:
+                #case when dataGroup *is* the dataset
+                rawdata = dataGroup
+            unit = dataGroup.attrs['unit']
+            #get length and size
+            lengths = rawdata.shape
+            size=1
+            for length in lengths:
+                size*=length
+                
+        except:
+            rawdata = None
 
-    def onAxis(self, axis):
-        for e in axis.children():
-            name = e.name()
-            v = e.identify(self)
-            exec '%s=v' % name.replace(' ', '_')
-        name = axis.name()
-        unit = axis.getAttribute( 'unit' )
-        type = axis.getAttribute( 'type' )
-        attrs = axis.attributes()
-        ret = nodes.axis( name, unit, type, bin_centers, bin_boundaries, attrs)
-        return ret
+        #get rest of attributes--TODO
+        attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
+        dataStore = NdArray(getNumpyArray_aktypecode(rawdata), size, 1.0)
+        dataStore.setShape(lengths)
+        data = Dataset('data', unit, attributes, lengths, dataStore)
+        return data
+#        name = dataset.name()
+#        shape = dataset.dimensions()
+#        path = dataset.path()
+#        datasource = nodes.h5DataSource(
+#            shape, path, self._selector, self._reader )
+#        ret = nodes.ndArray(name, shape, datasource )
+#        return ret
+#
+#    def onAxis(self, axis):
+#        for e in axis.children():
+#            name = e.name()
+#            v = e.identify(self)
+#            exec '%s=v' % name.replace(' ', '_')
+#        name = axis.name()
+#        unit = axis.getAttribute( 'unit' )
+#        type = axis.getAttribute( 'type' )
+#        attrs = axis.attributes()
+#        ret = nodes.axis( name, unit, type, bin_centers, bin_boundaries, attrs)
+#        return ret
     
     onNXroot = onHistogram # hack
     

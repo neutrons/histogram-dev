@@ -9,7 +9,6 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-
 def load( filename, pathinfile=None, fs = None, **kwds ):
     '''load( hdf_filename, path_in_hdf_file ): load histogram from a hdf file
 
@@ -30,24 +29,18 @@ def load( filename, pathinfile=None, fs = None, **kwds ):
         if fs is None:
             from h5py import File
             fs = File( filename, 'r')
-    
 #        from nx5.renderers.Graph_FromFile import Renderer
 #        renderer = Renderer()
-#    
 #        graph = renderer.render( fs, filename, path)
-#    
 #        return graph
-        
     except IOError, msg:
         raise IOError, "unable to load histogram. filename=%s, "\
               "pathinfile=%s, kwds=%s" % (filename, pathinfile, kwds)
     from Parser import Parser
     #h = Parser(filename, fs = fs).parse( g )
-    h = Parser(filename).parse(fs)
+    h = Parser(filename, pathinfile).parse(fs)
     return h
     #return h.fetch(**kwds)
-
-
 def dump( histogram, filename = None, pathinfile = '/', 
           mode = 'c', fs = None, compression = 'lzf'):
     '''dump( histogram, hdf_filename, path_in_hdf_file, mode ) -> save histogram into a hdf file.
