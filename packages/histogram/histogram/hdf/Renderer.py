@@ -52,15 +52,11 @@ class Renderer(object):
         self.onDataset(histogramGrp, errs)
 #        datanode = self.onDataset(histogramGrp, data)
 #        errsnode = self.onDataset(histogramGrp, errs)
-
 #        node.addChild( datanode )
 #        node.addChild( errsnode )
 #        return node
-        fs.close()
-
 
     def onDataset(self, histogramGrp, dataset):
-        
 #        node = nx5elements.group(
 #            dataset.name(), 'ValueNdArray', None, None)
         data = dataset.storage().as_('NumpyNdArray').asNumarray()
@@ -77,7 +73,6 @@ class Renderer(object):
             histogramDset.attrs['unit'] = unit.value
         except:
             histogramDset.attrs['unit'] = unit
-        
 #        arrnode = self.onVector(
 #            dataset.storage().as_('StdVectorNdArray'),
 #            'storage', 'NdArray', dataset.shape() )

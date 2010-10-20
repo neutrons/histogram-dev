@@ -60,13 +60,21 @@ def dump( histogram, filename = None, pathinfile = '/',
       The valid values are integers from 0 to 9 (inclusive).
     '''
     from Renderer import Renderer
-    from h5py import File
     #g = graphFromHDF5File( filename, pathinfile, fs = fs )
+    pathinfile = pathinfile.split( '/' )
+    p = pathinfile + [histogram.name()]
+    p = '/'.join( p )
+    if not p.startswith('/'): 
+        p = '/' + p
+    
     writeCodes = {'c':'w','w':'a'}
     if fs is None:
         from h5py import File
         fs = File(filename, writeCodes[mode])
-    Renderer(compression).render(fs, histogram)
+        Renderer(compression).render(fs, histogram)
+        fs.close()
+    else:
+        Renderer(compression).render(fs, histogram)
 
 
 # version

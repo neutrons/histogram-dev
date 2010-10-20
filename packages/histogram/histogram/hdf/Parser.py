@@ -43,11 +43,9 @@ class Parser:
                 raise Exception, "This file contains more than one histogram"
             self.histogramName = histogramNames[0]
         #histogramNames = list(fs)
-#        print self.histogramName
-#        print fs
-#        print list(fs)
+        print fs
+        print list(fs)
         histogramGrp = fs[self.histogramName]
-        
         #members = dict(histogramGrp)
         # first get the axes
         try:

@@ -22,7 +22,6 @@ from unittestX import TestCase
 
 class hdf_TestCase(TestCase):
 
-
 #    def testdump0(self):
 #        """ histogram.hdf: dump """
 #        from histogram import histogram, arange
@@ -54,7 +53,6 @@ class hdf_TestCase(TestCase):
 #        dump( h, filename, '/', mode = 'c', compression=6 )
 #        return
 
-
     def testdump1(self):
         """ histogram.hdf: dump with fs specified"""
         filename = 'test1.h5'
@@ -74,47 +72,37 @@ class hdf_TestCase(TestCase):
         self.assert_( os.path.exists( filename ))
         return
 
+    def testdump2(self):
+        'dump two histograms to one hdf'
+        filename = 'testdump1.h5'
+        import os
+        if os.path.exists( filename): 
+            os.remove( filename )
 
-#    def testdump2(self):
-#        'dump two histograms to one hdf'
-#        filename = 'testdump1.h5'
-#        import os
-#        if os.path.exists( filename): os.remove( filename )
-#
-#        from h5py import File
-#        fs = File( filename, 'w' )
-#        
-#        from histogram import histogram, arange
-#        h = histogram('h',
-#                      [('x', arange(0,100, 1.) ),
-#                       ('y', arange(100, 180, 1.) ),],
-#                      unit = 'meter',
-#                      )
-#        dump( h, None, '/', fs = fs )
-#        
-#        h2 = histogram('h2',
-#                      [('x', arange(0,100, 1.) ),
-#                       ('y', arange(100, 180, 1.) ),],
-#                      unit = 'meter',
-#                      )
-#        dump( h2, None, '/', fs = fs )
-#
-#        #load histogram
-#        h2c = load( filename, '/h2', fs = fs )
-#        print h2c
-#
-#        self.assert_( os.path.exists( filename ))
-#        return
+        from h5py import File
+        fs = File( filename, 'w' )
+        
+        from histogram import histogram, arange
+        h = histogram('h',
+                      [('x', arange(0,100, 1.) ),
+                       ('y', arange(100, 180, 1.) ),],
+                      unit = 'meter',
+                      )
+        dump( h, None, '/', fs = fs )
+        
+        h2 = histogram('h2',
+                      [('x', arange(0,100, 1.) ),
+                       ('y', arange(100, 180, 1.) ),],
+                      unit = 'meter',
+                      )
+        dump( h2, None, '/', fs = fs )
 
-#    def testload(self):
-#        'load simplest histogram'
-#        h = load( 'testload.h5', '/h' )
-#        return
-#
-#    def testload1(self):
-#        'load histogram with unit'
-#        h = load( 'testload.h5', '/h1' )
-#        return
+        #load histogram
+        h2c = load( filename, '/h2', fs = fs )
+        print h2c
+
+        self.assert_( os.path.exists( filename ))
+        return
 
     def testdump_and_load(self):
         'dump and load'
@@ -203,19 +191,10 @@ hh.dump( h, '%s', '/', 'c' )
     def testload5(self):
         'load with fs specified'
         filename = 'tmp.h5'
+        filename = 'test_dump_load2.h5'
         from h5py import File
         fs = File(filename)
         h = load( filename, '/h', fs = fs )
-
-    def testload6(self):
-        'load with fs specified'
-        orig = 'tmp.h5'
-        filename = 'testload6.h5'
-        import shutil
-        shutil.copyfile( orig, filename )
-        from h5py import File
-        fs = File(filename)
-        self.assertRaises( IOError, load, filename, '/h', fs )
 
 def pysuite():
     suite1 = unittest.makeSuite(hdf_TestCase)
