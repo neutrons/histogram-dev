@@ -100,9 +100,7 @@ class hdf_TestCase(TestCase):
         #load histogram
         h2c = load( filename, '/h2', fs = fs )
         print h2c
-
         self.assert_( os.path.exists( filename ))
-        return
 
     def testdump_and_load(self):
         'dump and load'

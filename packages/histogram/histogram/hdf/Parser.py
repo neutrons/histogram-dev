@@ -17,6 +17,7 @@
 #import nodes
 from ndarray.NumpyNdArray import NdArray
 from histogram.NdArrayDataset import Dataset
+import numpy as np
 #from histogram.Axis import Axis
 from histogram import axis
 from ndarray.NumpyNdArray import getNumpyArray_aktypecode
@@ -43,8 +44,8 @@ class Parser:
                 raise Exception, "This file contains more than one histogram"
             self.histogramName = histogramNames[0]
         #histogramNames = list(fs)
-        print fs
-        print list(fs)
+#        print fs
+#        print list(fs)
         histogramGrp = fs[self.histogramName]
         #members = dict(histogramGrp)
         # first get the axes
@@ -53,13 +54,17 @@ class Parser:
             axes = histogramGrp['grid']
         except:
             raise ValueError, "This histogram does not contain a 'grid' node"
-        axisList = []
+        axesHash = {}
         for axisName in axes:
             binBoundaries = axes[axisName]['bin boundaries']
             binCenters = axes[axisName]['bin centers']
-            axisList.append(axis(axisName, unit = axes[axisName].attrs['unit'],
+            axesHash[axes[axisName].attrs['index']] = axis(axisName, unit = axes[axisName].attrs['unit'],
                     boundaries = NdArray( getNumpyArray_aktypecode(binBoundaries), binBoundaries),
-                    centers = NdArray( getNumpyArray_aktypecode(binCenters), binCenters),))
+                    centers = NdArray( getNumpyArray_aktypecode(binCenters), binCenters),)
+        #reorder the axes
+        axisList=[]
+        for i in range(len(axesHash)):
+            axisList.append(axesHash[i])
         # take care of datasets
         data = self.onDataset(histogramGrp, 'data')
         errors = self.onDataset(histogramGrp, 'errors')
