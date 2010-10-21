@@ -190,18 +190,8 @@ class MainController(ControllerBase):
             from pickle import load
             hist = load( open(filename ) )
         elif filename.endswith( 'h5' ) or filename.endswith( 'hdf5' ):
-            from hdf5fs.h5fs import H5fs
-            fs = H5fs( filename, 'r' )
-            root = fs.open('/')
-            entries = root.read()
-            if len(entries)>1:
-                toolkit = self.toolkit
-                msg = "Hdf5 file %s has multiple entries. Please use \n"\
-                      "embedded python shell to open this file." % (
-                    filename, )
-                toolkit.messageDialog( None, "Error",  msg)
-                return
-            entry = entries[0]
+            from histogram.hdf.utils import getOnlyEntry
+            entry = getOnlyEntry(filename)
             from histogram.hdf import load
             hist = load( filename, entry )
         else:
