@@ -58,9 +58,14 @@ class Parser:
         for axisName in axes:
             binBoundaries = axes[axisName]['bin boundaries']
             binCenters = axes[axisName]['bin centers']
-            axesHash[axes[axisName].attrs['index']] = axis(axisName, unit = axes[axisName].attrs['unit'],
-                    boundaries = NdArray( getNumpyArray_aktypecode(binBoundaries), binBoundaries),
-                    centers = NdArray( getNumpyArray_aktypecode(binCenters), binCenters),)
+            unit = self.onUnit(axes[axisName].attrs['unit'])
+            boundaries =  NdArray( getNumpyArray_aktypecode(binBoundaries), binBoundaries)
+            centers = NdArray( getNumpyArray_aktypecode(binCenters), binCenters)
+            axesHash[axes[axisName].attrs['index']] = axis(
+                axisName, unit = unit,
+                boundaries = boundaries, centers = centers,
+                )
+
         #reorder the axes
         axisList=[]
         for i in range(len(axesHash)):
@@ -70,7 +75,8 @@ class Parser:
         errors = self.onDataset(histogramGrp, 'errors')
         from histogram import histogram
         h = histogram(self.histogramName, axisList, 
-                      data = data, errors = errors)
+                      data = data, errors = errors,
+                      unit = data.unit())
 #        errors = None
 #        for e in histogram.children():
 #            name = e.name()
@@ -102,7 +108,7 @@ class Parser:
             else:
                 #case when dataGroup *is* the dataset
                 rawdata = dataGroup
-            unit = dataGroup.attrs['unit']
+            unit = self.onUnit(dataGroup.attrs['unit'])
             #get length and size
             lengths = rawdata.shape
             size=1
@@ -176,6 +182,12 @@ class Parser:
         name = valueArray.name()
         unit = valueArray.getAttribute( 'unit' )
         return nodes.physicalValueNdArray( name, unit, valuearray )
+
+    
+    def onUnit(self, unit):
+        if isinstance(unit, int) or isinstance(unit, float):
+            return unit
+        return unit.tostring()
 
 def test():
 #    from nxk5.renderers import graphFromHDF5File, printGraph

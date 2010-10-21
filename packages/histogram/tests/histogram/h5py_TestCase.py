@@ -22,36 +22,36 @@ from unittestX import TestCase
 
 class hdf_TestCase(TestCase):
 
-#    def testdump0(self):
-#        """ histogram.hdf: dump """
-#        from histogram import histogram, arange
-#        h = histogram('h',
-#                      [('x', arange(0,100, 1.) ),
-#                       ('y', arange(100, 180, 1.) ),],
-#                      unit = 'meter',
-#                      )
-#
-#        filename = 'test0.h5'
-#        import os
-#        if os.path.exists( filename): os.remove( filename )
-#        dump( h, filename, '/', mode = 'c' )
-#        return
-#
-#
-#    def testdump0a(self):
-#        """ histogram.hdf: dump with compression"""
-#        from histogram import histogram, arange
-#        h = histogram('h',
-#                      [('x', arange(0,100, 1.) ),
-#                       ('y', arange(100, 180, 1.) ),],
-#                      unit = 'meter',
-#                      )
-#
-#        filename = 'test0-compressed.h5'
-#        import os
-#        if os.path.exists( filename): os.remove( filename )
-#        dump( h, filename, '/', mode = 'c', compression=6 )
-#        return
+    def testdump0(self):
+        """ histogram.hdf: dump """
+        from histogram import histogram, arange
+        h = histogram('h',
+                      [('x', arange(0,100, 1.) ),
+                       ('y', arange(100, 180, 1.) ),],
+                      unit = 'meter',
+                      )
+
+        filename = 'test0.h5'
+        import os
+        if os.path.exists( filename): os.remove( filename )
+        dump( h, filename, '/', mode = 'c' )
+        return
+
+
+    def testdump0a(self):
+        """ histogram.hdf: dump with compression"""
+        from histogram import histogram, arange
+        h = histogram('h',
+                      [('x', arange(0,100, 1.) ),
+                       ('y', arange(100, 180, 1.) ),],
+                      unit = 'meter',
+                      )
+
+        filename = 'test0-compressed.h5'
+        import os
+        if os.path.exists( filename): os.remove( filename )
+        dump( h, filename, '/', mode = 'c', compression=6 )
+        return
 
     def testdump1(self):
         """ histogram.hdf: dump with fs specified"""
@@ -145,6 +145,16 @@ hh.dump( h, '%s', '/', 'c' )
         #print h[1]
         self.assertVectorAlmostEqual( h[1], (1,1) )
 
+    def testload(self):
+        'load simplest histogram'
+        h = load( 'testload.h5', '/h' )
+        return
+
+    def testload1(self):
+        'load histogram with unit'
+        h = load( 'testload.h5', '/h1' )
+        return
+
     def testload2(self):
         'load histogram with one path string'
         #h = load( 'testload.h5/h' )
@@ -193,6 +203,19 @@ hh.dump( h, '%s', '/', 'c' )
         from h5py import File
         fs = File(filename)
         h = load( filename, '/h', fs = fs )
+
+
+    def testload6(self):
+        'load with fs specified'
+        orig = 'testload.h5'
+        filename = 'testload6.h5'
+        import shutil
+        shutil.copyfile( orig, filename )
+        from h5py import File
+        fs = File( filename, 'w' )
+
+        self.assertRaises( IOError, load, filename, '/h', fs )
+        return
 
 def pysuite():
     suite1 = unittest.makeSuite(hdf_TestCase)
