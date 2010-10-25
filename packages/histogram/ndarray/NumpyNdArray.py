@@ -45,9 +45,11 @@ import journal
 info = journal.info("NumpyNdArray")
 warning = journal.warning("NumpyNdArray")
 
-def arrayFromNumpyArray( arr ):
+def arrayFromNumpyArray( arr, datatype=None):
     "create a NumpyNdArray.NdArray instance from a numpy array"
-    rt = NdArray('float', 0)
+    if datatype is None:
+        datatype = 'float'
+    rt = NdArray(datatype, 0)
     #this implementation is a hack!
     rt._numarr = arr
     rt.setShape( arr.shape )

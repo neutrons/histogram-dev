@@ -23,7 +23,7 @@ from histogram import axis
 from ndarray.NumpyNdArray import getNumpyArray_aktypecode
 
 class Loader:
-
+    
     def __init__( self, fs, pathinfile='/'):
         self.fs = fs
         self.pathinfile = pathinfile
@@ -61,7 +61,7 @@ class Loader:
             axisList.append(axesHash[i])
 
         if kwds:
-            return self.onHistogramSlice(axisList, **kwds)
+            return self.onHistogramSlice(histogramGrp, axisList, **kwds)
 
         # take care of datasets
         data = self.onDataset(histogramGrp, 'data')
@@ -73,31 +73,52 @@ class Loader:
         return h
 
 
-    def onHistogramSlice(self, axisList, **kwds):
-        return
+    def onHistogramSlice(self, h5group, axes, **kwds):
+        from histogram.Histogram import _slicingInfosFromDictionary
+        slicingInfos = _slicingInfosFromDictionary( kwds, axes)
+        indexSlices = [
+            slice( *axis.slicingInfo2IndexSlice( si ) )
+            for axis, si in zip( axes, slicingInfos ) ]
+        indexSlices = tuple(indexSlices)
+        
+        # axes
+        axes = [axis[si] for axis, si in zip(axes, slicingInfos) ]
+        
+        # take care of datasets
+        data = self.onDataset(h5group, 'data', slice=indexSlices)
+        errors = self.onDataset(h5group, 'errors', slice=indexSlices)
+        from histogram import histogram
+        h = histogram(self.histogramName, axes, 
+                      data = data, errors = errors,
+                      unit = data.unit())
+        return h
 
 
-    def onDataset(self, histogramGrp, type):
-        try:
-            dataGroup = histogramGrp[type]
-            if 'storage' in list(dataGroup): # this uses the 'storage' convention
-                rawdata = dataGroup['storage']
-            else:
-                #case when dataGroup *is* the dataset
-                rawdata = dataGroup
-            unit = self.onUnit(dataGroup.attrs['unit'])
-            #get length and size
-            lengths = rawdata.shape
-            size=1
-            for length in lengths:
-                size*=length
-                
-        except:
-            rawdata = None
+    def onDataset(self, histogramGrp, type, slice=None):
+        dataGroup = histogramGrp[type]
+        if 'storage' in list(dataGroup): # this uses the 'storage' convention
+            rawdata = dataGroup['storage']
+        else:
+            #case when dataGroup *is* the dataset
+            rawdata = dataGroup
+        if slice:
+            rawdata = rawdata[slice]
+        else:
+            rawdata = rawdata[:]
+        unit = self.onUnit(dataGroup.attrs['unit'])
+        #get length and size
+        lengths = rawdata.shape
+        size=1
+        for length in lengths:
+            size*=length
 
         #get rest of attributes--TODO
         attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
-        dataStore = NdArray(getNumpyArray_aktypecode(rawdata), size, 1.0)
+        datatype = getNumpyArray_aktypecode(rawdata)
+        # dataStore = NdArray(getNumpyArray_aktypecode(rawdata), size, 1.0)
+        from ndarray.NumpyNdArray import arrayFromNumpyArray
+        dataStore = arrayFromNumpyArray(rawdata, datatype)
+
         dataStore.setShape(lengths)
         data = Dataset('data', unit, attributes, lengths, dataStore)
         return data
