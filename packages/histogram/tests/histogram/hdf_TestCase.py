@@ -122,7 +122,11 @@ hh.dump( h, '%s', '/', 'c' )
         if os.system( cmd ): 
             raise "%s failed" % cmd
         h = load( tmpfile, 'h' )
-        self.assertVectorAlmostEqual( h[1], (1,1) )
+        for i in range(10):
+            self.assertVectorAlmostEqual( h[i], (i,i) )
+            continue
+        return
+    
 
     def testdump_and_load2(self):
         'dump and load in the same process'
