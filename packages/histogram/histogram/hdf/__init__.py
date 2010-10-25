@@ -23,18 +23,17 @@ def load( filename, pathinfile=None, fs = None, **kwds ):
     if pathinfile is None:
         import os
         filename, pathinfile = os.path.split( filename )
-    try:
-        if fs is None:
-            from h5py import File
+
+    if fs is None:
+        from h5py import File
+        try:
             fs = File( filename, 'r')
-    except IOError, msg:
-        raise IOError, "unable to load histogram. filename=%s, "\
-              "pathinfile=%s, kwds=%s" % (filename, pathinfile, kwds)
-    from Parser import Parser
-    #h = Parser(filename, fs = fs).parse( g )
-    h = Parser(filename, pathinfile).parse(fs)
-    return h
-    # return h.fetch(**kwds)
+        except IOError, msg:
+            raise IOError, "unable to load histogram. filename=%s, "\
+                "pathinfile=%s, kwds=%s" % (filename, pathinfile, kwds)
+    from Loader import Loader
+    loader = Loader(fs, pathinfile)
+    return loader.load(**kwds)
 
 
 def dump( histogram, filename = None, pathinfile = '/', 

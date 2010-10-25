@@ -22,35 +22,24 @@ import numpy as np
 from histogram import axis
 from ndarray.NumpyNdArray import getNumpyArray_aktypecode
 
-class Parser:
+class Loader:
 
-    def __init__( self, filename=None, pathinfile='/', ):
-        self.histogramName = pathinfile.split('/')[-1]
-        if len(self.histogramName)==0: 
-            self.histogramName = None
-#        self.filename = filename
-#        self.pathinfile = pathinfile
-
-    def parse( self, fs ):
-    #def parse( self, graph ):
-        #return graph.identify(self)
-        return self.onHistogram(fs)
+    def __init__( self, fs, pathinfile='/'):
+        self.fs = fs
+        self.pathinfile = pathinfile
+        self.histogramName = pathinfile.split('/')[-1] or self._guessHistogramName()
+        return
     
-    def onHistogram(self, fs):
-        # first get histogram
-        if not self.histogramName:
-            histogramNames = list(fs)
-            if len(histogramNames)>1:
-                raise Exception, "This file contains more than one histogram"
-            self.histogramName = histogramNames[0]
-        #histogramNames = list(fs)
-#        print fs
-#        print list(fs)
-        histogramGrp = fs[self.histogramName]
-        #members = dict(histogramGrp)
-        # first get the axes
+    
+    def load( self, **kwds):
+        return self.onHistogram(**kwds)
+    
+    
+    def onHistogram(self, **kwds):
+        fs = self.fs
+        pathinfile = self.pathinfile
+        histogramGrp = fs[pathinfile]
         try:
-            #axes = members.pop('grid')
             axes = histogramGrp['grid']
         except:
             raise ValueError, "This histogram does not contain a 'grid' node"
@@ -65,11 +54,15 @@ class Parser:
                 axisName, unit = unit,
                 boundaries = boundaries, centers = centers,
                 )
-
+            
         #reorder the axes
         axisList=[]
         for i in range(len(axesHash)):
             axisList.append(axesHash[i])
+
+        if kwds:
+            return self.onHistogramSlice(axisList, **kwds)
+
         # take care of datasets
         data = self.onDataset(histogramGrp, 'data')
         errors = self.onDataset(histogramGrp, 'errors')
@@ -77,28 +70,12 @@ class Parser:
         h = histogram(self.histogramName, axisList, 
                       data = data, errors = errors,
                       unit = data.unit())
-#        errors = None
-#        for e in histogram.children():
-#            name = e.name()
-#            # !!!!!!!!!!!!!!!!!!!!!!!!!
-#            # this is a hack
-#            if name.startswith('sum of '):
-#                name = name.split()[2]
-#            # !!!!!!!!!!!!!!!!!!!!!!!!!
-#            exec '%s = e.identify(self)' % name
-#        try:
-#            axes = grid
-#        except:
-#            raise ValueError, "This graph does not contain 'grid' node: %s" %(
-#                histogram.name() )
-#        try:
-#            data
-#        except:
-#            raise ValueError, "This graph does not contain 'data' node: %s" %(
-#                histogram.name() )
-#        name = histogram.name()
-#        return nodes.histogram( name, axes, data = data, errors = errors )
         return h
+
+
+    def onHistogramSlice(self, axisList, **kwds):
+        return
+
 
     def onDataset(self, histogramGrp, type):
         try:
@@ -144,67 +121,19 @@ class Parser:
 #        ret = nodes.axis( name, unit, type, bin_centers, bin_boundaries, attrs)
 #        return ret
     
-    onNXroot = onHistogram # hack
-    
-    def onGroup(self, group):
-        
-        klass = group.className()
-
-        try:
-            handler = getattr( self, 'on%s' % klass )
-        except AttributeError :
-            raise NotImplementedError, "handler for %s" % klass
-        
-        return handler( group )
-
-    def onGrid(self, grid):
-        #for now, grid is a directory of axes
-
-        #number of axes
-        n = len( grid.children() )
-
-        #container of results
-        ret = [None for i in range(n)]
-        
-        for axisNode in grid.children():
-            #index keep axis in the right order
-            index = axisNode.getAttribute( 'index' )
-            axis = axisNode.identify(self)
-            ret[index] = axis
-            continue
-
-        for axis in ret: assert axis is not None
-
-        return ret 
-
-    def onValueNdArray(self, valueArray):
-        valuearray = valueArray.getChild('storage').identify(self)
-        name = valueArray.name()
-        unit = valueArray.getAttribute( 'unit' )
-        return nodes.physicalValueNdArray( name, unit, valuearray )
-
     
     def onUnit(self, unit):
         if isinstance(unit, int) or isinstance(unit, float):
             return unit
         return unit.tostring()
 
-def test():
-#    from nxk5.renderers import graphFromHDF5File, printGraph
-#    g = graphFromHDF5File( 'test1.h5', '/h' )
-#    printGraph( g )
-    from h5py import File
-    filename = 'test1.h5'
-    fs = File( filename, 'r' )
-    h = Parser().parse( fs )
-
-    print h
-
-
-if __name__ == '__main__': test()
-
-            
     
+    def _guessHistogramName(self):
+        fs = self.fs
+        names = list(fs)
+        if len(names)>1:
+            raise RuntimeError, "This file contains more than one histogram"
+        return names[0]
 
 
 # version

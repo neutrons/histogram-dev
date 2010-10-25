@@ -203,10 +203,13 @@ hh.dump( h, '%s', '/', 'c' )
         from h5py import File
         fs = File(filename)
         h = load( filename, '/h', fs = fs )
-
+        return
+    
 
     def testload6(self):
-        'load with fs specified'
+        '''load with fs specified: catch error when there is mismatch in the 
+        mode of fs and the load method
+        '''
         orig = 'testload.h5'
         filename = 'testload6.h5'
         import shutil
@@ -214,7 +217,8 @@ hh.dump( h, '%s', '/', 'c' )
         from h5py import File
         fs = File( filename, 'w' )
 
-        self.assertRaises( IOError, load, filename, '/h', fs )
+        # self.assertRaises( IOError, load, filename, '/h', fs )
+        self.assertRaises( KeyError, load, filename, '/h', fs )
         return
 
 def pysuite():
