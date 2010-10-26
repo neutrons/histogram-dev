@@ -61,7 +61,7 @@ class DatasetBase( object):
 
     def typecodeAsStdVector( self):
         """typecodeAsStdVector() -> code
-        Typecode translated to stdVector types.  Type codes are:
+        Typecode translated to ndarray types.  Type codes are:
             5.....float (single precision)
             6.....double (double precision)
             24....int (typically 32 bit)

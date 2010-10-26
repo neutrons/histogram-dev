@@ -22,19 +22,10 @@
 ##
 ## Currently there are two implementations for NdArray.NdArray:
 ##
-##   - StdVectorNdArray.NdArray
 ##   - NumpyNdArray.NdArray
 ##
 ## NumpyNdArray.NdArray is a wrapper of numpy.ndarray
 ##
-## StdVectorNdArray.NdArray is built on top of the 
-## <a href="../../../stdVector/stdVector/html/index.html">stdVector</a>
-## package.
-##
-## Currently in the 
-## <a href="../../../histogram/histogram/html/index.html">histogram</a>
-## package, instances of Dataset class uses instances of StdVectorNdArray.NdArray class
-## to store data.
 
 
 
