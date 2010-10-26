@@ -128,6 +128,84 @@ hh.dump( h, '%s', '/', 'c' )
         return
     
 
+    def testdump_and_load1a(self):
+        'dump and load: continuous axis'
+        tmpfile = 'test_dump_load_1a.h5'
+        cmd = '''
+from histogram import histogram
+x = y = range(10)
+h = histogram( 
+    'h',
+    [ ('x', x) ],
+    data = y, errors = y )
+import histogram.hdf as hh
+hh.dump( h, '%s', '/', 'c' )
+''' % tmpfile
+        import os
+        if os.path.exists(tmpfile): 
+            os.remove( tmpfile )
+        cmd =  'python -c "%s"' % cmd 
+        if os.system( cmd ): 
+            raise "%s failed" % cmd
+        h = load( tmpfile, 'h' )
+        assert not h.axes()[0].isDiscrete()
+        return
+    
+
+    def testdump_and_load1b(self):
+        'dump and load: discrete axis'
+        tmpfile = 'test_dump_load_1b.h5'
+        cmd = '''
+from histogram import histogram
+x = y = range(10)
+h = histogram( 
+    'h',
+    [ ('tID', x) ],
+    data = y, errors = y )
+import histogram.hdf as hh
+hh.dump( h, '%s', '/', 'c' )
+''' % tmpfile
+        import os
+        if os.path.exists(tmpfile): 
+            os.remove( tmpfile )
+        cmd =  'python -c "%s"' % cmd 
+        if os.system( cmd ): 
+            raise "%s failed" % cmd
+        h = load( tmpfile, 'h' )
+        axis = h.axes()[0]
+        self.assert_(axis.isDiscrete())
+        self.assertEqual(axis.name(), 'tID')
+        return
+    
+
+    def testdump_and_load1c(self):
+        'dump and load: meta data'
+        tmpfile = 'test_dump_load_1c.h5'
+        cmd = '''
+from histogram import histogram
+x = y = range(10)
+h = histogram( 
+    'h',
+    [ ('tID', x) ],
+    data = y, errors = y )
+h.setAttribute('instrument', 'ARCS')
+import histogram.hdf as hh
+hh.dump( h, '%s', '/', 'c' )
+''' % tmpfile
+        import os
+        if os.path.exists(tmpfile): 
+            os.remove( tmpfile )
+        cmd =  'python -c "%s"' % cmd 
+        if os.system( cmd ): 
+            raise "%s failed" % cmd
+        h = load( tmpfile, 'h' )
+        axis = h.axes()[0]
+        self.assert_(axis.isDiscrete())
+        self.assertEqual(axis.name(), 'tID')
+        self.assertEqual(h.getAttribute('instrument'), 'ARCS')
+        return
+    
+
     def testdump_and_load2(self):
         'dump and load in the same process'
         tmpfile = 'test_dump_load2.h5'

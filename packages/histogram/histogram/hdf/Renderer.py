@@ -138,41 +138,6 @@ class Renderer(object):
 #        return node
     
             
-#    def onVector(self, vector, name, klass, dimensions):
-#        
-#        def __init__(self, name, className, nxpath, pathstr, dimensions, datatype,
-#                 storage = None):
-#        """Dataset( name, className, nxpath, pathstr, dimensions, datatype,
-#                 storage = None) -> new nexml Dataset
-#        Create node to represent dataset.
-#        Inputs:
-#            name: name of dataset (string)
-#            className: class (string, probably best left empty)
-#            nxPath: NXPath instance (set to None unless using nexml searcher)
-#            pathstr: string representing this node's path, use '/' as
-#                     path separator
-#            dimensions: list of dimension sizes
-#            datatype: nx5 datatype. Popular types include:
-#                4.......char
-#                5.......float
-#                6.......double
-#                24......unsigned int
-#                25......int
-#            storage: StdVector-like object that contains the actual data for
-#                     the dataset (default None)
-#        Output:
-#            new Dataset object to represent a dataset in an nx5 file."""
-#        NexusElement.__init__(self, name, className, nxpath, pathstr)
-#        self._dimensions = dimensions
-#        self._datatype = datatype
-#        self._storage = storage
-        
-#        dataset = nx5elements.dataset(
-#            name, klass, None, None, dimensions, vector.datatype(),
-#            vector)
-#        return dataset
-
-
 
 from histogram.DiscreteAxisMapper import DiscreteAxisMapper
 from histogram.ContinuousAxisMapper import ContinuousAxisMapper

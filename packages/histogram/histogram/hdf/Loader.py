@@ -13,7 +13,6 @@
 
 import numpy as np
 from ndarray.NumpyNdArray import NdArray, getNumpyArray_aktypecode as getDataType, arrayFromNumpyArray
-from histogram import axis
 from histogram.NdArrayDataset import Dataset
 
 
@@ -40,15 +39,10 @@ class Loader:
             raise ValueError, "This histogram does not contain a 'grid' node"
         axesHash = {}
         for axisName in axes:
-            binBoundaries = axes[axisName]['bin boundaries']
-            binCenters = axes[axisName]['bin centers']
-            unit = self.onUnit(axes[axisName].attrs['unit'])
-            boundaries =  NdArray( getDataType(binBoundaries), binBoundaries)
-            centers = NdArray( getDataType(binCenters), binCenters)
-            axesHash[axes[axisName].attrs['index']] = axis(
-                axisName, unit = unit,
-                boundaries = boundaries, centers = centers,
-                )
+            axisnode = axes[axisName]
+            axis = self.onAxis(axisnode)
+            axesHash[axisnode.attrs['index']] = axis
+            continue
             
         # reorder the axes
         axisList=[]
@@ -95,6 +89,43 @@ class Loader:
         return h
 
 
+    def _getAttrs(self, node, skip = None):
+        skip = skip or ['name', 'type', 'class', 'unit']
+        d = {}
+        for key in node.attrs.iterkeys():
+            if key in skip: continue
+            d[key] = node.attrs[key]
+            continue
+        return d
+
+
+    def _str(self, candidate):
+        if isinstance(candidate, basestring):
+            return candidate
+        if isinstance(candidate, np.ndarray):
+            return candidate.tostring()
+        raise NotImplementedError, str(candidate)
+
+
+    def onAxis(self, axisnode):
+        binBoundaries = axisnode['bin boundaries']
+        binCenters = axisnode['bin centers']
+        unit = self.onUnit(axisnode.attrs['unit'])
+        type = self._str(axisnode.attrs['type'])
+        name = self._str(axisnode.attrs['name'])
+        attrs = self._getAttrs(axisnode)
+        
+        from histogram import paxis, IDaxis
+        if type == 'continuous':
+            boundaries =  NdArray( getDataType(binBoundaries), binBoundaries)
+            return paxis(name, unit, boundaries = boundaries, attributes=attrs)
+        elif type == 'discrete':
+            centers = NdArray( getDataType(binCenters), binCenters)
+            return IDaxis( name, centers, attributes=attrs )
+        else:
+            raise NotImplementedError
+
+        
     def onDataset(self, histogramGrp, type, slice=None):
         dataGroup = histogramGrp[type]
         if 'storage' in list(dataGroup): # this uses the 'storage' convention
