@@ -66,10 +66,10 @@ def dump( histogram, filename = None, pathinfile = '/',
     if fs is None:
         from h5py import File
         fs = File(filename, writeCodes[mode])
-        Renderer(compression).render(fs, histogram)
+        Renderer(fs, compression).render(histogram)
         fs.close()
     else:
-        Renderer(compression).render(fs, histogram)
+        Renderer(fs, compression).render(histogram)
 
 
 # version

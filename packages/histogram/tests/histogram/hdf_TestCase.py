@@ -189,6 +189,8 @@ h = histogram(
     [ ('tID', x) ],
     data = y, errors = y )
 h.setAttribute('instrument', 'ARCS')
+axis = h.axes()[0]
+axis.setAttribute('pi', 3.14)
 import histogram.hdf as hh
 hh.dump( h, '%s', '/', 'c' )
 ''' % tmpfile
@@ -203,6 +205,8 @@ hh.dump( h, '%s', '/', 'c' )
         self.assert_(axis.isDiscrete())
         self.assertEqual(axis.name(), 'tID')
         self.assertEqual(h.getAttribute('instrument'), 'ARCS')
+        data = h.data()
+        self.assertEqual(axis.attribute('pi'), 3.14)
         return
     
 

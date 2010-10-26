@@ -11,57 +11,48 @@
 #
 
 
-#render a histogram to a nx5 graph
-
-
-#import journal
-#jrnltag = 'histogram.hdf.Renderer'
-#debug = journal.debug( jrnltag )
-
-#import nx5.nexml.elements as nx5elements
+import journal
+jrnltag = 'histogram.hdf.Renderer'
+debug = journal.debug( jrnltag )
 
 
 class Renderer(object):
 
 
-    def __init__(self, compressionType='lzf', compressionLevel=4):
+    def __init__(self, fs, compressionType='lzf', compressionLevel=4):
+        self.fs = fs
         self.compressionType = compressionType
+        return
+
+    def render(self, histogram):
+        return self.onHistogram(histogram)
 
 
-    def render(self, fs, histogram):
-        self.onHistogram(fs, histogram)
-
-
-    def onHistogram(self, fs, histogram):
+    def onHistogram(self, histogram):
+        fs = self.fs
         name = histogram.name()
         histogramGrp = fs.create_group( name)
-        #node = nx5elements.group( name, 'Histogram', None, None)
 
         axesGrp = histogramGrp.create_group('grid')
-        #axesNode = nx5elements.group( 'grid', 'Grid', None, None)
-        #node.addChild( axesNode )
         for i, axis in enumerate(histogram.axes()):
             self.onAxis(axesGrp, axis, i)
-            #axesNode.addChild( axisNode )
-            #continue
+            continue
         
         data = histogram.data()
         errs = histogram.errors()
         
         self.onDataset(histogramGrp, data)
         self.onDataset(histogramGrp, errs)
-#        datanode = self.onDataset(histogramGrp, data)
-#        errsnode = self.onDataset(histogramGrp, errs)
-#        node.addChild( datanode )
-#        node.addChild( errsnode )
-#        return node
 
-    def onDataset(self, histogramGrp, dataset):
-#        node = nx5elements.group(
-#            dataset.name(), 'ValueNdArray', None, None)
+        self._setAttrs(histogramGrp, histogram)
+        return
+
+
+    def onDataset(self, histogramGrp, dataset, skip_attrs=None):
         data = dataset.storage().as_('NumpyNdArray').asNumarray()
-        histogramDset = histogramGrp.create_dataset(dataset.name(), data = data, 
-                                                    compression=self.compressionType,)
+        histogramDset = histogramGrp.create_dataset(
+            dataset.name(), data = data, 
+            compression=self.compressionType,)
         unit = dataset.unit()
 #        node.setAttributes(
 #            {'unit': unit,
@@ -73,14 +64,9 @@ class Renderer(object):
             histogramDset.attrs['unit'] = unit.value
         except:
             histogramDset.attrs['unit'] = unit
-#        arrnode = self.onVector(
-#            dataset.storage().as_('StdVectorNdArray'),
-#            'storage', 'NdArray', dataset.shape() )
-#        if self._compression_level:
-#            arrnode.setCompression(self._compression_level)
-#        node.addChild( arrnode )
-#
-#        return node
+
+        return
+
 
     def onAxis(self, axesGrp, axis, index):
         #index: index of this axis in the axis array
@@ -90,25 +76,24 @@ class Renderer(object):
         mapper = axis._mapper
         type = types[mapper.__class__]
 
+        #
         name = axis.name()
-        unit = axis.unit()
-        
-        #node = nx5elements.group(name, 'Axis', None, None)
         axisGrp = axesGrp.create_group(name)
+        axisGrp.attrs['name'] = name
+        
+        #
+        unit = axis.unit()
+        axisGrp.attrs['type'] = type
+        
 
         # attributes of axis
-        attrs = {}
         attrnames = axis.listAttributes()
         for name in attrnames:
-            axisGrp.attrs[name] = str(axis.attribute(name))
-            attrs[name] = str(axis.attribute(name))
+            from _reserved_attrs import keys as skip
+            if name in skip: continue
+            axisGrp.attrs[name] = axis.attribute(name)
 
         #
-#        attrs.update(
-#            { 'type': type, 'unit': unit, 'index': index }
-#            )
-#        node.setAttributes( attrs )
-        axisGrp.attrs['type'] = type
         # in the tests, 'unit' is either an object or a string,
         # so i try to handle both
         try:
@@ -118,24 +103,24 @@ class Renderer(object):
         axisGrp.attrs['index'] = index
 
         bbs = axis.binBoundaries()
-#        bbsnode = self.onVector(
-#            bbs.as_('StdVectorNdArray'),
-#            'bin boundaries', 'NdArray', [ bbs.size() ] )
-#
-#        node.addChild( bbsnode )
         axisGrp.create_dataset('bin boundaries', 
                                data = bbs.as_('NumpyNdArray'))
 
         bcs = axis.binCenters()
-#        from ndarray.StdVectorNdArray import NdArray as StdVectorNdArray
-#        bcsnode = self.onVector(
-#            StdVectorNdArray(bbs.datatype(), bcs),
-#            'bin centers', 'NdArray', [ len(bcs) ] )
-#        debug.log( 'bcs=%s' % (bcs,) )
-#        node.addChild( bcsnode )
         from ndarray.NumpyNdArray import NdArray
         axisGrp.create_dataset('bin centers', data = NdArray(bbs.datatype(), bcs))
 #        return node
+
+
+    def _setAttrs(self, node, attributecontainer, skip_attrs=None):
+        if skip_attrs is None:
+            from _reserved_attrs import keys as skip_attrs
+        for key in attributecontainer.listAttributes():
+            if key in skip_attrs: continue
+            value = attributecontainer.getAttribute(key)
+            node.attrs[key] = value
+            continue
+        return    
     
             
 

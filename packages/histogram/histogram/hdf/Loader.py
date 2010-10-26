@@ -52,17 +52,25 @@ class Loader:
         # if slicing is requested
         if kwds:
             # do slice
-            return self.onHistogramSlice(histogramGrp, axisList, **kwds)
+            h = self.onHistogramSlice(histogramGrp, axisList, **kwds)
 
-        # datasets
-        data = self.onDataset(histogramGrp, 'data')
-        errors = self.onDataset(histogramGrp, 'errors')
+        else:
+            # datasets
+            data = self.onDataset(histogramGrp, 'data')
+            errors = self.onDataset(histogramGrp, 'errors')
 
-        # create histogram
-        from histogram import histogram
-        h = histogram(self.histogramName, axisList, 
-                      data = data, errors = errors,
-                      unit = data.unit())
+            # create histogram
+            from histogram import histogram
+            h = histogram(self.histogramName, axisList, 
+                          data = data, errors = errors,
+                          unit = data.unit())
+            
+        # meta data
+        metadata = self._getAttrs(histogramGrp)
+        for k, v in metadata.iteritems():
+            h.setAttribute(k,v)
+            continue
+        
         return h
 
 
@@ -89,24 +97,6 @@ class Loader:
         return h
 
 
-    def _getAttrs(self, node, skip = None):
-        skip = skip or ['name', 'type', 'class', 'unit']
-        d = {}
-        for key in node.attrs.iterkeys():
-            if key in skip: continue
-            d[key] = node.attrs[key]
-            continue
-        return d
-
-
-    def _str(self, candidate):
-        if isinstance(candidate, basestring):
-            return candidate
-        if isinstance(candidate, np.ndarray):
-            return candidate.tostring()
-        raise NotImplementedError, str(candidate)
-
-
     def onAxis(self, axisnode):
         binBoundaries = axisnode['bin boundaries']
         binCenters = axisnode['bin centers']
@@ -118,12 +108,19 @@ class Loader:
         from histogram import paxis, IDaxis
         if type == 'continuous':
             boundaries =  NdArray( getDataType(binBoundaries), binBoundaries)
-            return paxis(name, unit, boundaries = boundaries, attributes=attrs)
+            rt = paxis(name, unit, boundaries = boundaries, attributes=attrs)
         elif type == 'discrete':
             centers = NdArray( getDataType(binCenters), binCenters)
-            return IDaxis( name, centers, attributes=attrs )
+            rt = IDaxis( name, centers, attributes=attrs )
         else:
             raise NotImplementedError
+
+        # meta data
+        metadata = self._getAttrs(axisnode)
+        for k, v in metadata.iteritems():
+            rt.setAttribute(k,v)
+            continue
+        return rt
 
         
     def onDataset(self, histogramGrp, type, slice=None):
@@ -160,6 +157,25 @@ class Loader:
         return unit.tostring()
 
     
+    def _getAttrs(self, node, skip = None):
+        if skip is None:
+            from _reserved_attrs import keys as skip
+        d = {}
+        for key in node.attrs.iterkeys():
+            if key in skip: continue
+            d[key] = node.attrs[key]
+            continue
+        return d
+
+
+    def _str(self, candidate):
+        if isinstance(candidate, basestring):
+            return candidate
+        if isinstance(candidate, np.ndarray):
+            return candidate.tostring()
+        raise NotImplementedError, str(candidate)
+
+
     def _guessHistogramName(self):
         fs = self.fs
         names = list(fs)

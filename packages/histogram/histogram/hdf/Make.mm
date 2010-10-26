@@ -41,6 +41,7 @@ EXPORT_PYTHON_MODULES = \
 	Renderer.py \
 	Loader.py \
 	__init__.py  \
+	_reserved_attrs.py \
 	utils.py \
 
 
