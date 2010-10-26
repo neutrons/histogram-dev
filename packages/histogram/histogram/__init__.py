@@ -4,7 +4,7 @@
 # 
 #                                  Jiao  Lin
 #                        California Institute of Technology
-#                        (C) 2005-2006  All Rights Reserved
+#                        (C) 2005-2010  All Rights Reserved
 # 
 #  <LicenseText>
 # 
@@ -112,19 +112,15 @@ def use( factory ):
     def useNumpy():
         from ndarray.NumpyNdArray import NdArray
         return NdArray
-    def useStdVec():
-        from ndarray.StdVectorNdArray import NdArray
-        return NdArray
     table = {
-        'default': useStdVec,
-        'StdVector': useStdVec,
+        'default': useNumpy,
         'numpy': useNumpy,
         }
     global _array_factory
     _array_factory = table[ factory ]()
     return
 _array_factory = None
-use( 'numpy' )
+use( 'default' )
 
         
 def ndArray( *args, **kwds):

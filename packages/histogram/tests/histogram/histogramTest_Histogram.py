@@ -11,7 +11,7 @@ aspects = [
 
 
 
-from ndarray.StdVectorNdArray import NdArray
+from ndarray.NumpyNdArray import NdArray
 
 
 

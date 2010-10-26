@@ -57,7 +57,7 @@ def arrayFromNumpyArray( arr, datatype=None):
 
 class NdArray(AbstractNdArray):
 
-    def __init__( self, datatype, arg2, initVal=0, **kwds):
+    def __init__( self, datatype, arg2, initVal=None, **kwds):
         """
         (1) NdArray( datatype, numList, **kwds)
         (2) NdArray( datatype, length, initVal=0, **kwds).
@@ -80,7 +80,7 @@ class NdArray(AbstractNdArray):
             3. initial value to assign to all elements
         """
         if isinstance(datatype, int): t = numpytypecode_from_aktypecode( datatype )
-        elif datatype in ['bool',"float", "double", "int", "uint"] : t = numpytypecode_from_typename(datatype)
+        elif datatype in typename2npytypecode_dict : t = numpytypecode_from_typename(datatype)
         else:
             # assume it is valid datatype for numpy
             t = datatype
@@ -90,7 +90,13 @@ class NdArray(AbstractNdArray):
         except:
             #suppose input is the length of the array
             length = arg2
-            self._numarr = numpy.ones( length, t ) * initVal
+            if initVal is None:
+                self._numarr = numpy.zeros( length, t )
+            else:
+                if initVal == 1:
+                    self._numarr = numpy.ones( length, t )
+                else:
+                    self._numarr = numpy.ones( length, t ) * initVal
             return
         #if we reach here, then arg2 is a list 
         self._numarr = numpy.array( arg2, t )
@@ -218,9 +224,11 @@ class NdArray(AbstractNdArray):
         return
 
     def asList( self):
-        """asList() -> [This vector's contents in a Python list].
+        """asList() -> [This vector's contents in a 1D Python list].
         """
-        return list(self._numarr)
+        t = self._numarr.view()
+        t.shape = -1
+        return t.tolist()
 
     def asNumarray( self, dims=[]):
         #if dims == []: self._numarr.shape = -1
@@ -343,15 +351,17 @@ def numpytypecode_from_aktypecode( code ):
     name = typename_from_aktypecode( code )
     return numpytypecode_from_typename(name)
 
+typename2npytypecode_dict = {
+    "double": 'float64',
+    "float": "float32",
+    "int": 'int32',
+    "uint": "uint32",
+    'bool': 'bool',
+    'unsigned': 'uint32',
+    'char': 'c',
+    }
 def numpytypecode_from_typename( name ):
-    table = {
-        "double": 'float64',
-        "float": "float32",
-        "int": 'int32',
-        "uint": "uint32",
-        'bool': 'bool',
-        }
-    ret = table.get(name)
+    ret = typename2npytypecode_dict.get(name)
     if ret: return ret
     raise NotImplementedError , "unknow type code %s" % name
 
@@ -362,6 +372,7 @@ def getAKTypecode( arr ):
         try:
             return getNumericArray_aktypecode( arr )
         except:
+            import pdb; pdb.set_trace()
             warning.log("numpy datatype unknown for ndarray: %s" % arr.dtype.name)
             return 10000+arr.dtype.num
     raise "Should not reach here"

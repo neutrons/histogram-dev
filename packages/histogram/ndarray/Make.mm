@@ -43,7 +43,6 @@ EXPORT_PYTHON_MODULES = \
     __init__.py         \
     AbstractNdArray.py\
     NumpyNdArray.py      \
-    StdVectorNdArray.py      \
 
 
 export:: export-python-modules 
