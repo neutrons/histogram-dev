@@ -54,10 +54,6 @@ class Renderer(object):
             dataset.name(), data = data, 
             compression=self.compressionType,)
         unit = dataset.unit()
-#        node.setAttributes(
-#            {'unit': unit,
-#             }
-#            )
         # in the tests, 'unit' is either an object or a string,
         # so i try to handle both
         try:
@@ -109,7 +105,7 @@ class Renderer(object):
         bcs = axis.binCenters()
         from ndarray.NumpyNdArray import NdArray
         axisGrp.create_dataset('bin centers', data = NdArray(bbs.datatype(), bcs))
-#        return node
+        return
 
 
     def _setAttrs(self, node, attributecontainer, skip_attrs=None):
@@ -133,27 +129,6 @@ types = {
     EvenlyContinuousAxisMapper: 'continuous',
     }
 
-
-
-def test():
-    from histogram import histogram, arange
-    from numpy.random import rand
-    h = histogram('h',
-                  [('x', arange(0, 100, 1.) ),
-                   ('y', arange(100, 180, 1.) ),],
-                   data=rand(100,80)
-                  )
-    from h5py import File
-    filename = 'test1.h5'
-    fs = File( filename, 'w' )
-    Renderer().render(fs, h)
-    
-#    from nx5.renderers import setPath, printGraph, writeGraph
-#    setPath(g, h.name())
-#    printGraph( g )
-#
-#    writeGraph( g, 't.h5', 'c' )
-#    return
 
 
 if __name__ == '__main__': test()
