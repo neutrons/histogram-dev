@@ -17,7 +17,6 @@ PACKAGE = hdf
 # directory structure
 
 BUILD_DIRS = \
-    nodes \
 
 OTHER_DIRS = \
 
@@ -40,8 +39,9 @@ tidy::
 
 EXPORT_PYTHON_MODULES = \
 	Renderer.py \
-	Parser.py \
+	Loader.py \
 	__init__.py  \
+	_reserved_attrs.py \
 	utils.py \
 
 

@@ -7,7 +7,7 @@ debug = journal.debug("NdArrayDataset")
 
 
 class Dataset( DatasetBase):
-    """datasets that use stdVectors"""
+    """datasets that use NdArray"""
 
     def __init__( self, name='', unit='1', attributes = None,
                   shape = [], storage = None, isslice = False):

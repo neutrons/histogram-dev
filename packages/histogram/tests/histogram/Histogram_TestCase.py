@@ -12,7 +12,7 @@
 #
 
 
-import histogram
+import histogram, numpy as np
 
 def createHistogram(noerror = False):
     from histogram import createContinuousAxis, arange, createDiscreteAxis
@@ -23,18 +23,14 @@ def createHistogram(noerror = False):
     axisTubeId = createDiscreteAxis( "tubeId", [1, 3, 99], 'int')
     
     #create histogram
-    from histogram import createDataset
-    from ndarray.StdVectorNdArray import NdArray
-    dataStorage = NdArray( 'double', range(9) ); dataStorage.setShape( (3,3) )
-    errorsStorage = NdArray( 'double', range(9) ); errorsStorage.setShape( (3,3) )
+    data = errors = np.arange(9)
+    data.shape = 3,3
     
-    data = createDataset('data', storage = dataStorage )
     if noerror: errors = None
-    else: errors  = createDataset('errors', storage = errorsStorage )
-    from histogram.Histogram import Histogram
-    histogram = Histogram( name = 'I(E, TubeId)', data = data, errors = errors,
-                           axes = [axisE, axisTubeId])
-    return histogram
+
+    return histogram.histogram(
+        name = 'I(E, TubeId)', data = data, errors = errors,
+        axes = [axisE, axisTubeId])
     
 
 

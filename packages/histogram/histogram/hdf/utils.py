@@ -2,7 +2,6 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-#                                   Jiao Lin
 #                      California Institute of Technology
 #                        (C) 2007  All Rights Reserved
 #
@@ -13,20 +12,19 @@
 
 
 def getOnlyEntry( h5filename ):
-    from hdf5fs.h5fs import H5fs
-    fs = H5fs( h5filename, 'r' )
-    root = fs.open('/')
-    entries = root.read()
-    if len(entries)>1:
+    from h5py import File
+    fs = File(h5filename, 'r')
+    histogramNames = list(fs)
+    if len(histogramNames)>1:
         msg = "Hdf5 file %s has multiple entries: %s. Please specify"\
               "the entry you want to open." % (
-            h5filename, entries )
+            h5filename, histogramNames )
         raise RuntimeError, msg
-    if len(entries)==0:
+    if len(histogramNames)==0:
         msg = "Hdf5 file %s has no entry." % h5filename
         raise RuntimeError, msg
     
-    entry = entries[0]
+    entry = histogramNames[0]
     return entry
 
 

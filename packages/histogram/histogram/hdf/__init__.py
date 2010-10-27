@@ -2,7 +2,6 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-#                                   Jiao Lin
 #                      California Institute of Technology
 #                        (C) 2007  All Rights Reserved
 #
@@ -25,19 +24,21 @@ def load( filename, pathinfile=None, fs = None, **kwds ):
     if pathinfile is None:
         import os
         filename, pathinfile = os.path.split( filename )
-    from nx5.renderers import graphFromHDF5File
-    try:
-        g = graphFromHDF5File( filename, pathinfile, fs = fs )
-    except IOError, msg:
-        raise IOError, "unable to load histogram. filename=%s, "\
-              "pathinfile=%s, kwds=%s" % (
-            filename, pathinfile, kwds)
-    from Parser import Parser
-    h = Parser(filename, fs = fs).parse( g )
-    return h.fetch(**kwds)
+
+    if fs is None:
+        from h5py import File
+        try:
+            fs = File( filename, 'r')
+        except IOError, msg:
+            raise IOError, "unable to load histogram. filename=%s, "\
+                "pathinfile=%s, kwds=%s" % (filename, pathinfile, kwds)
+    from Loader import Loader
+    loader = Loader(fs, pathinfile)
+    return loader.load(**kwds)
 
 
-def dump( histogram, filename = None, pathinfile = '/', mode = 'w', fs = None, compression = 0):
+def dump( histogram, filename = None, pathinfile = '/', 
+          mode = 'c', fs = None, compression = 'lzf'):
     '''dump( histogram, hdf_filename, path_in_hdf_file, mode ) -> save histogram into a hdf file.
 
     histogram:
@@ -55,19 +56,21 @@ def dump( histogram, filename = None, pathinfile = '/', mode = 'w', fs = None, c
       The valid values are integers from 0 to 9 (inclusive).
     '''
     from Renderer import Renderer
-
-    g = Renderer(compression).render(histogram)
-
-    from nx5.renderers import setPath, writeGraph, printGraph
+    #g = graphFromHDF5File( filename, pathinfile, fs = fs )
     pathinfile = pathinfile.split( '/' )
     p = pathinfile + [histogram.name()]
     p = '/'.join( p )
-    if not p.startswith('/'): p = '/' + p
-    setPath(g, p)
-    #printGraph( g )
-
-    writeGraph(g, filename, mode=mode, fs=fs)
-    return
+    if not p.startswith('/'): 
+        p = '/' + p
+    
+    writeCodes = {'c':'w','w':'a'}
+    if fs is None:
+        from h5py import File
+        fs = File(filename, writeCodes[mode])
+        Renderer(fs, compression).render(histogram)
+        fs.close()
+    else:
+        Renderer(fs, compression).render(histogram)
 
 
 # version

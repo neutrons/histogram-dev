@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-# Timothy M. Kelley Copyright (c) 2005 All rights reserved
-# Jiao Lin Copyright (c) 2006-2009 All rights reserved
 
 
 ## \package histogram.Axis
@@ -51,8 +49,10 @@ class Axis(Dataset):
         Dataset.__init__( self, name, unit, attributes, shape, storage)
 
         self._mapper = mapper
-        if isinstance( mapper, DiscreteAxisMapper ): self._isDiscrete = True
-        else: self._isDiscrete = False
+        if isinstance( mapper, DiscreteAxisMapper ): 
+            self._isDiscrete = True
+        else: 
+            self._isDiscrete = False
 
         self._cache = {}
 
@@ -66,7 +66,8 @@ class Axis(Dataset):
 
 
     def cellIndexFromValue( self, value ):
-        try: return self._mapper(value)
+        try:             
+            return self._mapper(value)
         except IndexError, msg:
             newmsg = "%s\nAxis %s: cannot find index of %s. (axis bin centers=%s)" % (
                 msg, self.name(), value, self.binCenters())

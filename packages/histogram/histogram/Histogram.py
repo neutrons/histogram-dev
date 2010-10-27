@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-# Timothy M. Kelley Copyright (c) 2005 All rights reserved
-
 
 ## \package histogram.Histogram
 ## This package contains the most important class, Histogram.
@@ -11,14 +9,9 @@
 
 import journal
 debug = journal.debug('ins.histogram.Histogram')
-
-
-from math import sqrt       
+     
 import operator
-
-
 from DictAttributeCont import AttributeCont
-
 
 class Histogram( AttributeCont):
 
@@ -150,8 +143,10 @@ class Histogram( AttributeCont):
 
         # We also allow use of dictionary. This is a convenient and flexible way
         # to get or set a slice.
-        if isinstance(s, dict): s = _slicingInfosFromDictionary(s, self.axes())
-        else: s = _makeSlicingInfos( s, self.dimension() )
+        if isinstance(s, dict): 
+            s = _slicingInfosFromDictionary(s, self.axes())
+        else: 
+            s = _makeSlicingInfos( s, self.dimension() )
         #at this point, s is a tuple of SlicingInfo instances.
 
         # check sanity of inputs
@@ -450,7 +445,6 @@ class Histogram( AttributeCont):
         self._syncUnit()
         return self
 
-
     def __idiv__(self, other):
         """self /= b
         b is a pair of numbers (x, xerr_square) or another histogram
@@ -506,7 +500,6 @@ class Histogram( AttributeCont):
         self._syncUnit()
         return self
 
-
     def __getattribute__(self, name):
         try: return object.__getattribute__(self, name)
         except AttributeError:
@@ -514,8 +507,6 @@ class Histogram( AttributeCont):
                 return self.axisFromName(name).binCenters()
             raise
         raise "Should not reach here"
-
-
 
     def clear(self):
         '''set data and errorbars to zero'''
@@ -666,7 +657,7 @@ class Histogram( AttributeCont):
             else:
                 value = slicingInfo 
                 s = axis.cellIndexFromValue( value )
-                pass
+
             
             indexSlices.append( s )
             continue

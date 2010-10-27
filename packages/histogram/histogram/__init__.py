@@ -4,7 +4,7 @@
 # 
 #                                  Jiao  Lin
 #                        California Institute of Technology
-#                        (C) 2005-2006  All Rights Reserved
+#                        (C) 2005-2010  All Rights Reserved
 # 
 #  <LicenseText>
 # 
@@ -108,18 +108,16 @@ def axis( name, centers = None, unit = None, boundaries = None, attributes=None)
     if centers is None: return paxis( name, unit, boundaries = boundaries, attributes=attributes )
     return paxis( name, unit, centers = centers, attributes=attributes )
 
-
-
 def use( factory ):
-    from ndarray.StdVectorNdArray import NdArray as StdVectorNdArray
-    from ndarray.NumpyNdArray import NdArray as NumpyNdArray
+    def useNumpy():
+        from ndarray.NumpyNdArray import NdArray
+        return NdArray
     table = {
-        'default': StdVectorNdArray,
-        'StdVector': StdVectorNdArray,
-        'numpy': NumpyNdArray,
+        'default': useNumpy,
+        'numpy': useNumpy,
         }
     global _array_factory
-    _array_factory = table[ factory ]
+    _array_factory = table[ factory ]()
     return
 _array_factory = None
 use( 'default' )

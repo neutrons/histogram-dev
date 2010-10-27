@@ -2,7 +2,6 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-#                                   Jiao Lin
 #                      California Institute of Technology
 #                        (C) 2007  All Rights Reserved
 #
@@ -12,70 +11,60 @@
 #
 
 
-#render a histogram to a nx5 graph
-
-
 import journal
 jrnltag = 'histogram.hdf.Renderer'
 debug = journal.debug( jrnltag )
 
-import nx5.nexml.elements as nx5elements
 
 class Renderer(object):
 
 
-    def __init__(self, compression_level=0):
-        self._compression_level = compression_level
+    def __init__(self, fs, compressionType='lzf', compressionLevel=4):
+        self.fs = fs
+        self.compressionType = compressionType
         return
-
 
     def render(self, histogram):
         return self.onHistogram(histogram)
 
 
     def onHistogram(self, histogram):
+        fs = self.fs
         name = histogram.name()
-        node = nx5elements.group( name, 'Histogram', None, None)
+        histogramGrp = fs.create_group( name)
 
-        axesNode = nx5elements.group( 'grid', 'Grid', None, None)
-        node.addChild( axesNode )
+        axesGrp = histogramGrp.create_group('grid')
         for i, axis in enumerate(histogram.axes()):
-            axisNode = self.onAxis( axis, i )
-            axesNode.addChild( axisNode )
+            self.onAxis(axesGrp, axis, i)
             continue
         
         data = histogram.data()
         errs = histogram.errors()
         
-        datanode = self.onDataset(data)
-        errsnode = self.onDataset(errs)
+        self.onDataset(histogramGrp, data)
+        self.onDataset(histogramGrp, errs)
 
-        node.addChild( datanode )
-        node.addChild( errsnode )
-        return node
+        self._setAttrs(histogramGrp, histogram)
+        return
 
 
-    def onDataset(self, dataset):
-        node = nx5elements.group(
-            dataset.name(), 'ValueNdArray', None, None)
-        
+    def onDataset(self, histogramGrp, dataset, skip_attrs=None):
+        data = dataset.storage().as_('NumpyNdArray').asNumarray()
+        histogramDset = histogramGrp.create_dataset(
+            dataset.name(), data = data, 
+            compression=self.compressionType,)
         unit = dataset.unit()
-        node.setAttributes(
-            {'unit': unit,
-             }
-            )
-        
-        arrnode = self.onVector(
-            dataset.storage().as_('StdVectorNdArray'),
-            'storage', 'NdArray', dataset.shape() )
-        if self._compression_level:
-            arrnode.setCompression(self._compression_level)
-        node.addChild( arrnode )
+        # in the tests, 'unit' is either an object or a string,
+        # so i try to handle both
+        try:
+            histogramDset.attrs['unit'] = unit.value
+        except:
+            histogramDset.attrs['unit'] = unit
 
-        return node
+        return
 
 
-    def onAxis(self, axis, index):
+    def onAxis(self, axesGrp, axis, index):
         #index: index of this axis in the axis array
         #we need to index that so that axis can be loaded
         #sequentially.
@@ -83,50 +72,53 @@ class Renderer(object):
         mapper = axis._mapper
         type = types[mapper.__class__]
 
+        #
         name = axis.name()
-        unit = axis.unit()
+        axisGrp = axesGrp.create_group(name)
+        axisGrp.attrs['name'] = name
         
-        node = nx5elements.group(name, 'Axis', None, None)
+        #
+        unit = axis.unit()
+        axisGrp.attrs['type'] = type
+        
 
         # attributes of axis
-        attrs = {}
         attrnames = axis.listAttributes()
         for name in attrnames:
-            attrs[name] = str(axis.attribute(name))
-            continue
+            from _reserved_attrs import keys as skip
+            if name in skip: continue
+            axisGrp.attrs[name] = axis.attribute(name)
 
         #
-        attrs.update(
-            { 'type': type, 'unit': unit, 'index': index }
-            )
-        node.setAttributes( attrs )
+        # in the tests, 'unit' is either an object or a string,
+        # so i try to handle both
+        try:
+            axisGrp.attrs['unit'] = unit.value
+        except:
+            axisGrp.attrs['unit'] = unit
+        axisGrp.attrs['index'] = index
 
         bbs = axis.binBoundaries()
-        bbsnode = self.onVector(
-            bbs.as_('StdVectorNdArray'),
-            'bin boundaries', 'NdArray', [ bbs.size() ] )
-
-        node.addChild( bbsnode )
+        axisGrp.create_dataset('bin boundaries', 
+                               data = bbs.as_('NumpyNdArray'))
 
         bcs = axis.binCenters()
-        from ndarray.StdVectorNdArray import NdArray as StdVectorNdArray
-        bcsnode = self.onVector(
-            StdVectorNdArray(bbs.datatype(), bcs),
-            'bin centers', 'NdArray', [ len(bcs) ] )
-        debug.log( 'bcs=%s' % (bcs,) )
-        node.addChild( bcsnode )
-        return node
+        from ndarray.NumpyNdArray import NdArray
+        axisGrp.create_dataset('bin centers', data = NdArray(bbs.datatype(), bcs))
+        return
+
+
+    def _setAttrs(self, node, attributecontainer, skip_attrs=None):
+        if skip_attrs is None:
+            from _reserved_attrs import keys as skip_attrs
+        for key in attributecontainer.listAttributes():
+            if key in skip_attrs: continue
+            value = attributecontainer.getAttribute(key)
+            node.attrs[key] = value
+            continue
+        return    
     
             
-    def onVector(self, vector, name, klass, dimensions):
-        dataset = nx5elements.dataset(
-            name, klass, None, None, dimensions, vector.datatype(),
-            vector)
-        return dataset
-        
-
-    pass # end of Renderer
-
 
 from histogram.DiscreteAxisMapper import DiscreteAxisMapper
 from histogram.ContinuousAxisMapper import ContinuousAxisMapper
@@ -137,23 +129,6 @@ types = {
     EvenlyContinuousAxisMapper: 'continuous',
     }
 
-
-
-def test():
-    from histogram import histogram, arange
-    h = histogram('h',
-                  [('y', arange(0,100, 1.) ),
-                   ('x', arange(100, 180, 1.) ),]
-                  )
-
-    g = Renderer().render(h)
-    
-    from nx5.renderers import setPath, printGraph, writeGraph
-    setPath(g, h.name())
-    printGraph( g )
-
-    writeGraph( g, 't.h5', 'c' )
-    return
 
 
 if __name__ == '__main__': test()
