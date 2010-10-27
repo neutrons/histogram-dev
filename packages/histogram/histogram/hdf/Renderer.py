@@ -22,7 +22,6 @@ class Renderer(object):
     def __init__(self, fs, compressionType='lzf', compressionLevel=4):
         self.fs = fs
         self.compressionType = compressionType
-        return
 
     def render(self, histogram):
         return self.onHistogram(histogram)
@@ -36,7 +35,6 @@ class Renderer(object):
         axesGrp = histogramGrp.create_group('grid')
         for i, axis in enumerate(histogram.axes()):
             self.onAxis(axesGrp, axis, i)
-            continue
         
         data = histogram.data()
         errs = histogram.errors()
@@ -45,7 +43,6 @@ class Renderer(object):
         self.onDataset(histogramGrp, errs)
 
         self._setAttrs(histogramGrp, histogram)
-        return
 
 
     def onDataset(self, histogramGrp, dataset, skip_attrs=None):
@@ -60,8 +57,6 @@ class Renderer(object):
             histogramDset.attrs['unit'] = unit.value
         except:
             histogramDset.attrs['unit'] = unit
-
-        return
 
 
     def onAxis(self, axesGrp, axis, index):
@@ -104,8 +99,7 @@ class Renderer(object):
 
         bcs = axis.binCenters()
         from ndarray.NumpyNdArray import NdArray
-        axisGrp.create_dataset('bin centers', data = NdArray(bbs.datatype(), bcs))
-        return
+        axisGrp.create_dataset('bin centers', data = NdArray(bcs.datatype(), bcs))
 
 
     def _setAttrs(self, node, attributecontainer, skip_attrs=None):
@@ -115,10 +109,7 @@ class Renderer(object):
             if key in skip_attrs: continue
             value = attributecontainer.getAttribute(key)
             node.attrs[key] = value
-            continue
-        return    
-    
-            
+          
 
 from histogram.DiscreteAxisMapper import DiscreteAxisMapper
 from histogram.ContinuousAxisMapper import ContinuousAxisMapper

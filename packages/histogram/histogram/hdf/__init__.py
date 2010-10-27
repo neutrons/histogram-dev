@@ -24,7 +24,6 @@ def load( filename, pathinfile=None, fs = None, **kwds ):
     if pathinfile is None:
         import os
         filename, pathinfile = os.path.split( filename )
-
     if fs is None:
         from h5py import File
         try:
@@ -62,7 +61,6 @@ def dump( histogram, filename = None, pathinfile = '/',
     p = '/'.join( p )
     if not p.startswith('/'): 
         p = '/' + p
-    
     writeCodes = {'c':'w','w':'a'}
     if fs is None:
         from h5py import File
