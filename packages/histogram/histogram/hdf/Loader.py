@@ -152,7 +152,7 @@ class Loader:
     
     
     def onUnit(self, unit):
-        if isinstance(unit, int) or isinstance(unit, float):
+        if isinstance(unit, int) or isinstance(unit, float) or isinstance(unit, long):
             return unit
         return unit.tostring()
 
