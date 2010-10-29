@@ -63,7 +63,7 @@ class Renderer(object):
         #index: index of this axis in the axis array
         #we need to index that so that axis can be loaded
         #sequentially.
-        
+
         mapper = axis._mapper
         type = types[mapper.__class__]
 
@@ -99,7 +99,9 @@ class Renderer(object):
 
         bcs = axis.binCenters()
         from ndarray.NumpyNdArray import NdArray
-        axisGrp.create_dataset('bin centers', data = NdArray(bcs.datatype(), bcs))
+        axisGrp.create_dataset('bin centers',
+                               data = bcs)
+        # data = NdArray(bcs.datatype(), bcs))
 
 
     def _setAttrs(self, node, attributecontainer, skip_attrs=None):
