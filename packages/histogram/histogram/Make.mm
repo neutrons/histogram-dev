@@ -18,7 +18,6 @@ PACKAGE = histogram
 
 BUILD_DIRS = \
     hdf \
-    ins \
     pyrecomponents \
 
 OTHER_DIRS = \
