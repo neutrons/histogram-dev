@@ -16,8 +16,6 @@ PROJECT = histogram
 # directory structure
 
 BUILD_DIRS = \
-    array_kluge \
-    stdVector \
     histogram \
 
 OTHER_DIRS = \
