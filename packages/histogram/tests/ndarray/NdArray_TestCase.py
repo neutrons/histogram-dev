@@ -24,9 +24,8 @@ def createTestCase(klass):
 
 def pysuite():
     from ndarray.NumpyNdArray import NdArray as NumpyNA
-    from ndarray.StdVectorNdArray import NdArray as StdVecNA
 
-    klasses = [ NumpyNA, StdVecNA ]
+    klasses = [ NumpyNA ] 
     testcases = [ createTestCase( klass ) for klass in klasses ]
     suites = [ unittest.makeSuite( tc ) for tc in testcases ]
     return unittest.TestSuite( suites )

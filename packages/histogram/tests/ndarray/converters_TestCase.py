@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 
+skip = True
+
 import unittest
 
 from ndarray.converters import *
