@@ -69,7 +69,10 @@ class Renderer(object):
 
         #
         name = axis.name()
-        axisGrp = axesGrp.create_group(name)
+        try:
+            axisGrp = axesGrp.create_group(name)
+        except Exception, e:
+            raise RuntimeError, "Failed to create group %r in group %s. Original exception:\n%s: %s" % (name, axesGrp, e.__class__.__name__, e)
         axisGrp.attrs['name'] = name
         
         #
