@@ -103,7 +103,11 @@ class HistogramMplPlotter(HistogramPlotter):
         self.dp1.plot(x,y, yerr = eb, **kwds)
         f = figure
         axes = f.gca()
-        axes.set_title( hist.name() )
+        try:
+            title = hist.getAttribute('title')
+        except KeyError:
+            title = hist.name()
+        axes.set_title( title )
         axes.set_xlabel( axis_label(xaxis) )
         axes.set_ylabel( "Intensity (unit: %s)" % Iunit )
         return
@@ -135,7 +139,11 @@ class HistogramMplPlotter(HistogramPlotter):
         
         f = self.dp2.get_figure()
         axes = f.gca()
-        axes.set_title( hist.name() )
+        try:
+            title = hist.getAttribute('title')
+        except KeyError:
+            title = hist.name()
+        axes.set_title( title )
         axes.set_xlabel( axis_label(xaxis) )
         axes.set_ylabel( axis_label(yaxis) )
         return
