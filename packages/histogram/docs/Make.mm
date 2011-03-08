@@ -25,6 +25,7 @@ BUILD_DIRS = \
 	UserGuide\
 	latex\
 	process\
+	sphinx \
 	uml\
 
 OTHER_DIRS = \
