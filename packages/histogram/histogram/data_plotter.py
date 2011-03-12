@@ -258,6 +258,7 @@ class MplPlotter2D(MplPlotter, Plotter2D):
         if not kwds.has_key('extent'): kwds['extent'] = extent
         rt = MplPlotter._image = engine.imshow(zt1, **kwds)
         engine.clim( min, max )
+        engine.colorbar()
         return rt
 
 
