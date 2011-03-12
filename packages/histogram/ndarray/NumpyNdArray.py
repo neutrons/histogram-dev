@@ -2,8 +2,9 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
+#                                 Jiao Lin
 #                      California Institute of Technology
-#                        (C) 2005 All Rights Reserved  
+#                      (C) 2006-2011 All Rights Reserved  
 #
 # {LicenseText}
 #
@@ -292,7 +293,6 @@ class NdArray(AbstractNdArray):
         return r
     def __getitem__(self, s):
         if isinstance(s, list): s = tuple(s )
-        
         subelement = self._numarr[s]
         if isinstance(s, int): return subelement
         elif isinstance(s, tuple):
@@ -372,7 +372,6 @@ def getAKTypecode( arr ):
         try:
             return getNumericArray_aktypecode( arr )
         except:
-            import pdb; pdb.set_trace()
             warning.log("numpy datatype unknown for ndarray: %s" % arr.dtype.name)
             return 10000+arr.dtype.num
     raise "Should not reach here"
@@ -433,7 +432,5 @@ if __name__ == '__main__': main()
 
 # version
 __id__ = "$Id$"
-
-# Generated automatically by PythonMill on Thu Jun 29 09:32:21 2006
 
 # End of file 
