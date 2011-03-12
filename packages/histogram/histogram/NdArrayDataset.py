@@ -36,7 +36,7 @@ class Dataset( DatasetBase):
         if shape == [] and storage is not None: shape = storage.shape()
         if shape != [] and storage is not None:
             if list(storage.shape()) != list(shape):
-                raise "Incompaitlbe inputs: shape = %s, storage.shape = %s" % (
+                raise RuntimeError, "Incompaitlbe inputs: shape = %s, storage.shape = %s" % (
                     shape, storage.shape())
             pass
         shape = list(shape)
