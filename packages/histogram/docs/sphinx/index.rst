@@ -11,6 +11,10 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   intro
+   python-interface
+   gui
+
 Indices and tables
 ==================
 
