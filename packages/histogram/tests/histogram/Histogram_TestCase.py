@@ -601,6 +601,108 @@ class Histogram_TestCase(TestCase):
         self.assertVectorEqual( t1, t2 )
 
         return
+
+
+    def test_rename(self):
+        "Histogram: rename"
+        import tempfile
+        outh5 = tempfile.mktemp()
+        code = """
+from histogram import histogram, arange
+h = histogram('h', [('x', arange(10), 'meter')])
+h.I = h.x*h.x
+h.setAttribute('name', 'abc')
+from histogram.hdf import load, dump
+dump(h, %r, '/', 'c')
+""" % outh5
+        script = tempfile.mktemp()
+        open(script, 'w').write(code)
+        cmd = 'python %s' % script
+        import os
+        
+        if os.system(cmd):
+            raise RuntimeError, "%s failed" % cmd
+        
+        from histogram.hdf import load
+        h = load(outh5, 'abc')
+
+        os.remove(outh5)
+        os.remove(script)
+        return        
+    
+
+    def test_rename_sliced_histogram(self):
+        "Histogram: rename sliced histogram"
+        import tempfile
+        outh5 = tempfile.mktemp()
+        code = """
+from histogram import histogram, arange
+h = histogram(
+  'h', 
+  [('x', arange(10), 'meter'),
+   ('y', arange(15), 'meter'),
+  ]
+  )
+h1 = h[(2,5), ()].sum('x')
+h1.setAttribute('name', 'abc')
+from histogram.hdf import load, dump
+dump(h1, %r, '/', 'c')
+""" % outh5
+        script = tempfile.mktemp()
+        open(script, 'w').write(code)
+        cmd = 'python %s' % script
+        import os
+        
+        if os.system(cmd):
+            raise RuntimeError, "%s failed" % cmd
+        
+        from histogram.hdf import load
+        try:
+            h = load(outh5, 'abc')
+        except:
+            raise RuntimeError, "failed to load histogram from %s" %(
+                outh5,)
+
+        os.remove(outh5)
+        os.remove(script)
+        return        
+    
+
+    def test_rename_sliced_histogram_using_rename_method(self):
+        "Histogram: rename()"
+        import tempfile
+        outh5 = tempfile.mktemp()
+        code = """
+from histogram import histogram, arange
+h = histogram(
+  'h', 
+  [('x', arange(10), 'meter'),
+   ('y', arange(15), 'meter'),
+  ]
+  )
+h1 = h[(2,5), ()].sum('x')
+h1.rename('abc')
+from histogram.hdf import load, dump
+dump(h1, %r, '/', 'c')
+""" % outh5
+        script = tempfile.mktemp()
+        open(script, 'w').write(code)
+        cmd = 'python %s' % script
+        import os
+        
+        if os.system(cmd):
+            raise RuntimeError, "%s failed" % cmd
+        
+        from histogram.hdf import load
+        try:
+            h = load(outh5, 'abc')
+        except:
+            raise RuntimeError, "failed to load histogram from %s" %(
+                outh5,)
+
+        os.remove(outh5)
+        os.remove(script)
+        return        
     
 
     pass # end of Histogram_TestCase

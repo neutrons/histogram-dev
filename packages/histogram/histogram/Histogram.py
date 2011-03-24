@@ -598,9 +598,15 @@ class Histogram( AttributeCont):
 
         name = "sum of %s over axis %s" % (self.name(), theAxisName)
         
+        newdata = self._data.sum(axisIndex)
+        newerrors = self._errors.sum(axisIndex)
+        # has to rename the datasets to follow the convention
+        # required for histogram
+        newdata.setAttribute('name', 'data')
+        newerrors.setAttribute('name', 'errors')
         res =  Histogram(
             name = name, unit = self.unit(),
-            data = self._data.sum(axisIndex), errors = self._errors.sum(axisIndex),
+            data = newdata, errors = newerrors,
             axes = axes, attributes = attrs )
 
         #add all other datasets
@@ -616,7 +622,10 @@ class Histogram( AttributeCont):
     #---
 
     def name(self): return self.getAttribute('name')
-
+    def rename(self, newname):
+        self.setAttribute('name', newname)
+        return self
+    
 
     def dimension(self): return self._dimension
 
