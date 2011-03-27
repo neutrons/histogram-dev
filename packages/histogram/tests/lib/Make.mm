@@ -25,6 +25,7 @@ PROJ_CPPTESTS = test_NdArray \
 	test_EvenlySpacedGridData_2D \
 	test_EvenlySpacedGridData_4D \
 	test_events2Ix \
+	test_events2EvenlySpacedIx \
 
 PROJ_TESTS = $(PROJ_PYTESTS) $(PROJ_CPPTESTS)
 PROJ_LIBRARIES = -L$(BLD_LIBDIR) -lhistogram
@@ -74,6 +75,9 @@ test_EvenlySpacedGridData_4D: test_EvenlySpacedGridData_4D.cc $(BLD_LIBDIR)/libh
 
 test_events2Ix: test_events2Ix.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
 	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_events2Ix.cc $(PROJ_LIBRARIES)
+
+test_events2EvenlySpacedIx: test_events2EvenlySpacedIx.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
+	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_events2EvenlySpacedIx.cc $(PROJ_LIBRARIES)
 
 
 # version

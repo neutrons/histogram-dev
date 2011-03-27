@@ -28,7 +28,9 @@ HISTOGRAM_NAMESPACE_START
   ///   * event --> tof
   /// This is an abstract base class. 
   /// Solid subclasses will be used by histogrammers (objects of Histogrammer1). 
-  template <typename event_t, typename prob_t, typename data_t>
+  template <typename event_t, 
+	    typename prob_t,
+	    typename data_t = prob_t>
   class Event2Quantity1 {
   public:
     /// convert event to a quantity

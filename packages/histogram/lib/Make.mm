@@ -75,6 +75,7 @@ EXPORT_HEADERS = \
 	NdArraySlice.icc \
 	OutOfBound.h\
 	events2histogram.h \
+	events2EvenlySpacedIx.h \
 	events2Ix.h \
 	events2Ixy.h \
 	events2Ixxxx.h \
