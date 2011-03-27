@@ -21,6 +21,8 @@ PROJ_CLEAN += $(PROJ_SAR) $(PROJ_DLL)
 
 PROJ_SRCS = \
 	Array_1D.cc \
+	events2Ix.cc \
+	Event2Quantity.cc \
 	NdArray.cc \
 	NdArraySlice.cc \
 
@@ -57,6 +59,7 @@ EXPORT_HEADERS = \
 	Array_1D.h \
 	Array_1D.icc \
 	AxisMapper.h \
+	Event2Quantity.h \
 	GridData_1D.h \
 	GridData_2D.h \
 	GridData_4D.h \
@@ -65,11 +68,17 @@ EXPORT_HEADERS = \
 	EvenlySpacedGridData_2D.h \
 	EvenlySpacedGridData_4D.h \
 	Exception.h\
+	Histogrammer.h \
 	NdArray.h \
 	NdArray.icc \
 	NdArraySlice.h \
 	NdArraySlice.icc \
 	OutOfBound.h\
+	events2histogram.h \
+	events2Ix.h \
+	events2Ixy.h \
+	events2Ixxxx.h \
+
 
 EXPORT_LIBS = $(PROJ_SAR)
 EXPORT_BINS = $(PROJ_DLL)
