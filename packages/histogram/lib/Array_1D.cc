@@ -15,13 +15,11 @@
 #include "Array_1D.h"
 
 
-namespace DANSE { 
-  namespace Histogram {
+HISTOGRAM_NAMESPACE_START
 
-    typedef Array_1D<unsigned int*, unsigned int, size_t> UIntArray_1D;
+typedef Array_1D<unsigned int*, unsigned int, size_t> UIntArray_1D;
 
-  }
-}
+HISTOGRAM_NAMESPACE_END
 
 
 // version

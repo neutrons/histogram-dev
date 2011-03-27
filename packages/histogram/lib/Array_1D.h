@@ -16,11 +16,9 @@
 
 
 #include "OutOfBound.h"
+#include "_macros.h"
 
-
-namespace DANSE {
-
-namespace Histogram{
+HISTOGRAM_NAMESPACE_START
 
   /// 1-dimensional array.
   /// template class for 1-dimensional array
@@ -90,8 +88,7 @@ namespace Histogram{
 
   }; // Array_1D:
 
-} // Histogram:  
-} // DANSE:
+HISTOGRAM_NAMESPACE_END
 
 
 #define DANSE_HISTOGRAM_ARRAY_1D_ICC

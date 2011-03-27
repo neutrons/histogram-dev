@@ -78,6 +78,7 @@ EXPORT_HEADERS = \
 	events2Ix.h \
 	events2Ixy.h \
 	events2Ixxxx.h \
+	_macros.h \
 
 
 EXPORT_LIBS = $(PROJ_SAR)

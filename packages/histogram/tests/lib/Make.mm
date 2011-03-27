@@ -28,6 +28,7 @@ PROJ_CPPTESTS = test_NdArray \
 
 PROJ_TESTS = $(PROJ_PYTESTS) $(PROJ_CPPTESTS)
 PROJ_LIBRARIES = -L$(BLD_LIBDIR) -lhistogram
+PROJ_CXX_DEFINES += USE_DANSE_NAMESPACE
 
 
 #--------------------------------------------------------------------------
