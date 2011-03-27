@@ -7,8 +7,7 @@
 #include "histogram/Event2Quantity.h"
 #include "histogram/events2Ix.h"
 
-using namespace Histogram;
-using namespace DANSE::Histogram;
+USING_HISTOGRAM_NAMESPACE;
 
 // specialized event data object
 struct Event{

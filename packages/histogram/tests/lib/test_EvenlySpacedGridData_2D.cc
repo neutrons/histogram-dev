@@ -6,7 +6,7 @@
 
 int test2()
 {
-  using namespace DANSE::Histogram;
+  USING_HISTOGRAM_NAMESPACE;
 
   typedef EvenlySpacedGridData_2D<double, double, unsigned int> Iqe;
 

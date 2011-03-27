@@ -8,7 +8,7 @@
 void test1()
 {
 
-  using namespace DANSE::Histogram;
+  USING_HISTOGRAM_NAMESPACE;
 
   unsigned int counts [ 4*6 ];
   short shape[2];
@@ -51,7 +51,7 @@ void test1()
 void test2()
 {
 
-  using namespace DANSE::Histogram;
+  USING_HISTOGRAM_NAMESPACE;
 
   unsigned int counts [ 4*6 ];
   short shape[2];

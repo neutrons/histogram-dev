@@ -37,7 +37,7 @@ PROJ_CXX_DEFINES += USE_DANSE_NAMESPACE
 all: $(PROJ_TESTS)
 
 test:
-	for test in $(PROJ_TESTS) ; do $${test}; done
+	for test in $(PROJ_TESTS) ; do echo $${test}; $${test}; done
 
 release: tidy
 	cvs release .

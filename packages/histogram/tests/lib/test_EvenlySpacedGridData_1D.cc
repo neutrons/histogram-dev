@@ -4,7 +4,7 @@
 #include "histogram/EvenlySpacedGridData_1D.h"
 
 
-using namespace DANSE::Histogram;
+USING_HISTOGRAM_NAMESPACE;
 
 typedef EvenlySpacedGridData_1D<double, unsigned int> Itof;
 

@@ -10,7 +10,7 @@
 int main()
 {
 
-  using namespace DANSE::Histogram;
+  USING_HISTOGRAM_NAMESPACE;
 
   unsigned int counts [ 4*6 ];
   for (int i=0; i<4*6; i++) counts[i] = 0;

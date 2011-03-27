@@ -9,7 +9,7 @@
 void test1()
 {
 
-  using namespace DANSE::Histogram;
+  USING_HISTOGRAM_NAMESPACE;
 
   unsigned int counts [ 4*6 ];
   unsigned int shape[2];
