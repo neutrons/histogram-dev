@@ -25,12 +25,13 @@ HISTOGRAM_NAMESPACE_START
 /// of class Event) in to a 2D histogram.
 ///
 /// template arguments:
+///   Event: event class
 ///   Event2XY: a Event2Quantity2 class
 ///   Ixy: a DataGrid2D class or a Ixy class
 /// 
 /// arguments:
-///   events: neutron events
-///   N: number of neutron events to be processed
+///   events_begin: begin iterator of neutron events 
+///   events_end: end iterator of neutron events 
 ///   e2xy: event -> x,y functor
 ///   ixy: I(x,y) histogram
 template 

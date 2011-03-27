@@ -78,6 +78,7 @@ EXPORT_HEADERS = \
 	events2histogram.h \
 	events2EvenlySpacedIx.h \
 	events2EvenlySpacedIxy.h \
+	events2EvenlySpacedIxxxx.h \
 	events2Ix.h \
 	events2Ixy.h \
 	events2Ixxxx.h \

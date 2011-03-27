@@ -18,7 +18,7 @@
 //#include "events2Ixy.h"
 #include "Histogrammer.h"
 #include "events2histogram.h"
-#include "histogram/EvenlySpacedGridData_2D.h"
+#include "EvenlySpacedGridData_2D.h"
 
 
 HISTOGRAM_NAMESPACE_START
@@ -35,7 +35,7 @@ HISTOGRAM_NAMESPACE_START
 /// 
 /// arguments:
 ///   events_begin: begin iterator of neutron events 
-///   N: number of neutron events to be processed
+///   events_end: end iterator of neutron events 
 ///   e2xy: event -> x functor
 ///   x_begin, x_end, x_step: define the x axis
 ///   y_begin, y_end, y_step: define the y axis

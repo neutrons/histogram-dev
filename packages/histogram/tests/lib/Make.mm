@@ -27,6 +27,7 @@ PROJ_CPPTESTS = test_NdArray \
 	test_events2Ix \
 	test_events2EvenlySpacedIx \
 	test_events2EvenlySpacedIxy \
+	test_events2EvenlySpacedIxxxx \
 
 PROJ_TESTS = $(PROJ_PYTESTS) $(PROJ_CPPTESTS)
 PROJ_LIBRARIES = -L$(BLD_LIBDIR) -lhistogram
@@ -82,6 +83,9 @@ test_events2EvenlySpacedIx: test_events2EvenlySpacedIx.cc $(BLD_LIBDIR)/libhisto
 
 test_events2EvenlySpacedIxy: test_events2EvenlySpacedIxy.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
 	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_events2EvenlySpacedIxy.cc $(PROJ_LIBRARIES)
+
+test_events2EvenlySpacedIxxxx: test_events2EvenlySpacedIxxxx.cc $(BLD_LIBDIR)/libhistogram.$(EXT_SAR)
+	$(CXX) $(CXXFLAGS) $(LCXXFLAGS) -o $@ test_events2EvenlySpacedIxxxx.cc $(PROJ_LIBRARIES)
 
 
 # version
