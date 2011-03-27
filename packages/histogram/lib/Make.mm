@@ -22,6 +22,7 @@ PROJ_CLEAN += $(PROJ_SAR) $(PROJ_DLL)
 PROJ_SRCS = \
 	Array_1D.cc \
 	events2Ix.cc \
+	events2Ixy.cc \
 	Event2Quantity.cc \
 	NdArray.cc \
 	NdArraySlice.cc \
@@ -76,6 +77,7 @@ EXPORT_HEADERS = \
 	OutOfBound.h\
 	events2histogram.h \
 	events2EvenlySpacedIx.h \
+	events2EvenlySpacedIxy.h \
 	events2Ix.h \
 	events2Ixy.h \
 	events2Ixxxx.h \

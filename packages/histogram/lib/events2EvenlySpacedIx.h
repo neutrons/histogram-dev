@@ -46,7 +46,7 @@ template <typename Event,
 	  typename EventIterator>
 void events2EvenlySpacedIx
 ( const EventIterator & events_begin, const EventIterator &events_end,
-  const Event2X & e2x, 
+  const Event2X & e2x,
   XData x_begin, XData x_end, XData x_step, 
   YIterator y_begin)
 {
