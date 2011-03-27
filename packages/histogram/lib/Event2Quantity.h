@@ -16,7 +16,10 @@
 #define H_HISTOGRAM_EVENT2QUANTITY
 
 
-namespace Histogram{ 
+#include "_macros.h"
+
+
+HISTOGRAM_NAMESPACE_START
 
   /// Event2Quantity1: convert event to a scalar quantity.
   /// Class to convert an neutron event (Event object) to a scalar quantity.
@@ -81,7 +84,7 @@ namespace Histogram{
     virtual ~Event2Quantity4() {}
   };
 
-}
+HISTOGRAM_NAMESPACE_END
 
 
 #endif // H_HISTOGRAM_EVENT2QUANTITY

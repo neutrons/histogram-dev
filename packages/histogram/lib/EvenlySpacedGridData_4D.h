@@ -12,8 +12,8 @@
 //
 
 
-#ifndef DANSE_HISTOGRAM_EVENLYSPACEDGRIDDATA_4D_H
-#define DANSE_HISTOGRAM_EVENLYSPACEDGRIDDATA_4D_H
+#ifndef HISTOGRAM_EVENLYSPACEDGRIDDATA_4D_H
+#define HISTOGRAM_EVENLYSPACEDGRIDDATA_4D_H
 
 #include <cassert>
 
@@ -22,9 +22,8 @@
 #include "GridData_4D.h"
 
 
-namespace DANSE {
+HISTOGRAM_NAMESPACE_START
 
-  namespace Histogram {
 
     /// f(x1,x2,x3,x4) on evenly spaced axis {xi}, i=1,2,3,4.
     /// A template struct to hold f(x1,x2,x3,x4) histogram-like data object.
@@ -172,12 +171,10 @@ namespace DANSE {
       
     };
 
-  } // Histogram:
-
-} // DANSE:
+HISTOGRAM_NAMESPACE_END
 
 
-#endif // DANSE_HISTOGRAM_EVENLYSPACEDGRIDDATA_4D_H
+#endif // HISTOGRAM_EVENLYSPACEDGRIDDATA_4D_H
 
 
 

@@ -16,14 +16,12 @@
 #include "NdArraySlice.h"
 
 
-namespace DANSE { 
-  namespace Histogram {
+HISTOGRAM_NAMESPACE_START
 
     typedef NdArray<unsigned int*, unsigned int, unsigned int, long, 2> UIntArray_2D;
     typedef NdArraySlice< UIntArray_2D, unsigned int > UIntArray_2D_Slice;
-  }
-}
 
+HISTOGRAM_NAMESPACE_END
 
 // version
 // $Id$

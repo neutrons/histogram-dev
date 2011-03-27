@@ -16,10 +16,10 @@
 #else
 
 
-
+HISTOGRAM_NAMESPACE_START
 
 template <typename NdArray, typename DataType, typename IndexType>
-DANSE::Histogram::NdArraySlice<NdArray, DataType, IndexType>::NdArraySlice
+NdArraySlice<NdArray, DataType, IndexType>::NdArraySlice
 ( NdArray & data, const std::vector<int> & indexes )
   : m_data(data)
 {
@@ -40,7 +40,7 @@ DANSE::Histogram::NdArraySlice<NdArray, DataType, IndexType>::NdArraySlice
 
 template <typename NdArray, typename DataType, typename IndexType>
 IndexType
-DANSE::Histogram::NdArraySlice<NdArray, DataType, IndexType>::dimension() const
+NdArraySlice<NdArray, DataType, IndexType>::dimension() const
 {
   return m_shape.size();
 }
@@ -48,7 +48,7 @@ DANSE::Histogram::NdArraySlice<NdArray, DataType, IndexType>::dimension() const
 
 template <typename NdArray, typename DataType, typename IndexType>
 const IndexType *
-DANSE::Histogram::NdArraySlice<NdArray, DataType, IndexType>::shape() const
+NdArraySlice<NdArray, DataType, IndexType>::shape() const
 {
   return &(m_shape[0]);
 }
@@ -56,7 +56,7 @@ DANSE::Histogram::NdArraySlice<NdArray, DataType, IndexType>::shape() const
 
 template <typename NdArray, typename DataType, typename IndexType>
 const DataType &
-DANSE::Histogram::NdArraySlice<NdArray, DataType, IndexType>::operator [] 
+NdArraySlice<NdArray, DataType, IndexType>::operator [] 
 ( const std::vector<index_t> & indexes) const
 {
   static std::vector< index_t > allindexes;
@@ -74,7 +74,7 @@ DANSE::Histogram::NdArraySlice<NdArray, DataType, IndexType>::operator []
 
 template <typename NdArray, typename DataType, typename IndexType>
 DataType & 
-DANSE::Histogram::NdArraySlice<NdArray, DataType, IndexType>::operator [] 
+NdArraySlice<NdArray, DataType, IndexType>::operator [] 
 ( const std::vector<index_t> & indexes) 
 {
   assert (indexes.size() == dimension() );
@@ -85,6 +85,7 @@ DANSE::Histogram::NdArraySlice<NdArray, DataType, IndexType>::operator []
 }
 
 
+HISTOGRAM_NAMESPACE_END
 
 #endif 
 

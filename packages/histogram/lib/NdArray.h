@@ -11,8 +11,8 @@
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-#ifndef DANSE_HISTOGRAM_NDARRAY_H
-#define DANSE_HISTOGRAM_NDARRAY_H
+#ifndef HISTOGRAM_NDARRAY_H
+#define HISTOGRAM_NDARRAY_H
 
 
 #include <vector>
@@ -21,9 +21,7 @@
 #include "journal/debug.h"
 
 
-namespace DANSE {
-
-namespace Histogram{
+HISTOGRAM_NAMESPACE_START
 
   /// Multiple dimensional array.
   /// template class for multiple-dimensional array
@@ -141,16 +139,16 @@ namespace Histogram{
 
   }; // NdArray:
 
-} // Histogram:  
-} // DANSE:
+
+HISTOGRAM_NAMESPACE_END
 
 
-#define DANSE_HISTOGRAM_NDARRAY_ICC
+#define HISTOGRAM_NDARRAY_ICC
 #include "NdArray.icc"
-#undef DANSE_HISTOGRAM_NDARRAY_ICC
+#undef HISTOGRAM_NDARRAY_ICC
 
 
-#endif // DANSE_HISTOGRAM_NDARRAY_H
+#endif // HISTOGRAM_NDARRAY_H
 
 
 // version

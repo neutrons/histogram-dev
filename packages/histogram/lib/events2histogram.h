@@ -18,12 +18,15 @@
 
 #include <algorithm>
 
+#include "_macros.h"
+
 
 #ifdef DEBUG
 #include "journal/debug.h"
 #endif
 
-namespace Histogram{
+
+HISTOGRAM_NAMESPACE_START
 
   template <typename histogrammer_t, typename event_it_t>
   void events2histogram
@@ -37,7 +40,7 @@ namespace Histogram{
     std::for_each(events_begin, events_end, her);
   }
   
-} // Histogram
+HISTOGRAM_NAMESPACE_END
 
 #endif // H_HISTOGRAM_EVENTS2HISTOGRAM
 

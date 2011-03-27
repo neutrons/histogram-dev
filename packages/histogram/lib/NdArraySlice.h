@@ -18,13 +18,17 @@
 
 #include <vector>
 
+
+#include "_macros.h"
+
+
+
 /// Slice of an NdArray. Match the interface to NdArray
 /// Now we only do array[x,:,:] or array[:,y,:] or array[:,y]
 /// Cannot do array[a:b, y, z] yet
 
-namespace DANSE {
 
-  namespace Histogram{
+HISTOGRAM_NAMESPACE_START
 
     template <typename NdArray, typename DataType = double, typename IndexType = unsigned int>
     class NdArraySlice {
@@ -54,9 +58,7 @@ namespace DANSE {
       std::vector< index_t >  m_axismap, m_shape, m_t_indexes;
     };
 
-  } //Histogram::
-} // DANSE::
-
+HISTOGRAM_NAMESPACE_END
 
 #include "NdArraySlice.icc"
 

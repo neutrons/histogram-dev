@@ -12,8 +12,8 @@
 //
 
 
-#ifndef DANSE_HISTOGRAM_EVENLYSPACEDGRIDDATA_2D_H
-#define DANSE_HISTOGRAM_EVENLYSPACEDGRIDDATA_2D_H
+#ifndef HISTOGRAM_EVENLYSPACEDGRIDDATA_2D_H
+#define HISTOGRAM_EVENLYSPACEDGRIDDATA_2D_H
 
 #include <cassert>
 
@@ -22,9 +22,7 @@
 #include "GridData_2D.h"
 
 
-namespace DANSE {
-
-  namespace Histogram {
+HISTOGRAM_NAMESPACE_START
 
     /// f(x,y) on evenly spaced axis x and y.
     /// A template struct to hold f(x,y) histogram-like data object.
@@ -128,12 +126,9 @@ namespace DANSE {
       
     };
 
-  } // Histogram:
+HISTOGRAM_NAMESPACE_END
 
-} // DANSE:
-
-
-#endif // DANSE_HISTOGRAM_EVENLYSPACEDGRIDDATA_2D_H
+#endif // HISTOGRAM_EVENLYSPACEDGRIDDATA_2D_H
 
 
 

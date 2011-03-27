@@ -12,13 +12,14 @@
 //
 
 
-#ifndef DANSE_HISTOGRAM_GRIDDATA_1D_H
-#define DANSE_HISTOGRAM_GRIDDATA_1D_H
+#ifndef HISTOGRAM_GRIDDATA_1D_H
+#define HISTOGRAM_GRIDDATA_1D_H
 
 
-namespace DANSE {
+#include "_macros.h"
 
-  namespace Histogram {
+
+HISTOGRAM_NAMESPACE_START
 
   /// 1-dimensional grid data.
   /// This class associates a 1D data array and 1d axis mapper.
@@ -68,10 +69,11 @@ namespace DANSE {
     const XAxisMapper & m_xmapper;
     YArray & m_yarray;
   };
-  }
-}
 
-#endif //DANSE_HISTOGRAM_GRIDDATA_1D_H
+HISTOGRAM_NAMESPACE_END
+
+
+#endif //HISTOGRAM_GRIDDATA_1D_H
 
 
 // version

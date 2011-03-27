@@ -18,7 +18,7 @@
 #include "Histogrammer.h"
 #include "events2histogram.h"
 
-namespace Histogram{
+HISTOGRAM_NAMESPACE_START
 
   /// add events to histogram I(x).
   ///
@@ -47,7 +47,7 @@ namespace Histogram{
     return;
   }
 
-}
+HISTOGRAM_NAMESPACE_END
 
 
 #endif // H_HISTOGRAM_EVENTS2IX

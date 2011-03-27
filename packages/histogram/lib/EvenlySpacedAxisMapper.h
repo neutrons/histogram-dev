@@ -4,24 +4,22 @@
 //
 //                                   Jiao Lin
 //                      California Institute of Technology
-//                        (C) 2007  All Rights Reserved
+//                      (C) 2006-2011  All Rights Reserved
 //
 // {LicenseText}
 //
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-#ifndef DANSE_HISTOGRAM_EVENLYSPACEDAXISMAPPER_H
-#define DANSE_HISTOGRAM_EVENLYSPACEDAXISMAPPER_H
+#ifndef HISTOGRAM_EVENLYSPACEDAXISMAPPER_H
+#define HISTOGRAM_EVENLYSPACEDAXISMAPPER_H
 
 
 #include <sstream>
 
 #include "AxisMapper.h"
 
-namespace DANSE {
-
-  namespace Histogram {
+HISTOGRAM_NAMESPACE_START
 
   // map data value to index
   template <typename NumberType, typename IndexType>
@@ -50,10 +48,10 @@ namespace DANSE {
     NumberType m_begin, m_end, m_step;
   };
 
-  }
-}
 
-#endif // DANSE_HISTOGRAM_EVENLYSPACEDAXISMAPPER_H
+HISTOGRAM_NAMESPACE_END
+
+#endif // HISTOGRAM_EVENLYSPACEDAXISMAPPER_H
 
 
 // version

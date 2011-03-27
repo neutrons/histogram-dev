@@ -12,13 +12,14 @@
 //
 
 
-#ifndef DANSE_HISTOGRAM_GRIDDATA_2D_H
-#define DANSE_HISTOGRAM_GRIDDATA_2D_H
+#ifndef HISTOGRAM_GRIDDATA_2D_H
+#define HISTOGRAM_GRIDDATA_2D_H
 
 
-namespace DANSE {
+#include "_macros.h"
 
-  namespace Histogram {
+
+HISTOGRAM_NAMESPACE_START
     
     /// 2-dimensional grid data.
     /// This class associates a 2D data array and two axis mappers.
@@ -85,11 +86,11 @@ namespace DANSE {
       ZArray & m_zarray;
 
     };
-    
-  }
-}
 
-#endif // DANSE_HISTOGRAM_GRIDDATA_2D_H
+HISTOGRAM_NAMESPACE_END
+    
+
+#endif // HISTOGRAM_GRIDDATA_2D_H
 
 
 // version

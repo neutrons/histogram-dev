@@ -11,8 +11,8 @@
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-#ifndef DANSE_HISTOGRAM_ARRAY_1D_H
-#define DANSE_HISTOGRAM_ARRAY_1D_H
+#ifndef HISTOGRAM_ARRAY_1D_H
+#define HISTOGRAM_ARRAY_1D_H
 
 
 #include "OutOfBound.h"
@@ -91,12 +91,12 @@ HISTOGRAM_NAMESPACE_START
 HISTOGRAM_NAMESPACE_END
 
 
-#define DANSE_HISTOGRAM_ARRAY_1D_ICC
+#define HISTOGRAM_ARRAY_1D_ICC
 #include "Array_1D.icc"
-#undef DANSE_HISTOGRAM_ARRAY_1D_ICC
+#undef HISTOGRAM_ARRAY_1D_ICC
 
 
-#endif // DANSE_HISTOGRAM_ARRAY_1D_H
+#endif // HISTOGRAM_ARRAY_1D_H
 
 
 // version

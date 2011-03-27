@@ -18,7 +18,7 @@
 #include "histogram/OutOfBound.h"
 #include "journal/warning.h"
 
-namespace Histogram{
+HISTOGRAM_NAMESPACE_START
 
   /// Histogammer1: add event to a 1D histogram.
   /// Class to add neutron events (objects of Event class) 
@@ -184,7 +184,8 @@ namespace Histogram{
     X4DataType m_x4;
   } ;
 
-} // Histogrammer::
+
+HISTOGRAM_NAMESPACE_END
 
 
 #endif // H_HISTOGRAM_HISTOGRAMMER

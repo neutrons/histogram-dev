@@ -11,7 +11,7 @@
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-#ifndef DANSE_HISTOGRAM_ARRAY_1D_ICC
+#ifndef HISTOGRAM_ARRAY_1D_ICC
 #error Array_1D.icc meaningless outside Array_1D.h
 #endif
 

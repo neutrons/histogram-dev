@@ -11,16 +11,17 @@
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-#ifndef DANSE_HISTOGRAM_NDARRAY_ICC
+#ifndef HISTOGRAM_NDARRAY_ICC
 #error NdArray.icc meaningless outside NdArray.h
 #endif
 
 #include <sstream>
 
 
-namespace DANSE { 
+#include "_macros.h"
 
-  namespace Histogram {
+
+HISTOGRAM_NAMESPACE_START
 
     template <typename Iterator, typename DataType, typename Size, typename SuperSize,
 	      unsigned int NDimension>
@@ -60,8 +61,8 @@ namespace DANSE {
       throw OutOfBound( oss.str().c_str() );
     }
     
-  } // Histogram:
-} // DANSE:
+
+HISTOGRAM_NAMESPACE_END
 
 
 // version

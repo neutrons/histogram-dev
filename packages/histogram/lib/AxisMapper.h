@@ -11,15 +11,13 @@
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-#ifndef DANSE_HISTOGRAM_AXISMAPPER_H
-#define DANSE_HISTOGRAM_AXISMAPPER_H
+#ifndef HISTOGRAM_AXISMAPPER_H
+#define HISTOGRAM_AXISMAPPER_H
 
 
 #include "OutOfBound.h"
 
-namespace DANSE {
-
-  namespace Histogram {
+HISTOGRAM_NAMESPACE_START
 
   // map data value to index
   template <typename DataType, typename IndexType>
@@ -34,10 +32,9 @@ namespace DANSE {
     virtual ~AxisMapper() {};
   };
 
-  }
-}
+HISTOGRAM_NAMESPACE_END
 
-#endif // DANSE_HISTOGRAM_AXISMAPPER_H
+#endif // HISTOGRAM_AXISMAPPER_H
 
 
 // version

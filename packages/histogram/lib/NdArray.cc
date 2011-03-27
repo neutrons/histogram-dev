@@ -15,13 +15,11 @@
 #include "NdArray.h"
 
 
-namespace DANSE { 
-  namespace Histogram {
+HISTOGRAM_NAMESPACE_START
 
     typedef NdArray<unsigned int*, unsigned int, unsigned int, long, 2> UIntArray_2D;
 
-  }
-}
+HISTOGRAM_NAMESPACE_END
 
 
 // version

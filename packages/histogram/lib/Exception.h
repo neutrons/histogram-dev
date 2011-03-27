@@ -12,16 +12,15 @@
 //
 
 
-#ifndef DANSE_HISTOGRAM_EXCEPTION_H
-#define DANSE_HISTOGRAM_EXCEPTION_H
+#ifndef HISTOGRAM_EXCEPTION_H
+#define HISTOGRAM_EXCEPTION_H
 
 
 #include <string>
+#include "_macros.h"
 
 
-namespace DANSE {
-
-  namespace Histogram {
+HISTOGRAM_NAMESPACE_START
 
     class Exception: public std::exception{
       
@@ -47,11 +46,9 @@ namespace DANSE {
       
     };
 
-  } //Histogram:
-} // DANSE:
+HISTOGRAM_NAMESPACE_END
 
-
-#endif // DANSE_HISTOGRAM_EXCEPTION_H
+#endif // HISTOGRAM_EXCEPTION_H
 
 // version
 // $Id$

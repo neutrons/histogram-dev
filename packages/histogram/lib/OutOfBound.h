@@ -11,15 +11,13 @@
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-#ifndef DANSE_HISTOGRAM_OUTOFBOUND_H
-#define DANSE_HISTOGRAM_OUTOFBOUND_H
+#ifndef HISTOGRAM_OUTOFBOUND_H
+#define HISTOGRAM_OUTOFBOUND_H
 
 
 #include "Exception.h"
 
-namespace DANSE {
-
-  namespace Histogram {
+HISTOGRAM_NAMESPACE_START
 
     struct OutOfBound : public Exception
     {
@@ -28,11 +26,9 @@ namespace DANSE {
       OutOfBound(const std::string &msg) : Exception( msg ) {}
     };
 
-  } // Histogram:
-  
-} // DANSE:
+HISTOGRAM_NAMESPACE_END
 
-#endif // DANSE_HISTOGRAM_OUTOFBOUND_H
+#endif // HISTOGRAM_OUTOFBOUND_H
 
 
 // version
