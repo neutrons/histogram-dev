@@ -15,7 +15,7 @@
 #ifndef H_HISTOGRAM_HISTOGRAMMER
 #define H_HISTOGRAM_HISTOGRAMMER
 
-#include "histogram/OutOfBound.h"
+#include "OutOfBound.h"
 #include "journal/warning.h"
 
 HISTOGRAM_NAMESPACE_START

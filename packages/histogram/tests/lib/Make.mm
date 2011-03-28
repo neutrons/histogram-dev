@@ -30,8 +30,8 @@ PROJ_CPPTESTS = test_NdArray \
 	test_events2EvenlySpacedIxxxx \
 
 PROJ_TESTS = $(PROJ_PYTESTS) $(PROJ_CPPTESTS)
-PROJ_LIBRARIES = -L$(BLD_LIBDIR) -lhistogram
-# PROJ_CXX_DEFINES += USE_DANSE_NAMESPACE
+PROJ_LIBRARIES = -L$(BLD_LIBDIR) -lhistogram -ljournal
+PROJ_CXX_DEFINES += USE_DANSE_NAMESPACE
 
 
 #--------------------------------------------------------------------------
