@@ -50,14 +50,27 @@ HISTOGRAM_NAMESPACE_START
       IDataType i = m_e2x( e, m_x );
       if (m_fx.isOutofbound(m_x)) {
 #ifdef DEBUG
-	journal::warning_t warning("arcseventdata.Histogrammer1");
+	journal::warning_t warning("Histogrammer1");
 	warning << journal::at(__HERE__)
 		<< "OutOfBound: " << m_x
 		<< journal::endl;
 #endif
 	return;
       }
-      m_fx( m_x ) += i;
+      // it is still necessary to catch out of bound error
+      // even though we have try to filter out most of them 
+      // using isOutofbound due to floating point error
+      try {
+	m_fx( m_x ) += i;
+      } 
+      catch (OutOfBound & e) {
+#ifdef DEBUG
+	journal::warning_t warning("Histogrammer1");
+	warning << journal::at(__HERE__)
+		<< e.what()
+		<< journal::endl;
+#endif
+      }
     }
     
     void clear() 
@@ -104,14 +117,27 @@ HISTOGRAM_NAMESPACE_START
       IDataType i = m_e2xy( e, m_x, m_y );
       if (m_fxy.isOutofbound(m_x, m_y)) {
 #ifdef DEBUG
-	journal::warning_t warning("arcseventdata.Histogrammer2");
+	journal::warning_t warning("Histogrammer2");
 	warning << journal::at(__HERE__)
 		<< "OutOfBound: " << m_x << ", " << m_y
 		<< journal::endl;
 #endif
 	return;
       }
-      m_fxy( m_x, m_y ) += i;
+      // it is still necessary to catch out of bound error
+      // even though we have try to filter out most of them 
+      // using isOutofbound due to floating point error
+      try {
+	m_fxy( m_x, m_y ) += i;
+      } 
+      catch (OutOfBound & e) {
+#ifdef DEBUG
+	journal::warning_t warning("Histogrammer2");
+	warning << journal::at(__HERE__)
+		<< e.what()
+		<< journal::endl;
+#endif
+      }
     }
     
     void clear() 
@@ -160,14 +186,27 @@ HISTOGRAM_NAMESPACE_START
       IDataType i = m_e2xxxx( e, m_x1, m_x2, m_x3, m_x4 );
       if (m_fxxxx.isOutofbound( m_x1, m_x2, m_x3, m_x4 )) {
 #ifdef DEBUG
-	journal::warning_t warning("arcseventdata.Histogrammer4");
+	journal::warning_t warning("Histogrammer4");
 	warning << journal::at(__HERE__)
 		<< "OutOfBound: " << m_x1 << ", " << m_x2 << ", " << m_x3 << ", " << m_x4
 		<< journal::endl;
 #endif
 	return;
       }
-      m_fxxxx( m_x1, m_x2, m_x3, m_x4 ) += i;
+      // it is still necessary to catch out of bound error
+      // even though we have try to filter out most of them 
+      // using isOutofbound due to floating point error
+      try {
+	m_fxxxx( m_x1, m_x2, m_x3, m_x4 ) += i;
+      } 
+      catch (OutOfBound & e) {
+#ifdef DEBUG
+	journal::warning_t warning("Histogrammer4");
+	warning << journal::at(__HERE__)
+		<< e.what()
+		<< journal::endl;
+#endif
+      }
     }
     
     void clear() 
