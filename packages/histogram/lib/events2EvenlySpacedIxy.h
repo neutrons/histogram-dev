@@ -37,10 +37,16 @@ HISTOGRAM_NAMESPACE_START
 ///   events_begin: begin iterator of neutron events 
 ///   events_end: end iterator of neutron events 
 ///   e2xy: event -> x functor
-///   x_begin, x_end, x_step: define the x axis
+///   x_begin, x_end, x_step: define the x axis 
 ///   y_begin, y_end, y_step: define the y axis
 ///   z_begin: iterator of z array to store z values on the grid defined
 ///            by x and y axes
+///   Note: bin boundaries will be begin, begin+step, begin+2*step,
+///         ..., x_begin + n *x_step
+///         where n = int( (end-begin)/step ). 
+///         So be careful when choosing "end" to leave room for 
+///         floating point error. Usually it is wise to choose
+//          end = begin + n*step + step/100.
 template <typename Event, 
 	  typename Event2XY, 
 	  typename XData, typename YData,
