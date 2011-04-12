@@ -53,16 +53,24 @@ class Tools:
         '''add a subsubmenu item to the submenu. the new item will be
         given the name "name", and will provide functionality "func"
         '''
+        toolkit = self.toolkit
+
+        #
         submenu = self.submenus[ submenu ]
         def evthandler(evt):
             core = self.dispatch( evthandler )
-            core( self.evaluation_environment )
+            try:
+                core( self.evaluation_environment )
+            except:
+                import traceback
+                tb = traceback.format_exc()
+                toolkit.messageDialog(None, "Error", tb)
+                return
             self.parent_refresh_function()
             return
 
         self.evthandler_registry[ evthandler ] = func
 
-        toolkit = self.toolkit
         item = toolkit.menuitem( name, callbacks = {'click': evthandler} )
         submenu.append( item )
         return
