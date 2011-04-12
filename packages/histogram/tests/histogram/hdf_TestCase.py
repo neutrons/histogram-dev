@@ -230,6 +230,39 @@ hh.dump( h, '%s', '/', 'c' )
         h = load( tmpfile, 'h')
         #print h[1]
         self.assertVectorAlmostEqual( h[1], (1,1) )
+        return
+
+    
+    def test_slice_and_dump(self):
+        'slice a histogram and dump the slice'
+        tmpfile = 'test_slice_and_dump.h5'
+        if os.path.exists( tmpfile ):
+            os.remove( tmpfile )
+
+        from histogram import histogram
+        x = y = range(100)
+        h = histogram( 
+            'h',
+            [ ('x', x) ],
+            data = y, errors = y )
+        s = h[(3,10)]
+        import histogram.hdf as hh
+        hh.dump(s, tmpfile, '/',  'c')
+        return
+    
+
+    def test_load_slice_and_dump(self):
+        'load a histogram and dump a slice of it'
+        tmpfile = 'test_load_slice_and_dump.h5'
+        if os.path.exists( tmpfile ):
+            os.remove( tmpfile )
+
+        import histogram.hdf as hh
+        h = hh.load('testload.h5', '/h')
+        s = h[(10, 30), ()]
+        hh.dump(s, tmpfile, '/',  'c')
+        return
+    
 
     def testload(self):
         'load simplest histogram'

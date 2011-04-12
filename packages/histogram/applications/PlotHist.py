@@ -23,7 +23,7 @@ def plotH5File( h5filename, pathinh5file = None, min = None, max = None, output=
 
 def main():
     from optparse import OptionParser
-    usage = "usage: %prog [options] histogram-data-file [args]"
+    usage = "usage: %prog [options] histogram-data-file [internal-path]"
     parser = OptionParser(usage)
     parser.add_option("", "--min", dest="min", default = None,
                       type = "float", help="minimum")

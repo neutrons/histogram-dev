@@ -123,8 +123,8 @@ class Loader:
         return rt
 
         
-    def onDataset(self, histogramGrp, type, slice=None):
-        dataGroup = histogramGrp[type]
+    def onDataset(self, histogramGrp, name, slice=None):
+        dataGroup = histogramGrp[name]
         if 'storage' in list(dataGroup): # this uses the 'storage' convention
             rawdata = dataGroup['storage']
         else:
@@ -144,10 +144,12 @@ class Loader:
         #get rest of attributes--TODO
         attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
         datatype = getDataType(rawdata)
+        
+        # rawdata = np.array(rawdata, copy=1)
         dataStore = arrayFromNumpyArray(rawdata, datatype)
 
         dataStore.setShape(lengths)
-        data = Dataset('data', unit, attributes, lengths, dataStore)
+        data = Dataset(name, unit, attributes, lengths, dataStore)
         return data
     
     
