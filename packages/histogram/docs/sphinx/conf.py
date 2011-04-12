@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'histogram'
-copyright = u'2004, Jiao Lin, Tim Kelley'
+copyright = u'2004-2011, Jiao Lin, J Brandon Keith, Alex Dementsove, and Tim Kelley'
 
 
 # The version info for the project you're documenting, acts as replacement for
