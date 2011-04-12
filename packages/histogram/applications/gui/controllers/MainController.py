@@ -4,7 +4,7 @@
 #
 #                                   Jiao Lin
 #                      California Institute of Technology
-#                        (C) 2006  All Rights Reserved
+#                      (C) 2006-2011  All Rights Reserved
 #
 # {LicenseText}
 #
@@ -233,6 +233,33 @@ class MainController(ControllerBase):
         toolkit = self.toolkit
         filename = toolkit.savefileDialog( None, "Save figure to file", filetypes )
         if filename: figure.savePlot( filename )
+        return
+
+
+    def OnSaveHistogram(self, evt):
+        toolkit = self.toolkit
+        
+        # get histogram
+        key = self.focus
+        histogram = self.histograms.get(key)
+        
+        # no histogram, alert
+        if histogram is None:
+            toolkit.messageDialog( None, "Error", "No histogram is on focus")
+            return
+            
+        # save
+        filetypes = 'h5'
+        filename = toolkit.savefileDialog( 
+            None, "Save histogram to file", filetypes)
+        if filename: 
+            import os
+            if os.path.exists(filename):
+                toolkit.messageDialog(
+                    None, "Error", "Overwrite is not supported yet.")
+                return
+            import histogram.hdf as hh
+            hh.dump(histogram, filename, '/', 'c')
         return
 
 

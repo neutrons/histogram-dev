@@ -9,7 +9,9 @@
       <menu text="&amp;File">
 	<menuitem text="&amp;Open histogram" tip="Open saved histogram data file" click-callback="OnOpenHistogramFile"/>
 
-	<menuitem text="&amp;Save plot to file" tip="Save plot to an image file" click-callback="OnSaveFigure"/>
+	<menuitem text="&amp;Save histogram to file" tip="Save histogram to a file" click-callback="OnSaveHistogram"/>
+
+	<menuitem text="Save &amp;plot to file" tip="Save plot to an image file" click-callback="OnSaveFigure"/>
 
 	<menuitem text="&amp;Load a toolset" tip="Load a toolset" click-callback="OnLoadToolset"/>
 

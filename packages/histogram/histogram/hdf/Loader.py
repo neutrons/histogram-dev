@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#
+# 
+#                          Jiao Lin,  J Brandon Keith
 #                      California Institute of Technology
-#                        (C) 2007  All Rights Reserved
+#                      (C) 2006-2011  All Rights Reserved
 #
 # {LicenseText}
 #
@@ -142,7 +143,8 @@ class Loader:
             size*=length
 
         #get rest of attributes--TODO
-        attributes = {'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
+        attributes = {
+            'plottable':True, 'nifty':False, 'pi':3.14159, 3.14159:'pi'}
         datatype = getDataType(rawdata)
         
         # rawdata = np.array(rawdata, copy=1)
