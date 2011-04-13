@@ -54,9 +54,11 @@ try:
   #the following scheme is enforced by distutils-adpt
   #if we are using different installation scheme,
   #this has to be changed
+  etc = getattr(i, 'etc', None)
+  if etc is None: etc = os.path.join(i.data, 'etc')
   paths = Paths( 
     i.root, bin = i.bin, python = i.python, lib = i.lib,
-    include = i.include, data = i.data, etc = os.path.join( i.data, 'etc')
+    include = i.include, data = i.data, etc = etc
     )
 except ImportError:
   #here we assume that we are using mm build procedure
@@ -67,8 +69,8 @@ except ImportError:
 
 
 def find_etc_dir():
-    "find the installation directory of 'etc/'"
-    return paths.etc
+  "find the installation directory of 'etc/'"
+  return paths.etc
 
 
 etc = find_etc_dir()
