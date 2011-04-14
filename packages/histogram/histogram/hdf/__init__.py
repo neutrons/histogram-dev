@@ -10,20 +10,47 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 
+import os
 def load( filename, pathinfile=None, fs = None, **kwds ):
-    '''load( hdf_filename, path_in_hdf_file ): load histogram from a hdf file
+    '''load(filename, path_in_hdf_file ): load histogram from a hdf file
 
-    hdf_filename:
-      The hdf filename where the histogram is saved. This version only supports hdf5
+    filename:
+      The hdf filename where the histogram is saved
+      This version only supports hdf5
     path_in_hdf_file:
       The path inside the hdf file where the histogram is located.
 
     return:
       The histogram loaded.
     '''
+    # if pathinfile is not specified explicity
     if pathinfile is None:
-        import os
-        filename, pathinfile = os.path.split( filename )
+        # it could be that there is only one entry 
+        # in the histogram file, let us try that
+        if os.path.exists(filename):
+            from utils import getOnlyEntry
+            try:
+                pathinfile = getOnlyEntry(filename)
+            except:
+                msg = (
+                    "Cannot guess the entry of the histogram in %s."
+                    "Please explicitly specify the entry "
+                    "by keyword 'pathinfile'"
+                    ) % filename
+                raise ValueError, msg
+        # or it could be the first argument is an url
+        # that has both the file path and the entry name
+        else:
+            # this is obsolete. in the future we should have
+            # a dedicated "url" parameter
+            import warnings
+            warnings.warn("filename as url is deprecated")
+            url = filename
+            filename, pathinfile = os.path.split(url)
+            if not os.path.exists(filename):
+                msg = "invalid histogram url: %s" % url
+                raise ValueError, url
+            
     if fs is None:
         from h5py import File
         try:

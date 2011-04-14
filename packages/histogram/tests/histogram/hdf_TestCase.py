@@ -341,6 +341,14 @@ hh.dump( h, '%s', '/', 'c' )
         self.assertRaises( KeyError, load, filename, '/h', fs )
         return
 
+
+    def testload7(self):
+        'load histogram that is only one entry with just the filename'
+        h = load( 'sqe.h5' )
+        return
+
+
+
 def pysuite():
     suite1 = unittest.makeSuite(hdf_TestCase)
     return unittest.TestSuite( (suite1,) )

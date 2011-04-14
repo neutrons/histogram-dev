@@ -4,18 +4,23 @@
 Histogram Python Interface
 ==========================
 
-Create histogram
-^^^^^^^^^^^^^^^^
+For simplicity, in the following
+examples, we all start by importing 
+from the packages *histogram* and *numpy*. 
 
-We start by importing from the packages *histogram* and *numpy*. They include many
-convenient functions like "histogram" factory and "exp" math functions.
+.. They include many
+.. convenient functions like "histogram" factory and "exp" math functions.
 
 ::
 
   from numpy import *
   from histogram import *
 
-Then we make an instance of a histogram:
+
+Create histogram
+^^^^^^^^^^^^^^^^
+
+To make an instance of a histogram:
 
 ::
 
@@ -42,12 +47,13 @@ The string "microsecond" is the unit of the tof axis. The tuple
 
 is put into a list.
 
-::
 
-    Note: In most cases, histograms are multi-dimensional. For a multi-dimensional
-          histogram, we need a list of axes, in which each item describes an axis.
-          So, even for a 1D histogram, we require user to supply a single-item list,
-          in which the only item describes the only axis for the histogram.
+.. note::
+   In most cases, histograms are multi-dimensional. For a multi-dimensional
+   histogram, we need a list of axes, in which each item describes an axis.
+   So, even for a 1D histogram, we require user to supply a single-item list,
+   in which the only item describes the only axis for the histogram.
+
 
 If we type
 
@@ -77,31 +83,24 @@ Equation: A test function
 -------------------------
 
 .. math::
-   h = \exp(-\dfrac{tof}{1000})
+   I = \exp(-\dfrac{tof}{1000})
 
 
 
-In the python command line, we enter
+In the python command line, we enter::
 
-::
-
-  # first we define the function
-  from numpy import exp
-  def f(tof): return exp(-tof/1000.)
-  # and we also need the time-of-flight axis
-  tofaxis = h.axisFromName('tof')
-  # now we apply the function to the axis to obtain a dataset
-  d = datasetFromFunction( f, [tofaxis] )
-  h[()] = d, None
+  # get the bin centers the tof axis
+  tof = h.tof
+  # now we apply the function to the axis and assign it to the histogram
+  h.I = exp(-tof/1000.)
   
-A shortcut to create the same histogram is to use a lambda expression offered by Python
+A shortcut to create the same histogram from scratch::
 
-::
-
-  from histogram import *
-  from numpy import exp
   h = histogram(
-      "h", [ ('tof', arange(1000., 3000., 1.0), "microsecond") ],
+      "h", 
+      [
+       ('tof', arange(1000., 3000., 1.0), "microsecond") 
+      ],
       fromfunction = lambda x: exp(-x/1000.) )
 
 
@@ -129,7 +128,6 @@ Create a histogram:
 
 ::
 
-  from histogram import *
   x = 'x', arange(-1, 1, 0.05 )
   y = 'y', arange(-1, 1, 0.05 )
   h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
@@ -154,39 +152,41 @@ Get a slice at x=0.5 over the full range of y
 
 the resulting histogram is a 1D curve.
 
-::
+.. note::
+   Slicing is by reference. No new data array will be created, and the new
+   histogram is refering to a section of the original data. If you really
+   need a copy, please use the "copy" method of the histogram object.
 
-    Note: Slicing is by reference. No new data array will be created, and the new
-          histogram is refering to a section of the original data. If you really
-          need a copy, please use the "copy" method of the histogram object.
+To set a slice is easy::
 
-To set a slice, the easier way is to use method "datasetFromFunction".
+  h[ <slice specification> ] = <new data>, <new error^2>
 
-::
+For example::
 
-  # create new slice
-  yaxis = h.axisFromName( 'y' )
-  s = datasetFromFunction( lambda y: y, (yaxis,) )
-  # set new slice
-  h[ 0.3, () ] = s, None
+  ycube = h.y**3
+  h[ 0.3, () ] = ycube, None
   
 You may notice that we need a tuple on the right-hand side. The reason is there
-are two datasets in a histogram: one for the data, another for the errors. (Recall
-that the squares of the errors are stored to reduce computation time.) In the 2-tuple
+are two datasets in a histogram: one for the data, another for the error squares. 
+(Recall
+that the squares of the errors are stored to reduce computation time.) 
+In the 2-tuple
 
 ::
 
-  s, None
+  ycube, None
 
-"s" will be assign to the "data" dataset, and "None" will be assigned to the
-"error bar squares" dataset. Actually "None" is a special dataset for error bar
+"ycube" will be assign to the "data" dataset, 
+and "None" will be assigned to the
+"error bar squares" dataset. 
+Actually "None" is a special dataset for error bar
 squares: it means all error bars are zero.
 
 
 Numerical Operators
 ^^^^^^^^^^^^^^^^^^^
 
-Some basic numerical operators are availabele for manipulating histograms.
+Some basic numerical operators are available for manipulating histograms.
 When these computations are performed, both data and error bars are processed.
 
 The supported operators are:
@@ -203,7 +203,6 @@ First, create a histogram
 
 ::
 
-  from histogram import *
   x = 'x', arange(-1, 1, 0.05 )
   y = 'y', arange(-1, 1, 0.05 )
   h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
@@ -234,29 +233,18 @@ It is assumed that the physical quantites represented by the histograms involved
 in compuations are uncorrelated, and the error propagations are defined by the
 following formulas:
 
-Equation: Error propagation formula1
-""""""""""""""""""""""""""""""""""""
 
 .. math::
    z = x + y; \sigma^2_z = \sigma^2_x + \sigma^2_y
 
 
-Equation: Error propagation formula2
-""""""""""""""""""""""""""""""""""""
-
 .. math::
    z = x - y; \sigma^2_z = \sigma^2_x + \sigma^2_y
 
 
-Equation: Error propagation formula3
-""""""""""""""""""""""""""""""""""""
-
 .. math::
    z = x / y; \frac{\sigma^2_z}{z^2}  = \frac{\sigma^2_x}{x^2} + \frac{\sigma^2_y}{y^2}
 
-
-Equation: Error propagation formula3
-""""""""""""""""""""""""""""""""""""
 
 .. math::
    z = x * y; \frac{\sigma^2_z}{z^2}  = \frac{\sigma^2_x}{x^2} + \frac{\sigma^2_y}{y^2}
@@ -275,6 +263,7 @@ It will sum the data and the error bar squares of all bins, and return the total
 counts and its error bar square. It can also sum a high-dimensional (D) histogram
 along one axis, and return a histogram of reduced dimension (D-1).
 
+
 Examples
 """"""""
 
@@ -282,7 +271,6 @@ First, create a histogram
 
 ::
 
-  from histogram import *
   x = 'x', arange(-1, 1, 0.05 )
   y = 'y', arange(-1, 1, 0.05 )
   h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
@@ -317,7 +305,6 @@ Examples
 
 ::
 
-  from histogram import *
   axes = [ ('x', [1,2,3]), ('yID', [1]) ]
   data = [ [1,2,3] ]; errs = [ [1,2,3] ]
   h = makeHistogram( 'h', axes, data, errs )
@@ -338,15 +325,42 @@ The following commands create a 2-D histogram, and then transpose the x and y ax
 
 ::
 
-  from histogram import *
   x = 'x', arange(-1, 1, 0.05 )
   y = 'y', arange(0, 5, 0.05 )
   h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
   ht = h.transpose()
 
 
-Miscellaneous
-^^^^^^^^^^^^^
+Accessing data
+^^^^^^^^^^^^^^
+
+Retrieve Data and Error Bar Square Arrays
+-----------------------------------------
+
+Description
+"""""""""""
+
+Sometimes it may be necessary to develop new numeric operators and methods for
+customized computation on the data array encapsulated in the histogram object.
+They are accessible as attributes 'I' and 'E2'.
+
+Examples
+""""""""
+
+::
+
+  x = 'x', arange(-1, 1, 0.05 )
+  y = 'y', arange(0, 5, 0.05 )
+  h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
+  dataarr = h.I
+  errsarr = h.E2
+  
+Both "dataarr" and "errsarr" are numpy arrays that reference to the underlying
+data stored in the histogram. You can work directly on these arrays, and the
+original histogram will be changed. 
+Please see `numpy <http://www.numpy.org/>`_ documentation to learn of
+other methods that are available in the numpy package.
+
 
 axes
 ----
@@ -364,7 +378,6 @@ Examples
 
 ::
 
-  from histogram import *
   x = 'x', arange(-1, 1, 0.05 )
   y = 'y', arange(0, 5, 0.05 )
   h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
@@ -376,32 +389,11 @@ Examples
   print h.x  # bin centers of x axis
   print h.y  # bin cetners of y axis
   
-Retrieve Data and Error Bar Square Arrays
------------------------------------------
 
-Description
-"""""""""""
+Save/load histograms
+^^^^^^^^^^^^^^^^^^^^
+You can save/load histogram in hdf5 format.
 
-Sometimes it may be necessary to develop new numeric operators and methods for
-customized computation on the data array encapsulated in the histogram object.
-They are accessible as attributes 'I' and 'E2'.
-
-Examples
-""""""""
-
-::
-
-  from histogram import *
-  x = 'x', arange(-1, 1, 0.05 )
-  y = 'y', arange(0, 5, 0.05 )
-  h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
-  dataarr = h.I
-  errsarr = h.E2
-  
-Both "dataarr" and "errsarr" are numpy arrays that reference to the underlying
-data stored in the histogram. You can work directly on these arrays, and the
-original histogram will be changed. Please see `numpy <http://www.numpy.org/>`_ documentation to learn of
-other methods that are available in the numpy package.
-
-
-
+* To save a histogram::
+ >>> from histogram.hdf import dump
+ >>> dump(h, 'myhist.h5')

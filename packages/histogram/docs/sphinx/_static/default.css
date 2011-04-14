@@ -259,6 +259,8 @@ div.sphinxsidebar {
     right: 2px;
     text-align: left;
     background-color: #eff7ea;
+    max-height: 65%;
+    overflow-y: scroll;
     /* opacity: 0.6;
     filter:alpha(opacity=60); */
 /*    margin-left: -100%; */
@@ -496,7 +498,7 @@ table.indextable tr.cap {
 }
 
 img {
-    border: 3px dotted #ccddff;
+    border: 3px; /* dotted #ccddff; */
 }
 
 img.toggler {
