@@ -557,8 +557,7 @@ class Histogram_TestCase(TestCase):
         h = makeHistogram( name, axes, data, errs )
         h.reduce()
         shape = h.shape()
-        self.assertEqual( len(shape), 1 )
-        self.assertEqual( shape[0], 3 )
+        self.assertEqual( shape, (3,))
         return
 
 

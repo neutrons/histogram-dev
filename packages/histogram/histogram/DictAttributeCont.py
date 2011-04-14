@@ -19,14 +19,14 @@ class AttributeCont( AttributeContBase):
     def listAttributes( self):
         """listAttributes() -> [names of attributes]"""
         return list( self._attributes.keys())
-
-
+    
+    
     def setAttribute( self, name, value):
         """setAttribute( name, value) -> None"""
         self._attributes[name] = value
         return
     
-
+    
     def __init__( self, attributes = None):
         if attributes is None: attributes = {}
         self._attributes = attributes

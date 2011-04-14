@@ -194,9 +194,10 @@ class Histogram( AttributeCont):
              in zip(self.axisNameList(), slicingInfos)])
 
         #new histogram
-        new = Histogram( name = newName, unit = self.unit(),
-                         data = newdatasets[0], errors = newdatasets[1],
-                         axes = newAxes, attributes = newAttrs, slice = True)
+        new = Histogram( 
+            name = newName, unit = self.unit(),
+            data = newdatasets[0], errors = newdatasets[1],
+            axes = newAxes, attributes = newAttrs, slice = True)
 
         #addtional datasets. This is not tested yet!!!
         #probably we should really limit histogram to have only two datasets!!!
@@ -836,6 +837,7 @@ class Histogram( AttributeCont):
                 newShape.append( axis.size() )
             continue
 
+        newShape = tuple(newShape)
         for ds in self.datasets(): ds.setShape( newShape )
 
         for k, v in newAttrs.iteritems(): self.setAttribute( k, v )
@@ -877,7 +879,7 @@ class Histogram( AttributeCont):
         shape = tuple(self.__shapeFromAxes())
         dshape = tuple(data.shape())
         assert shape == dshape, \
-               "shape mismatch: data shape %s, axes shape %s" % (
+            "shape mismatch: data shape %s, axes shape %s" % (
             dshape, shape )
         self._setShape( shape )
 
