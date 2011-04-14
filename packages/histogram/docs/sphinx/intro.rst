@@ -3,7 +3,8 @@
 Introduction
 ============
 
-The histogram package provides a simple yet fundamental 
+The histogram `python <http://python.org>`_ package
+provides a simple yet fundamental 
 data structure for scientific computing: histogram.
 A histogram object is a container of axes, data, and error bars.
 With this package, you can create histograms, take slices of them,

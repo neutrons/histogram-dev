@@ -1,7 +1,7 @@
 
 import os
 
-package = __import__( "pyregui" )
+package = __import__( "pyre" )
 name = package.__name__
 
 
