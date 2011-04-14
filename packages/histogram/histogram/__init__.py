@@ -240,7 +240,7 @@ def histogram( name, axes, data = None, errors = None, unit="1",
     return h
 
 
-def plot( h, min = None, max = None, output='window' ):
+def plot( h, min = None, max = None, output='window', interactive=False):
     """plot a histogram
 
     h: histogram
@@ -255,7 +255,7 @@ def plot( h, min = None, max = None, output='window' ):
         matplotlib.use('PS')
         
     from plotter import defaultPlotter
-    defaultPlotter.interactive( 0 )
+    defaultPlotter.interactive(interactive)
     defaultPlotter.plot( h, min = min, max = max)
 
     if output != 'window':
