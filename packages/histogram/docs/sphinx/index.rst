@@ -12,7 +12,9 @@ Contents:
    :maxdepth: 2
 
    intro
+   install
    python-interface
+   commands
    gui
 
 Indices and tables

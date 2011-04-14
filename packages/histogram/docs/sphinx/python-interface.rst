@@ -13,18 +13,18 @@ from the packages *histogram* and *numpy*.
 
 ::
 
-  from numpy import *
-  from histogram import *
+ >>> from numpy import *
+ >>> from histogram import *
 
 
-Create histogram
-^^^^^^^^^^^^^^^^
+Create a histogram
+^^^^^^^^^^^^^^^^^^
 
 To make an instance of a histogram:
 
 ::
 
-  h = histogram( "h", [ ('tof', arange(1000., 3000., 1.0), "microsecond") ] )
+ >>> h = histogram( "h", [ ('tof', arange(1000., 3000., 1.0), "microsecond") ] )
 
 Here, string "h" denotes the name of the histogram. The tuple
 
@@ -49,21 +49,30 @@ is put into a list.
 
 
 .. note::
-   In most cases, histograms are multi-dimensional. For a multi-dimensional
+   In many cases, histograms are multi-dimensional. For a multi-dimensional
    histogram, we need a list of axes, in which each item describes an axis.
    So, even for a 1D histogram, we require user to supply a single-item list,
    in which the only item describes the only axis for the histogram.
 
+.. note::
+   To construct a histogram, you could supply its axes using a list of tuples, 
+   while each tuple represents an axis::
 
-If we type
+    [ ('x', range(10)), ('y', range(15)) ]
+   
+   or using a list of instances of Axis class::
+   
+    [ axis('x', range(10)), axis('y', range(15)) ]
 
-::
+.. _cheatsheat:
 
-  print h
+What is in a histogram? -- a quick overview
+-------------------------------------------
+If we try to print a histogram::
 
-The following texts show up:
+ >>> print h
 
-::
+The following text show up::
 
     Histogram "h"
     - Axes:
@@ -71,16 +80,28 @@ The following texts show up:
 
     - Shape: [2000L]
     - Metadata: [('name', 'h')]
-
-    ......
+    - Data: ... [0. 0. ... 0.]
+    - Errors: ... [0. 0. ... 0.]
     
-Please note that this histogram is apparantly empty (with no data). Now we want
-to make this histogram more meaningful. Say we want the histogram "h" to have the
-form of an exponential function
+A histogram has a name, a bunch of axes,
+some meta data, and two main datasets: "data" and "errors".
+
+* name: h.name()
+* bin centers of an axis: h.<axisname>
+ - For example, a histogram has an axis named "x", then the bin
+   centers of "x" axis can be accessed as h.x.
+* data (the "intensities" array): h.I
+* error squares (the squares of error bars array): h.E2
+
+For more details, please refer to :ref:`access-data`.
 
 
 Equation: A test function
 -------------------------
+Now we want
+to make this histogram more meaningful. Say we want the histogram "h" to have the
+form of an exponential function
+
 
 .. math::
    I = \exp(-\dfrac{tof}{1000})
@@ -89,20 +110,22 @@ Equation: A test function
 
 In the python command line, we enter::
 
-  # get the bin centers the tof axis
-  tof = h.tof
-  # now we apply the function to the axis and assign it to the histogram
-  h.I = exp(-tof/1000.)
+ >>> # get the bin centers the tof axis
+ >>> tof = h.tof
+ >>> # now we apply the function to the axis and assign it to the histogram
+ >>> h.I = exp(-tof/1000.)
   
 A shortcut to create the same histogram from scratch::
 
-  h = histogram(
+ >>> h = histogram(
       "h", 
       [
        ('tof', arange(1000., 3000., 1.0), "microsecond") 
       ],
       fromfunction = lambda x: exp(-x/1000.) )
 
+
+.. _slicing:
 
 Slicing
 ^^^^^^^
@@ -113,13 +136,13 @@ A python slicing looks like
 
 ::
 
-  a[ 3:10, 1:9 ]
+ >>> a[ 3:10, 1:9 ]
 
 whereas a histogram slicing looks like
 
 ::
 
-  h[ (3,10), (1,9) ]
+ >>> h[ (3,10), (1,9) ]
 
 Examples
 --------
@@ -128,27 +151,27 @@ Create a histogram:
 
 ::
 
-  x = 'x', arange(-1, 1, 0.05 )
-  y = 'y', arange(-1, 1, 0.05 )
-  h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
+ >>> x = 'x', arange(-1, 1, 0.05 )
+ >>> y = 'y', arange(-1, 1, 0.05 )
+ >>> h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
 
 Get a slice in the region x=(0.5, 0.9), y=(-0.8, 0.8)
 
 ::
 
-  h1 = h[ (0.5, 0.9), (-0.8, 0.8) ]
+ >>> h1 = h[ (0.5, 0.9), (-0.8, 0.8) ]
 
 Get a slice in the region x=(minimum, 0.5), y=(-0.8, 0.8)
 
 ::
 
-  h2 = h[ (None, 0.5), (-0.8, 0.8) ]
+ >>> h2 = h[ (None, 0.5), (-0.8, 0.8) ]
 
 Get a slice at x=0.5 over the full range of y
 
 ::
 
-  h3 = h[ 0.5, () ]
+ >>> h3 = h[ 0.5, () ]
 
 the resulting histogram is a 1D curve.
 
@@ -159,12 +182,12 @@ the resulting histogram is a 1D curve.
 
 To set a slice is easy::
 
-  h[ <slice specification> ] = <new data>, <new error^2>
+ >>> h[ <slice specification> ] = <new data>, <new error^2>
 
 For example::
 
-  ycube = h.y**3
-  h[ 0.3, () ] = ycube, None
+ >>> ycube = h.y**3
+ >>> h[ 0.3, () ] = ycube, None
   
 You may notice that we need a tuple on the right-hand side. The reason is there
 are two datasets in a histogram: one for the data, another for the error squares. 
@@ -203,15 +226,15 @@ First, create a histogram
 
 ::
 
-  x = 'x', arange(-1, 1, 0.05 )
-  y = 'y', arange(-1, 1, 0.05 )
-  h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
+ >>> x = 'x', arange(-1, 1, 0.05 )
+ >>> y = 'y', arange(-1, 1, 0.05 )
+ >>> h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
 
 Then we add a constant to the histogram:
 
 ::
 
-  h += 3., 1.
+ >>> h += 3., 1.
 
 Please note that there are two numbers on the right hand side, one for data,
 another for error bar squares.
@@ -220,11 +243,13 @@ Next we add a histogram to a histogram
 
 ::
 
-  h1 = histogram( 'h1', [x,y], fromfunction = lambda x,y: x + y )
-  h2 = h + h1
-  h2 += h
+ >>> h1 = histogram( 'h1', [x,y], fromfunction = lambda x,y: x + y )
+ >>> h2 = h + h1
+ >>> h2 += h
 
 You can do similar things with the other operators, following ususal Python syntax.
+
+.. _error-prop:
 
 Error Propagation
 -----------------
@@ -250,8 +275,8 @@ following formulas:
    z = x * y; \frac{\sigma^2_z}{z^2}  = \frac{\sigma^2_x}{x^2} + \frac{\sigma^2_y}{y^2}
 
 
-Numerical functions
-^^^^^^^^^^^^^^^^^^^
+Functions
+^^^^^^^^^
 
 sum
 ---
@@ -271,22 +296,22 @@ First, create a histogram
 
 ::
 
-  x = 'x', arange(-1, 1, 0.05 )
-  y = 'y', arange(-1, 1, 0.05 )
-  h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
+ >>> x = 'x', arange(-1, 1, 0.05 )
+ >>> y = 'y', arange(-1, 1, 0.05 )
+ >>> h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
 
 Now,
 
 ::
 
-  h.sum()
+ >>> h.sum()
 
 returns a 2-tuple of counts and error bar square of all bins summed together.
 The expression
 
 ::
 
-  h.sum( 'x' )
+ >>> h.sum( 'x' )
 
 returns a 1-D histogram that results from summing over the axis 'x'.
 
@@ -305,10 +330,11 @@ Examples
 
 ::
 
-  axes = [ ('x', [1,2,3]), ('yID', [1]) ]
-  data = [ [1,2,3] ]; errs = [ [1,2,3] ]
-  h = makeHistogram( 'h', axes, data, errs )
-  h.reduce()
+ >>> axes = [ ('x', [1,2,3]), ('yID', [1]) ]
+ >>> data = [ [1,2,3] ]; errs = [ [1,2,3] ]
+ >>> h = histogram( 'h', axes, data, errs )
+ >>> h.reduce()
+
 
 transpose
 ---------
@@ -325,14 +351,18 @@ The following commands create a 2-D histogram, and then transpose the x and y ax
 
 ::
 
-  x = 'x', arange(-1, 1, 0.05 )
-  y = 'y', arange(0, 5, 0.05 )
-  h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
-  ht = h.transpose()
+ >>> x = 'x', arange(-1, 1, 0.05 )
+ >>> y = 'y', arange(0, 5, 0.05 )
+ >>> h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
+ >>> ht = h.transpose()
 
+
+.. _access-data:
 
 Accessing data
 ^^^^^^^^^^^^^^
+
+.. _I_E2:
 
 Retrieve Data and Error Bar Square Arrays
 -----------------------------------------
@@ -349,11 +379,11 @@ Examples
 
 ::
 
-  x = 'x', arange(-1, 1, 0.05 )
-  y = 'y', arange(0, 5, 0.05 )
-  h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
-  dataarr = h.I
-  errsarr = h.E2
+ >>> x = 'x', arange(-1, 1, 0.05 )
+ >>> y = 'y', arange(0, 5, 0.05 )
+ >>> h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
+ >>> dataarr = h.I
+ >>> errsarr = h.E2
   
 Both "dataarr" and "errsarr" are numpy arrays that reference to the underlying
 data stored in the histogram. You can work directly on these arrays, and the
@@ -368,32 +398,52 @@ axes
 Description
 """""""""""
 
-You can retrieve information about axes of a histogram in a variety of ways.
-Method "axes" return a list of all axes of a histogram. Method "axisNameList"
-return a list of names of axes of a histogram. Method "axisFromName" return the
-axis given the axis' name.
+You can retrieve information about axes of a histogram using
+methods of Histogram class:
+
+* h.axes(): return a list of all axes
+* h.axisNameList(): return a list of names of axes
+* h.axisFromName(name): return the axis given the axis' name.
+
+An axis contains data like bin boundaries and bin centers,
+and metadata like unit.
+
 
 Examples
 """"""""
 
 ::
 
-  x = 'x', arange(-1, 1, 0.05 )
-  y = 'y', arange(0, 5, 0.05 )
-  h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
-  print h.axes()
-  print h.axisNameList()
-  xaxis = h.axisFromName( 'x' )
-  print xaxis.binCenters()
-  print xaxis.binBoundaries()
-  print h.x  # bin centers of x axis
-  print h.y  # bin cetners of y axis
-  
+ >>> x = 'x', arange(-1, 1, 0.05 )
+ >>> y = 'y', arange(0, 5, 0.05 )
+ >>> h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
+ >>> print h.axes()
+ >>> print h.axisNameList()
+ >>> xaxis = h.axisFromName( 'x' )
+ >>> print xaxis.unit()
+ >>> print xaxis.binCenters()
+ >>> print xaxis.binBoundaries()
 
-Save/load histograms
-^^^^^^^^^^^^^^^^^^^^
-You can save/load histogram in hdf5 format.
+
+.. _plot:
+
+Plot a histogram
+^^^^^^^^^^^^^^^^
+
+ >>> from histogram import plot
+ >>> plot(h)
+
+
+.. _save_load:
+
+Save/load a histogram
+^^^^^^^^^^^^^^^^^^^^^
+You can save/load a histogram in hdf5 format.
 
 * To save a histogram::
  >>> from histogram.hdf import dump
  >>> dump(h, 'myhist.h5')
+
+* To load a histogram::
+ >>> from histogram.hdf import load
+ >>> h = load('myhist.h5')
