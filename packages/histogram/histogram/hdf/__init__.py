@@ -2,13 +2,21 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
+#                                  Jiao Lin
 #                      California Institute of Technology
-#                        (C) 2007  All Rights Reserved
+#                      (C) 2006-2011  All Rights Reserved
 #
 # {LicenseText}
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
+
+# this sub package depends on h5py, so we test it first
+try:
+    import h5py
+except ImportError:
+    raise RuntimeError, "Please install h5py"
+
 
 import os
 def load( filename, pathinfile=None, fs = None, **kwds ):

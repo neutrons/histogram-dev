@@ -14,7 +14,13 @@
 try:
     import pylab
 except SystemError:
-    import matplotlib, pylab
+    try:
+        import matplotlib, pylab
+    except ImportError:
+        raise RuntimeError, "Please install matplotlib"
+except ImportError:
+    raise RuntimeError, "Please install matplotlib"
+
 
 import numpy as N
 
