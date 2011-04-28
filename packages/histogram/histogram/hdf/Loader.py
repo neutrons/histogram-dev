@@ -158,7 +158,14 @@ class Loader:
     def onUnit(self, unit):
         if isinstance(unit, int) or isinstance(unit, float) or isinstance(unit, long):
             return unit
-        return unit.tostring()
+        # ndarray of chars
+        from numpy import ndarray
+        if isinstance(unit, ndarray):
+            return unit.tostring()
+        if isinstance(unit, str):
+            return unit
+        raise NotImplementedError, 'type: %s, str: %s' % (
+            unit.__class__,str(unit))
 
     
     def _getAttrs(self, node, skip = None):

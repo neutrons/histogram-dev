@@ -210,6 +210,35 @@ hh.dump( h, '%s', '/', 'c' )
         return
     
 
+    def testdump_and_load_1d(self):
+        'dump and load: axis has unit'
+        tmpfile = 'test_dump_load_hdf5_1d.h5'
+        cmd = '''
+from histogram import histogram
+x = y = range(10)
+h = histogram( 
+    'h',
+    [ ('x', x, 'meter') ],
+    data = y, errors = y )
+import histogram.hdf as hh
+hh.dump( h, '%s', '/', 'c' )
+''' % tmpfile
+        import os
+        if os.path.exists(tmpfile): 
+            os.remove( tmpfile )
+        cmd =  'python -c "%s"' % cmd 
+        if os.system( cmd ): 
+            raise "%s failed" % cmd
+        h = load( tmpfile, 'h' )
+        for i in range(10):
+            self.assertVectorAlmostEqual( h[i], (i,i) )
+            continue
+        from histogram._units import tounit
+        meter = tounit('meter')
+        self.assertEqual(h.axisFromName('x').unit(), meter)
+        return
+    
+
     def testdump_and_load2(self):
         'dump and load in the same process'
         tmpfile = 'test_dump_load2.h5'

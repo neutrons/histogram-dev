@@ -51,12 +51,8 @@ class Renderer(object):
             dataset.name(), data = data, 
             compression=self.compressionType,)
         unit = dataset.unit()
-        # in the tests, 'unit' is either an object or a string,
-        # so i try to handle both
-        try:
-            histogramDset.attrs['unit'] = unit.value
-        except:
-            histogramDset.attrs['unit'] = unit
+        histogramDset.attrs['unit'] = str(unit)
+        return
 
 
     def onAxis(self, axesGrp, axis, index):
@@ -88,12 +84,7 @@ class Renderer(object):
             axisGrp.attrs[name] = axis.attribute(name)
 
         #
-        # in the tests, 'unit' is either an object or a string,
-        # so i try to handle both
-        try:
-            axisGrp.attrs['unit'] = unit.value
-        except:
-            axisGrp.attrs['unit'] = unit
+        axisGrp.attrs['unit'] = str(unit)
         axisGrp.attrs['index'] = index
 
         bbs = axis.binBoundaries()
