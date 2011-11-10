@@ -90,7 +90,14 @@ class HistogramMplPlotter(HistogramPlotter):
         assert hist.dimension() == 1, "dimension error: %s" % hist.dimension()
 
         size = hist.shape()[0]
-        if size > (display_size*10) : hist = resample( hist, display_size )
+        if size > (display_size*10) :
+            hist = resample( hist, display_size )
+            print '*'*70
+            print "This histogram has been RESAMPLED!"
+            print "The histogram displayed has lower resolution than the original."
+            print "To get full resolution, trying taking a slice with a small region."
+            print "The intensities are shown larger due to coarse-graining."
+            print '*'*70
         
         xaxis = hist.axisFromId(1)
         x = xaxis.binCenters()
