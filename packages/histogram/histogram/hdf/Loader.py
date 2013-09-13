@@ -164,8 +164,11 @@ class Loader:
             return unit.tostring()
         if isinstance(unit, str):
             return unit
-        raise NotImplementedError, 'type: %s, str: %s' % (
-            unit.__class__,str(unit))
+        try:
+            return float(unit)
+        except:
+            raise NotImplementedError, 'type: %s, str: %s' % (
+                unit.__class__,str(unit))
 
     
     def _getAttrs(self, node, skip = None):
