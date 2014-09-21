@@ -13,7 +13,7 @@
 
 
 import numpy as np
-from ndarray.NumpyNdArray import NdArray, getNumpyArray_aktypecode as getDataType, arrayFromNumpyArray
+from ..ndarray.NumpyNdArray import NdArray, getNumpyArray_aktypecode as getDataType, arrayFromNumpyArray
 from histogram.NdArrayDataset import Dataset
 
 

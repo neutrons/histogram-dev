@@ -10,7 +10,7 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-PROJECT = ndarray
+PROJECT = histogram/ndarray
 PACKAGE = converters
 
 #--------------------------------------------------------------------------
@@ -18,11 +18,8 @@ PACKAGE = converters
 
 all: export
 
-release: tidy
-	cvs release .
-
-update: clean
-	cvs update .
+tidy:: 
+	BLD_ACTION="tidy" $(MM) recurse
 
 #--------------------------------------------------------------------------
 #
@@ -42,6 +39,6 @@ export:: export-package-python-modules
 
 
 # version
-# $Id: Make.mm 118 2006-04-17 06:41:49Z jiao $
+# $Id$
 
 # End of file

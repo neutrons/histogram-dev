@@ -2,9 +2,9 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-#                               Michael A.G. Aivazis
+#                                     Jiao Lin
 #                        California Institute of Technology
-#                        (C) 1998-2004  All Rights Reserved
+#                        (C) 2006-2014  All Rights Reserved
 #
 # <LicenseText>
 #
@@ -16,9 +16,13 @@ PROJECT = histogram
 # directory structure
 
 BUILD_DIRS = \
-    packages \
+    applications \
+    histogram \
 
 OTHER_DIRS = \
+    tests \
+    examples \
+    docs \
 
 RECURSE_DIRS = $(BUILD_DIRS) $(OTHER_DIRS)
 

@@ -17,25 +17,7 @@ use = "system pickle"
 
 
 
-if use == "nx5 pickle":
-
-    def dump( obj, filename ):
-        from nx5.pickle import dump
-        if os.path.exists( filename ):
-            warning.log( "%s exists. it will be removed" % filename )
-            os.remove( filename )
-            pass
-        dump(obj, filename)
-        return
-
-
-    def load(filename):
-        from nx5.pickle import load
-        return load(filename)
-
-
-else:
-    
+if use == "system pickle":
 
     def dump( obj, filename ):
         import pickle

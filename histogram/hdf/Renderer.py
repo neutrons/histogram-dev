@@ -92,7 +92,7 @@ class Renderer(object):
                                data = bbs.as_('NumpyNdArray'))
 
         bcs = axis.binCenters()
-        from ndarray.NumpyNdArray import NdArray
+        from ..ndarray.NumpyNdArray import NdArray
         axisGrp.create_dataset('bin centers',
                                data = bcs)
         # data = NdArray(bcs.datatype(), bcs))

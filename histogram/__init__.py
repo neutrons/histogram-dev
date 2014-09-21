@@ -110,7 +110,7 @@ def axis( name, centers = None, unit = None, boundaries = None, attributes=None)
 
 def use( factory ):
     def useNumpy():
-        from ndarray.NumpyNdArray import NdArray
+        from .ndarray.NumpyNdArray import NdArray
         return NdArray
     table = {
         'default': useNumpy,
@@ -602,7 +602,7 @@ def createDataset( name, unit='1', shape=[], data = None, data_type = "double",
         import numpy
         array = numpy.array( data, data_type )
         if shape: array.shape = shape
-        from ndarray.NumpyNdArray import arrayFromNumpyArray as ndarrayFromNumpyArray
+        from .ndarray.NumpyNdArray import arrayFromNumpyArray as ndarrayFromNumpyArray
         storage = ndarrayFromNumpyArray( array )
         
     from NdArrayDataset import Dataset

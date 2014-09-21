@@ -4,13 +4,13 @@
 #
 #                                Jiao Lin
 #                        California Institute of Technology
-#                        (C) 2006 All Rights Reserved
+#                        (C) 2006-2014 All Rights Reserved
 #
 # <LicenseText>
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-PROJECT = ndarray
+PROJECT = histogram
 PACKAGE = ndarray
 
 # directory structure
@@ -29,11 +29,8 @@ all: export
 	BLD_ACTION="all" $(MM) recurse
 
 
-release: tidy
-	cvs release .
-
-update: clean
-	cvs update .
+tidy:: 
+	BLD_ACTION="tidy" $(MM) recurse
 
 #--------------------------------------------------------------------------
 #
@@ -45,7 +42,7 @@ EXPORT_PYTHON_MODULES = \
     NumpyNdArray.py      \
 
 
-export:: export-python-modules 
+export:: export-package-python-modules 
 
 
 include doxygen/default.def
@@ -53,6 +50,6 @@ docs: export-doxygen-docs
 
 
 # version
-# $Id: Make.mm 118 2006-04-17 06:41:49Z jiao $
+# $Id$
 
 # End of file

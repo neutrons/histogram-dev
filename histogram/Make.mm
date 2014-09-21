@@ -18,6 +18,7 @@ PACKAGE = histogram
 
 BUILD_DIRS = \
 	hdf \
+	ndarray \
 	pyrecomponents \
 	scripts \
 
