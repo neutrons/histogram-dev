@@ -12,7 +12,7 @@
 #
 
 PROJECT = histogram
-PACKAGE = applications
+PACKAGE = bin
 
 # directory structure
 
@@ -40,7 +40,6 @@ tidy::
 
 
 EXPORT_PYTHON_MODULES = \
-        __init__.py \
 
 
 EXPORT_BINS = \
@@ -48,11 +47,6 @@ EXPORT_BINS = \
 
 
 export:: export-binaries release-binaries export-package-python-modules #export-docs
-
-
-include doxygen/default.def
-docs: export-doxygen-docs
-
 
 
 # version

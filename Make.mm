@@ -16,7 +16,7 @@ PROJECT = histogram
 # directory structure
 
 BUILD_DIRS = \
-    applications \
+    bin \
     histogram \
 
 OTHER_DIRS = \
