@@ -11,7 +11,7 @@
 
 import unittest
 
-from ndarray.AbstractNdArray import NdArray_TestCase
+from histogram.ndarray.AbstractNdArray import NdArray_TestCase
 def createTestCase(klass):
     class TC(NdArray_TestCase):
         def setUp(self):
@@ -23,7 +23,7 @@ def createTestCase(klass):
 
 
 def pysuite():
-    from ndarray.NumpyNdArray import NdArray as NumpyNA
+    from histogram.ndarray.NumpyNdArray import NdArray as NumpyNA
 
     klasses = [ NumpyNA ] 
     testcases = [ createTestCase( klass ) for klass in klasses ]

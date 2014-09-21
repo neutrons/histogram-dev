@@ -38,7 +38,6 @@ tidy::
 # export
 
 EXPORT_PYTHON_MODULES = \
-	HistogramGUIApp.py \
 	PlotHist.py \
 	__init__.py  \
 

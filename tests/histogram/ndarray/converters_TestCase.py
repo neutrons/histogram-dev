@@ -5,13 +5,13 @@ skip = True
 
 import unittest
 
-from ndarray.converters import *
+from histogram.ndarray.converters import *
 
 class converters_TestCase(unittest.TestCase):
 
     def testStdVectorNdArray2NumpyNdArray(self):
-        "ndarray.converters: StdVectorNdArray2NumpyNdArray"
-        from ndarray.StdVectorNdArray import NdArray
+        "histogram.ndarray.converters: StdVectorNdArray2NumpyNdArray"
+        from histogram.ndarray.StdVectorNdArray import NdArray
         v = [1,2,3] 
         a = NdArray( 'int', v )
         n = a.as_( "NumpyNdArray" )
@@ -20,7 +20,7 @@ class converters_TestCase(unittest.TestCase):
         for a, b in zip( l, v ):
             self.assertEqual( a, b )
             continue
-        self.assertEqual( n.__module__, "ndarray.NumpyNdArray" )
+        self.assertEqual( n.__module__, "histogram.ndarray.NumpyNdArray" )
         
         v = range(12)
         a = NdArray( 'int', v )
@@ -34,13 +34,13 @@ class converters_TestCase(unittest.TestCase):
         for a, b in zip( l, v ):
             self.assertEqual( a, b )
             continue
-        self.assertEqual( n.__module__, "ndarray.NumpyNdArray" )
+        self.assertEqual( n.__module__, "histogram.ndarray.NumpyNdArray" )
         
         return
     
     def testNumpyNdArray2StdVectorNdArray(self):
-        "ndarray.converters: NumpyNdArray2StdVectorNdArray"
-        from ndarray.NumpyNdArray import NdArray
+        "histogram.ndarray.converters: NumpyNdArray2StdVectorNdArray"
+        from histogram.ndarray.NumpyNdArray import NdArray
         v = [1,2,3] 
         a = NdArray( 'int', v )
         n = a.as_( "StdVectorNdArray" )
@@ -49,7 +49,7 @@ class converters_TestCase(unittest.TestCase):
         for a, b in zip( l, v ):
             self.assertEqual( a, b )
             continue
-        self.assertEqual( n.__module__, "ndarray.StdVectorNdArray" )
+        self.assertEqual( n.__module__, "histogram.ndarray.StdVectorNdArray" )
 
         v = range(12)
         a = NdArray( 'int', v )
@@ -63,7 +63,7 @@ class converters_TestCase(unittest.TestCase):
         for a, b in zip( l, v ):
             self.assertEqual( a, b )
             continue
-        self.assertEqual( n.__module__, "ndarray.StdVectorNdArray" )
+        self.assertEqual( n.__module__, "histogram.ndarray.StdVectorNdArray" )
         
         return
     

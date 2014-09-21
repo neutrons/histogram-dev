@@ -17,7 +17,6 @@ PACKAGE = applications
 # directory structure
 
 BUILD_DIRS = \
-    gui \
 
 OTHER_DIRS = \
 
