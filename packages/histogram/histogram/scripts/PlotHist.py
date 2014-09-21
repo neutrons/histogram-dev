@@ -4,20 +4,25 @@
 from histogram import plot as plotHist
 
 
-def plotPklFile( filename, min = None, max = None, output=None ):
+def plotPklFile( filename, min = None, max = None, output=None, **kwds):
     from histogram.hpickle import load
     h = load( filename )
-    plotHist( h, min = min, max = max, output=output )
+    plotHist( h, min = min, max = max, output=output, **kwds)
     return
 
 
-def plotH5File( h5filename, pathinh5file = None, min = None, max = None, output=None ):
+def plotH5File(
+    h5filename, 
+    pathinh5file = None, 
+    min = None, max = None, 
+    output=None,
+    **kwds):
     if pathinh5file is None:
         from histogram.hdf.utils import getOnlyEntry
         pathinh5file = getOnlyEntry( h5filename )
     from histogram.hdf import load
     h = load( h5filename, pathinh5file )
-    plotHist( h , min = min, max = max, output=output )
+    plotHist( h , min = min, max = max, output=output, **kwds)
     return
 
 
@@ -32,6 +37,9 @@ def main():
     parser.add_option("", '--output', dest='output', default='window',
                       help='window or filename.png')
 
+    parser.add_option("", "--colormap", dest="cmap", default = None,
+                      help="color map")
+
     (options, args) = parser.parse_args()
     if not len(args) in [1,2]:
         parser.error("incorrect number of arguments")
@@ -41,6 +49,7 @@ def main():
     min = options.min
     max = options.max
     output = options.output
+    cmap = options.cmap
     
     if filename.endswith( 'h5' ):
         msg = "path to the histogram inside the h5 file '%s' is needed\n\n" % (
@@ -51,9 +60,9 @@ def main():
             entry = None
         else:
             entry = args[1]
-        plotH5File( filename, entry, min = min, max = max, output = output )
+        plotH5File( filename, entry, min = min, max = max, output = output, cmap=cmap)
         return
     
-    plotPklFile( filename, min = min, max = max, output = output )
+    plotPklFile( filename, min = min, max = max, output = output, cmap = cmap)
     return
 
