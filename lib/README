@@ -1,4 +1,7 @@
 c++ library for histogram-related stuff
+This library depends on pyre journal.
+The distributed histogram python package does not need
+to contain this c++ library.
 
 A histogram is thought to be data defined on grid, or griddata.
 

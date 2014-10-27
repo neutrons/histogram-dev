@@ -18,6 +18,7 @@ PROJECT = histogram
 BUILD_DIRS = \
     bin \
     histogram \
+    lib \
 
 OTHER_DIRS = \
     tests \
