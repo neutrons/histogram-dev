@@ -664,22 +664,6 @@ eps = 1e-7
 
 from numpy import arange
 
-def unitFromString( s ):
-    if s is None: return 1
-    if isinstance( s, unitFromString.unittype ): return s
-    if isinstance( s, basestring ): return unitFromString.parser.parse( s )
-    try: return unitFromString.parser.parse( str(s) )
-    except:
-        raise NotImplementedError , "Don't know how to convert %r to unit" % s
-    raise "Should not reach here"
-from pyre.units import parser
-unitFromString.parser = parser()
-del parser
-from pyre.units.unit import unit
-unitFromString.unittype = unit
-del unit
-
-
 def _isIntegers( l ):
     from types import IntType
     for i in l:
@@ -758,6 +742,8 @@ def _grid( arr, i, shape ):
 
 import journal
 debug = journal.debug( 'histogram' )
+
+from ._units import unitFromString
 
 
 # version
