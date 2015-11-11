@@ -48,6 +48,6 @@ rm -rf build_tree
 %{prefix}/include/@PROJECT_NAME@/*
 %{prefix}/@INSTALL_LIB_DIR@/*
 %{prefix}/bin/*
-%{prefix}/etc/*
+# %{prefix}/etc/*
 
 %changelog
