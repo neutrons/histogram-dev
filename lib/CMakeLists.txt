@@ -42,7 +42,9 @@ set ( EXPORT_HEADERS ${INC_FILES} )
 
 # include python headers
 include_directories( ${PYTHON_INCLUDE_DIRS} )
-include_directories( $ENV{DANSE_DIR}/include )
+# assume journal is already deployed at the same deployment prefix
+# where we are going to deploy histogram
+include_directories( ${DEPLOYMENT_PREFIX}/include )
 
 # export headers from this project
 foreach (header ${EXPORT_HEADERS})
