@@ -40,6 +40,9 @@ set ( INC_FILES
 set ( EXPORT_HEADERS ${INC_FILES} )
 # ----------------------------------------
 
+# -D
+add_definitions(-DUSE_DANSE_NAMESPACE )
+
 # include python headers
 include_directories( ${PYTHON_INCLUDE_DIRS} )
 # assume journal is already deployed at the same deployment prefix
