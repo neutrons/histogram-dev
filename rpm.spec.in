@@ -12,6 +12,7 @@ BuildRequires:  gcc-c++
 BuildRequires:	cmake > 2.6
 BuildRequires:	make
 BuildRequires:  python-devel
+BuildRequires:  journal
 
 Requires: python
 Requires: numpy
