@@ -43,7 +43,7 @@ EXPORT_PYTHON_MODULES = \
 
 
 EXPORT_BINS = \
-	PlotHist.py \
+	plothist \
 
 
 export:: export-binaries release-binaries export-package-python-modules #export-docs
