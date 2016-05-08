@@ -15,6 +15,7 @@ BuildRequires:  python-devel
 BuildRequires:  journal
 
 Requires: python
+Requires: python-h5py
 Requires: numpy
 Requires: danse.ins
 
