@@ -39,7 +39,7 @@ class HistogramGUIApp(Script):
 
     def main(self, *args, **kwds):
         from histogram.applications.gui.controllers.MainController import MainController
-        m = MainController ( self.toolkit, self.maingml )
+        m = MainController(self.toolkit, self.maingml)
         m.main()
         return
 
@@ -64,8 +64,8 @@ class HistogramGUIApp(Script):
     def _init(self):
         Script._init(self)
         from luban.gml import toolkits
-        toolkit = toolkits.__dict__.get( self.toolkit )
-        if toolkit is None: raise "Cannot find toolkit %s" % self.toolkit
+        toolkit = toolkits.__dict__.get(self.toolkit)
+        if toolkit is None: raise "Cannot find toolkit {0!s}".format(self.toolkit)
         self.toolkit = toolkit
 
         if self.maingml == '':
@@ -73,7 +73,7 @@ class HistogramGUIApp(Script):
 
             App = self.__class__.__name__
             import os
-            self.maingml = os.path.join( etc, App, "main.gml" )
+            self.maingml = os.path.join(etc, App, "main.gml")
             pass
         return
 
