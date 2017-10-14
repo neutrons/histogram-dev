@@ -1,3 +1,5 @@
+from __future__ import division
+
 #!/usr/bin/env python
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -22,42 +24,42 @@ class Histogram_TestCase(TestCase):
 
     def test_axis(self):
         "Histogram.__init__: axis"
-        q = axis( "q", arange(0.0, 13.0, 0.1), "angstrom**(-1)" )
-        detID = axis( "detID", range(10) )
-        detID = axis( "detID", [0] )
+        q = axis("q", arange(0.0, 13.0, 0.1), "angstrom**(-1)")
+        detID = axis("detID", range(10))
+        detID = axis("detID", [0])
         return
 
 
     def test_paxis(self):
         'Histogram.__init__: paxis'
-        q = axis( "q", arange(0.0, 13.0, 0.1), "angstrom**(-1)" )
-        q = axis( "q", [1., 2., 4., 6.], "angstrom**(-1)" )
-        self.assertEqual( q.cellIndexFromValue( 1.1 ), 0 )
-        self.assertEqual( q.cellIndexFromValue( 1.9 ), 1 )
-        self.assertEqual( q.cellIndexFromValue( 2.1 ), 1 )
-        self.assertEqual( q.cellIndexFromValue( 3.9 ), 2 )
-        self.assertEqual( q.cellIndexFromValue( 4.1 ), 2 )
-        self.assertEqual( q.cellIndexFromValue( 5.9 ), 3 )
-        self.assertEqual( q.cellIndexFromValue( 6.1 ), 3 )
+        q = axis("q", arange(0.0, 13.0, 0.1), "angstrom**(-1)")
+        q = axis("q", [1., 2., 4., 6.], "angstrom**(-1)")
+        self.assertEqual(q.cellIndexFromValue(1.1), 0)
+        self.assertEqual(q.cellIndexFromValue(1.9), 1)
+        self.assertEqual(q.cellIndexFromValue(2.1), 1)
+        self.assertEqual(q.cellIndexFromValue(3.9), 2)
+        self.assertEqual(q.cellIndexFromValue(4.1), 2)
+        self.assertEqual(q.cellIndexFromValue(5.9), 3)
+        self.assertEqual(q.cellIndexFromValue(6.1), 3)
         return
 
 
     def test_histogram1(self):
         """Histogram.__init__: histogram factory method, axes are specified using
         instances of Axis"""
-        detIDaxis = axis( "detID", range(10) )
-        pixIDaxis = axis( "pixID", range(8) )
+        detIDaxis = axis("detID", range(10))
+        pixIDaxis = axis("pixID", range(8))
         axes = [detIDaxis, pixIDaxis]
 
         from numpy import fromfunction
-        def f(i,j): return i+j
-        data = fromfunction( f, (detIDaxis.size(), pixIDaxis.size()) )
+        def f(i, j): return i+j
+        data = fromfunction(f, (detIDaxis.size(), pixIDaxis.size()))
         errs = data**2
     
         h = histogram('h', axes, data, errs)
         detID, pixID = 3, 5
         self.assertVectorAlmostEqual(
-            h[detID, pixID], ( f(detID, pixID), f(detID, pixID) ** 2 ) )
+            h[detID, pixID], (f(detID, pixID), f(detID, pixID) ** 2))
         return
 
 
@@ -65,11 +67,11 @@ class Histogram_TestCase(TestCase):
         """Histogram.__init__: histogram factory method, keyword 'fromfunction'
         """
         def f(x): return x*x
-        h = histogram('h', [ ('x',range(10)) ],
-                      fromfunction = f )
+        h = histogram('h', [('x', range(10))],
+                      fromfunction=f)
         def g(x): return x
-        h = histogram('h', [ ('x',range(10)) ],
-                      fromfunction = (f,g) )
+        h = histogram('h', [('x', range(10))],
+                      fromfunction=(f, g))
         return
 
 
@@ -79,11 +81,11 @@ class Histogram_TestCase(TestCase):
         h = histogram(
             'h',
             [
-            ('x',range(2)),
-            ('y',range(2,4)),
-            ('z',range(4,6)),
+            ('x', range(2)),
+            ('y', range(2, 4)),
+            ('z', range(4, 6)),
             ],
-            fromfunction = lambda x,y,z: x+y+z )
+            fromfunction=lambda x, y, z: x+y+z)
         
         return
 
@@ -95,56 +97,57 @@ class Histogram_TestCase(TestCase):
         h = histogram(
             'h',
             [
-            ('x',arange(0, 3.0, 0.1)),
+            ('x', arange(0, 3.0, 0.1)),
             ],
-            fromfunction = math.sin )
+            fromfunction=math.sin)
 
         h = histogram(
             'h',
             [
-            ('x',arange(0, 3.0, 0.1)),
-            ('y',arange(0, 3.0, 0.1)),
+            ('x', arange(0, 3.0, 0.1)),
+            ('y', arange(0, 3.0, 0.1)),
             ],
-            fromfunction = lambda x,y: math.sin(x+y) )
+            fromfunction=lambda x, y: math.sin(x+y))
         return
 
 
     def test_histogram2(self):
         """Histogram.__init__: datasetFromFunction"""
-        qaxis = axis( 'q', arange( 0, 13, 0.1), 'angstrom**(-1)' )
-        eaxis = axis( 'e', arange( -50, 50, 1.), 'meV' )
-        axes = (qaxis,eaxis)
-        def f1(q,e): return q**2 + e**2
-        data = datasetFromFunction( f1, (qaxis,eaxis) )
+        qaxis = axis('q', arange(0, 13, 0.1), 'angstrom**(-1)')
+        eaxis = axis('e', arange(-50, 50, 1.), 'meV')
+        axes = (qaxis, eaxis)
+        def f1(q, e): return q**2 + e**2
+        data = datasetFromFunction(f1, (qaxis, eaxis))
         errs = data**2
         h = histogram('h', axes, data, errs)
 
-        q = 6.; e = 10.
-        self.assertVectorAlmostEqual( h[ q,e ] , (f1(q,e), f1(q,e)**2 ) )
+        q = 6.
+        e = 10.
+        self.assertVectorAlmostEqual(h[q, e], (f1(q, e), f1(q, e)**2))
         return
 
 
     def _test_histogram3a(self):
         """Histogram.__init__: histogram of non-float datatype"""
-        detaxis = axis('detectorID', range(10) )
-        pixaxis = axis('pixelID', range(10) )
-        mask = histogram( 'mask', (detaxis, pixaxis), data_type = 'char' )
+        detaxis = axis('detectorID', range(10))
+        pixaxis = axis('pixelID', range(10))
+        mask = histogram('mask', (detaxis, pixaxis), data_type='char')
 
         from numpy import ones
         data = createDataset(
-            'data', shape = (10,10), data = ones( (10,10), int ),
-            data_type = 'int' )
+            'data', shape=(10, 10), data=ones((10, 10), int),
+            data_type='int')
         counts = histogram(
             'counts', (detaxis, pixaxis),
-            data = data,
-            errors = None)
+            data=data,
+            errors=None)
 
         counts1 = histogram(
             'counts', (detaxis, pixaxis),
-            data = ones( (10, 10), int ),
-            errors = ones( (10,10), int ),
-            data_type = 'double')
-        self.assertEqual( counts1.errors().name(), 'errors' )
+            data=ones((10, 10), int),
+            errors=ones((10, 10), int),
+            data_type='double')
+        self.assertEqual(counts1.errors().name(), 'errors')
         return
 
 
@@ -152,16 +155,16 @@ class Histogram_TestCase(TestCase):
         """Histogram.__init__: histogram factory method, axes are specified
         using a list of (name, values)"""
         detIDaxis = "detID", range(100)
-        tofAxis = "tof", arange( 1000, 5000, 1.0), "microsecond"
+        tofAxis = "tof", arange(1000, 5000, 1.0), "microsecond"
 
         shape = len(detIDaxis[1]), len(tofAxis[1])
         
         from numpy import zeros
         
         h = histogram(
-            'h', (detIDaxis, tofAxis), zeros( shape, 'd' ), zeros( shape, 'd') )
+            'h', (detIDaxis, tofAxis), zeros(shape, 'd'), zeros(shape, 'd'))
 
-        self.assertVectorAlmostEqual( h[ 30, 3000. ], (0,0) )
+        self.assertVectorAlmostEqual(h[30, 3000.], (0, 0))
         return
 
 
@@ -169,15 +172,15 @@ class Histogram_TestCase(TestCase):
         """Histogram.__init__: histogram factory method, axes are specified
         using a list of (name, values). data and errors are unspecified"""
         detIDaxis = "detID", range(100)
-        tofAxis = "tof", arange( 1000, 5000, 1.0), "microsecond"
+        tofAxis = "tof", arange(1000, 5000, 1.0), "microsecond"
 
         shape = len(detIDaxis[1]), len(tofAxis[1])
         
         from numpy import zeros
         
-        h = histogram('h', (detIDaxis, tofAxis) )
+        h = histogram('h', (detIDaxis, tofAxis))
 
-        self.assertVectorAlmostEqual( h[ 30, 3000. ], (0,0) )
+        self.assertVectorAlmostEqual(h[30, 3000.], (0, 0))
         return
 
 
@@ -186,9 +189,9 @@ class Histogram_TestCase(TestCase):
         h = histogram(
             'h',
             [
-            ('x', [1,2,3] ),
+            ('x', [1, 2, 3]),
             ],
-            unit = 'meter',
+            unit='meter',
             )
         return
 
@@ -198,12 +201,12 @@ class Histogram_TestCase(TestCase):
         h = histogram(
             'h',
             [
-            ('x', [1,2,3] ),
+            ('x', [1, 2, 3]),
             ],
-            unit = 'meter',
-            data = [1,2,3]
+            unit='meter',
+            data=[1, 2, 3]
             )
-        self.assertVectorAlmostEqual( h.errors().storage().asNumarray(), [0,0,0] )
+        self.assertVectorAlmostEqual(h.errors().storage().asNumarray(), [0, 0, 0])
         return
 
 
@@ -212,60 +215,60 @@ class Histogram_TestCase(TestCase):
         h = histogram(
             'h',
             [
-            ('x', [1,2,3] ),
-            ('y', [0.1,0.2,0.3] ),
-            ('z', range(0,1000,100) ),
+            ('x', [1, 2, 3]),
+            ('y', [0.1, 0.2, 0.3]),
+            ('z', range(0, 1000, 100)),
             ],
-            unit = 'meter',
+            unit='meter',
             )
         xaxis = axis('x', [1, 2])
         yaxis = axis('y', [0.2, 0.3])
-        s = getSliceCopyFromHistogram( 's', [xaxis, yaxis], h )
-        self.assertVectorEqual( s.shape(), (2,2,10) )
+        s = getSliceCopyFromHistogram('s', [xaxis, yaxis], h)
+        self.assertVectorEqual(s.shape(), (2, 2, 10))
         return
 
 
     def test_meshgrid(self):
         """Histogram.__init__: meshgrid"""
-        x, y, z = [1,2], [3,4,5], [6,7,8,9]
-        m = meshgrid( x,y,z )
-        self.assert_( isinstance( m, list ) )
-        X,Y,Z = m
+        x, y, z = [1, 2], [3, 4, 5], [6, 7, 8, 9]
+        m = meshgrid(x, y, z)
+        self.assert_(isinstance(m, list))
+        X, Y, Z = m
         
         from numpy import array
-        X1 = array( x*len(y)*len(z) )
+        X1 = array(x*len(y)*len(z))
         X1.shape = len(y), len(z), len(x)
-        X1 = X1.transpose( 2,1,0 )
+        X1 = X1.transpose(2, 1, 0)
         X1 = X1.flatten()
         X1.shape = len(x), len(y), len(z)
-        self.assert_( (X==X1).all() )
+        self.assert_((X == X1).all())
 
-        X = meshgrid( [x] )
-        self.assert_( isinstance( X, list ) )
+        X = meshgrid([x])
+        self.assert_(isinstance(X, list))
         x = X[0]
-        self.assert_( 'numpy' in x.__class__.__module__ )
+        self.assert_('numpy' in x.__class__.__module__)
         return
 
 
     def test_boundariesFromCenters(self):
         "histogram.__init__: boundariesFromCenters"
         c = [1., 2., 3., 4.]
-        bb = boundariesFromCenters( c )
-        self.assertVectorAlmostEqual( bb, [0.5, 1.5, 2.5, 3.5, 4.5] )
+        bb = boundariesFromCenters(c)
+        self.assertVectorAlmostEqual(bb, [0.5, 1.5, 2.5, 3.5, 4.5])
 
         c = [1, 2, 4, 5]
-        bb = boundariesFromCenters( c )
-        self.assertVectorAlmostEqual( bb, [0.5, 1.5, 3, 4.5, 5.5] )
+        bb = boundariesFromCenters(c)
+        self.assertVectorAlmostEqual(bb, [0.5, 1.5, 3, 4.5, 5.5])
         
         c = [1, 1, 2, 4]
-        self.assertRaises( BinsOverlapped, boundariesFromCenters, c )
+        self.assertRaises(BinsOverlapped, boundariesFromCenters, c)
         return
 
 
     def test_calcBinBoundaries(self):
         "histogram.__init__:  calcBinBoundaries"
-        bb = calcBinBoundaries( 1.0, 1.0, 10 );
-        self.assertVectorAlmostEqual( bb, [0.5 + 1.0*i for i in range(11)] )
+        bb = calcBinBoundaries(1.0, 1.0, 10)
+        self.assertVectorAlmostEqual(bb, [0.5 + 1.0*i for i in range(11)])
         return
 
 
@@ -275,28 +278,28 @@ class Histogram_TestCase(TestCase):
         unit = "meV"
         min, delta, nBins = 10., 1.0, 70
         max = min + nBins * delta
-        axis = createContinuousAxis( name, unit, arange(min, max, delta) )
+        axis = createContinuousAxis(name, unit, arange(min, max, delta))
         
-        self.assert_( axis.name() == name )
-        self.assert_( axis.unit() == unitFromString(unit) )
+        self.assert_(axis.name() == name)
+        self.assert_(axis.unit() == unitFromString(unit))
         
         bb = axis.binBoundaries().asList()
-        self.assertVectorAlmostEqual( bb, [min - delta/2. + i * delta for i in range(nBins+1)] )
+        self.assertVectorAlmostEqual(bb, [min - delta/2. + i * delta for i in range(nBins+1)])
         return
     
 
     def test_createDiscreteAxis(self):
         "histogram.__init__:  createDiscreteAxis"
         name = "detectorID"
-        items = [1,3,8,10]
-        axis = createDiscreteAxis( name, items, "int" )
+        items = [1, 3, 8, 10]
+        axis = createDiscreteAxis(name, items, "int")
         
-        self.assert_( axis.name() == name )
+        self.assert_(axis.name() == name)
         
         bb = axis.binBoundaries().asList()
         bc = axis.binCenters()
-        self.assertVectorEqual( bc, items )
-        self.assertEqual( len(bb), len(items)+1 )
+        self.assertVectorEqual(bc, items)
+        self.assertEqual(len(bb), len(items)+1)
         return
 
     
@@ -304,27 +307,27 @@ class Histogram_TestCase(TestCase):
         "histogram.__init__:  createDataset"
         name = "intensity"
         unit = "1"
-        shape = [100,200]
-        types = [ 'double', 'float', 'int', 'unsigned' ]
+        shape = [100, 200]
+        types = ['double', 'float', 'int', 'unsigned']
         for datatype in types:
             try:
-                ds = createDataset( name, unit, shape=shape, data_type = datatype )
+                ds = createDataset(name, unit, shape=shape, data_type=datatype)
             except:
-                raise RuntimeError, datatype
-            self.assertEqual( name, ds.name() )
-            self.assertEqual( 1, ds.unit() )
-            self.assertVectorEqual( shape, ds.shape() )
-            self.assertEqual( ds.typecodeAsC(), datatype )
+                raise RuntimeError(datatype)
+            self.assertEqual(name, ds.name())
+            self.assertEqual(1, ds.unit())
+            self.assertVectorEqual(shape, ds.shape())
+            self.assertEqual(ds.typecodeAsC(), datatype)
             continue
 
         from ndarray.NumpyNdArray import NdArray 
-        storage = NdArray( "float", 20000, 0 )
-        storage.setShape( shape )
-        ds2 = createDataset( name, unit, storage = storage )
-        self.assertEqual( name, ds2.name() )
-        self.assertEqual( 1, ds2.unit() )
-        self.assertVectorEqual( shape, ds2.shape() )
-        self.assertEqual( ds2.typecodeAsC(), "float" )
+        storage = NdArray("float", 20000, 0)
+        storage.setShape(shape)
+        ds2 = createDataset(name, unit, storage=storage)
+        self.assertEqual(name, ds2.name())
+        self.assertEqual(1, ds2.unit())
+        self.assertVectorEqual(shape, ds2.shape())
+        self.assertEqual(ds2.typecodeAsC(), "float")
         return
 
 
@@ -333,12 +336,12 @@ class Histogram_TestCase(TestCase):
         name = "I(det,tof)"
         det = ("det", range(10))
         from numpy import arange, zeros, ones
-        tof = ("tof", arange( 1000.,1020., 1.0 ) )
-        axes = [det,tof]
-        data = ones( (10,20) )
-        errs = ones( (10,20) )
-        hist = makeHistogram( name, axes, data, errs)
-        self.assertEqual( name, hist.name() )
+        tof = ("tof", arange(1000., 1020., 1.0))
+        axes = [det, tof]
+        data = ones((10, 20))
+        errs = ones((10, 20))
+        hist = makeHistogram(name, axes, data, errs)
+        self.assertEqual(name, hist.name())
         return
 
 
@@ -347,11 +350,11 @@ class Histogram_TestCase(TestCase):
     
 def pysuite():
     suite1 = unittest.makeSuite(Histogram_TestCase)
-    return unittest.TestSuite( (suite1,) )
+    return unittest.TestSuite((suite1,))
 
 def main():
     pytests = pysuite()
-    alltests = unittest.TestSuite( (pytests, ) )
+    alltests = unittest.TestSuite((pytests,))
     unittest.TextTestRunner(verbosity=2).run(alltests)
     return
 

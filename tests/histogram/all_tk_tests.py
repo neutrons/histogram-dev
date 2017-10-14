@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 #!/usr/bin/env python
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -14,7 +16,7 @@
 
 import os
 #get current directory
-curdir = os.path.split( __file__ ) [0]
+curdir = os.path.split(__file__)[0]
 if curdir == "": curdir = "."
 
 
@@ -24,33 +26,33 @@ import unittest
 from unittest import TestCase
 
 
-def addTestMethod( klass, no):
+def addTestMethod(klass, no):
     def f(self):
         aspect, run = self.orig_tests[no]
-        print self.orig_module, ':', aspect
-        self.assert_( run() )
+        print(self.orig_module, ':', aspect)
+        self.assert_(run())
         return
 
-    setattr( klass, "test%s" % no, f)
+    setattr(klass, "test{0!s}".format(no), f)
         
 
-def createTestCase( originalTestModule ):
+def createTestCase(originalTestModule):
 
-    m = __import__( originalTestModule )
+    m = __import__(originalTestModule)
 
     tests = []
-    for i, aspect in enumerate( m.__dict__['aspects'] ):
-        test_func = "test_%s" % i
-        tests.append( ( aspect, m.__dict__[test_func]) )
+    for i, aspect in enumerate(m.__dict__['aspects']):
+        test_func = "test_{0!s}".format(i)
+        tests.append((aspect, m.__dict__[test_func]))
         continue
 
-    class NewTestCase( TestCase ): 
+    class NewTestCase(TestCase): 
         orig_tests = tests
         orig_module = originalTestModule
         pass
 
     for i in range(len(tests)):
-        addTestMethod( NewTestCase, i )
+        addTestMethod(NewTestCase, i)
         continue
 
     return NewTestCase
@@ -64,9 +66,9 @@ def createsuites():
                "histogramTest_DictAttCont",
                # "histogramTest_StdvectorDataset", 
                ] 
-    suites = [unittest.makeSuite(createTestCase( module )) \
-              for module in modules ]
-    return unittest.TestSuite( suites )
+    suites = [unittest.makeSuite(createTestCase(module)) \
+              for module in modules]
+    return unittest.TestSuite(suites)
 
 
 

@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 #!/usr/bin/env python
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,15 +28,15 @@ class hdf_TestCase(TestCase):
         """ histogram.hdf: dump """
         from histogram import histogram, arange
         h = histogram('h',
-                      [('x', arange(0,100, 1.) ),
-                       ('y', arange(100, 180, 1.) ),],
-                      unit = 'meter',
+                      [('x', arange(0, 100, 1.)),
+                       ('y', arange(100, 180, 1.)), ],
+                      unit='meter',
                       )
 
         filename = 'test0.h5'
         import os
-        if os.path.exists( filename): os.remove( filename )
-        dump( h, filename, '/', mode = 'c' )
+        if os.path.exists(filename): os.remove(filename)
+        dump(h, filename, '/', mode='c')
         return
 
 
@@ -42,65 +44,65 @@ class hdf_TestCase(TestCase):
         """ histogram.hdf: dump with compression"""
         from histogram import histogram, arange
         h = histogram('h',
-                      [('x', arange(0,100, 1.) ),
-                       ('y', arange(100, 180, 1.) ),],
-                      unit = 'meter',
+                      [('x', arange(0, 100, 1.)),
+                       ('y', arange(100, 180, 1.)), ],
+                       unit='meter',
                       )
 
         filename = 'test0-compressed.h5'
         import os
-        if os.path.exists( filename): os.remove( filename )
-        dump( h, filename, '/', mode = 'c', compression=6 )
+        if os.path.exists(filename): os.remove(filename)
+        dump(h, filename, '/', mode='c', compression=6)
         return
 
     def testdump1(self):
         """ histogram.hdf: dump with fs specified"""
         filename = 'test1.h5'
-        if os.path.exists( filename): os.remove( filename )
+        if os.path.exists(filename): os.remove(filename)
 
         from h5py import File
-        fs = File( filename, 'w' )
+        fs = File(filename, 'w')
         
         from histogram import histogram, arange
         h = histogram('h',
-                      [('x', arange(0, 100, 1.) ),
-                       ('y', arange(100, 180, 1.) ),],
-                      unit = 'meter',
+                      [('x', arange(0, 100, 1.)),
+                       ('y', arange(100, 180, 1.)), ],
+                       unit='meter',
                       )
         #fs will take over
-        dump( h, 'abc', '/', mode = 'w', fs = fs )
-        self.assert_( os.path.exists( filename ))
+        dump(h, 'abc', '/', mode='w', fs=fs)
+        self.assert_(os.path.exists(filename))
         return
 
     def testdump2(self):
         'dump two histograms to one hdf'
         filename = 'testdump1.h5'
         import os
-        if os.path.exists( filename): 
-            os.remove( filename )
+        if os.path.exists(filename): 
+            os.remove(filename)
 
         from h5py import File
-        fs = File( filename, 'w' )
+        fs = File(filename, 'w')
         
         from histogram import histogram, arange
         h = histogram('h',
-                      [('x', arange(0,100, 1.) ),
-                       ('y', arange(100, 180, 1.) ),],
-                      unit = 'meter',
+                      [('x', arange(0, 100, 1.)),
+                       ('y', arange(100, 180, 1.)), ],
+                       unit='meter',
                       )
-        dump( h, None, '/', fs = fs )
+        dump(h, None, '/', fs=fs)
         
         h2 = histogram('h2',
-                      [('x', arange(0,100, 1.) ),
-                       ('y', arange(100, 180, 1.) ),],
-                      unit = 'meter',
+                      [('x', arange(0, 100, 1.)),
+                       ('y', arange(100, 180, 1.)), ],
+                       unit='meter',
                       )
-        dump( h2, None, '/', fs = fs )
+        dump(h2, None, '/', fs=fs)
 
         #load histogram
-        h2c = load( filename, '/h2', fs = fs )
-        print h2c
-        self.assert_( os.path.exists( filename ))
+        h2c = load(filename, '/h2', fs=fs)
+        print(h2c)
+        self.assert_(os.path.exists(filename))
 
     def testdump_and_load(self):
         'dump and load'
@@ -113,17 +115,17 @@ h = histogram(
     [ ('x', x) ],
     data = y, errors = y )
 import histogram.hdf as hh
-hh.dump( h, '%s', '/', 'c' )
-''' % tmpfile
+hh.dump( h, '{0!s}', '/', 'c' )
+'''.format(tmpfile)
         import os
         if os.path.exists(tmpfile): 
-            os.remove( tmpfile )
-        cmd =  'python -c "%s"' % cmd 
-        if os.system( cmd ): 
-            raise "%s failed" % cmd
-        h = load( tmpfile, 'h' )
+            os.remove(tmpfile)
+        cmd = 'python -c "{0!s}"'.format(cmd)
+        if os.system(cmd): 
+            raise "{0!s} failed".format(cmd)
+        h = load(tmpfile, 'h')
         for i in range(10):
-            self.assertVectorAlmostEqual( h[i], (i,i) )
+            self.assertVectorAlmostEqual(h[i], (i, i))
             continue
         return
     
@@ -139,15 +141,15 @@ h = histogram(
     [ ('x', x) ],
     data = y, errors = y )
 import histogram.hdf as hh
-hh.dump( h, '%s', '/', 'c' )
-''' % tmpfile
+hh.dump( h, '{0!s}', '/', 'c' )
+'''.format(tmpfile)
         import os
         if os.path.exists(tmpfile): 
-            os.remove( tmpfile )
-        cmd =  'python -c "%s"' % cmd 
-        if os.system( cmd ): 
-            raise "%s failed" % cmd
-        h = load( tmpfile, 'h' )
+            os.remove(tmpfile)
+        cmd = 'python -c "{0!s}"'.format(cmd)
+        if os.system(cmd): 
+            raise "{0!s} failed".format(cmd)
+        h = load(tmpfile, 'h')
         assert not h.axes()[0].isDiscrete()
         return
     
@@ -163,15 +165,15 @@ h = histogram(
     [ ('tID', x) ],
     data = y, errors = y )
 import histogram.hdf as hh
-hh.dump( h, '%s', '/', 'c' )
-''' % tmpfile
+hh.dump( h, '{0!s}', '/', 'c' )
+'''.format(tmpfile)
         import os
         if os.path.exists(tmpfile): 
-            os.remove( tmpfile )
-        cmd =  'python -c "%s"' % cmd 
-        if os.system( cmd ): 
-            raise "%s failed" % cmd
-        h = load( tmpfile, 'h' )
+            os.remove(tmpfile)
+        cmd = 'python -c "{0!s}"'.format(cmd)
+        if os.system(cmd): 
+            raise "{0!s} failed".format(cmd)
+        h = load(tmpfile, 'h')
         axis = h.axes()[0]
         self.assert_(axis.isDiscrete())
         self.assertEqual(axis.name(), 'tID')
@@ -192,15 +194,15 @@ h.setAttribute('instrument', 'ARCS')
 axis = h.axes()[0]
 axis.setAttribute('pi', 3.14)
 import histogram.hdf as hh
-hh.dump( h, '%s', '/', 'c' )
-''' % tmpfile
+hh.dump( h, '{0!s}', '/', 'c' )
+'''.format(tmpfile)
         import os
         if os.path.exists(tmpfile): 
-            os.remove( tmpfile )
-        cmd =  'python -c "%s"' % cmd 
-        if os.system( cmd ): 
-            raise "%s failed" % cmd
-        h = load( tmpfile, 'h' )
+            os.remove(tmpfile)
+        cmd = 'python -c "{0!s}"'.format(cmd)
+        if os.system(cmd): 
+            raise "{0!s} failed".format(cmd)
+        h = load(tmpfile, 'h')
         axis = h.axes()[0]
         self.assert_(axis.isDiscrete())
         self.assertEqual(axis.name(), 'tID')
@@ -221,17 +223,17 @@ h = histogram(
     [ ('x', x, 'meter') ],
     data = y, errors = y )
 import histogram.hdf as hh
-hh.dump( h, '%s', '/', 'c' )
-''' % tmpfile
+hh.dump( h, '{0!s}', '/', 'c' )
+'''.format(tmpfile)
         import os
         if os.path.exists(tmpfile): 
-            os.remove( tmpfile )
-        cmd =  'python -c "%s"' % cmd 
-        if os.system( cmd ): 
-            raise "%s failed" % cmd
-        h = load( tmpfile, 'h' )
+            os.remove(tmpfile)
+        cmd = 'python -c "{0!s}"'.format(cmd) 
+        if os.system(cmd): 
+            raise "{0!s} failed".format(cmd)
+        h = load(tmpfile, 'h')
         for i in range(10):
-            self.assertVectorAlmostEqual( h[i], (i,i) )
+            self.assertVectorAlmostEqual(h[i], (i, i))
             continue
         from histogram._units import tounit
         meter = tounit('meter')
@@ -242,39 +244,39 @@ hh.dump( h, '%s', '/', 'c' )
     def testdump_and_load2(self):
         'dump and load in the same process'
         tmpfile = 'test_dump_load2.h5'
-        if os.path.exists( tmpfile ):
-            os.remove( tmpfile )
+        if os.path.exists(tmpfile):
+            os.remove(tmpfile)
 
         from h5py import File
-        fs = File( tmpfile, 'w' )
+        fs = File(tmpfile, 'w')
         
         from histogram import histogram
         x = y = range(10)
         h = histogram( 
             'h',
-            [ ('x', x) ],
-            data = y, errors = y )
+            [('x', x)],
+            data=y, errors=y)
         import histogram.hdf as hh
-        hh.dump( h, tmpfile, '/',  fs = fs )
-        h = load( tmpfile, 'h')
-        #print h[1]
-        self.assertVectorAlmostEqual( h[1], (1,1) )
+        hh.dump(h, tmpfile, '/',  fs=fs)
+        h = load(tmpfile, 'h')
+        #print(h[1])
+        self.assertVectorAlmostEqual(h[1], (1, 1))
         return
 
     
     def test_slice_and_dump(self):
         'slice a histogram and dump the slice'
         tmpfile = 'test_slice_and_dump.h5'
-        if os.path.exists( tmpfile ):
-            os.remove( tmpfile )
+        if os.path.exists(tmpfile):
+            os.remove(tmpfile)
 
         from histogram import histogram
         x = y = range(100)
         h = histogram( 
             'h',
-            [ ('x', x) ],
-            data = y, errors = y )
-        s = h[(3,10)]
+            [('x', x)],
+            data=y, errors=y)
+        s = h[(3, 10)]
         import histogram.hdf as hh
         hh.dump(s, tmpfile, '/',  'c')
         return
@@ -283,8 +285,8 @@ hh.dump( h, '%s', '/', 'c' )
     def test_load_slice_and_dump(self):
         'load a histogram and dump a slice of it'
         tmpfile = 'test_load_slice_and_dump.h5'
-        if os.path.exists( tmpfile ):
-            os.remove( tmpfile )
+        if os.path.exists(tmpfile):
+            os.remove(tmpfile)
 
         import histogram.hdf as hh
         h = hh.load('testload.h5', '/h')
@@ -295,55 +297,55 @@ hh.dump( h, '%s', '/', 'c' )
 
     def testload(self):
         'load simplest histogram'
-        h = load( 'testload.h5', '/h' )
+        h = load('testload.h5', '/h')
         return
 
     def testload1(self):
         'load histogram with unit'
-        h = load( 'testload.h5', '/h1' )
+        h = load('testload.h5', '/h1')
         return
 
     def testload2(self):
         'load histogram with one path string'
-        #h = load( 'testload.h5/h' )
-        h = load( 'sqe.h5/S(Q,E)' )
+        #h = load('testload.h5/h')
+        h = load('sqe.h5/S(Q,E)')
         return
 
     def testload3(self):
         'load a slice of a histogram '
         tmpfile = "tmp.h5"
-        if os.path.exists( tmpfile): os.remove(tmpfile)
+        if os.path.exists(tmpfile): os.remove(tmpfile)
 
-        cmd = "from histogram.hdf import dump; from histogram import histogram, arange; h = histogram( 'h', [ ('xID', range(10)), ('y', arange(0, 1,0.1)) ] ); from numpy import array; d = array(range(100)); d.shape = 10,10; h[{}] = d, 0; dump(h, %r, '/', 'c') " % tmpfile
-        os.system( 'python -c %r' % cmd )
-        if not os.path.exists( tmpfile ): raise "failed to create tmp h5 file of historam"
+        cmd = "from histogram.hdf import dump; from histogram import histogram, arange; h = histogram( 'h', [ ('xID', range(10)), ('y', arange(0, 1,0.1)) ] ); from numpy import array; d = array(range(100)); d.shape = 10,10; h[{}] = d, 0; dump(h, {0!r}, '/', 'c') ".format(tmpfile)
+        os.system('python -c {0!r}'.format(cmd))
+        if not os.path.exists(tmpfile): raise "failed to create tmp h5 file of historam"
 
-        h1 = load( tmpfile, 'h', xID=(3,6) )
-        assert h1.shape() == (4,10)
+        h1 = load(tmpfile, 'h', xID=(3, 6))
+        assert h1.shape() == (4, 10)
         d = h1.data().storage().asNumarray().copy()
         d.shape = 40,
-        print d
-        self.assertVectorAlmostEqual( d, range(30,70) )
+        print(d)
+        self.assertVectorAlmostEqual(d, range(30, 70))
 
         self.assertVectorEqual(
-            h1.axisFromId(1).binCenters(), (3,4,5,6) )
+            h1.axisFromId(1).binCenters(), (3, 4, 5, 6))
 
         from numpy import arange
         self.assertVectorAlmostEqual(
-            h1.axisFromId(2).binCenters(), arange(0,1,0.1) )
-        h2 = load( tmpfile, 'h', xID=(3,6), y=(0.4,0.5) )
-        assert h2.shape() == (4,2)
+            h1.axisFromId(2).binCenters(), arange(0, 1, 0.1))
+        h2 = load(tmpfile, 'h', xID=(3, 6), y=(0.4, 0.5))
+        assert h2.shape() == (4, 2)
         d = h2.data().storage().asNumarray().copy()
         d.shape = 8,
         self.assertVectorAlmostEqual(
-            d, (34,35,44,45,54,55,64,65) )
+            d, (34, 35, 44, 45, 54, 55, 64, 65))
 
         self.assertVectorEqual(
-            h2.axisFromId(1).binCenters(), (3,4,5,6) )
+            h2.axisFromId(1).binCenters(), (3, 4, 5, 6))
 
         from numpy import arange
         self.assertVectorAlmostEqual(
-            h2.axisFromId(2).binCenters(), (0.4,0.5) )
+            h2.axisFromId(2).binCenters(), (0.4, 0.5))
 
     def testload5(self):
         'load with fs specified'
@@ -351,7 +353,7 @@ hh.dump( h, '%s', '/', 'c' )
         filename = 'test_dump_load2.h5'
         from h5py import File
         fs = File(filename)
-        h = load( filename, '/h', fs = fs )
+        h = load(filename, '/h', fs=fs)
         return
     
 
@@ -362,31 +364,31 @@ hh.dump( h, '%s', '/', 'c' )
         orig = 'testload.h5'
         filename = 'testload6.h5'
         import shutil
-        shutil.copyfile( orig, filename )
+        shutil.copyfile(orig, filename)
         from h5py import File
-        fs = File( filename, 'w' )
+        fs = File(filename, 'w')
 
-        # self.assertRaises( IOError, load, filename, '/h', fs )
-        self.assertRaises( KeyError, load, filename, '/h', fs )
+        # self.assertRaises(IOError, load, filename, '/h', fs)
+        self.assertRaises(KeyError, load, filename, '/h', fs)
         return
 
 
     def testload7(self):
         'load histogram that is only one entry with just the filename'
-        h = load( 'sqe.h5' )
+        h = load('sqe.h5')
         return
 
 
 
 def pysuite():
     suite1 = unittest.makeSuite(hdf_TestCase)
-    return unittest.TestSuite( (suite1,) )
+    return unittest.TestSuite((suite1,))
 
 
 def main():
     import journal
     pytests = pysuite()
-    alltests = unittest.TestSuite( (pytests, ) )
+    alltests = unittest.TestSuite((pytests,))
     unittest.TextTestRunner(verbosity=2).run(alltests)
     return
 
