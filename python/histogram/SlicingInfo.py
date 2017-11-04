@@ -15,7 +15,7 @@
 class SlicingInfo:
 
 
-    def __init__(self, inputs ):
+    def __init__(self, inputs):
         """
         SlicingInfo( (3.0, 5.5) )
         SlicingInfo( (,) )
@@ -29,18 +29,19 @@ class SlicingInfo:
         
         #tuple
         if isinstance(inputs, tuple):
-            if len(inputs)==0: 
+            if len(inputs) == 0: 
                 #inputs is (,)
                 self.start, self.end = front, back
-            elif len(inputs)==2:
+            elif len(inputs) == 2:
                 #inputs is (a,b)
                 start, end = inputs
                 if start is None: start = front
                 if end is None: end = back
-                self.start = start; self.end = end
+                self.start = start
+                self.end = end
             else:
                 #unknown inputs
-                raise ValueError , "Don't know how to get slicing info from %s" % (inputs,)
+                raise ValueError("Don't know how to get slicing info from {0!s}".format(inputs))
             
         elif isinstance(inputs, SlicingInfo):
             #copy ctor
@@ -48,12 +49,12 @@ class SlicingInfo:
             
         else:
             #unknown inputs
-            raise ValueError , "Don't know how to get slicing info from %s" % (inputs,)
+            raise ValueError("Don't know how to get slicing info from {0!s}".format(inputs))
         return
 
 
     def __str__(self):
-        return "%s:%s" % (self.start, self.end)
+        return "{0!s}:{1!s}".format(self.start, self.end)
 
 
     __repr__ = __str__
@@ -66,7 +67,7 @@ class SlicingInfo:
             return
 
 
-        def __str__(self): return "%s" % self.name
+        def __str__(self): return "{0!s}".format(self.name)
 
         pass # end of SpecialPosition
 
@@ -74,9 +75,9 @@ class SlicingInfo:
     pass # end of SlicingInfo
 
 
-front = SlicingInfo.SpecialPosition( "front" )
-back = SlicingInfo.SpecialPosition( "back" )
-all = SlicingInfo( (front, back) )
+front = SlicingInfo.SpecialPosition("front")
+back = SlicingInfo.SpecialPosition("back")
+all = SlicingInfo((front, back))
 
 
 # version

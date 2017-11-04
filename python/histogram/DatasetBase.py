@@ -5,77 +5,77 @@ import journal
 debug = journal.debug("histogram.DatasetBase")
 
 
-msg = "class %s must override %s"
+msg = "class {0!s} must override {1!s}"
 
-class DatasetBase( object):
+class DatasetBase(object):
     """dataset interface"""
 
-    def attribute( self, name):
+    def attribute(self, name):
         """attribute( attrName) -> attrValue"""
-        raise NotImplemented, msg % (self.__class__.__name__, 'attribute')
+        raise NotImplemented(msg.format(self.__class__.__name__, 'attribute'))
 
 
-    def listAttributes( self):
+    def listAttributes(self):
         """listAttributes() -> [list of attr names]"""
-        raise NotImplemented, msg % (self.__class__.__name__, 'listAttributes')
-        return list( self._attributes.keys())
+        raise NotImplemented(msg.format(self.__class__.__name__, 'listAttributes'))
+        return list(self._attributes.keys())
 
 
-    def name( self):
+    def name(self):
         """name() -> name of this axis"""
-        raise NotImplemented, msg % (self.__class__.__name__, 'name')
+        raise NotImplemented(msg.format(self.__class__.__name__, 'name'))
 
 
-    def setAttribute( self, name, value):
+    def setAttribute(self, name, value):
         """setAttribute( name, value) -> None"""
-        raise NotImplemented, msg % (self.__class__.__name__, 'setAttribute')
+        raise NotImplemented(msg.format(self.__class__.__name__, 'setAttribute'))
 
 
-    def shape( self):
+    def shape(self):
         """shape() -> [list of dimensions]"""
-        raise NotImplemented, msg % (self.__class__.__name__, 'shape')
+        raise NotImplemented(msg.format(self.__class__.__name__, 'shape'))
 
 
-    def storage( self):
+    def storage(self):
         """storage() -> storage object"""
-        raise NotImplemented, msg % (self.__class__.__name__, 'storage')
+        raise NotImplemented(msg.format(self.__class__.__name__, 'storage'))
     
 
-    def typecode( self):
+    def typecode(self):
         """typecode() -> type code"""
-        raise NotImplemented, msg % (self.__class__.__name__, 'typecode')
+        raise NotImplemented(msg.format(self.__class__.__name__, 'typecode'))
 
 
-    def typecodeAsC( self):
+    def typecodeAsC(self):
         """typecodeAsC() -> code
         get type code as C type ('float', 'double', 'int', 'unsigned')"""
-        raise NotImplemented, msg % (self.__class__.__name__, 'typecodeAsC')
+        raise NotImplemented(msg.format(self.__class__.__name__, 'typecodeAsC'))
 
 
-    def typecodeAsNA( self):
+    def typecodeAsNA(self):
         """typecodeAsNA() -> code
         typecode translated to numpy type ('Float32', 'Float64', 'Int32',
         'UInt32)"""
-        raise NotImplemented, msg % (self.__class__.__name__, 'typecodeAsNA')
+        raise NotImplemented(msg.format(self.__class__.__name__, 'typecodeAsNA'))
 
 
-    def typecodeAsStdVector( self):
+    def typecodeAsStdVector(self):
         """typecodeAsStdVector() -> code
         Typecode translated to ndarray types.  Type codes are:
             5.....float (single precision)
             6.....double (double precision)
             24....int (typically 32 bit)
             25....unsigned int (typically 32 bit)"""
-        raise NotImplemented, msg % (self.__class__.__name__, 'typecodeAsNA')
+        raise NotImplemented(msg.format(self.__class__.__name__, 'typecodeAsNA'))
 
 
-    def unit( self):
+    def unit(self):
         """unit() -> unit for this axis"""
-        raise NotImplemented, msg % (self.__class__.__name__, 'unit')
+        raise NotImplemented(msg.format(self.__class__.__name__, 'unit'))
     
 
-    def __init__( self, name='', unit='', attributeCont = None,
-                  shape = [], storage = None):
+    def __init__(self, name='', unit='', attributeCont=None,
+                  shape=[], storage=None):
         """DatasetBase( name='', unit='', attributes={},
         shape = [], storage = None)
         Inputs:
@@ -91,9 +91,9 @@ class DatasetBase( object):
 
         self._attributeCont = attributeCont
 
-        self.setAttribute( 'name', name)
-        unit = _tounit( unit )
-        self.setAttribute( 'unit', unit)
+        self.setAttribute('name', name)
+        unit = _tounit(unit)
+        self.setAttribute('unit', unit)
 
         self._shape = shape
         self._storage = storage
@@ -106,29 +106,29 @@ class DatasetBase( object):
         return
 
 
-    _typesSV2C = { 5:'float',
-                   6:'double',
-                   24:'int',
-                   25:'unsigned'
+    _typesSV2C = {5: 'float',
+                  6: 'double',
+                  24: 'int',
+                  25: 'unsigned'
+                  }
+
+    _typesC2SV = {'float': 5,
+                  'double': 6,
+                  'int': 24,
+                  'unsigned': 25
+                  }
+
+    _typesSV2NA = {5: 'Float32',
+                   6: 'Float64',
+                   24: 'Int32',
+                   25: 'UInt32'
                    }
 
-    _typesC2SV = { 'float'   :5,
-                   'double'  :6,
-                   'int'     :24,
-                   'unsigned':25
+    _typesNA2SV = {'Float32': 5,
+                   'Float64': 6,
+                   'Int32': 24,
+                   'UInt32': 25
                    }
-
-    _typesSV2NA = { 5: 'Float32',
-                    6: 'Float64',
-                    24:'Int32',
-                    25:'UInt32'
-                    }
-
-    _typesNA2SV = { 'Float32':5,
-                    'Float64':6,
-                    'Int32'  :24,
-                    'UInt32' :25
-                    }
 
 
 from _units import tounit as _tounit

@@ -15,12 +15,12 @@ class DiscreteAxisMapper(AxisMapper):
 
     def __call__(self, value):
         try: return self._map[value]
-        except KeyError :
+        except KeyError:
             for key in self._map.iterkeys():
                 if key == value: return self._map[key]
                 continue
-            raise IndexError , "Cannot map %s to index" % (value,)
-        except TypeError : raise IndexError , "Cannot map %s to index" % (value,)
+            raise IndexError("Cannot map {0!s} to index".format(value))
+        except TypeError: raise IndexError("Cannot map {0!s} to index".format(value))
 
     pass # end of DiscreteAxisMapper
     

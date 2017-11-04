@@ -13,15 +13,15 @@ from ContinuousAxisMapper import ContinuousAxisMapper
 
 class AxisMapperCreater:
 
-    def create(self, binBoundaries = None, mapperClass = None):
-        if binBoundaries is None: raise ValueError ,"AxisMapperCreater can only be called with valid bin boundaries"
+    def create(self, binBoundaries=None, mapperClass=None):
+        if binBoundaries is None: raise ValueError("AxisMapperCreater can only be called with valid bin boundaries")
 
         if mapperClass is None: return None
         
         elif mapperClass is DiscreteAxisMapper:
             
             m = {}
-            for index, value in enumerate( list(binBoundaries) ):
+            for index, value in enumerate(list(binBoundaries)):
                 m[value] = index
                 continue
             return mapperClass(m)
@@ -31,14 +31,14 @@ class AxisMapperCreater:
             minBB = binBoundaries[0]
             binSize = binBoundaries[1]-binBoundaries[0]
             nBB = len(binBoundaries)
-            return mapperClass( minBinBoundaries=minBB, binSize=binSize, nBinBoundaries=nBB )
+            return mapperClass(minBinBoundaries=minBB, binSize=binSize, nBinBoundaries=nBB)
 
         elif mapperClass is ContinuousAxisMapper:
             return mapperClass(binBoundaries)
 
         else:
 
-            raise NotImplementedError ,"creater for %s not implemented" % mapperClass
+            raise NotImplementedError("creater for {0!s} not implemented".format(mapperClass))
 
         raise
 

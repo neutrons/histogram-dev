@@ -1,29 +1,38 @@
 import numpy as N
 from pyre.units import *
 from pyre.units import unit, length, time, pressure, angle
+import sys
 
-def unitFromString( s ):
+def unitFromString(s):
     if s is None: return 1
-    if isinstance( s, unitFromString.unittype ): return s
-    if isinstance( s, basestring ): return unitFromString.parser.parse( s )
-    try: return unitFromString.parser.parse( str(s) )
+    if isinstance(s, unitFromString.unittype): return s
+    if sys.version_info < (3,0):
+        if isinstance(s, basestring): return unitFromString.parser.parse(s)
+    else:        
+        if isinstance(s, str): return unitFromString.parser.parse(s)
+    try: return unitFromString.parser.parse(str(s))
     except:
-        raise NotImplementedError , "Don't know how to convert %r to unit" % s
+        raise NotImplementedError("Don't know how to convert {0!r} to unit".format(s))
     raise "Should not reach here"
 unitFromString.parser = parser()
 unitFromString.unittype = unit.unit
 
 
-def tounit( candidate ):
-    if isinstance( candidate, basestring ):
-        _parser = parser()
-        return _parser.parse( candidate )
+def tounit(candidate):
+    if sys.version_info < (3,0):
+        if isinstance(candidate, basestring):
+            _parser = parser()
+            return _parser.parse(candidate)
+    else:
+        if isinstance(candidate, str):
+            _parser = parser()
+            return _parser.parse(candidate)
     return candidate
 
 
-def isunitless( candidate ):
-    if isinstance( candidate, unit.unit ): return False
-    if isNumber( candidate ): return True
+def isunitless(candidate):
+    if isinstance(candidate, unit.unit): return False
+    if isNumber(candidate): return True
     return False
 
 
@@ -55,4 +64,3 @@ def isDimensionalPair(a):
         if not isDimensional(i): return False
         continue
     return True
-

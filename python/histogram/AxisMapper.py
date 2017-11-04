@@ -12,13 +12,13 @@ class AxisMapper:
         @return: index of the given value in the axis
         @rtype: int
         """
-        raise NotImplementedError , "%s must override __call__" % (
-            self.__class__.__name__)
+        raise NotImplementedError("{0!s} must override __call__".format(
+            self.__class__.__name__))
 
 
     def identify(self, visitor):
-        raise NotImplementedError , "%s must override identify" % (
-            self.__class__.__name__)
+        raise NotImplementedError("{0!s} must override identify".format(
+            self.__class__.__name__))
 
 
     pass # end of AxisMapper

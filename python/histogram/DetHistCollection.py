@@ -32,19 +32,19 @@ manage a collection of histograms for a detector system
 
 class DetHistCollection:
 
-    def __call__( self, detector=None ):
+    def __call__(self, detector=None):
         """According to detector property, determine which histogram should
         be used.
         """
-        raise NotImplementedError , "%s must provide __call__" % (
-            self.__class__.__name__)
+        raise NotImplementedError("{0!s} must provide __call__".format(
+            self.__class__.__name__))
 
     
-    def getAll( self, detector=None ):
+    def getAll(self, detector=None):
         """return a list of all hists
         """
-        raise NotImplementedError , "%s must provide 'getAll'" % (
-            self.__class__.__name__)
+        raise NotImplementedError("{0!s} must provide 'getAll'".format(
+            self.__class__.__name__))
 
 
     def __iter__(self): return self.getAll().__iter__()
