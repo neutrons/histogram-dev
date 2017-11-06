@@ -124,11 +124,11 @@ class NdArrayDataset_TestCase(TestCase):
         ds = self.Dataset(name = "distance", unit = "meter",
                           attributes = { },
                           shape = [3], storage = NdArray( 'double', [1,2,3] ) )
-        ds2 = ds / 2
+        ds2 = ds / 2.
         v = ds2.storage().asNumarray() * ds2.unit() / meter
         self.assertVectorAlmostEqual( v, [0.5,1,1.5] ) 
         
-        ds2 = 1 / ds
+        ds2 = 1. / ds
         v = ds2.storage().asNumarray() * ds2.unit() * meter
         self.assertVectorAlmostEqual( v, [1.,1./2,1./3] ) 
         return
@@ -224,7 +224,7 @@ class NdArrayDataset_TestCase(TestCase):
         ds = self.Dataset(name = "distance", unit = "meter",
                           attributes = { },
                           shape = [3], storage = NdArray( 'double', [1,2,3] ) )
-        ds /= 2
+        ds /= 2.
         v = ds.storage().asNumarray() * ds.unit() / meter
         self.assertVectorAlmostEqual( v, [0.5,1,1.5] ) 
 
@@ -241,7 +241,7 @@ class NdArrayDataset_TestCase(TestCase):
         a = self.Dataset(name = 'a', unit = 'meter', shape = [5],
                          storage = NdArray('double', range(5) )
                          )
-        a[1:3] /= 2
+        a[1:3] /= 2.
         
         try:
             a[1:3] /= 2 * meter

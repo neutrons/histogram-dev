@@ -220,8 +220,8 @@ def resample( hist1, size ):
     xaxis = hist1.axes()[0]
     xbb = xaxis.binBoundaries().asNumarray()
     front, back = xbb[0], xbb[-1]
-    step = (back-front)/size
-    newxbb = H.arange( front, back+step/2, step)
+    step = 1.*(back-front)/size
+    newxbb = H.arange( front, back+step/2., step)
     newxaxis = H.axis( xaxis.name(), boundaries = newxbb, unit = xaxis.unit() )
 
     newhist = H.histogram(
@@ -230,11 +230,11 @@ def resample( hist1, size ):
 
     newxc = newxaxis.binCenters()
     for x in newxc[1:-1] :
-        newhist[ x ] = hist1[ (x-step/2, x+step/2) ].sum()
+        newhist[ x ] = hist1[ (x-step/2., x+step/2.) ].sum()
         continue
 
-    newhist[ newxc[0] ]= hist1[ (newxbb[0], newxc[0] + step/2) ].sum()
-    newhist[ newxc[-1] ]= hist1[ (newxc[-1]-step/2, newxbb[-1]-step*1.e-10) ].sum()
+    newhist[ newxc[0] ]= hist1[ (newxbb[0], newxc[0] + step/2.) ].sum()
+    newhist[ newxc[-1] ]= hist1[ (newxc[-1]-step/2., newxbb[-1]-step*1.e-10) ].sum()
 
     return newhist
         

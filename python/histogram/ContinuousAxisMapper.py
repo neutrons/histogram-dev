@@ -44,12 +44,12 @@ def findCellIndex( value, arr ):
 
     n = len( arr )
 
-    i,j,k =0, n/2, n-1
+    i,j,k =0, n//2, n-1
 
     while (i!=j and j!=k) :
 	middle = arr[j]
-        if (middle < value) : i = j; j = (i+k)/2
-        elif (value < middle):  k = j; j = (i+k)/2
+        if (middle < value) : i = j; j = (i+k)//2
+        elif (value < middle):  k = j; j = (i+k)//2
         else : return j
         continue
       

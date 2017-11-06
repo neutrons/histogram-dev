@@ -291,7 +291,7 @@ class MplPlotter2D(MplPlotter, Plotter2D):
         if max is None: max = _max
 
         #color steps
-        c = N.arange( min, max, (max-min)/nsteps)
+        c = N.arange( min, max, 1.*(max-min)/nsteps)
 
         print "plot z in (%s, %s)" % (min, max)
         _clear( figure )

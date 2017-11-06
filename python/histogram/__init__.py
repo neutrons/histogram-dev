@@ -546,7 +546,7 @@ def _boundariesFromEvenlySpacedCenters( centers ):
     evenlyspaced = True
     for i in range(1, len(centers)-1):
         d1 = centers[i+1] - centers[i]
-        if abs( (d1-d)/d  ) > eps:
+        if abs( 1.*(d1-d)/d  ) > eps:
             raise ArrayNotEvenlySpaced
         continue
 
@@ -724,7 +724,7 @@ def _grid( arr, i, shape ):
     size = reduce( mul, shape )
 
     from numpy import array
-    rep = size/arrsize
+    rep = size//arrsize
     rt = array( [ arr for j in range(rep) ] )
     
     pshape = list(shape); del pshape[i]

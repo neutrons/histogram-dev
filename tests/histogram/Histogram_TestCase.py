@@ -315,8 +315,8 @@ class Histogram_TestCase(TestCase):
             histogram[ {'E':1.5, 'tubeId':3} ], (3, 3) )
 
         #
-        histogram[ {'E':1.5} ] /= 3,3
-        histogram[ {'E':1.5} ] /= 3,3
+        histogram[ {'E':1.5} ] /= 3.,3.
+        histogram[ {'E':1.5} ] /= 3.,3.
         return
 
 
@@ -378,12 +378,12 @@ class Histogram_TestCase(TestCase):
     def test__idiv__(self):
         "histogram: h/=b"
         h = self._histogram.copy()
-        h /= (2,1)
+        h /= (2.,1.)
         self.assertVectorEqual( h[0.5, 1], (0,0) )
         self.assertVectorEqual( h[0.5, 3], (0.5,5./16) )
 
         h = self._histogram.copy()
-        h /= (2,0)
+        h /= (2.,0.)
         self.assertVectorEqual( h[0.5, 1], (0,0) )
         self.assertVectorEqual( h[0.5, 3], (0.5,1./4) )
         return
@@ -496,11 +496,11 @@ class Histogram_TestCase(TestCase):
     
     def test__div__(self):
         "histogram: h/b"
-        h = self._histogram / (2,1)
+        h = self._histogram / (2.,1.)
         self.assertVectorEqual( h[0.5, 1], (0,0) )
         self.assertVectorEqual( h[0.5, 3], (0.5,5./16) )
 
-        h = (2,1) / self._histogram 
+        h = (2.,1.) / self._histogram 
         self.assertVectorEqual( h[0.5, 3], (2,5.) )
 
         h = self._histogram / self._histogram2
