@@ -1,15 +1,8 @@
 #!/usr/bin/env python
 # 
-#  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# 
-#                                  Jiao  Lin
-#                        California Institute of Technology
-#                        (C) 2005-2010  All Rights Reserved
-# 
-#  <LicenseText>
-# 
-#  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
+
+__version__ = "0.3.2"
 
 
 ## \mainpage histogram
@@ -745,8 +738,5 @@ debug = journal.debug( 'histogram' )
 
 from ._units import unitFromString
 
-
-# version
-__id__ = "$Id$"
 
 #  End of file 
