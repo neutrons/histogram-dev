@@ -317,7 +317,7 @@ class Histogram_TestCase(TestCase):
             self.assertEqual( ds.typecodeAsC(), datatype )
             continue
 
-        from ndarray.NumpyNdArray import NdArray 
+        from histogram.ndarray.NumpyNdArray import NdArray 
         storage = NdArray( "float", 20000, 0 )
         storage.setShape( shape )
         ds2 = createDataset( name, unit, storage = storage )
@@ -339,6 +339,12 @@ class Histogram_TestCase(TestCase):
         errs = ones( (10,20) )
         hist = makeHistogram( name, axes, data, errs)
         self.assertEqual( name, hist.name() )
+        return
+
+
+    def test_plot(self):
+        h = histogram('h', [('x', [1,2,3] ),], unit = 'meter', data = [1,2,3])
+        plot(h, output="Ix.png")
         return
 
 

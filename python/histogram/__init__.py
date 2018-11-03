@@ -252,16 +252,8 @@ def plot( h, min = None, max = None, output='window', interactive=False, **kwds)
     defaultPlotter.plot( h, min = min, max = max, **kwds)
     
     if output != 'window':
-        import pylab
-        import os
-        eps = os.path.splitext(output)[0] + '.eps'
-        pylab.savefig(eps)
-
-        if eps != output:
-            #!!! should check if "convert" exists
-            cmd = 'convert %s %s' % (eps, output)
-            if os.system(cmd):
-                raise RuntimeError
+        from matplotlib import pyplot as plt
+        plt.savefig(output)
     return
 
 
