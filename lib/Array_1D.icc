@@ -25,7 +25,6 @@ HISTOGRAM_NAMESPACE_START
     Array_1D<Iterator, DataType, Size>::_throw_out_of_bound
     (const Size & index) 
       const
-      throw (OutOfBound)
     {
       std::ostringstream oss;
       oss << "Array_1D: "

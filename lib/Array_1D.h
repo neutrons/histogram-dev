@@ -84,7 +84,7 @@ HISTOGRAM_NAMESPACE_START
   private:
     Iterator m_it;
     Size m_size;
-    void _throw_out_of_bound(const Size & index) const throw (OutOfBound) ;
+    void _throw_out_of_bound(const Size & index) const;
 
   }; // Array_1D:
 

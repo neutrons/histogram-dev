@@ -29,7 +29,6 @@ HISTOGRAM_NAMESPACE_START
     NdArray<Iterator, DataType, Size, SuperSize, NDimension>::_1dindex
     ( const Size * indexes ) 
       const 
-      throw (OutOfBound) 
     {
       SuperSize ind = 0; // what if this get out of bound of largest integer?
       SuperSize N = 1;
@@ -47,7 +46,6 @@ HISTOGRAM_NAMESPACE_START
     NdArray<Iterator, DataType, Size, SuperSize, NDimension>::_throw_out_of_bound
     (const Size * indexes) 
       const
-      throw (OutOfBound)
     {
       std::ostringstream oss;
       oss << "NdArray: "
