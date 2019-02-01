@@ -134,8 +134,8 @@ HISTOGRAM_NAMESPACE_START
     Iterator m_it;
     Size m_shape[NDimension];
     SuperSize m_size1D;
-    SuperSize _1dindex( const Size *indexes ) const throw (OutOfBound) ;
-    void _throw_out_of_bound(const Size * indexes) const throw (OutOfBound) ;
+    SuperSize _1dindex( const Size *indexes ) const;
+    void _throw_out_of_bound(const Size * indexes) const;
 
   }; // NdArray:
 
