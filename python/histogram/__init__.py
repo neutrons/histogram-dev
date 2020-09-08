@@ -1,15 +1,8 @@
 #!/usr/bin/env python
 # 
-#  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# 
-#                                  Jiao  Lin
-#                        California Institute of Technology
-#                        (C) 2005-2010  All Rights Reserved
-# 
-#  <LicenseText>
-# 
-#  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
+
+__version__ = "0.3.5"
 
 
 ## \mainpage histogram
@@ -259,16 +252,8 @@ def plot( h, min = None, max = None, output='window', interactive=False, **kwds)
     defaultPlotter.plot( h, min = min, max = max, **kwds)
     
     if output != 'window':
-        import pylab
-        import os
-        eps = os.path.splitext(output)[0] + '.eps'
-        pylab.savefig(eps)
-
-        if eps != output:
-            #!!! should check if "convert" exists
-            cmd = 'convert %s %s' % (eps, output)
-            if os.system(cmd):
-                raise RuntimeError
+        from matplotlib import pyplot as plt
+        plt.savefig(output)
     return
 
 
@@ -746,8 +731,5 @@ debug = journal.debug( 'histogram' )
 
 from ._units import unitFromString
 
-
-# version
-__id__ = "$Id$"
 
 #  End of file 
