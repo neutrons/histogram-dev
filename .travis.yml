@@ -40,8 +40,8 @@ script:
   - # hack
   - cp -a $SRC/python/histogram/ndarray ndarray 
   - ls ndarray
-  - python -c "import ndarray"
   - export PYTHONPATH=$PWD
+  - python -c "import ndarray"
   - python alltests.py
 
 notifications:
