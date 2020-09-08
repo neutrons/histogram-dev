@@ -18,7 +18,7 @@ from pyre.units.length import meter
 import unittest
 from unittestX import TestCase
 
-from ndarray.NumpyNdArray import NdArray
+from histogram.ndarray.NumpyNdArray import NdArray
 from histogram.NdArrayDataset import Dataset
 
 class NdArrayDataset_TestCase(TestCase):
@@ -33,8 +33,8 @@ class NdArrayDataset_TestCase(TestCase):
         """ Dataset: ctor """
         ds = self.Dataset(name = "distance", unit = "meter",
                           attributes = { },
-                          shape = [3], storage = NdArray( 'double', range(3) ) )
-        self.assert_( ds.storage().compare( NdArray( 'double', range(3) ) ) )
+                          shape = [3], storage = NdArray( 'double', list(range(3)) ) )
+        self.assertTrue( ds.storage().compare( NdArray( 'double', list(range(3)) ) ) )
         return
 
 
@@ -42,7 +42,7 @@ class NdArrayDataset_TestCase(TestCase):
         "Dataset: operator '-a'"
         ds = self.Dataset(name = "distance", unit = "meter",
                           attributes = { },
-                          shape = [3], storage = NdArray( 'double', range(3) ) )
+                          shape = [3], storage = NdArray( 'double', list(range(3)) ) )
         ds2 = -ds
         v = ds2.storage().asNumarray() * ds2.unit() / meter
         self.assertVectorAlmostEqual( v, [-0,-1,-2] )
@@ -207,7 +207,7 @@ class NdArrayDataset_TestCase(TestCase):
     def test__imul__2(self):
         'Dataset: a[?]*=b'
         a = self.Dataset(name = 'a', unit = 'meter', shape = [5],
-                         storage = NdArray('double', range(5) )
+                         storage = NdArray('double', list(range(5)) )
                          )
         a[1:3] *= 2
         
@@ -239,7 +239,7 @@ class NdArrayDataset_TestCase(TestCase):
     def test__idiv__2(self):
         'Dataset: a[?]*=b'
         a = self.Dataset(name = 'a', unit = 'meter', shape = [5],
-                         storage = NdArray('double', range(5) )
+                         storage = NdArray('double', list(range(5)) )
                          )
         a[1:3] /= 2.
         
@@ -268,21 +268,21 @@ class NdArrayDataset_TestCase(TestCase):
         #1D dataset
         ds = self.Dataset(name = "distance", unit = "meter",
                           attributes = { },
-                          shape = [12], storage = NdArray( 'double', range(12) ) )
+                          shape = [12], storage = NdArray( 'double', list(range(12)) ) )
         #slicing
-        self.assert_( ds[3:5].storage().compare( NdArray('double', [3,4] ) ) )
+        self.assertTrue( ds[3:5].storage().compare( NdArray('double', [3,4] ) ) )
         #indexing
         self.assertAlmostEqual( ds[3]/meter, 3 )
 
         #2D dataset
-        stor = NdArray( 'double', range(12) ); stor.setShape( (3,4) )
+        stor = NdArray( 'double', list(range(12)) ); stor.setShape( (3,4) )
         ds = self.Dataset(name = "distance", unit = "meter",
                           attributes = { },
                           shape = [3,4], storage = stor)
         #slicing
         subarr = ds[1:2, 1:2].storage()
         expected = NdArray('double', [5] ) ; expected.setShape( (1,1) )
-        self.assert_( subarr.compare( expected ) )
+        self.assertTrue( subarr.compare( expected ) )
         #indexing
         self.assertAlmostEqual( ds[1,1]/meter, 5 )
         return
@@ -293,17 +293,17 @@ class NdArrayDataset_TestCase(TestCase):
         #1D dataset
         ds = self.Dataset(name = "distance", unit = "meter",
                           attributes = { },
-                          shape = [12], storage = NdArray( 'double', range(12) ) )
+                          shape = [12], storage = NdArray( 'double', list(range(12)) ) )
         #set slice
         from numpy import array
         ds[3:5] = array([1,2])*meter
-        self.assert_( ds[3:5].storage().compare( NdArray('double', [1,2] ) ) )
+        self.assertTrue( ds[3:5].storage().compare( NdArray('double', [1,2] ) ) )
         #set item
         ds[10] = 11*meter
         self.assertAlmostEqual( ds[10]/meter, 11 )
         
         #2D dataset
-        stor = NdArray( 'double', range(12) ); stor.setShape( (3,4) )
+        stor = NdArray( 'double', list(range(12)) ); stor.setShape( (3,4) )
         ds = self.Dataset(name = "distance", unit = "meter",
                           attributes = { },
                           shape = [3,4], storage = stor)
@@ -311,23 +311,23 @@ class NdArrayDataset_TestCase(TestCase):
         ds[1:2, 1:2] = array([[999]])*meter
         subarr = ds[1:2, 1:2].storage()
         expected = NdArray('double', [999] ) ; expected.setShape( (1,1) )
-        self.assert_( subarr.compare( expected ) )
+        self.assertTrue( subarr.compare( expected ) )
         #indexing
         self.assertAlmostEqual( ds[1,1]/meter, 999 )
         ds[1,1] = 333 * meter
         self.assertAlmostEqual( ds[1,1]/meter, 333 )
 
         #set slice with datasets
-        ds1v = NdArray( 'double', range(12) ); ds1v.setShape( (3,4) )
+        ds1v = NdArray( 'double', list(range(12)) ); ds1v.setShape( (3,4) )
         ds1 = self.Dataset(
             name = "distance", unit = "meter", shape = [3,4], storage = ds1v )
-        ds2v = NdArray( 'double', range(4) ); ds2v.setShape( (2,2) )
+        ds2v = NdArray( 'double', list(range(4)) ); ds2v.setShape( (2,2) )
         ds2 = self.Dataset(
             name = "distance", unit = "meter", shape = [2,2], storage = ds2v )
         ds1[1:3, 1:3] = ds2
 
         #set slice with one number
-        ds1v = NdArray( 'double', range(12) ); ds1v.setShape( (3,4) )
+        ds1v = NdArray( 'double', list(range(12)) ); ds1v.setShape( (3,4) )
         ds1 = self.Dataset(
             name = "distance", unit = "meter", shape = [3,4], storage = ds1v )
         ds1[1:3,1:3] = 1*meter
@@ -338,7 +338,7 @@ class NdArrayDataset_TestCase(TestCase):
         "Dataset: method 'copy'"
         ds = self.Dataset(name = "distance", unit = "meter",
                           attributes = { },
-                          shape = [12], storage = NdArray( 'double', range(12) ) )
+                          shape = [12], storage = NdArray( 'double', list(range(12)) ) )
 
         ds.storage().compare( ds.copy().storage() )
         return
@@ -348,15 +348,15 @@ class NdArrayDataset_TestCase(TestCase):
         "Dataset: method 'setShape'"
         ds = self.Dataset(name = "distance", unit = "meter",
                           attributes = { },
-                          shape = [12], storage = NdArray( 'double', range(12) ) )
+                          shape = [12], storage = NdArray( 'double', list(range(12)) ) )
         ds.setShape( (3,4) )
-        self.assert_( ds._storage.shape() == (3,4) )
+        self.assertTrue( ds._storage.shape() == (3,4) )
         return
 
 
     def testSum(self):
         "Dataset: method 'sum'"
-        storage = NdArray( 'double', range(6) )
+        storage = NdArray( 'double', list(range(6)) )
         storage.setShape( (2,3) )
         ds = self.Dataset(name = "distance", unit = "meter",
                           attributes = { }, shape = [2,3], storage = storage)
@@ -365,13 +365,13 @@ class NdArrayDataset_TestCase(TestCase):
         
         ds1 = ds.sum(0)
         expected = NdArray( 'double', [3,5,7] )
-        self.assert_( ds1.storage().compare( expected ) )
+        self.assertTrue( ds1.storage().compare( expected ) )
         return
 
 
     def testChangeUnit(self):
         'Dataset: changeUnit'
-        storage = NdArray( 'double', range(3) )
+        storage = NdArray( 'double', list(range(3)) )
         ds = self.Dataset(name = "distance", unit = "meter", storage = storage )
         ds.changeUnit( 'mm' )
         self.assertVectorAlmostEqual( ds.storage().asNumarray(), [0, 1000, 2000] )
@@ -380,7 +380,7 @@ class NdArrayDataset_TestCase(TestCase):
 
     def testSqrt(self):
         'Dataset: sqrt'
-        storage = NdArray( 'double', range(3) )
+        storage = NdArray( 'double', list(range(3)) )
         ds = self.Dataset(name = "distance", unit = "meter", storage = storage )
         ds.sqrt()
         return

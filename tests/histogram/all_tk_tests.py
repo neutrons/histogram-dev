@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 
 #!/usr/bin/env python
 #
@@ -30,7 +30,7 @@ def addTestMethod(klass, no):
     def f(self):
         aspect, run = self.orig_tests[no]
         print(self.orig_module, ':', aspect)
-        self.assert_(run())
+        self.assertTrue(run())
         return
 
     setattr(klass, "test{0!s}".format(no), f)

@@ -15,7 +15,7 @@
 import unittest
 from unittest import TestCase
 
-from ndarray.NumpyNdArray import NdArray
+from histogram.ndarray.NumpyNdArray import NdArray
 from histogram import createDataset
 from histogram.DatasetContainer import DatasetContainer
 
@@ -55,7 +55,7 @@ class DatasetContainer_TestCase(TestCase):
         dc = DatasetContainer()
         dc.addDataset("ds", 0, ds)
         dc.replaceDataset("ds", ds2)
-        self.assert_(dc.datasetFromName("ds") == ds2)
+        self.assertTrue(dc.datasetFromName("ds") == ds2)
         return
 
     
@@ -63,7 +63,7 @@ class DatasetContainer_TestCase(TestCase):
         """ DatasetContainer: datasetFromName"""
         dc = DatasetContainer()
         dc.addDataset("ds", 0, ds)
-        self.assert_(dc.datasetFromName("ds") == ds)
+        self.assertTrue(dc.datasetFromName("ds") == ds)
         return
 
     
@@ -71,7 +71,7 @@ class DatasetContainer_TestCase(TestCase):
         """ DatasetContainer: datasetFromId"""
         dc = DatasetContainer()
         dc.addDataset("ds", 0, ds)
-        self.assert_(dc.datasetFromId(0) == ds)
+        self.assertTrue(dc.datasetFromId(0) == ds)
         return
 
     

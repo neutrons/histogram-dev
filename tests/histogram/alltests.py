@@ -42,7 +42,7 @@ alltests = unittest.TestSuite(allsuites)
 
 import all_tk_tests
 if sys.version_info < (3,):
-    reload(all_tk_tests)
+    importlib.reload(all_tk_tests)
 elif sys.version_info < (3, 4):
     import imp
     imp.reload(all_tk_tests)

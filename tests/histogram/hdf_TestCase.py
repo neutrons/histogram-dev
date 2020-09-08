@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 
 #!/usr/bin/env python
 #
@@ -71,7 +71,7 @@ class hdf_TestCase(TestCase):
                       )
         #fs will take over
         dump(h, 'abc', '/', mode='w', fs=fs)
-        self.assert_(os.path.exists(filename))
+        self.assertTrue(os.path.exists(filename))
         return
 
     def testdump2(self):
@@ -102,7 +102,7 @@ class hdf_TestCase(TestCase):
         #load histogram
         h2c = load(filename, '/h2', fs=fs)
         print(h2c)
-        self.assert_(os.path.exists(filename))
+        self.assertTrue(os.path.exists(filename))
 
     def testdump_and_load(self):
         'dump and load'
@@ -175,7 +175,7 @@ hh.dump( h, '{0!s}', '/', 'c' )
             raise "{0!s} failed".format(cmd)
         h = load(tmpfile, 'h')
         axis = h.axes()[0]
-        self.assert_(axis.isDiscrete())
+        self.assertTrue(axis.isDiscrete())
         self.assertEqual(axis.name(), 'tID')
         return
     
@@ -204,7 +204,7 @@ hh.dump( h, '{0!s}', '/', 'c' )
             raise "{0!s} failed".format(cmd)
         h = load(tmpfile, 'h')
         axis = h.axes()[0]
-        self.assert_(axis.isDiscrete())
+        self.assertTrue(axis.isDiscrete())
         self.assertEqual(axis.name(), 'tID')
         self.assertEqual(h.getAttribute('instrument'), 'ARCS')
         data = h.data()
@@ -251,7 +251,7 @@ hh.dump( h, '{0!s}', '/', 'c' )
         fs = File(tmpfile, 'w')
         
         from histogram import histogram
-        x = y = range(10)
+        x = y = list(range(10))
         h = histogram( 
             'h',
             [('x', x)],
@@ -271,7 +271,7 @@ hh.dump( h, '{0!s}', '/', 'c' )
             os.remove(tmpfile)
 
         from histogram import histogram
-        x = y = range(100)
+        x = y = list(range(100))
         h = histogram( 
             'h',
             [('x', x)],
@@ -316,7 +316,8 @@ hh.dump( h, '{0!s}', '/', 'c' )
         tmpfile = "tmp.h5"
         if os.path.exists(tmpfile): os.remove(tmpfile)
 
-        cmd = "from histogram.hdf import dump; from histogram import histogram, arange; h = histogram( 'h', [ ('xID', range(10)), ('y', arange(0, 1,0.1)) ] ); from numpy import array; d = array(range(100)); d.shape = 10,10; h[{}] = d, 0; dump(h, {0!r}, '/', 'c') ".format(tmpfile)
+        cmd = "from histogram.hdf import dump; from histogram import histogram, arange; h = histogram( 'h', [ ('xID', range(10)), ('y', arange(0, 1,0.1)) ] ); from numpy import array; d = array(range(100)); d.shape = 10,10; h[{}] = d, 0;"
+        cmd += "dump(h, {!r}, '/', 'c') ".format(tmpfile)
         os.system('python -c {0!r}'.format(cmd))
         if not os.path.exists(tmpfile): raise "failed to create tmp h5 file of historam"
 
@@ -325,7 +326,7 @@ hh.dump( h, '{0!s}', '/', 'c' )
         d = h1.data().storage().asNumarray().copy()
         d.shape = 40,
         print(d)
-        self.assertVectorAlmostEqual(d, range(30, 70))
+        self.assertVectorAlmostEqual(d, list(range(30, 70)))
 
         self.assertVectorEqual(
             h1.axisFromId(1).binCenters(), (3, 4, 5, 6))
@@ -385,20 +386,6 @@ def pysuite():
     return unittest.TestSuite((suite1,))
 
 
-def main():
-    import journal
-    pytests = pysuite()
-    alltests = unittest.TestSuite((pytests,))
-    unittest.TextTestRunner(verbosity=2).run(alltests)
-    return
-
-
-if __name__ == '__main__': main()
-
-
-
-
-# version
-__id__ = "$Id: hdf_TestCase.py 1209 2006-11-16 18:51:55Z linjiao $"
+if __name__ == '__main__': unittest.main()
 
 # End of file 

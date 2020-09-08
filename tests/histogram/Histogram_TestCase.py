@@ -50,7 +50,7 @@ class Histogram_TestCase(TestCase):
     def test__str__(self):
         "Histogram: __str__"
         histogram = self._histogram
-        print histogram
+        print(histogram)
         return
 
 
@@ -59,7 +59,7 @@ class Histogram_TestCase(TestCase):
         h = histogram( 'h', [ ('x',arange(10)) ], data_type = 'int')
         h1 = h.as_floattype()
         self.assertEqual( h1.typeCode(), 6 )
-        self.assert_( h1.axisFromName( 'x' ) is not h.axisFromName( 'x' ) )
+        self.assertTrue( h1.axisFromName( 'x' ) is not h.axisFromName( 'x' ) )
         return
     
 
@@ -76,9 +76,9 @@ class Histogram_TestCase(TestCase):
     def testTranspose(self):
         "Histogram: transpose"
         histogram = self._histogram
-        print "before transpose: %s" % histogram
+        print("before transpose: %s" % histogram)
         histogram = histogram.transpose()
-        print "after transpose: %s" % histogram
+        print("after transpose: %s" % histogram)
         self.assertVectorEqual( histogram.indexes( (1, 0.5) ), (0,0) )
         self.assertVectorEqual( histogram.indexes( (99, 0.5) ), (2,0) )
         self.assertVectorEqual( histogram.indexes( (3, 1.1) ), (1,1) )
@@ -104,11 +104,11 @@ class Histogram_TestCase(TestCase):
 
         slice1 = histogram[SlicingInfo((0.5, 1.5)), SlicingInfo((1,3))]
         self.assertVectorEqual( slice1.shape(), (2,2 ) )
-        print slice1.name()
+        print(slice1.name())
 
         slice1 = histogram[(0.5, 1.5), (1,3)]
         self.assertVectorEqual( slice1.shape(), (2,2 ) )
-        print slice1.name()
+        print(slice1.name())
 
         slice2 = histogram[0.5, SlicingInfo((1,3))]
         self.assertVectorEqual(slice2.shape(), (2,) )
@@ -160,7 +160,7 @@ class Histogram_TestCase(TestCase):
         number7 = histogram[ 1.5, () ][ {'tubeId':3} ]
         # special test case: coordinate = 0
         from histogram import histogram, axis
-        detIDaxis = axis('detID', range(5))
+        detIDaxis = axis('detID', list(range(5)))
         h = histogram( 'h', [detIDaxis])
         h[ {'detID':0 } ]
 
@@ -193,9 +193,9 @@ class Histogram_TestCase(TestCase):
         a = axis('a', arange(1,10,1.0))
         b = axis('b', arange(1,100,10.))
         h = histogram( 'h', [a] )
-        self.assert_(a is h.axisFromName('a'))
+        self.assertTrue(a is h.axisFromName('a'))
         h.replaceAxis(name='a', axis=b)
-        self.assert_(b is h.axisFromName('a'))
+        self.assertTrue(b is h.axisFromName('a'))
         return
     
         
@@ -456,10 +456,10 @@ class Histogram_TestCase(TestCase):
         h = self._histogram + self._histogram2
         self.assertVectorEqual( h[1.5,1], (6,6) )
 
-        h1 = histogram.histogram( 'h1', [ ['x', range(10)] ] )
+        h1 = histogram.histogram( 'h1', [ ['x', list(range(10))] ] )
         h1[()] = 1,1
         
-        h2 = histogram.histogram( 'h2', [ ['x', range(10)] ] )
+        h2 = histogram.histogram( 'h2', [ ['x', list(range(10))] ] )
         h2[()] = 2,2
 
         h1*=(2.,0)
@@ -512,7 +512,7 @@ class Histogram_TestCase(TestCase):
         "Histogram: pickle.dump"
         import pickle
         h = self._histogram
-        pickle.dump( h, open( "tmp.pkl", 'w' ) )
+        pickle.dump( h, open( "tmp.pkl", 'wb' ) )
         return
 
 
@@ -520,19 +520,19 @@ class Histogram_TestCase(TestCase):
         "Histogram: pickle.load"
         import pickle
         h = self._histogram
-        pickle.dump( h, open( "tmp.pkl", 'w' ) )
-        h1 = pickle.load( open("tmp.pkl") )
+        pickle.dump( h, open( "tmp.pkl", 'wb' ) )
+        h1 = pickle.load( open("tmp.pkl", 'rb') )
         self.assertEqual( h.name(), h1.name() )
-        print ("data=%s" % h1.data().storage().asNumarray() ) 
-        self.assert_( h.data().storage().compare( h1.data().storage() ) )
-        print ("errors=%s" % h1.errors().storage().asNumarray() ) 
-        self.assert_( h.errors().storage().compare( h1.errors().storage() ) )
+        print(("data=%s" % h1.data().storage().asNumarray() )) 
+        self.assertTrue( h.data().storage().compare( h1.data().storage() ) )
+        print(("errors=%s" % h1.errors().storage().asNumarray() )) 
+        self.assertTrue( h.errors().storage().compare( h1.errors().storage() ) )
 
         for axisName in h.axisNameList():
-            print ("axis %s" % axisName)
+            print(("axis %s" % axisName))
             axis = h.axisFromName( axisName )
             axis1 = h1.axisFromName( axisName )
-            self.assert_( axis.storage().compare( axis1.storage() ) )
+            self.assertTrue( axis.storage().compare( axis1.storage() ) )
             continue
 
         from histogram import histogram
@@ -541,8 +541,8 @@ class Histogram_TestCase(TestCase):
             [ ('x', [1,2,3]),
               ],
             unit = 'meter' )
-        pickle.dump( h2, open( "tmp.pkl", 'w' ) )
-        h2a = pickle.load( open("tmp.pkl") )
+        pickle.dump( h2, open( "tmp.pkl", 'wb' ) )
+        h2a = pickle.load( open("tmp.pkl", 'rb') )
         
         return
 
@@ -620,7 +620,7 @@ dump(h, %r, '/', 'c')
         import os
         
         if os.system(cmd):
-            raise RuntimeError, "%s failed" % cmd
+            raise RuntimeError("%s failed" % cmd)
         
         from histogram.hdf import load
         h = load(outh5, 'abc')
@@ -653,14 +653,14 @@ dump(h1, %r, '/', 'c')
         import os
         
         if os.system(cmd):
-            raise RuntimeError, "%s failed" % cmd
+            raise RuntimeError("%s failed" % cmd)
         
         from histogram.hdf import load
         try:
             h = load(outh5, 'abc')
         except:
-            raise RuntimeError, "failed to load histogram from %s" %(
-                outh5,)
+            raise RuntimeError("failed to load histogram from %s" %(
+                outh5,))
 
         os.remove(outh5)
         os.remove(script)
@@ -690,14 +690,14 @@ dump(h1, %r, '/', 'c')
         import os
         
         if os.system(cmd):
-            raise RuntimeError, "%s failed" % cmd
+            raise RuntimeError("%s failed" % cmd)
         
         from histogram.hdf import load
         try:
             h = load(outh5, 'abc')
         except:
-            raise RuntimeError, "failed to load histogram from %s" %(
-                outh5,)
+            raise RuntimeError("failed to load histogram from %s" %(
+                outh5,))
 
         os.remove(outh5)
         os.remove(script)
@@ -706,19 +706,11 @@ dump(h1, %r, '/', 'c')
 
     pass # end of Histogram_TestCase
 
-    
 def pysuite():
     suite1 = unittest.makeSuite(Histogram_TestCase)
     return unittest.TestSuite( (suite1,) )
 
-def main():
-    pytests = pysuite()
-    alltests = unittest.TestSuite( (pytests, ) )
-    unittest.TextTestRunner(verbosity=2).run(alltests)
-    return
-
-
-if __name__ == '__main__': main()
+if __name__ == '__main__': unittest.main()
     
 
 # version

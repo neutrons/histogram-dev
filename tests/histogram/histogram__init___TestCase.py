@@ -1,4 +1,4 @@
-from __future__ import division
+
 
 #!/usr/bin/env python
 #
@@ -25,7 +25,7 @@ class Histogram_TestCase(TestCase):
     def test_axis(self):
         "Histogram.__init__: axis"
         q = axis("q", arange(0.0, 13.0, 0.1), "angstrom**(-1)")
-        detID = axis("detID", range(10))
+        detID = axis("detID", list(range(10)))
         detID = axis("detID", [0])
         return
 
@@ -47,8 +47,8 @@ class Histogram_TestCase(TestCase):
     def test_histogram1(self):
         """Histogram.__init__: histogram factory method, axes are specified using
         instances of Axis"""
-        detIDaxis = axis("detID", range(10))
-        pixIDaxis = axis("pixID", range(8))
+        detIDaxis = axis("detID", list(range(10)))
+        pixIDaxis = axis("pixID", list(range(8)))
         axes = [detIDaxis, pixIDaxis]
 
         from numpy import fromfunction
@@ -67,10 +67,10 @@ class Histogram_TestCase(TestCase):
         """Histogram.__init__: histogram factory method, keyword 'fromfunction'
         """
         def f(x): return x*x
-        h = histogram('h', [('x', range(10))],
+        h = histogram('h', [('x', list(range(10)))],
                       fromfunction=f)
         def g(x): return x
-        h = histogram('h', [('x', range(10))],
+        h = histogram('h', [('x', list(range(10)))],
                       fromfunction=(f, g))
         return
 
@@ -81,9 +81,9 @@ class Histogram_TestCase(TestCase):
         h = histogram(
             'h',
             [
-            ('x', range(2)),
-            ('y', range(2, 4)),
-            ('z', range(4, 6)),
+            ('x', list(range(2))),
+            ('y', list(range(2, 4))),
+            ('z', list(range(4, 6))),
             ],
             fromfunction=lambda x, y, z: x+y+z)
         
@@ -129,8 +129,8 @@ class Histogram_TestCase(TestCase):
 
     def _test_histogram3a(self):
         """Histogram.__init__: histogram of non-float datatype"""
-        detaxis = axis('detectorID', range(10))
-        pixaxis = axis('pixelID', range(10))
+        detaxis = axis('detectorID', list(range(10)))
+        pixaxis = axis('pixelID', list(range(10)))
         mask = histogram('mask', (detaxis, pixaxis), data_type='char')
 
         from numpy import ones
@@ -154,7 +154,7 @@ class Histogram_TestCase(TestCase):
     def test_histogram3(self):
         """Histogram.__init__: histogram factory method, axes are specified
         using a list of (name, values)"""
-        detIDaxis = "detID", range(100)
+        detIDaxis = "detID", list(range(100))
         tofAxis = "tof", arange(1000, 5000, 1.0), "microsecond"
 
         shape = len(detIDaxis[1]), len(tofAxis[1])
@@ -171,7 +171,7 @@ class Histogram_TestCase(TestCase):
     def test_histogram4(self):
         """Histogram.__init__: histogram factory method, axes are specified
         using a list of (name, values). data and errors are unspecified"""
-        detIDaxis = "detID", range(100)
+        detIDaxis = "detID", list(range(100))
         tofAxis = "tof", arange(1000, 5000, 1.0), "microsecond"
 
         shape = len(detIDaxis[1]), len(tofAxis[1])
@@ -217,7 +217,7 @@ class Histogram_TestCase(TestCase):
             [
             ('x', [1, 2, 3]),
             ('y', [0.1, 0.2, 0.3]),
-            ('z', range(0, 1000, 100)),
+            ('z', list(range(0, 1000, 100))),
             ],
             unit='meter',
             )
@@ -232,7 +232,7 @@ class Histogram_TestCase(TestCase):
         """Histogram.__init__: meshgrid"""
         x, y, z = [1, 2], [3, 4, 5], [6, 7, 8, 9]
         m = meshgrid(x, y, z)
-        self.assert_(isinstance(m, list))
+        self.assertTrue(isinstance(m, list))
         X, Y, Z = m
         
         from numpy import array
@@ -241,12 +241,12 @@ class Histogram_TestCase(TestCase):
         X1 = X1.transpose(2, 1, 0)
         X1 = X1.flatten()
         X1.shape = len(x), len(y), len(z)
-        self.assert_((X == X1).all())
+        self.assertTrue((X == X1).all())
 
         X = meshgrid([x])
-        self.assert_(isinstance(X, list))
+        self.assertTrue(isinstance(X, list))
         x = X[0]
-        self.assert_('numpy' in x.__class__.__module__)
+        self.assertTrue('numpy' in x.__class__.__module__)
         return
 
 
@@ -280,8 +280,8 @@ class Histogram_TestCase(TestCase):
         max = min + nBins * delta
         axis = createContinuousAxis(name, unit, arange(min, max, delta))
         
-        self.assert_(axis.name() == name)
-        self.assert_(axis.unit() == unitFromString(unit))
+        self.assertTrue(axis.name() == name)
+        self.assertTrue(axis.unit() == unitFromString(unit))
         
         bb = axis.binBoundaries().asList()
         self.assertVectorAlmostEqual(bb, [min - delta/2. + i * delta for i in range(nBins+1)])
@@ -294,7 +294,7 @@ class Histogram_TestCase(TestCase):
         items = [1, 3, 8, 10]
         axis = createDiscreteAxis(name, items, "int")
         
-        self.assert_(axis.name() == name)
+        self.assertTrue(axis.name() == name)
         
         bb = axis.binBoundaries().asList()
         bc = axis.binCenters()
@@ -320,7 +320,7 @@ class Histogram_TestCase(TestCase):
             self.assertEqual(ds.typecodeAsC(), datatype)
             continue
 
-        from ndarray.NumpyNdArray import NdArray 
+        from histogram.ndarray.NumpyNdArray import NdArray 
         storage = NdArray("float", 20000, 0)
         storage.setShape(shape)
         ds2 = createDataset(name, unit, storage=storage)
@@ -334,7 +334,7 @@ class Histogram_TestCase(TestCase):
     def test_makeHistogram(self):
         "histogram.__init__:  makeHistogram"
         name = "I(det,tof)"
-        det = ("det", range(10))
+        det = ("det", list(range(10)))
         from numpy import arange, zeros, ones
         tof = ("tof", arange(1000., 1020., 1.0))
         axes = [det, tof]

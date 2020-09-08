@@ -33,9 +33,9 @@ class plotter_TestCase(TestCase):
         self.plotter.plot(h)
         if interactive:
             if sys.version_info < (3,):
-                raw_input('Press ENTER to continue')
-            else:
                 input('Press ENTER to continue')
+            else:
+                eval(input('Press ENTER to continue'))
         pylab.clf()
         pylab.close()
         return
@@ -47,9 +47,9 @@ class plotter_TestCase(TestCase):
         self.plotter.plot(h)
         if interactive:
             if sys.version_info < (3,):
-                raw_input('Press ENTER to continue')
-            else:
                 input('Press ENTER to continue')
+            else:
+                eval(input('Press ENTER to continue'))
         pylab.clf()
         pylab.close()
         return
@@ -67,9 +67,9 @@ class plotter_TestCase(TestCase):
         self.plotter.plot(h)
         if interactive:
             if sys.version_info < (3,):
-                raw_input('Press ENTER to continue')
-            else:
                 input('Press ENTER to continue')
+            else:
+                eval(input('Press ENTER to continue'))
 
         pylab.clf()
         pylab.close()
@@ -88,9 +88,9 @@ class plotter_TestCase(TestCase):
         self.plotter.plot(h)
         if interactive:
             if sys.version_info < (3,):
-                raw_input('Press ENTER to continue')
-            else:
                 input('Press ENTER to continue')
+            else:
+                eval(input('Press ENTER to continue'))
         pylab.clf()
         pylab.close()
         return
@@ -102,9 +102,9 @@ class plotter_TestCase(TestCase):
         self.plotter.plot(sqe)
         if interactive:
             if sys.version_info < (3,):
-                raw_input('Press ENTER to continue')
-            else:
                 input('Press ENTER to continue')
+            else:
+                eval(input('Press ENTER to continue'))
         pylab.clf()
         pylab.close()
         return
@@ -116,9 +116,9 @@ class plotter_TestCase(TestCase):
         self.plotter.plot(sqe, interpolation='bicubic')
         if interactive:
             if sys.version_info < (3,):
-                raw_input('Press ENTER to continue')
-            else:
                 input('Press ENTER to continue')
+            else:
+                eval(input('Press ENTER to continue'))
         pylab.clf()
         pylab.close()
         return

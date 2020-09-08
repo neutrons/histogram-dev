@@ -22,7 +22,7 @@ class converters_TestCase(unittest.TestCase):
             continue
         self.assertEqual(n.__module__, "histogram.ndarray.NumpyNdArray")
         
-        v = range(12)
+        v = list(range(12))
         a = NdArray('int', v)
         a.setShape((3, 4))
         n = a.as_("NumpyNdArray")
@@ -51,7 +51,7 @@ class converters_TestCase(unittest.TestCase):
             continue
         self.assertEqual(n.__module__, "histogram.ndarray.StdVectorNdArray")
 
-        v = range(12)
+        v = list(range(12))
         a = NdArray('int', v)
         a.setShape((3, 4))
         n = a.as_("StdVectorNdArray")
