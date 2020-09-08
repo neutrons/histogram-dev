@@ -37,7 +37,9 @@ install:
 
 script:
   - cd tests/histogram
-  - cp -a $SRC/python/histogram/ndarray ndarray # hack
+  - # hack
+  - cp -a $SRC/python/histogram/ndarray ndarray 
+  - export PYTHONPATH=$PWD
   - python alltests.py
 
 notifications:
