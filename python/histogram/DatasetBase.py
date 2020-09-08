@@ -131,7 +131,7 @@ class DatasetBase(object):
                    }
 
 
-from _units import tounit as _tounit
+from ._units import tounit as _tounit
 
 # version
 __id__ = "$Id$"

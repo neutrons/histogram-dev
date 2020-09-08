@@ -2,7 +2,7 @@
 # Jiao Lin Copyright (c) 2005 All rights reserved
 
 
-from AxisMapper import AxisMapper
+from .AxisMapper import AxisMapper
 
 class DiscreteAxisMapper(AxisMapper):
 
@@ -16,7 +16,7 @@ class DiscreteAxisMapper(AxisMapper):
     def __call__(self, value):
         try: return self._map[value]
         except KeyError:
-            for key in self._map.iterkeys():
+            for key in list(self._map.keys()):
                 if key == value: return self._map[key]
                 continue
             raise IndexError("Cannot map {0!s} to index".format(value))

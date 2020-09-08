@@ -23,7 +23,7 @@ class ValueWithError(object):
         self._value = float(value)
         self._error2 = error2
         if errorPropagator is None:
-            from ErrorPropagator import ErrorPropagator
+            from .ErrorPropagator import ErrorPropagator
             errorPropagator = ErrorPropagator()
         self._errorPropagator = errorPropagator
         return
@@ -51,14 +51,17 @@ class ValueWithError(object):
             '__isub__',
             '__imul__',
             '__idiv__',
+            '__itruediv__',
             '__add__',
             '__sub__',
             '__mul__',
             '__div__',
+            '__truediv__',
             '__radd__',
             '__rsub__',
             '__rmul__',
             '__rdiv__',
+            '__rtruediv__',
         ],
         }
 
@@ -89,13 +92,13 @@ def f(self, other):
         'binary': binaryProxyCodeFactory,
         }
         
-    for operatorType, operators in ErrorPropagatorInterface.iteritems():
+    for operatorType, operators in ErrorPropagatorInterface.items():
 
         codeFactory = operatorProxyCodeFactory[operatorType]
         
         for operator in operators:
-            code = codeFactory operator)
-            exec(code in locals())
+            code = codeFactory( operator)
+            exec(code, locals())
             continue
         continue
 
@@ -115,18 +118,21 @@ def toVE(candidate):
 
 
 import types
+ListType = type(list())
+TupleType = type(tuple())
 def isIterable(candidate):
-    if isinstance(candidate, types.ListType): return True
-    if isinstance(candidate, types.TupleType): return True
+    if isinstance(candidate, ListType): return True
+    if isinstance(candidate, TupleType): return True
     if '__iter__' in dir(candidate): return True
     return False
 
-
+LongType = IntType = type(0)
+FloatType = type(0.0)
 def isNumber(candidate):
     numbertypes = [
-        types.LongType,
-        types.FloatType,
-        types.IntType]
+        LongType,
+        FloatType,
+        IntType]
 
     for t in numbertypes:
         if isinstance(candidate, t): return True

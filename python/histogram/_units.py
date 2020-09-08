@@ -6,10 +6,9 @@ import sys
 def unitFromString(s):
     if s is None: return 1
     if isinstance(s, unitFromString.unittype): return s
-    if sys.version_info < (3,0):
-        if isinstance(s, basestring): return unitFromString.parser.parse(s)
-    else:        
-        if isinstance(s, str): return unitFromString.parser.parse(s)
+    if sys.version_info >= (3,0) and isinstance(s, bytes):
+        s = s.decode()
+    if isinstance(s, str): return unitFromString.parser.parse(s)
     try: return unitFromString.parser.parse(str(s))
     except:
         raise NotImplementedError("Don't know how to convert {0!r} to unit".format(s))
@@ -19,14 +18,11 @@ unitFromString.unittype = unit.unit
 
 
 def tounit(candidate):
-    if sys.version_info < (3,0):
-        if isinstance(candidate, basestring):
-            _parser = parser()
-            return _parser.parse(candidate)
-    else:
-        if isinstance(candidate, str):
-            _parser = parser()
-            return _parser.parse(candidate)
+    if sys.version_info >= (3,0) and isinstance(candidate, bytes):
+        candidate = candidate.decode()
+    if isinstance(candidate, str):
+        _parser = parser()
+        return _parser.parse(candidate)
     return candidate
 
 

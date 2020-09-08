@@ -1,3 +1,4 @@
+import importlib
 
 def getModules( path  ):
     """get and import a list of python modules in the given path
@@ -12,7 +13,8 @@ def getModules( path  ):
         if entry == "__init__.py": continue
         modulename, ext = os.path.splitext( entry )
         if ext not in [".py", ".pyc"] : continue
-        exec "import %s as m" % (modulename)
+        m = importlib.import_module(
+            '.{}'.format(modulename), 'histogram.ndarray.converters')
         rt.append( m )
         continue
     return rt
@@ -20,7 +22,7 @@ def getModules( path  ):
 
 
 def test_getModules():
-    print getModules( '.' )
+    print(getModules( '.' ))
     return 
 
 

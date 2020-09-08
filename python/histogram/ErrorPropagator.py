@@ -71,7 +71,7 @@ class ErrorPropagator:
         return this
 
 
-    def __idiv__(self, this, other):
+    def __itruediv__(self, this, other):
         y,  dy2 = other._value, other._error2
         this._value /= y
 
@@ -96,7 +96,7 @@ class ErrorPropagator:
 
         this._error2 = dx
         return this
-        
+    __idiv__ = __itruediv__
     
     def __add__(self, this, other):
         r = this.copy()
@@ -129,18 +129,18 @@ class ErrorPropagator:
     __rmul__ = __mul__
         
                 
-    def __div__(self, this, other):
+    def __truediv__(self, this, other):
         r = this.copy()
         r /= other
         return r
+    __div__ = __truediv__
 
-
-    def __rdiv__(self, this, other):
+    def __rtruediv__(self, this, other):
         r = this.copy()
         r.inverse()
         r *= other
         return r
-            
+    __rdiv__ = __rtruediv__
         
     pass # end of ErrorPropagator
 

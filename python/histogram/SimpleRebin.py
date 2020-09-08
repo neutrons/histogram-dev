@@ -17,7 +17,7 @@ class Bin:
     def value(self):
         "preserve volume during the binning"
         totalVol = 0
-        for ind,xPt,yPt in zip(range(self.numPts), self.xPts, self.yPts):
+        for ind,xPt,yPt in zip(list(range(self.numPts)), self.xPts, self.yPts):
             #get leftOfBox
             if ind == 0:
                 if self.leftSide < xPt:

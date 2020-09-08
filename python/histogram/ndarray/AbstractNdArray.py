@@ -279,8 +279,8 @@ class NdArray(object):
 
 
     def _nie(self, method):
-        raise NotImplementedError , "%s must provide method '%s'" % (
-            self.__class__.__name__, method )
+        raise NotImplementedError("%s must provide method '%s'" % (
+            self.__class__.__name__, method ))
 
 
     pass # end of NdArray
@@ -329,7 +329,7 @@ class NdArray_TestCase(TestCase):
         "NdArray: operator '-a'"
         v = self.NdArray( 'double', [1,2,3] )
         v2 = -v
-        self.assert_( v2.compare( self.NdArray('double', [-1,-2,-3] ) ) )
+        self.assertTrue( v2.compare( self.NdArray('double', [-1,-2,-3] ) ) )
         return
         
 
@@ -337,13 +337,13 @@ class NdArray_TestCase(TestCase):
         "NdArray: operator 'a+b'"
         v = self.NdArray( 'double', [1,2,3] )
         v2 = v + 1
-        self.assert_( v2.compare( self.NdArray('double', [2,3,4] ) ) )
+        self.assertTrue( v2.compare( self.NdArray('double', [2,3,4] ) ) )
 
         v2 = 1 + v
-        self.assert_( v2.compare( self.NdArray('double', [2,3,4] ) ) )
+        self.assertTrue( v2.compare( self.NdArray('double', [2,3,4] ) ) )
         
         v3 = v + self.NdArray( "double", [2,3,4] )
-        self.assert_( v3.compare( self.NdArray('double', [3,5,7])) )
+        self.assertTrue( v3.compare( self.NdArray('double', [3,5,7])) )
 
         self.assertRaises( NotImplementedError , v.__add__, "a" )
         return
@@ -353,13 +353,13 @@ class NdArray_TestCase(TestCase):
         "NdArray: operator 'a*b'"
         v = self.NdArray( 'double', [1,2,3] )
         v2 = v * 2
-        self.assert_( v2.compare( self.NdArray('double', [2,4,6] ) ) )
+        self.assertTrue( v2.compare( self.NdArray('double', [2,4,6] ) ) )
 
         v2 = 2 * v
-        self.assert_( v2.compare( self.NdArray('double', [2,4,6] ) ) )
+        self.assertTrue( v2.compare( self.NdArray('double', [2,4,6] ) ) )
         
         v2 = v * v
-        self.assert_( v2.compare( self.NdArray('double', [1,4,9] ) ) )
+        self.assertTrue( v2.compare( self.NdArray('double', [1,4,9] ) ) )
         
         return
 
@@ -368,10 +368,10 @@ class NdArray_TestCase(TestCase):
         "NdArray: operator 'a-b'"
         v = self.NdArray( 'double', [1,2,3] )
         v2 = v - 2
-        self.assert_( v2.compare( self.NdArray('double', [-1,0,1] ) ) )
+        self.assertTrue( v2.compare( self.NdArray('double', [-1,0,1] ) ) )
         
         v2 = v - v
-        self.assert_( v2.compare( self.NdArray('double', [0,0,0] ) ) )
+        self.assertTrue( v2.compare( self.NdArray('double', [0,0,0] ) ) )
         return
 
 
@@ -379,23 +379,23 @@ class NdArray_TestCase(TestCase):
         "NdArray: operator 'a/b'"
         v = self.NdArray( 'double', [1,2,3] )
         v2 = v / 2
-        self.assert_( v2.compare( self.NdArray('double', [0.5,1,1.5] ) ) )
+        self.assertTrue( v2.compare( self.NdArray('double', [0.5,1,1.5] ) ) )
         
         v2 = 1 / v
-        self.assert_( v2.compare( self.NdArray('double', [1,0.5,1./3] ) ) )
+        self.assertTrue( v2.compare( self.NdArray('double', [1,0.5,1./3] ) ) )
 
         v2 = v / v
-        self.assert_( v2.compare( self.NdArray('double', [1,1,1] ) ) )
+        self.assertTrue( v2.compare( self.NdArray('double', [1,1,1] ) ) )
         
         v2 = v / v.copy()
-        self.assert_( v2.compare( self.NdArray('double', [1,1,1] ) ) )
+        self.assertTrue( v2.compare( self.NdArray('double', [1,1,1] ) ) )
 
-        v = self.NdArray( 'double', range(12) )
+        v = self.NdArray( 'double', list(range(12)) )
         v.setShape( (3,4) )
         
         v2 = v / v.copy()
         v2.setShape( (12,) )
-        self.assert_( v2.compare( self.NdArray('double', [1]*12 ) ) )
+        self.assertTrue( v2.compare( self.NdArray('double', [1]*12 ) ) )
 
         return
 
@@ -404,15 +404,15 @@ class NdArray_TestCase(TestCase):
         "NdArray: operator 'a+=b'"
         v = self.NdArray( 'double', [1,2,3] )
         v += 1
-        self.assert_( v.compare( self.NdArray('double', [2,3,4] ) ) )
+        self.assertTrue( v.compare( self.NdArray('double', [2,3,4] ) ) )
         
         v += self.NdArray( "double", [2,3,4] )
-        self.assert_( v.compare( self.NdArray('double', [4,6,8])) )
+        self.assertTrue( v.compare( self.NdArray('double', [4,6,8])) )
 
-        print "__iadd__ big array"
+        print("__iadd__ big array")
         v = self.NdArray( "double", 1024000, 2 )
         v += self.NdArray( "double", 1024000, 1 )
-        self.assert_( v.compare( self.NdArray('double', 1024000, 3)) )
+        self.assertTrue( v.compare( self.NdArray('double', 1024000, 3)) )
 
         self.assertRaises( NotImplementedError , v.__iadd__, "a" )
         return
@@ -422,10 +422,10 @@ class NdArray_TestCase(TestCase):
         "NdArray: operator 'a-=b'"
         v = self.NdArray( 'double', [1,2,3] )
         v -= 1
-        self.assert_( v.compare( self.NdArray('double', [0,1,2] ) ) )
+        self.assertTrue( v.compare( self.NdArray('double', [0,1,2] ) ) )
         
         v -= self.NdArray( "double", [2,3,4] )
-        self.assert_( v.compare( self.NdArray('double', [-2,-2,-2])) )
+        self.assertTrue( v.compare( self.NdArray('double', [-2,-2,-2])) )
 
         self.assertRaises( NotImplementedError , v.__isub__, "a" )
         return
@@ -435,10 +435,10 @@ class NdArray_TestCase(TestCase):
         "NdArray: operator 'a*=b'"
         v = self.NdArray( 'double', [1,2,3] )
         v *= 2
-        self.assert_( v.compare( self.NdArray('double', [2,4,6] ) ) )
+        self.assertTrue( v.compare( self.NdArray('double', [2,4,6] ) ) )
         
         v *= self.NdArray( "double", [2,3,4] )
-        self.assert_( v.compare( self.NdArray('double', [4,12,24])) )
+        self.assertTrue( v.compare( self.NdArray('double', [4,12,24])) )
 
         self.assertRaises( NotImplementedError , v.__imul__, "a" )
         return
@@ -448,10 +448,10 @@ class NdArray_TestCase(TestCase):
         "NdArray: operator 'a/=b'"
         v = self.NdArray( 'double', [1,2,3] )
         v /= 2
-        self.assert_( v.compare( self.NdArray('double', [0.5, 1, 1.5] ) ) )
+        self.assertTrue( v.compare( self.NdArray('double', [0.5, 1, 1.5] ) ) )
         
         v /= self.NdArray( "double", [0.5,1,1.5] )
-        self.assert_( v.compare( self.NdArray('double', [1,1,1])) )
+        self.assertTrue( v.compare( self.NdArray('double', [1,1,1])) )
 
         self.assertRaises( NotImplementedError , v.__idiv__, "a" )
         return
@@ -461,13 +461,13 @@ class NdArray_TestCase(TestCase):
         "NdArray: array  -> 1./array"
         v = self.NdArray( 'double', [1,2,3] )
         v.reverse()
-        self.assert_( v.compare( self.NdArray('double', [1, 1./2, 1./3] ) ) )
+        self.assertTrue( v.compare( self.NdArray('double', [1, 1./2, 1./3] ) ) )
         return
 
 
     def testTranspose(self):
         "NdArray: transpose"
-        v = self.NdArray( 'double', range(6) )
+        v = self.NdArray( 'double', list(range(6)) )
         v.setShape( (2,3) )
         vt = v.transpose()
         self.assertEqual( vt.shape(), (3,2) )
@@ -482,49 +482,49 @@ class NdArray_TestCase(TestCase):
 
     def test__getitem__(self):
         "NdArray: operator 'a[3:5], a[3]'"
-        v = self.NdArray( 'double', range(12) )
-        self.assert_( v[3:5].compare( self.NdArray('double', [3,4] ) ) )
+        v = self.NdArray( 'double', list(range(12)) )
+        self.assertTrue( v[3:5].compare( self.NdArray('double', [3,4] ) ) )
         self.assertAlmostEqual( v[3], 3 )
         
         v.setShape( (3,4) )
         subarr = v[1:2, 1:2]
         expected = self.NdArray('double', [5] ) ; expected.setShape( (1,1) )
-        self.assert_( subarr.compare( expected ) )
+        self.assertTrue( subarr.compare( expected ) )
         return
 
 
     def test__setitem__(self):
         "NdArray: operator 'a[3]=4'"
-        v = self.NdArray( 'double', range(12) )
+        v = self.NdArray( 'double', list(range(12)) )
         v[3:5] = [1,2]
-        self.assert_( v[3:5].compare( self.NdArray('double', [1,2] ) ) )
+        self.assertTrue( v[3:5].compare( self.NdArray('double', [1,2] ) ) )
 
         v[10] = 11
         self.assertAlmostEqual( v[10], 11 )
 
         v[3:5] = 0
-        self.assert_( v[3:5].compare( self.NdArray('double', [0,0] ) ) )
+        self.assertTrue( v[3:5].compare( self.NdArray('double', [0,0] ) ) )
         return
 
 
     def testCopy(self):
         "NdArray: method 'copy'"
-        v = self.NdArray( 'double', range(12) )
-        self.assert_( v.compare( v.copy() ) )
+        v = self.NdArray( 'double', list(range(12)) )
+        self.assertTrue( v.compare( v.copy() ) )
         return
 
 
     def testCastCopy(self):
         "NdArray: method 'castCopy'"
-        v = self.NdArray( 'double', range(12) )
-        v2 = self.NdArray( 'int', range(12) )
-        self.assert_( v2.compare( v.castCopy( "int" ) ) )
+        v = self.NdArray( 'double', list(range(12)) )
+        v2 = self.NdArray( 'int', list(range(12)) )
+        self.assertTrue( v2.compare( v.castCopy( "int" ) ) )
         return
     
 
     def testIntegrate(self):
         "NdArray: integrate"
-        v = self.NdArray("double", range(3) )
+        v = self.NdArray("double", list(range(3)) )
         r = v.integrate( 0, 2, 0.1)
         self.assertAlmostEqual( r, 0.1 )
         return
@@ -532,9 +532,9 @@ class NdArray_TestCase(TestCase):
         
     def testSquare(self):
         "NdArray: square"
-        v = self.NdArray("double", range(3) )
+        v = self.NdArray("double", list(range(3)) )
         r = v.square( )
-        self.assert_( v.compare( self.NdArray('double', [0,1,4] ) ) )
+        self.assertTrue( v.compare( self.NdArray('double', [0,1,4] ) ) )
         return
         
         
@@ -542,51 +542,51 @@ class NdArray_TestCase(TestCase):
         "NdArray: sqrt"
         v = self.NdArray("double", [1,4,9] )
         v.sqrt( )
-        self.assert_( v.compare( self.NdArray('double', [1,2,3] ) ) )
+        self.assertTrue( v.compare( self.NdArray('double', [1,2,3] ) ) )
         return        
         
         
     def testSum(self):
         "NdArray: sum"
-        v = self.NdArray("double", range(3) )
+        v = self.NdArray("double", list(range(3)) )
         r = v.sum( )
         self.assertAlmostEqual( r, 3 )
 
-        v = self.NdArray("double", range(9) )
+        v = self.NdArray("double", list(range(9)) )
         v.setShape( (3,3) )
         r = v.sum( )
         self.assertAlmostEqual( r, 36 )
         r1 = v.sum(axis = 0)
         expected_r1 = self.NdArray( 'double', [9,12,15])
-        self.assert_( r1.compare( expected_r1 ) )
+        self.assertTrue( r1.compare( expected_r1 ) )
         return
 
 
     def testAssign(self):
         "NdArray: assign"
-        v = self.NdArray("double", range(3) )
+        v = self.NdArray("double", list(range(3)) )
         v.assign( 5, 1.0 )
-        self.assert_( v.compare( self.NdArray('double', [1,1,1,1,1] ) ) )
+        self.assertTrue( v.compare( self.NdArray('double', [1,1,1,1,1] ) ) )
         return
 
 
     def testAsList(self):
         "NdArray: asList"
-        v = self.NdArray("double", range(3) )
+        v = self.NdArray("double", list(range(3)) )
         l = v.asList()
-        self.assert_( v.compare( self.NdArray( "double", l )) )
+        self.assertTrue( v.compare( self.NdArray( "double", l )) )
         return
 
     
     def testAsNumarray(self):
         "NdArray: asNumarray"
-        v = self.NdArray("double", range(3))
+        v = self.NdArray("double", list(range(3)))
         na = v.asNumarray()
         import numpy
-        self.assert_( isinstance( na, numpy.ndarray ) )
-        self.assert_( v.compare( self.NdArray( "double", list(na) ) ) )
+        self.assertTrue( isinstance( na, numpy.ndarray ) )
+        self.assertTrue( v.compare( self.NdArray( "double", list(na) ) ) )
 
-        v = self.NdArray('double', range(12) )
+        v = self.NdArray('double', list(range(12)) )
         v.setShape( (3,4) )
         na = v.asNumarray()
         shape = na.shape
@@ -611,14 +611,14 @@ class NdArray_TestCase(TestCase):
         v.setShape( (2,2) )
         pickle.dump( v, open( "tmp.pkl", 'w' ) )
         v1 = pickle.load( open( "tmp.pkl" ) )
-        print v1.asNumarray()
+        print(v1.asNumarray())
         assert v1.compare(v)
         return
     
 
     def test_setShape(self):
         "NdArray: setShape"
-        v = self.NdArray( 'double', range(12) )
+        v = self.NdArray( 'double', list(range(12)) )
         v.setShape( (3,4) )
 
         self.assertRaises( ValueError, v.setShape, (4,4) )
@@ -627,7 +627,7 @@ class NdArray_TestCase(TestCase):
     pass # end of NdArray_TestCase
 
 
-import converters
+from . import converters
 
 
 

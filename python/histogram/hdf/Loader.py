@@ -37,7 +37,7 @@ class Loader:
         try:
             axes = histogramGrp['grid']
         except:
-            raise ValueError, "This histogram does not contain a 'grid' node"
+            raise ValueError("This histogram does not contain a 'grid' node")
         axesHash = {}
         for axisName in axes:
             axisnode = axes[axisName]
@@ -68,7 +68,7 @@ class Loader:
             
         # meta data
         metadata = self._getAttrs(histogramGrp)
-        for k, v in metadata.iteritems():
+        for k, v in list(metadata.items()):
             h.setAttribute(k,v)
             continue
         
@@ -118,7 +118,7 @@ class Loader:
 
         # meta data
         metadata = self._getAttrs(axisnode)
-        for k, v in metadata.iteritems():
+        for k, v in list(metadata.items()):
             rt.setAttribute(k,v)
             continue
         return rt
@@ -156,7 +156,7 @@ class Loader:
     
     
     def onUnit(self, unit):
-        if isinstance(unit, int) or isinstance(unit, float) or isinstance(unit, long):
+        if isinstance(unit, int) or isinstance(unit, float) or isinstance(unit, int):
             return unit
         # ndarray of chars
         from numpy import ndarray
@@ -167,15 +167,15 @@ class Loader:
         try:
             return float(unit)
         except:
-            raise NotImplementedError, 'type: %s, str: %s' % (
-                unit.__class__,str(unit))
+            raise NotImplementedError('type: %s, str: %s' % (
+                unit.__class__,str(unit)))
 
     
     def _getAttrs(self, node, skip = None):
         if skip is None:
-            from _reserved_attrs import keys as skip
+            from ._reserved_attrs import keys as skip
         d = {}
-        for key in node.attrs.iterkeys():
+        for key in list(node.attrs.keys()):
             if key in skip: continue
             d[key] = node.attrs[key]
             continue
@@ -183,18 +183,20 @@ class Loader:
 
 
     def _str(self, candidate):
-        if isinstance(candidate, basestring):
-            return candidate
         if isinstance(candidate, np.ndarray):
-            return candidate.tostring()
-        raise NotImplementedError, str(candidate)
+            candidate = candidate.tostring()
+        if isinstance(candidate, str):
+            return candidate
+        if isinstance(candidate, bytes):
+            return candidate.decode()
+        raise NotImplementedError(str(candidate))
 
 
     def _guessHistogramName(self):
         fs = self.fs
         names = list(fs)
         if len(names)>1:
-            raise RuntimeError, "This file contains more than one histogram"
+            raise RuntimeError("This file contains more than one histogram")
         return names[0]
 
 

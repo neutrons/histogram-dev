@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 
 def loop(axes, f):
     '''loop over all values on a grid defined by axes

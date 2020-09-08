@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # Timothy M. Kelley Copyright (c) 2005 All rights reserved
 
-from AttributeContBase import AttributeContBase
+from .AttributeContBase import AttributeContBase
 
 class AttributeCont(AttributeContBase):
 

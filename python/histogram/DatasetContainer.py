@@ -92,7 +92,7 @@ class DatasetContainer(object):
             ds = self._byNames[name]
         except KeyError:
             msg = "No dataset named {0!s}. Available datasets: {1!s}".format(
-                name, self._byNames.keys())
+                name, list(self._byNames.keys()))
             raise KeyError(msg)
         return ds
 
@@ -116,7 +116,7 @@ class DatasetContainer(object):
             List of tuples of id & name for each dataset
         Exceptions: None
         Notes: None"""
-        datasets = [(item[0], item[1][0]) for item in self._byIds.items()]
+        datasets = [(item[0], item[1][0]) for item in list(self._byIds.items())]
         return datasets
     
 

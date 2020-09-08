@@ -82,7 +82,7 @@ def pqvalue( *args ):
     """create an instance that represents a value of a physical quantity,
     probably with an error bar"""
     if len(args) == 1: args = args[0]
-    from ValueWithError import toVE
+    from .ValueWithError import toVE
     return toVE( args )
 
 
@@ -102,7 +102,7 @@ def axis( name, centers = None, unit = None, boundaries = None, attributes=None)
       axis('detectorID', range(0,1000))
     """
     
-    if centers is not None and len(centers) < 1: raise ValueError , "Invalid axis %s" % (centers, )
+    if centers is not None and len(centers) < 1: raise ValueError("Invalid axis %s" % (centers, ))
     if 'ID' in name and centers is not None and _isIntegers(centers) and unit is None:
         return IDaxis( name, centers, attributes=attributes )
     if centers is None: return paxis( name, unit, boundaries = boundaries, attributes=attributes )
@@ -253,7 +253,7 @@ def plot( h, min = None, max = None, output='window', interactive=False, **kwds)
         import matplotlib
         matplotlib.use('PS')
         
-    from plotter import defaultPlotter
+    from .plotter import defaultPlotter
     defaultPlotter.interactive(interactive)
     
     defaultPlotter.plot( h, min = min, max = max, **kwds)
@@ -306,7 +306,7 @@ def getSliceCopyFromHistogram( name, axes, hist ):
     
     axisBinCenters = [ axis.binCenters() for axis in axes ]
 
-    from _loop import loop
+    from ._loop import loop
     loop( axisBinCenters, _ )
     
     return ret
@@ -398,10 +398,10 @@ def histogramContainer( input ):
     otherwise, make sure input is a histogram container object
     and return it.
     """
-    from Histogram import Histogram
+    from .Histogram import Histogram
     if isinstance( input, Histogram ):
         return makeHistogramCollection( input )
-    from DetHistCollection import DetHistCollection
+    from .DetHistCollection import DetHistCollection
     assert isinstance( input, DetHistCollection ), \
            "%s is not a histogram collection" % (input, )
     return input
@@ -456,10 +456,10 @@ def createContinuousAxis( name, unit, centers = None, boundaries = None,
     a mapper is created and attached to the axis.
     """
     if (centers is not None or centersCreationArgs is not None) and boundaries is not None:
-        raise ValueError , "both centers and boundaries are specified"
+        raise ValueError("both centers and boundaries are specified")
     
     if centers is not None and centersCreationArgs is not None:
-        raise ValueError , "both centers and center creation arguments are specified"
+        raise ValueError("both centers and center creation arguments are specified")
     
     if centers is not None:
         boundaries = boundariesFromCenters( centers )
@@ -472,7 +472,7 @@ def createContinuousAxis( name, unit, centers = None, boundaries = None,
 
     unit = unitFromString( unit )
 
-    from histogram.EvenlyContinuousAxisMapper import \
+    from .EvenlyContinuousAxisMapper import \
          EvenlyContinuousAxisMapper as AxisMapper, NotEvenlySpaced
     try:
         axisMapper = AxisMapper( binBoundaries = boundaries )
@@ -483,14 +483,14 @@ def createContinuousAxis( name, unit, centers = None, boundaries = None,
         #debug.log( traceback.format_exc() )
         debug.log( 'createContinuousAxis(name = %r, unit = %r, centers= %r, boundaries = %r' % (
             name, unit, centers, boundaries ) )
-        from histogram.ContinuousAxisMapper import ContinuousAxisMapper as AxisMapper
+        from .ContinuousAxisMapper import ContinuousAxisMapper as AxisMapper
         axisMapper = AxisMapper( boundaries )
 
     nBins = len( boundaries ) - 1
     
     storage = ndArray( "double", boundaries )
     
-    from Axis import Axis
+    from .Axis import Axis
     return Axis( name, unit, length = nBins, storage=storage,
                  mapper = axisMapper, centers = centers,
                  attributes = attributes)
@@ -502,7 +502,7 @@ def boundariesFromCenters( centers ):
     given bin centers, return bin boundaries
     '''
     if len(centers) < 2:
-        raise ValueError , "Cannot create boundaries from centers %s" %(centers, )
+        raise ValueError("Cannot create boundaries from centers %s" %(centers, ))
 
     msg =  "centers array must be ascending or descending: %s" % (centers, )
     step = centers[1]-centers[0]
@@ -511,7 +511,7 @@ def boundariesFromCenters( centers ):
         continue
     try: return _boundariesFromEvenlySpacedCenters( centers )
     except ArrayNotEvenlySpaced: return _boundariesFromCenters( centers )
-    raise RuntimeError, "should not reach here"
+    raise RuntimeError("should not reach here")
 
 
 def _boundariesFromCenters( centers ):
@@ -541,7 +541,7 @@ class BinsOverlapped( Exception ): pass
 def _boundariesFromEvenlySpacedCenters( centers ):
     d = centers[1] - centers[0]
     if d == 0 or d == 0.0 :
-        raise BinsOverlapped , "Cannot create boundaries from centers %s" %(centers, )
+        raise BinsOverlapped("Cannot create boundaries from centers %s" %(centers, ))
 
     evenlyspaced = True
     for i in range(1, len(centers)-1):
@@ -563,13 +563,13 @@ def createDiscreteAxis( name, items, datatype, attributes=None):
 
     useful to represent quantities like IDs.
     """
-    from histogram.DiscreteAxisMapper import DiscreteAxisMapper as AxisMapper
+    from .DiscreteAxisMapper import DiscreteAxisMapper as AxisMapper
     itemDict = {}
     for i, value in enumerate(items): itemDict[value] = i
     axisMapper = AxisMapper( itemDict )
 
     storage = ndArray( datatype, list(items) + [-1] ) # -1 is a patch
-    from histogram.Axis import Axis
+    from .Axis import Axis
     axis = Axis( name = name, length = len(items),
                  storage = storage, mapper = axisMapper,
                  attributes=attributes)
@@ -596,7 +596,7 @@ def createDataset( name, unit='1', shape=[], data = None, data_type = "double",
         storage.setShape( shape )
         pass
     if data is not None and storage is not None:
-        raise ValueError , "confused... both data and storage are specified"
+        raise ValueError("confused... both data and storage are specified")
     
     if data is not None:
         import numpy
@@ -605,7 +605,7 @@ def createDataset( name, unit='1', shape=[], data = None, data_type = "double",
         from .ndarray.NumpyNdArray import arrayFromNumpyArray as ndarrayFromNumpyArray
         storage = ndarrayFromNumpyArray( array )
         
-    from NdArrayDataset import Dataset
+    from .NdArrayDataset import Dataset
     return Dataset(name, unit, shape = shape, storage = storage )
 
 
@@ -617,7 +617,7 @@ def makeHistogram( name, axes, data, errs, unit="1", data_type = 'double'):
     """
     # convert axis input parameters to axis instances
     _axes = []
-    from Axis import Axis
+    from .Axis import Axis
     for axis_params in axes:
         if isinstance( axis_params, Axis ): _axis = axis_params
         else: _axis = axis( *axis_params )
@@ -632,7 +632,7 @@ def makeHistogram( name, axes, data, errs, unit="1", data_type = 'double'):
     if data is None: data=createDataset(
         'data', unit, shape = shape,
         data_type = data_type )
-    from DatasetBase import DatasetBase
+    from .DatasetBase import DatasetBase
     if isinstance( data, DatasetBase ): dataDS = data
     else: dataDS = createDataset( "data", unit, data = data, data_type = data_type )
 
@@ -642,7 +642,7 @@ def makeHistogram( name, axes, data, errs, unit="1", data_type = 'double'):
     if isinstance( errs, DatasetBase ): errsDS = errs
     else: errsDS = createDataset( "errors", unit**2, data = errs, data_type = data_type )
     
-    from Histogram import Histogram
+    from .Histogram import Histogram
     h = Histogram( name = name, unit = unit,
                    data = dataDS, errors = errsDS, axes = _axes )
     h._setShape( tuple([ len(_axis.binCenters()) for _axis in h.axes() ]) )
@@ -650,10 +650,10 @@ def makeHistogram( name, axes, data, errs, unit="1", data_type = 'double'):
 
 
 def makeHistogramCollection( args, factory = None ):
-    from Histogram import Histogram
+    from .Histogram import Histogram
     if factory is None:
         assert isinstance( args, Histogram ), "%s is not a histogram" % (args,)
-        from SimpleHistCollection import SimpleHistCollection
+        from .SimpleHistCollection import SimpleHistCollection
         factory = SimpleHistCollection
         args = args,
         pass
@@ -663,9 +663,10 @@ def makeHistogramCollection( args, factory = None ):
 eps = 1e-7
 
 from numpy import arange
+from functools import reduce
 
 def _isIntegers( l ):
-    from types import IntType
+    IntType = type(0)
     for i in l:
         if not isinstance( i, IntType ) : return False
         continue
@@ -730,7 +731,7 @@ def _grid( arr, i, shape ):
     pshape = list(shape); del pshape[i]
     rt.shape = pshape + [arrsize] 
 
-    axes = range( len(shape) )
+    axes = list(range( len(shape)))
     axes[ -1 ] = i; axes[i] = -1
     
     rt = rt.transpose( axes )

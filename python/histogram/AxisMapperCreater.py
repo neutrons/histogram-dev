@@ -6,9 +6,9 @@ import journal
 debug = journal.debug('ins.histogram.AxisMapperCreater')
 
 
-from EvenlyContinuousAxisMapper import EvenlyContinuousAxisMapper
-from DiscreteAxisMapper import DiscreteAxisMapper
-from ContinuousAxisMapper import ContinuousAxisMapper
+from .EvenlyContinuousAxisMapper import EvenlyContinuousAxisMapper
+from .DiscreteAxisMapper import DiscreteAxisMapper
+from .ContinuousAxisMapper import ContinuousAxisMapper
 
 
 class AxisMapperCreater:

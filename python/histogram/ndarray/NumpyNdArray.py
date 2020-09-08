@@ -20,8 +20,9 @@
 ## of numpy.ndarray.
 ##
 
-from AbstractNdArray import NdArray as AbstractNdArray
+from .AbstractNdArray import NdArray as AbstractNdArray
 import numpy
+from functools import reduce
 
 types = {'char':4, 'string':4, 'float':5, 'double':6, 'short short':20, 
          'ushort short':21, 'short':22, 'ushort':23, 'int':24,'uint':25, 
@@ -29,7 +30,7 @@ types = {'char':4, 'string':4, 'float':5, 'double':6, 'short short':20,
          }
 
 # create constants AK_CHAR, ...
-for n, v in types.iteritems(): exec "AK_%s = %d" % (n.upper().replace( ' ', '_' ), v)
+for n, v in list(types.items()): exec("AK_%s = %d" % (n.upper().replace( ' ', '_' ), v))
 
 #'u'+<type> = 'unsigned '+<type>
 #added 9/24/2005.
@@ -114,43 +115,44 @@ class NdArray(AbstractNdArray):
         r += other
         return r
 
-    def __rdiv__(self, other):
+    def __rtruediv__(self, other):
         r = self.__class__( self.datatype(), [] )
         if isNdArray( other ): other = other.asNumarray()
         elif isNumber(other): pass
-        else: raise NotImplementedError , "%s / %s" % (
-            other.__class__.__name__, self.__class__.__name__ )
-        
+        else: raise NotImplementedError("%s / %s" % (
+            other.__class__.__name__, self.__class__.__name__ ))
         r._numarr = other/self._numarr
         return r
+    __rdiv__ = __rtruediv__
         
     def __iadd__(self, other):
         if isNdArray( other ): self._numarr += other.asNumarray()
         elif isNumber(other): self._numarr += other
-        else: raise NotImplementedError , "%s + %s" % (
-            self.__class__.__name__, other.__class__.__name__)
+        else: raise NotImplementedError("%s + %s" % (
+            self.__class__.__name__, other.__class__.__name__))
         return self
 
     def __isub__(self, other): 
         if isNdArray( other ): self._numarr -= other.asNumarray()
         elif isNumber(other): self._numarr -= other
-        else: raise NotImplementedError , "%s + %s" % (
-            self.__class__.__name__, other.__class__.__name__)
+        else: raise NotImplementedError("%s + %s" % (
+            self.__class__.__name__, other.__class__.__name__))
         return self
 
     def __imul__(self, other): 
         if isNdArray( other ): self._numarr *= other.asNumarray()
         elif isNumber(other): self._numarr *= other
-        else: raise NotImplementedError , "%s + %s" % (
-            self.__class__.__name__, other.__class__.__name__)
+        else: raise NotImplementedError("%s + %s" % (
+            self.__class__.__name__, other.__class__.__name__))
         return self
 
-    def __idiv__(self, other):
+    def __itruediv__(self, other):
         if isNdArray( other ): self._numarr /= other.asNumarray()
         elif isNumber(other): self._numarr /= other
-        else: raise NotImplementedError , "%s + %s" % (
-            self.__class__.__name__, other.__class__.__name__)
+        else: raise NotImplementedError("%s + %s" % (
+            self.__class__.__name__, other.__class__.__name__))
         return self
+    __idiv__ = __itruediv__
 
     def reverse(self):
         "array -> 1./array"
@@ -304,7 +306,7 @@ class NdArray(AbstractNdArray):
         elif isinstance(s, slice):
             slicing = True
         else:
-            raise NotImplementedError, "Don't know how to get element indexed by %s" % (s,)
+            raise NotImplementedError("Don't know how to get element indexed by %s" % (s,))
             
         if slicing:
             subarr = subelement
@@ -342,10 +344,10 @@ def isNumber(a):
 
 def typename_from_aktypecode( code ):
     #from array_kluge import types as aktypes
-    for key, item in types.iteritems():
+    for key, item in list(types.items()):
         if item == code: return key
         continue
-    raise ValueError , "Invalid type code %s" % code
+    raise ValueError("Invalid type code %s" % code)
 
 def numpytypecode_from_aktypecode( code ):
     name = typename_from_aktypecode( code )
@@ -363,7 +365,7 @@ typename2npytypecode_dict = {
 def numpytypecode_from_typename( name ):
     ret = typename2npytypecode_dict.get(name)
     if ret: return ret
-    raise NotImplementedError , "unknow type code %s" % name
+    raise NotImplementedError("unknow type code %s" % name)
 
 def getAKTypecode( arr ):
     "get array_kluge type code of a numpy/numarray array"
@@ -384,7 +386,7 @@ def getNumpyArray_aktypecode( arr ):
     elif name == "float64": return 6
     elif name == "float32": return 5
     elif name == "uint32": return 25
-    else: raise NotImplementedError , "don't know how to determine type of %s:%s" % (t,arr)
+    else: raise NotImplementedError("don't know how to determine type of %s:%s" % (t,arr))
     raise "Should not reach here"
 
 def getNumericArray_aktypecode( arr ):
@@ -402,7 +404,7 @@ def _sum( anumarr ):
     a = sum( anumarr )
     return _sum( a )
 
-from AbstractNdArray import NdArray_TestCase as TestBase, unittest
+from .AbstractNdArray import NdArray_TestCase as TestBase, unittest
 
 class NdArray_TestCase(TestBase):
 

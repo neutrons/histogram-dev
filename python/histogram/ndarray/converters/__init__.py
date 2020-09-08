@@ -9,7 +9,7 @@
 #
 
 
-from utils import getModules
+from .utils import getModules
 import os
 curdir = os.path.split( __file__ ) [0]
 del os

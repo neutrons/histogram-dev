@@ -31,7 +31,7 @@ def plothist(histogram, **kwds):
         raise NotImplementedError("dimension: {0!s}".format(dim))
     x = histogram.axes()[0].binCenters()
 
-    from plotter import process_Iaxis_unit
+    from .plotter import process_Iaxis_unit
     scale_factor, Iunit = process_Iaxis_unit(histogram.unit())
     y = histogram.I * scale_factor
     yerr2 = histogram.E2 
@@ -55,7 +55,7 @@ pylab.plot = plot
 
 
 def isHistogram(candidate):
-    from histogram.Histogram import Histogram
+    from .histogram.Histogram import Histogram
     return isinstance(candidate, Histogram)
 
 
