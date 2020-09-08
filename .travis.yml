@@ -39,6 +39,8 @@ script:
   - cd tests/histogram
   - # hack
   - cp -a $SRC/python/histogram/ndarray ndarray 
+  - ls ndarray
+  - python -c "import ndarray"
   - export PYTHONPATH=$PWD
   - python alltests.py
 
