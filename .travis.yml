@@ -34,13 +34,13 @@ install:
   - cd build
   - cmake -DCONDA_BUILD=TRUE -DCMAKE_INSTALL_PREFIX=$PREFIX -DDEPLOYMENT_PREFIX=$PREFIX .. && make && make install
   - cd -
+  - # hack
+  - ln -s $SRC/python/histogram/ndarray ndarray 
+  - ls ndarray
+  - export PYTHONPATH=$PWD
 
 script:
   - cd tests/histogram
-  - # hack
-  - cp -a $SRC/python/histogram/ndarray ndarray 
-  - ls ndarray
-  - export PYTHONPATH=$PWD
   - python -c "import ndarray"
   - python alltests.py
 
