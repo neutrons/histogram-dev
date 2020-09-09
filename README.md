@@ -1,5 +1,8 @@
 # histogram
 histogram data object
 
-* Documentation: http://docs.danse.us/histogram
-* Package repository: https://packagecloud.io/danse/ins
+* Installation
+
+  `$ conda install -c mcvine histogram`
+  
+* [Documentation](http://docs.danse.us/histogram)
