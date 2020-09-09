@@ -17,6 +17,7 @@ interactive = False
 
 import unittest
 
+import sys
 
 from unittestX import TestCase
 class plotter_TestCase(TestCase):
@@ -28,10 +29,13 @@ class plotter_TestCase(TestCase):
             'h', 
             [('x', H.arange(10))], 
             fromfunction=lambda x: x*x,
-            unit = "10" )
+            unit="10")
         self.plotter.plot(h)
         if interactive:
-            raw_input('Press ENTER to continue')
+            if sys.version_info < (3,):
+                input('Press ENTER to continue')
+            else:
+                eval(input('Press ENTER to continue'))
         pylab.clf()
         pylab.close()
         return
@@ -42,7 +46,10 @@ class plotter_TestCase(TestCase):
         h = H.histogram('h', [('x', H.arange(100000))], fromfunction=lambda x: x*x)
         self.plotter.plot(h)
         if interactive:
-            raw_input('Press ENTER to continue')
+            if sys.version_info < (3,):
+                input('Press ENTER to continue')
+            else:
+                eval(input('Press ENTER to continue'))
         pylab.clf()
         pylab.close()
         return
@@ -53,13 +60,17 @@ class plotter_TestCase(TestCase):
         h = H.histogram(
             'h',
             [('x', H.arange(10)),
-             ('y', H.arange( 5 )),
+             ('y', H.arange(5)),
              ],
-            fromfunction=lambda x,y: -(x*x + y*y),
+            fromfunction=lambda x, y: -(x*x + y*y),
             )
         self.plotter.plot(h)
         if interactive:
-            raw_input('Press ENTER to continue')
+            if sys.version_info < (3,):
+                input('Press ENTER to continue')
+            else:
+                eval(input('Press ENTER to continue'))
+
         pylab.clf()
         pylab.close()
         return
@@ -70,13 +81,16 @@ class plotter_TestCase(TestCase):
         h = H.histogram(
             'h',
             [('x', H.arange(10)),
-             ('y', H.arange( 5 )),
+             ('y', H.arange(5)),
              ],
-            fromfunction=lambda x,y: x*x + y*y,
+            fromfunction=lambda x, y: x*x + y*y,
             )
         self.plotter.plot(h)
         if interactive:
-            raw_input('Press ENTER to continue')
+            if sys.version_info < (3,):
+                input('Press ENTER to continue')
+            else:
+                eval(input('Press ENTER to continue'))
         pylab.clf()
         pylab.close()
         return
@@ -84,10 +98,13 @@ class plotter_TestCase(TestCase):
     def test3(self):
         'plot sqe'
         import histogram.hdf as hh, pylab
-        sqe = hh.load( 'sqe.h5/S(Q,E)' )
+        sqe = hh.load('sqe.h5/S(Q,E)')
         self.plotter.plot(sqe)
         if interactive:
-            raw_input('Press ENTER to continue')
+            if sys.version_info < (3,):
+                input('Press ENTER to continue')
+            else:
+                eval(input('Press ENTER to continue'))
         pylab.clf()
         pylab.close()
         return
@@ -95,10 +112,13 @@ class plotter_TestCase(TestCase):
     def test3a(self):
         'plot sqe with interpolation'
         import histogram.hdf as hh, pylab
-        sqe = hh.load( 'sqe.h5/S(Q,E)' )
+        sqe = hh.load('sqe.h5/S(Q,E)')
         self.plotter.plot(sqe, interpolation='bicubic')
         if interactive:
-            raw_input('Press ENTER to continue')
+            if sys.version_info < (3,):
+                input('Press ENTER to continue')
+            else:
+                eval(input('Press ENTER to continue'))
         pylab.clf()
         pylab.close()
         return
@@ -121,7 +141,7 @@ class plotter_TestCase(TestCase):
     
 def pysuite():
     suite1 = unittest.makeSuite(plotter_TestCase)
-    return unittest.TestSuite( (suite1,) )
+    return unittest.TestSuite((suite1,))
 
 def main():
     global interactive
@@ -131,7 +151,7 @@ def main():
 ##     journal.debug('instrument').activate()
 ##     journal.debug('instrument.elements').activate()
     pytests = pysuite()
-    alltests = unittest.TestSuite( (pytests, ) )
+    alltests = unittest.TestSuite((pytests,))
     unittest.TextTestRunner(verbosity=2).run(alltests)
     return
 

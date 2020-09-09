@@ -1,21 +1,23 @@
-def loop( axes, f ):
+
+
+def loop(axes, f):
     '''loop over all values on a grid defined by axes
     
     axes: a list of axes
 
     loop( [ ['a','b','c'], [1,5] ], f ) --> f('a',1); f('a',5); ...; f('c',5)
     '''
-    shape = [ len(axis) for axis in axes ]
-    indexes = [ 0 for axis in axes ]
-    for i in range(volume(shape) ):
-        vertex = tuple( [ axis[i] for i,axis in zip(indexes,axes) ] )
-        f( *vertex )
+    shape = [len(axis) for axis in axes]
+    indexes = [0 for axis in axes]
+    for i in range(volume(shape)):
+        vertex = tuple([axis[i] for i, axis in zip(indexes, axes)])
+        f(*vertex)
         increment(indexes, shape)
         continue
     return
 
 
-def increment( indexes, limits ):
+def increment(indexes, limits):
     """increase indexes up to limits
     increment( [1,4,3], [3,10,8] ) --> indexes becomes [1,4,4]
     increment( [1,4,7], [3,10,8] ) --> indexes becomes [1,5,0]
@@ -26,7 +28,7 @@ def increment( indexes, limits ):
         if index < limits[i]-1:
             indexes[i] += 1
             break
-        else :
+        else:
             indexes[i] = 0
         continue
 
@@ -35,20 +37,23 @@ def increment( indexes, limits ):
 
 def volume(shape):
     from operator import mul
-    return reduce(mul, shape)
+    # Using this import breaks backwards compatibility with
+    # all versions of Python 2 under 2.6.
+    import functools
+    return functools.reduce(mul, shape)
         
 
 
 def test_increment():
-    limits = [3,10,8]
-    indexes = [1,4,3]
-    increment( indexes, limits )
+    limits = [3, 10, 8]
+    indexes = [1, 4, 3]
+    increment(indexes, limits)
     assert indexes[0] == 1
     assert indexes[1] == 4
     assert indexes[2] == 4
     
-    indexes = [1,4,7]
-    increment( indexes, limits )
+    indexes = [1, 4, 7]
+    increment(indexes, limits)
     assert indexes[0] == 1
     assert indexes[1] == 5
     assert indexes[2] == 0
@@ -58,11 +63,11 @@ def test_increment():
 
 def test_loop():
     axes = [
-        ['a','b'],
-        [1,2,3],
+        ['a', 'b'],
+        [1, 2, 3],
         ]
-    def f(x,y): print x,y
-    loop( axes, f )
+    def f(x, y): print(x, y)
+    loop(axes, f)
     return
 
 
@@ -72,6 +77,4 @@ def main():
     return
 
 
-if __name__== '__main__': main()
-                                
-                                                    
+if __name__ == '__main__': main()

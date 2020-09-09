@@ -67,8 +67,8 @@ class Renderer(object):
         name = axis.name()
         try:
             axisGrp = axesGrp.create_group(name)
-        except Exception, e:
-            raise RuntimeError, "Failed to create group %r in group %s. Original exception:\n%s: %s" % (name, axesGrp, e.__class__.__name__, e)
+        except Exception as e:
+            raise RuntimeError("Failed to create group %r in group %s. Original exception:\n%s: %s" % (name, axesGrp, e.__class__.__name__, e))
         axisGrp.attrs['name'] = name
         
         #
@@ -79,7 +79,7 @@ class Renderer(object):
         # attributes of axis
         attrnames = axis.listAttributes()
         for name in attrnames:
-            from _reserved_attrs import keys as skip
+            from ._reserved_attrs import keys as skip
             if name in skip: continue
             axisGrp.attrs[name] = axis.attribute(name)
 
@@ -100,7 +100,7 @@ class Renderer(object):
 
     def _setAttrs(self, node, attributecontainer, skip_attrs=None):
         if skip_attrs is None:
-            from _reserved_attrs import keys as skip_attrs
+            from ._reserved_attrs import keys as skip_attrs
         for key in attributecontainer.listAttributes():
             if key in skip_attrs: continue
             value = attributecontainer.getAttribute(key)

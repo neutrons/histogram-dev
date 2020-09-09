@@ -7,7 +7,7 @@ class Bin:
         return len(self.xPts)
     
     def getMidpoint(self):
-        return self.leftSide + self.spacing/2 
+        return self.leftSide + self.spacing/2.
     
     @property
     def rightSide(self):
@@ -17,7 +17,7 @@ class Bin:
     def value(self):
         "preserve volume during the binning"
         totalVol = 0
-        for ind,xPt,yPt in zip(range(self.numPts), self.xPts, self.yPts):
+        for ind,xPt,yPt in zip(list(range(self.numPts)), self.xPts, self.yPts):
             #get leftOfBox
             if ind == 0:
                 if self.leftSide < xPt:
@@ -37,7 +37,7 @@ class Bin:
             boxLength = rightOfBox-leftOfBox
             boxVol = boxLength*yPt
             totalVol += boxVol
-        totalHeight = totalVol/self.spacing
+        totalHeight = 1.*totalVol/self.spacing
         return totalHeight
     
     def __init__(self, leftSide=None, spacing=None, numXPointsToBin=None):
@@ -74,7 +74,7 @@ class SimpleRebin:
         if type(newBins) is type(1):
             # this algorithm is for data that has already been binned and we're going over the bins to rebin
             import math
-            leftOverPts, numXdataInBin = math.modf(len(xData)/len(newBins))
+            leftOverPts, numXdataInBin = math.modf(len(xData)*1./len(newBins))
             currentBin = Bin(numXPointsToBin = int(numXdataInBin))
             for xPt,yPt in zip(xData,yData):
                 if currentBin.getNumPts() >= numXdataInBin:
@@ -88,7 +88,7 @@ class SimpleRebin:
                 elif binValue=='averagePoints':
                     #weight the average
                     numPointsInBin = currentBin.getNumPts()
-                    currentBin.value = (numPointsInBin*currentBin.value + yPt)/(numPointsInBin+1)
+                    currentBin.value = (numPointsInBin*currentBin.value + yPt)/(numPointsInBin+1.)
         else:
             #assume newBins are equally spaced
             binCounter = 0

@@ -11,7 +11,7 @@ aspects = [
 
 
 
-from ndarray.NumpyNdArray import NdArray
+from histogram.ndarray.NumpyNdArray import NdArray
 
 
 

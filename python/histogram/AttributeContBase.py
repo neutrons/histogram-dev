@@ -1,22 +1,22 @@
 #!/usr/bin/env python
 # Timothy M. Kelley Copyright (c) 2005 All rights reserved
 
-msg = "%s must override %s"
+msg = "{0!s} must override {1!s}"
 
-class AttributeContBase( object):
+class AttributeContBase(object):
     """attribute container interface"""
 
-    def getAttribute( self, name):
+    def getAttribute(self, name):
         """getAttribute( name) -> value"""
-        raise NotImplemented, msg%(self.__class__.__name__, 'getAttribute')
+        raise NotImplemented(msg.format(self.__class__.__name__, 'getAttribute'))
 
-    def listAttributes( self):
+    def listAttributes(self):
         """listAttributes() -> [names of attributes]"""
-        raise NotImplemented, msg%(self.__class__.__name__, 'listAttributes')
+        raise NotImplemented(msg.format(self.__class__.__name__, 'listAttributes'))
 
-    def setAttribute( self, name, value):
+    def setAttribute(self, name, value):
         """setAttribute( name, value) -> None"""
-        raise NotImplemented, msg%(self.__class__.__name__, 'setAttribute')
+        raise NotImplemented(msg.format(self.__class__.__name__, 'setAttribute'))
 
 
 # version

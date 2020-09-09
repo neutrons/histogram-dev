@@ -10,7 +10,7 @@
 ## axis which is represent by a sequence of evenly-spaced numbers
 
 
-from AxisMapper import AxisMapper
+from .AxisMapper import AxisMapper
 
 class EvenlyContinuousAxisMapper(AxisMapper):
 
@@ -40,12 +40,12 @@ class EvenlyContinuousAxisMapper(AxisMapper):
     def __call__(self, value):
         if self._positveStep:
             if value < self._minBB or value >= self._maxBB:
-                raise IndexError, "%s out of bounds (%s,%s)" % (
-                    value, self._minBB, self._maxBB)
+                raise IndexError("%s out of bounds (%s,%s)" % (
+                    value, self._minBB, self._maxBB))
         else:
             if value > self._minBB or value <= self._maxBB:
-                raise IndexError, "%s out of bounds (%s,%s)" % (
-                    value, self._maxBB, self._minBB)
+                raise IndexError("%s out of bounds (%s,%s)" % (
+                    value, self._maxBB, self._minBB))
         from math import floor
         return int ( floor ( (value-self._minBB)/self._binSize) ) 
         
@@ -60,7 +60,7 @@ def assertEvenlySpaced ( bb ):
     d0 = bb[1] - bb[0]
     for i in range( 1, len(bb) - 1 ):
         d = bb[i+1] - bb[i]
-        if abs((d-d0)/d0) > epsilon: raise NotEvenlySpaced, "%s is not a evenly spaced array" % (bb,)
+        if abs((d-d0)/d0) > epsilon: raise NotEvenlySpaced("%s is not a evenly spaced array" % (bb,))
         continue
     return
 

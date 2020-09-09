@@ -15,16 +15,16 @@
 
 class ValueWithError(object):
 
-    def __init__(self, value, error2 = None, errorPropagator = None ):
+    def __init__(self, value, error2=None, errorPropagator=None):
         if error2 is not None:
             assert error2 >= 0.0, \
-                   "error bar square must be larger than zero: %s" % error2
+                   "error bar square must be larger than zero: {0!s}".format(error2)
         
         self._value = float(value)
         self._error2 = error2
         if errorPropagator is None:
-            from ErrorPropagator import ErrorPropagator
-            errorPropagator  = ErrorPropagator()
+            from .ErrorPropagator import ErrorPropagator
+            errorPropagator = ErrorPropagator()
         self._errorPropagator = errorPropagator
         return
 
@@ -33,7 +33,7 @@ class ValueWithError(object):
 
 
     def copy(self):
-        return ValueWithError( self._value, self._error2)
+        return ValueWithError(self._value, self._error2)
 
 
     def __str__(self): return str(self.asTuple())
@@ -43,45 +43,48 @@ class ValueWithError(object):
 
     ErrorPropagatorInterface = {
         'unary': [
-        'inverse',
-        '__neg__',
+            'inverse',
+            '__neg__',
         ],
         'binary': [
-        '__iadd__',
-        '__isub__',
-        '__imul__',
-        '__idiv__',
-        '__add__',
-        '__sub__',
-        '__mul__',
-        '__div__',
-        '__radd__',
-        '__rsub__',
-        '__rmul__',
-        '__rdiv__',
+            '__iadd__',
+            '__isub__',
+            '__imul__',
+            '__idiv__',
+            '__itruediv__',
+            '__add__',
+            '__sub__',
+            '__mul__',
+            '__div__',
+            '__truediv__',
+            '__radd__',
+            '__rsub__',
+            '__rmul__',
+            '__rdiv__',
+            '__rtruediv__',
         ],
         }
 
 
     # implementation details
 
-    def unaryProxyCodeFactory( operator ):
+    def unaryProxyCodeFactory(operator):
         return '''
 def f(self):
-    return getattr(self._errorPropagator, %r)( self )
+    return getattr(self._errorPropagator, {0!r})( self )
 
-%s = f
-''' % (operator, operator)
+{1!s} = f
+'''.format(operator, operator)
 
-    def binaryProxyCodeFactory( operator ):
+    def binaryProxyCodeFactory(operator):
         return '''
 def f(self, other):
     from histogram.ValueWithError import toVE
     other = toVE( other )
-    return getattr(self._errorPropagator, %r)( self, other )
+    return getattr(self._errorPropagator, {0!r})( self, other )
 
-%s = f
-''' % (operator, operator)
+{1!s} = f
+'''.format(operator, operator)
 
 
     operatorProxyCodeFactory = {
@@ -89,47 +92,50 @@ def f(self, other):
         'binary': binaryProxyCodeFactory,
         }
         
-    for operatorType, operators in ErrorPropagatorInterface.iteritems():
+    for operatorType, operators in ErrorPropagatorInterface.items():
 
-        codeFactory = operatorProxyCodeFactory[ operatorType ]
+        codeFactory = operatorProxyCodeFactory[operatorType]
         
         for operator in operators:
-            code = codeFactory( operator )
-            exec code in locals()
+            code = codeFactory( operator)
+            exec(code, locals())
             continue
         continue
 
     pass # end of ValueWithError
 
 
-def toVE( candidate ):
-    if isinstance( candidate, ValueWithError): return candidate
-    if isIterable( candidate ):
-        if len(candidate) < 4 and len(candidate) > 0 :
+def toVE(candidate):
+    if isinstance(candidate, ValueWithError): return candidate
+    if isIterable(candidate):
+        if len(candidate) < 4 and len(candidate) > 0:
             #try create VE instance from input
-            return ValueWithError( *candidate )
-    if isNumber( candidate ): return ValueWithError( candidate )
-    raise  NotImplementedError, \
-          "Don't know how to convert %s" % (
-        candidate, )
+            return ValueWithError(*candidate)
+    if isNumber(candidate): return ValueWithError(candidate)
+    raise  NotImplementedError(\
+        "Don't know how to convert {0!s}".format(
+        candidate))
 
 
 import types
-def isIterable( candidate ):
-    if isinstance( candidate, types.ListType): return True
-    if isinstance( candidate, types.TupleType): return True
-    if '__iter__' in dir(candidate):  return True
+ListType = type(list())
+TupleType = type(tuple())
+def isIterable(candidate):
+    if isinstance(candidate, ListType): return True
+    if isinstance(candidate, TupleType): return True
+    if '__iter__' in dir(candidate): return True
     return False
 
-
-def isNumber( candidate ):
+LongType = IntType = type(0)
+FloatType = type(0.0)
+def isNumber(candidate):
     numbertypes = [
-        types.LongType,
-        types.FloatType,
-        types.IntType,]
+        LongType,
+        FloatType,
+        IntType]
 
     for t in numbertypes:
-        if isinstance( candidate, t ): return True
+        if isinstance(candidate, t): return True
         continue
     return False
     

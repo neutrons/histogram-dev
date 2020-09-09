@@ -12,37 +12,42 @@
 #
 
 import os
+import sys
 
 #get current directory
-curdir = os.path.split( __file__ ) [0]
+curdir = os.path.split(__file__)[0]
 if curdir == "": curdir = "."
 
 #get all files
-files = os.listdir( curdir )
+files = os.listdir(curdir)
 
 #get names of all test cases
 tests = []
 for f in files:
     if f.endswith("TestCase.py") and '#' not in f:
-        tests.append( f.rstrip('.py') )
+        tests.append(f.rstrip('.py'))
     continue
 
 #make a list of test suites
 allsuites = []
 for test in tests:
-    testmodule = __import__( test )
+    testmodule = __import__(test)
     suite = testmodule.pysuite()
-    allsuites.append( suite )
+    allsuites.append(suite)
     continue
 
 import unittest
-alltests = unittest.TestSuite( allsuites )
+alltests = unittest.TestSuite(allsuites)
 
 
+if sys.version_info >= (3, 0):
+    from importlib import reload
+else:
+    from imp import reload
 import all_tk_tests
 reload(all_tk_tests)
 tktests = all_tk_tests.alltests
-alltests = unittest.TestSuite( ( alltests, tktests ) )
+alltests = unittest.TestSuite((alltests, tktests))
 
 
 #run test

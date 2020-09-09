@@ -25,8 +25,8 @@ def histograms():
 
 def models():
     from ModelContainer import ModelContainer
-    models = ModelContainer( )
-    models.set( "histograms", histograms() )
+    models = ModelContainer()
+    models.set("histograms", histograms())
     return models
 
 

@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 #!/usr/bin/env python
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -41,7 +43,7 @@ class MainController(ControllerBase):
 
         #data
         self.pyshell_locals = {}
-        self.pyshell_locals.update( self.histograms )
+        self.pyshell_locals.update(self.histograms)
         self.focus = None
         self.open_tools_default_dir = '.'
         self.open_data_default_dir = '.'
@@ -63,13 +65,13 @@ class MainController(ControllerBase):
         
         self.view = view = toolkit.mainView()
         view.controller = self
-        self.pyshell_locals[ '_view' ] = view
+        self.pyshell_locals['_view'] = view
         
         from luban.gml import gml2gui
-        view = gml2gui( gmlfile, self, toolkit.renderer() )
+        view = gml2gui(gmlfile, self, toolkit.renderer())
         
         import pylab
-        self.pyshell_locals[ 'pylab'] = pylab
+        self.pyshell_locals['pylab'] = pylab
 
         import histogram
         self.pyshell_locals['histogram'] = histogram.histogram
@@ -90,7 +92,7 @@ class MainController(ControllerBase):
         sys.path = ['.'] + sys.path
 
         from Tools import Tools
-        self._tools = Tools( self )
+        self._tools = Tools(self)
 
         self.addDefaultTools()
         view.start()
@@ -104,13 +106,13 @@ class MainController(ControllerBase):
         return
 
 
-    def addNewHistogram( self, name, histogram):
+    def addNewHistogram(self, name, histogram):
         histograms = self.histograms
-        histograms.set( name, histogram )
-        self.pyshell_locals.update( histograms )
+        histograms.set(name, histogram)
+        self.pyshell_locals.update(histograms)
         names = histograms.keys()
-        self.view.getSubview("histogramList").update( names )
-        self.SwitchFocus( name )
+        self.view.getSubview("histogramList").update(names)
+        self.SwitchFocus(name)
         return
 
 
@@ -119,9 +121,9 @@ class MainController(ControllerBase):
         in the "tools" menu
         '''
         from Tools import toolsetFromPythonModule
-        directory, filename = os.path.split( pyfile )
-        moduleName, toolset = toolsetFromPythonModule( directory, filename )
-        self.addToolset( menuname, toolset )
+        directory, filename = os.path.split(pyfile)
+        moduleName, toolset = toolsetFromPythonModule(directory, filename)
+        self.addToolset(menuname, toolset)
         return
 
 
@@ -134,12 +136,12 @@ class MainController(ControllerBase):
 
         for menuname, m in modules:
             pyfile =  m.__file__
-            self.addPythonModuleAsToolset( menuname, pyfile )
+            self.addPythonModuleAsToolset(menuname, pyfile)
             continue
         return                
 
 
-    def addToolset( self, name, toolset):
+    def addToolset(self, name, toolset):
         ''' add a toolset as a submenu in the "tools" menu
         name is the name of the submenu
         toolset is a dictionary. for each pair of (key, value),
@@ -151,9 +153,9 @@ class MainController(ControllerBase):
         return
         
     
-    def OnAbout(self,e):
+    def OnAbout(self, e):
         toolkit = self.toolkit
-        toolkit.messageDialog( None, "Histogram Viewer", about_msg )
+        toolkit.messageDialog(None, "Histogram Viewer", about_msg)
         return
 
 
@@ -162,15 +164,15 @@ class MainController(ControllerBase):
         pyfile = self.toolkit.loadfileDialog(
             None, "Open toolset module (any python file)",
             open_tools_default_dir)
-        self.open_tools_default_dir = os.path.dirname( pyfile )
-        directory, filename = os.path.split( pyfile )
-        name, ext = os.path.splitext( filename )
-        self.addPythonModuleAsToolset( name , pyfile )
+        self.open_tools_default_dir = os.path.dirname(pyfile)
+        directory, filename = os.path.split(pyfile)
+        name, ext = os.path.splitext(filename)
+        self.addPythonModuleAsToolset(name, pyfile)
 
 
     def OnOnlineTutorial(self, e):
         import webbrowser
-        webbrowser.open( tutorial_url )
+        webbrowser.open(tutorial_url)
         return
     
     
@@ -179,51 +181,50 @@ class MainController(ControllerBase):
         return
 
     
-    def OnOpenHistogramFile( self, evt ):
+    def OnOpenHistogramFile(self, evt):
         open_data_default_dir = self.open_data_default_dir
         filename = self.toolkit.loadfileDialog(
-            None, "Open histogram data file" ,
-            defaultDir = open_data_default_dir )
-        self.open_data_default_dir = os.path.dirname( filename )
+            None, "Open histogram data file",
+            defaultDir=open_data_default_dir)
+        self.open_data_default_dir = os.path.dirname(filename)
 
         if filename.endswith('.pkl'): 
             from pickle import load
-            hist = load( open(filename ) )
-        elif filename.endswith( 'h5' ) or filename.endswith( 'hdf5' ):
+            hist = load(open(filename))
+        elif filename.endswith('h5') or filename.endswith('hdf5'):
             from histogram.hdf.utils import getOnlyEntry
             entry = getOnlyEntry(filename)
             from histogram.hdf import load
-            hist = load( filename, entry )
+            hist = load(filename, entry)
         else:
             toolkit = self.toolkit
-            msg = "Don't know how to open file %s\n" \
+            msg = "Don't know how to open file {0!s}\n" \
                   "Supported formats : \n" \
                   "  - python pickle\n"\
-                  "  - hdf5\n" % filename
-            toolkit.messageDialog( None, "Error",  msg)
+                  "  - hdf5\n".format(filename)
+            toolkit.messageDialog(None, "Error",  msg)
             return
-            
+
         name = hist.name()
-        name = _validVariableName( name )
+        name = _validVariableName(name)
         if name in self.histograms.keys():
-            msg = 'Histogram of name "%s" already exists. \n'\
-                  'Please rename or delete the existing histogram. \n' \
-                  % (name, )
+            msg = 'Histogram of name "{0!s}" already exists. \n'\
+                  'Please rename or delete the existing histogram. \n'.format(name)
             toolkit = self.toolkit
-            toolkit.messageDialog( None, "Error",  msg)
+            toolkit.messageDialog(None, "Error",  msg)
             return
         
-        self.addNewHistogram( name, hist )
+        self.addNewHistogram(name, hist)
         return
 
 
 
     def OnSelectHistogram(self, evt):
-        listview = self.view.getSubview( 'histogramList' )
+        listview = self.view.getSubview('histogramList')
         index = listview.getSelection()
         names = self.histograms.keys()
-        key = names[ index ]
-        self.SwitchFocus( key )
+        key = names[index]
+        self.SwitchFocus(key)
         return
 
 
@@ -231,8 +232,8 @@ class MainController(ControllerBase):
         figure = self.view.getSubview("histogramfigure")
         filetypes = figure.getPictureTypes()
         toolkit = self.toolkit
-        filename = toolkit.savefileDialog( None, "Save figure to file", filetypes )
-        if filename: figure.savePlot( filename )
+        filename = toolkit.savefileDialog(None, "Save figure to file", filetypes)
+        if filename: figure.savePlot(filename)
         return
 
 
@@ -245,7 +246,7 @@ class MainController(ControllerBase):
         
         # no histogram, alert
         if histogram is None:
-            toolkit.messageDialog( None, "Error", "No histogram is on focus")
+            toolkit.messageDialog(None, "Error", "No histogram is on focus")
             return
             
         # save
@@ -280,24 +281,24 @@ class MainController(ControllerBase):
             continue
 
         #assign the dictionary to the data model
-        changed = self.histograms.assign( histograms )
+        changed = self.histograms.assign(histograms)
 
         #if there is change, we need to update views
         if changed: 
             names = self.histograms.keys()
-            view.getSubview("histogramList").update( names )
+            view.getSubview("histogramList").update(names)
             if len(names) > 0:
                 focus = names[-1]
-                self.SwitchFocus( focus )
+                self.SwitchFocus(focus)
                 pass
             pass
         else:
-            pyshell = view.getSubview( "pythonshell" )
+            pyshell = view.getSubview("pythonshell")
         
             #check whether "plotting" command is involved
             lastcommand = pyshell.history[0]
             for cmd in ['pylab', ]: # getpylabcmds():
-                if lastcommand.find( cmd ) != -1:
+                if lastcommand.find(cmd) != -1:
                     #if so, update the plot
                     self.refreshPlot()
                     # and also keep the command in the history
@@ -305,8 +306,8 @@ class MainController(ControllerBase):
                     if focus:
                         history = self.plotCmdHistory.get(focus) or []
                         if lastcommand not in history:
-                            history.append( lastcommand )
-                        self.plotCmdHistory[ focus ] = history
+                            history.append(lastcommand)
+                        self.plotCmdHistory[focus] = history
                         pass # end if focus
                     pass # end if lastcommand
                 continue # end for cmd 
@@ -318,67 +319,66 @@ class MainController(ControllerBase):
         listbox = self.view.getSubview('histogramList')
         histograms = self.histograms
         names = histograms.keys()
-        index = names.index( histogram )
+        index = names.index(histogram)
         #index = listbox.getSelection()
         selected = histogram
-        self.histograms.delete( selected )
-        del self.pyshell_locals[ selected ]
-        del self.plotCmdHistory[ histogram ]
+        self.histograms.delete(selected)
+        del self.pyshell_locals[selected]
+        del self.plotCmdHistory[histogram]
         #new list of histogram names
         names = histograms.keys()
         # keep listbox in sync
-        listbox.update( names )
+        listbox.update(names)
         #move cursor to the next histogram
         if len(names) != 0:
-            if index >= len( names ):
+            if index >= len(names):
                 # if what is just deleted is the last item, then
                 # we refocus to the current last item
-                focus = names[ -1 ]
+                focus = names[-1]
             else:
                 # otherwise, we switch to the item that was just after
                 # the deleted one
                 focus = names[index]
-            self.SwitchFocus( focus )
+            self.SwitchFocus(focus)
             pass
         else:
             #no histograms
-            self.view.getSubview("histogramfigure").update( None )
+            self.view.getSubview("histogramfigure").update(None)
             self.focus = None
             pass
         return
 
 
     def OnKeyDownInListWindow(self, evt):
-        #print evt.getKeyCode()
-        if evt.getKeyCode( ) == 127: # delete
+        #print(evt.getKeyCode())
+        if evt.getKeyCode() == 127: # delete
             listbox = self.view.getSubview('histogramList')
             histograms = self.histograms
             names = histograms.keys()
             index = listbox.getSelection()
-            selected = names[ index ]
-            self.removeHistogram( selected )
+            selected = names[index]
+            self.removeHistogram(selected)
         return
 
     
     #helpers
     
-    def SwitchFocus( self, key ):
-        print "MainController.SwitchFocus: self.focus = %s, key=%s" % (
-            self.focus, key )
+    def SwitchFocus(self, key):
+        print("MainController.SwitchFocus: self.focus = {0!s}, key={1!s}".format(self.focus, key))
         if self.focus == key: return
         self.focus = key
         names = self.histograms.keys()
-        histogram = self.histograms.get( key ) 
-        self.view.getSubview("histogramList").select( names.index( key ) )
-        self.view.getSubview("histogramfigure").update( histogram )
+        histogram = self.histograms.get(key) 
+        self.view.getSubview("histogramList").select(names.index(key))
+        self.view.getSubview("histogramfigure").update(histogram)
         # rerun commands 
         if histogram:
             history = self.plotCmdHistory.get(key) or []
             goodhistory = []
             for i, cmd in enumerate(history):
                 try:
-                    exec cmd in self.pyshell_locals
-                    goodhistory.append( cmd )
+                    exec(cmd in self.pyshell_locals)
+                    goodhistory.append(cmd)
                 except: pass
                 continue
             self.plotCmdHistory[key] = goodhistory
@@ -399,7 +399,7 @@ def getpylabcmds():
     return cmds
 
 
-def _validVariableName( name ):
+def _validVariableName(name):
     import string
     good = string.ascii_letters + string.digits
     ret = []
@@ -407,7 +407,7 @@ def _validVariableName( name ):
         if i not in good: i = ''
         ret.append(i)
         continue
-    return ''.join( ret )
+    return ''.join(ret)
 
 
 

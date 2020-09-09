@@ -26,22 +26,22 @@ class HistogramContainer:
 
     def set(self, name, hist):
         if name in self._seq: self._store[name] = hist
-        else: self.append( name, hist )
+        else: self.append(name, hist)
         return
 
 
     def delete(self, name):
-        if name not in self._seq: raise ValueError , "%s not in this hitogram container" % name
-        del self._seq[ self._seq.index(name) ]
-        del self._store[ name ]
+        if name not in self._seq: raise ValueError("{0!s} not in this hitogram container".format(name))
+        del self._seq[self._seq.index(name)]
+        del self._store[name]
         return
     
 
     def append(self, name, hist):
-        if name in self._seq :
-            raise ValueError , "%s already in this histogram container" % name
+        if name in self._seq:
+            raise ValueError("{0!s} already in this histogram container".format(name))
         self._store[name] = hist
-        self._seq.append( name )
+        self._seq.append(name)
         return
 
 
@@ -54,7 +54,7 @@ class HistogramContainer:
         #remove everything not in 'd'
         for key in self.keys():
             if key not in d.keys():
-                self.delete( key )
+                self.delete(key)
                 changed = True
                 pass
             continue
@@ -68,7 +68,7 @@ class HistogramContainer:
                     pass
                 pass
             else:
-                self.append( key, d[key] )
+                self.append(key, d[key])
                 changed = True
                 pass
             continue

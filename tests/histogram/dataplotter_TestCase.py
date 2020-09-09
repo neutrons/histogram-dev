@@ -30,7 +30,7 @@ class dataplotter_TestCase(TestCase):
 
         self.plotter2.plot( x, y, z )
         if interactive:
-            raw_input('Press ENTER to continue')
+            input('Press ENTER to continue')
         pylab.clf()
         pylab.close()
         return
@@ -43,7 +43,7 @@ class dataplotter_TestCase(TestCase):
         
         self.plotter2.contourPlot( x, y, z )
         if interactive:
-            raw_input('Press ENTER to continue')
+            input('Press ENTER to continue')
         import pylab
         pylab.clf()
         pylab.close()
@@ -54,7 +54,7 @@ class dataplotter_TestCase(TestCase):
         self.plotter1.plot( [1,2,3], [1,2,3] )
         self.plotter1.plot( [1,2,3], [1,2,3], yerr = [0.1,0.1,0.1] )
         if interactive:
-            raw_input('Press ENTER to continue')
+            input('Press ENTER to continue')
         import pylab
         pylab.clf()
         pylab.close()
@@ -67,7 +67,7 @@ class dataplotter_TestCase(TestCase):
         I.shape = 3,4
         self.plotter2.plot( [1,2,3], [1,2,3,4], I )
         if interactive:
-            raw_input('Press ENTER to continue')
+            input('Press ENTER to continue')
         import pylab
         pylab.clf()
         pylab.close()

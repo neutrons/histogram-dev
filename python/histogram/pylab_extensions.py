@@ -17,26 +17,26 @@ except SystemError:
     try:
         import matplotlib, pylab
     except ImportError:
-        raise RuntimeError, "Please install matplotlib"
+        raise RuntimeError("Please install matplotlib")
 except ImportError:
-    raise RuntimeError, "Please install matplotlib"
+    raise RuntimeError("Please install matplotlib")
 
 
 import numpy as N
 
 
-def plothist( histogram, **kwds ):
+def plothist(histogram, **kwds):
     dim = histogram.dimension()
     if dim != 1:
-        raise NotImplementedError, "dimension: %s" % dim
+        raise NotImplementedError("dimension: {0!s}".format(dim))
     x = histogram.axes()[0].binCenters()
 
-    from plotter import process_Iaxis_unit
-    scale_factor, Iunit = process_Iaxis_unit( histogram.unit() )
+    from .plotter import process_Iaxis_unit
+    scale_factor, Iunit = process_Iaxis_unit(histogram.unit())
     y = histogram.I * scale_factor
     yerr2 = histogram.E2 
-    yerr = N.sqrt( yerr2 ) * scale_factor
-    pylab.errorbar( x, y, yerr = yerr, **kwds )
+    yerr = N.sqrt(yerr2) * scale_factor
+    pylab.errorbar(x, y, yerr=yerr, **kwds)
     return
 
 
@@ -44,9 +44,9 @@ def plothist( histogram, **kwds ):
 _plot = pylab.plot
 def plot(*args, **kwds):
     if len(args) == 1 and isHistogram(args[0]):
-        plothist( args[0], **kwds )
+        plothist(args[0], **kwds)
         return
-    _plot( *args, **kwds )
+    _plot(*args, **kwds)
     return
 
 pylab.plot = plot
@@ -54,9 +54,9 @@ pylab.plot = plot
 
 
 
-def isHistogram( candidate ):
-    from histogram.Histogram import Histogram
-    return isinstance( candidate, Histogram )
+def isHistogram(candidate):
+    from .histogram.Histogram import Histogram
+    return isinstance(candidate, Histogram)
 
 
 # version

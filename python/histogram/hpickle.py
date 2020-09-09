@@ -19,21 +19,21 @@ use = "system pickle"
 
 if use == "system pickle":
 
-    def dump( obj, filename ):
+    def dump(obj, filename):
         import pickle
-        pickle.dump(obj, open(filename, 'w') )
+        pickle.dump(obj, open(filename, 'w'))
         return
 
 
     def load(filename):
         import pickle
-        return pickle.load( open(filename) )
+        return pickle.load(open(filename))
 
     pass
 
 
 import journal
-warning = journal.warning( "histogram.hpickle" )
+warning = journal.warning("histogram.hpickle")
 
 import os
 

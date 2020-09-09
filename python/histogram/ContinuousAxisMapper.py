@@ -9,7 +9,7 @@
 ## The axis bins are not necessarily evenly spaced.
 
 
-from AxisMapper import AxisMapper
+from .AxisMapper import AxisMapper
 
 class ContinuousAxisMapper(AxisMapper):
 
@@ -40,16 +40,16 @@ def findCellIndex( value, arr ):
     
     if (len(arr) < 2 ) : raise SmallArrayError
     if (value< arr[0] or value > arr[-1]):  raise OutOfBoundError
-    if (arr[-1] < arr[0]) : raise ValueError, "array must be ascending" 
+    if (arr[-1] < arr[0]) : raise ValueError("array must be ascending") 
 
     n = len( arr )
 
-    i,j,k =0, n/2, n-1
+    i,j,k =0, n//2, n-1
 
     while (i!=j and j!=k) :
-	middle = arr[j]
-        if (middle < value) : i = j; j = (i+k)/2
-        elif (value < middle):  k = j; j = (i+k)/2
+        middle = arr[j]
+        if (middle < value) : i = j; j = (i+k)//2
+        elif (value < middle):  k = j; j = (i+k)//2
         else : return j
         continue
       

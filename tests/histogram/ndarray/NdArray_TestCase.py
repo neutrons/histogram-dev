@@ -1,3 +1,5 @@
+
+
 #!/usr/bin/env python
 
 # NdArray has a fixed interface
@@ -16,7 +18,7 @@ def createTestCase(klass):
     class TC(NdArray_TestCase):
         def setUp(self):
             self.NdArray = klass
-            #print klass
+            #print(klass)
             return
         pass # end of TC
     return TC
@@ -25,20 +27,19 @@ def createTestCase(klass):
 def pysuite():
     from histogram.ndarray.NumpyNdArray import NdArray as NumpyNA
 
-    klasses = [ NumpyNA ] 
-    testcases = [ createTestCase( klass ) for klass in klasses ]
-    suites = [ unittest.makeSuite( tc ) for tc in testcases ]
-    return unittest.TestSuite( suites )
+    klasses = [NumpyNA]
+    testcases = [createTestCase(klass) for klass in klasses]
+    suites = [unittest.makeSuite(tc) for tc in testcases]
+    return unittest.TestSuite(suites)
 
 
 def main():
     import journal
 ##     journal.debug('instrument').activate()
     pytests = pysuite()
-    alltests = unittest.TestSuite( (pytests, ) )
+    alltests = unittest.TestSuite((pytests,))
     unittest.TextTestRunner(verbosity=2).run(alltests)
     return
 
 
 if __name__ == '__main__': main()
-    

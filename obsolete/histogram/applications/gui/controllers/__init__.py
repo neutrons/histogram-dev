@@ -19,8 +19,8 @@ def controllers():
 ##     hlc = HistogramListController( controllers )
 ##     controllers.set( "list", hlc )
     from MenuController import MenuController
-    menucontroller = MenuController( models, controllers, view )
-    controllers.set( "menu", menucontroller )
+    menucontroller = MenuController(models, controllers, view)
+    controllers.set("menu", menucontroller)
     return controllers
 
 

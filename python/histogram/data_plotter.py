@@ -31,14 +31,14 @@ class Plotter1D(object):
     def interactive( self, b ):
         """if b is True, control will go back to python prompt after plotting
         """
-        raise NotImplementedError , "%s must override plot" % (
-            self.__class__.__name__)
+        raise NotImplementedError("%s must override plot" % (
+            self.__class__.__name__))
     
 
     def plot(self, x, y):
         """create plot of y vs x"""
-        raise NotImplementedError , "%s must override plot" % (
-            self.__class__.__name__)
+        raise NotImplementedError("%s must override plot" % (
+            self.__class__.__name__))
 
     pass #end of Plotter1D
 
@@ -47,7 +47,7 @@ class Plotter1D(object):
 class MplPlotter:
 
     try:
-        from pylab_extensions import pylab
+        from .pylab_extensions import pylab
         _engine = pylab
     except ImportError:
         import traceback
@@ -116,7 +116,7 @@ class MplPlotter1D(MplPlotter, Plotter1D):
         
         fmtstr = color+symbol
         
-        if kwds.has_key( "yerr" ):
+        if "yerr" in kwds:
             MplPlotter._image = self.errorbar( x, y, yerr = kwds["yerr"], fmt = fmtstr)
         else:
             MplPlotter._image = self._plot(x,y, fmtstr)
@@ -130,7 +130,7 @@ class MplPlotter1D(MplPlotter, Plotter1D):
 
         if self._usePylab: plot = self._engine.errorbar
         else:
-            if figure is None: print "missing matplotlib! "; return
+            if figure is None: print("missing matplotlib! "); return
             else: plot = figure.gca().errorbar
             pass
         rt = plot(x,y, yerr = yerr, **kwds)
@@ -144,7 +144,7 @@ class MplPlotter1D(MplPlotter, Plotter1D):
 
         if self._usePylab: plot = self._engine.plot
         else:
-            if figure is None: print "missing matplotlib! "; return
+            if figure is None: print("missing matplotlib! "); return
             else: plot = figure.gca().plot
             pass
         rt = plot(x,y, *args, **kwds)
@@ -164,8 +164,8 @@ class Plotter2D(object):
     def interactive( self, b ):
         """if b is True, control will go back to python prompt after plotting
         """
-        raise NotImplementedError , "%s must override plot" % (
-            self.__class__.__name__)
+        raise NotImplementedError("%s must override plot" % (
+            self.__class__.__name__))
     
 
     def plot(self, x, y, z, min = None, max = None):
@@ -174,8 +174,8 @@ class Plotter2D(object):
         param y:  1D array of y values
         param z:  2D matrix of z values
         """
-        raise NotImplementedError , "%s must override plot" % (
-            self.__class__.__name__)
+        raise NotImplementedError("%s must override plot" % (
+            self.__class__.__name__))
 
 
     def contourPlot(self, x, y, z, min = None, max = None, nsteps = 20):
@@ -184,8 +184,8 @@ class Plotter2D(object):
         param y:  1D array of y values
         param z:  2D matrix of z values
         """
-        raise NotImplementedError , "%s must override contourPlot" % (
-            self.__class__.__name__)
+        raise NotImplementedError("%s must override contourPlot" % (
+            self.__class__.__name__))
 
     pass
 
@@ -221,7 +221,7 @@ class MplPlotter2D(MplPlotter, Plotter2D):
         
     def plot_(self,x, y, z, min = None, max = None, **kwds): 
         figure = self.get_figure()
-        if figure is None: print "missing matplotlib! "; return
+        if figure is None: print("missing matplotlib! "); return
 
         #convert everything to numpy array, otherwise matplotlib
         #may complain
@@ -229,7 +229,7 @@ class MplPlotter2D(MplPlotter, Plotter2D):
         z = array(z); x = array(x); y = array(y)
         #
 
-        if len(x) <= 1 or len(y) <= 1: raise ValueError, "The data you want to plot is really 1-D. Please make a create a 1D histogram by slicing and make a 1D plot"
+        if len(x) <= 1 or len(y) <= 1: raise ValueError("The data you want to plot is really 1-D. Please make a create a 1D histogram by slicing and make a 1D plot")
         
         _min, _max = _guessMinMax( z )
         if min is None: min = _min
@@ -240,7 +240,7 @@ class MplPlotter2D(MplPlotter, Plotter2D):
         #please read notes in docstring of method "plot"
         zt = z.transpose()
 
-        print "plot z in (%s, %s)" % (min, max)
+        print("plot z in (%s, %s)" % (min, max))
         X,Y = self._engine.meshgrid(x,y)
 
         if self._usePylab: engine = self._engine
@@ -254,8 +254,8 @@ class MplPlotter2D(MplPlotter, Plotter2D):
         # targetaspect = 3./4
         # adjustedaspect = targetaspect * (x[-1]-x[0]) / (y[-1]-y[0])
         # rt = MplPlotter._image = engine.imshow(zt1, extent=extent, aspect=adjustedaspect, **kwds)
-        if not kwds.has_key('aspect'): kwds['aspect'] = 'auto'
-        if not kwds.has_key('extent'): kwds['extent'] = extent
+        if 'aspect' not in kwds: kwds['aspect'] = 'auto'
+        if 'extent' not in kwds: kwds['extent'] = extent
         rt = MplPlotter._image = engine.imshow(zt1, **kwds)
         engine.clim( min, max )
         engine.colorbar()
@@ -282,7 +282,7 @@ class MplPlotter2D(MplPlotter, Plotter2D):
 
     def contourPlot_( self, x, y, z, min = None, max = None, nsteps = 20):
         figure = self.get_figure()
-        if figure is None: print "missing matplotlib! "; return
+        if figure is None: print("missing matplotlib! "); return
         from numpy import array
         z = array(z)
         z = z.transpose()
@@ -291,9 +291,9 @@ class MplPlotter2D(MplPlotter, Plotter2D):
         if max is None: max = _max
 
         #color steps
-        c = N.arange( min, max, (max-min)/nsteps)
+        c = N.arange( min, max, 1.*(max-min)/nsteps)
 
-        print "plot z in (%s, %s)" % (min, max)
+        print("plot z in (%s, %s)" % (min, max))
         _clear( figure )
         if self._usePylab:  self._engine.contourf( x,y,z,c )
         else:   figure.gca().contourf( x,y,z,c )
@@ -342,9 +342,9 @@ def _guessMin(z):
     save = z.shape
     try:
         z.shape = -1,
-    except Exception, err:
+    except Exception as err:
         msg = "%s. z is a %s, z.shape = %s" % (err, type(z), z.shape)
-        raise err.__class__, msg
+        raise err.__class__(msg)
     min = N.min(z)
     if min >= 0: 
         ret = min

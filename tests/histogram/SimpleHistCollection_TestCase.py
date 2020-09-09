@@ -25,7 +25,7 @@ class SimpleHistCollection_TestCase(TestCase):
         """ ctor
         """
         hist = 1
-        hists = SimpleHistCollection( hist )
+        hists = SimpleHistCollection(hist)
         return
 
 
@@ -33,13 +33,13 @@ class SimpleHistCollection_TestCase(TestCase):
         """ __call__
         """
         hist = 1
-        hists = SimpleHistCollection( hist )
+        hists = SimpleHistCollection(hist)
         #default call
-        self.assertEqual( hists(), hist )
+        self.assertEqual(hists(), hist)
         
         #call with a detector instance
         class Detector: pass
-        self.assertEqual( hists( Detector() ), hist )
+        self.assertEqual(hists(Detector()), hist)
         return
         
         
@@ -49,14 +49,14 @@ class SimpleHistCollection_TestCase(TestCase):
     
 def pysuite():
     suite1 = unittest.makeSuite(SimpleHistCollection_TestCase)
-    return unittest.TestSuite( (suite1,) )
+    return unittest.TestSuite((suite1,))
 
 def main():
     import journal
 ##     journal.debug('instrument').activate()
 ##     journal.debug('instrument.elements').activate()
     pytests = pysuite()
-    alltests = unittest.TestSuite( (pytests, ) )
+    alltests = unittest.TestSuite((pytests,))
     unittest.TextTestRunner(verbosity=2).run(alltests)
     return
 

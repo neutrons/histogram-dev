@@ -1,4 +1,4 @@
-
+from __future__ import print_function
 
 class Tools:
 
@@ -8,20 +8,20 @@ class Tools:
 
 
     def dispatch(self, evthandler):
-        return self.evthandler_registry[ evthandler ]
+        return self.evthandler_registry[evthandler]
 
 
-    def __init__(self, mainController ):
+    def __init__(self, mainController):
         """
         toolkit: gui toolkit
         toolsMenu: tools menu
         parent_refresh_function: parent window's refresh function
         """
         toolkit = mainController.toolkit
-        toolsMenu = mainController.view.getSubview( "toolsMenu" )
+        toolsMenu = mainController.view.getSubview("toolsMenu")
         parent_refresh_function = mainController.refreshPlot
 
-        self.mainframe = mainController.view.getSubview( 'mainframe' )
+        self.mainframe = mainController.view.getSubview('mainframe')
         self.evthandler_registry = {}
         self.toolsMenu = toolsMenu
         self.toolkit = toolkit
@@ -36,31 +36,31 @@ class Tools:
         if name in self.submenus: self.deleteSubMenu(name)
         toolsMenu = self.toolsMenu
         toolkit = self.toolkit
-        newsubmenu = toolkit.menu( self.mainframe, name )
-        newmenuitem = toolkit.menuitem( name, submenu = newsubmenu )
-        self.submenus[ name ]  = newsubmenu
-        toolsMenu.append( newmenuitem )
+        newsubmenu = toolkit.menu(self.mainframe, name)
+        newmenuitem = toolkit.menuitem(name, submenu=newsubmenu)
+        self.submenus[name]  = newsubmenu
+        toolsMenu.append(newmenuitem)
         return
 
 
     def deleteSubMenu(self, name):
-        self.toolsMenu.delete( name )
+        self.toolsMenu.delete(name)
         del self.submenus[name]
         return
         
 
-    def addTool( self, name, func, submenu):
+    def addTool(self, name, func, submenu):
         '''add a subsubmenu item to the submenu. the new item will be
         given the name "name", and will provide functionality "func"
         '''
         toolkit = self.toolkit
 
         #
-        submenu = self.submenus[ submenu ]
+        submenu = self.submenus[submenu]
         def evthandler(evt):
-            core = self.dispatch( evthandler )
+            core = self.dispatch(evthandler)
             try:
-                core( self.evaluation_environment )
+                core(self.evaluation_environment)
             except:
                 import traceback
                 tb = traceback.format_exc()
@@ -69,10 +69,10 @@ class Tools:
             self.parent_refresh_function()
             return
 
-        self.evthandler_registry[ evthandler ] = func
+        self.evthandler_registry[evthandler] = func
 
-        item = toolkit.menuitem( name, callbacks = {'click': evthandler} )
-        submenu.append( item )
+        item = toolkit.menuitem(name, callbacks={'click': evthandler})
+        submenu.append(item)
         return
         
 
@@ -84,9 +84,9 @@ class Tools:
           value is the function that will be called when the subsubmenu
           is selected.
         '''
-        name = name.replace( '_', ' ' )
-        self.addSubMenu( name )
-        for k,v in toolset: self.addTool( k, v, name )
+        name = name.replace('_', ' ')
+        self.addSubMenu(name)
+        for k, v in toolset: self.addTool(k, v, name)
         return
         
     
@@ -104,35 +104,41 @@ def toolsetFromPythonModule(directory, filename):
     
     import sys
 
-    print "toolsetFromPythonModule: directory=%s, filename=%s" % (
-        directory, filename )
+    print("toolsetFromPythonModule: directory={0!s}, filename={1!s}".format(
+        directory, filename))
     #do we need to restore the sys.path?
     if directory not in sys.path:
         sys.path = [directory] + sys.path
         pass
 
-    moduleName, ext = os.path.splitext( filename )
+    moduleName, ext = os.path.splitext(filename)
 
-    m = __import__( moduleName )
-    reload( m )
-
+    m = __import__(moduleName)
+    if sys.version_info < (3,):
+        reload(m)
+    elif sys.version_info < (3,4):
+        import imp
+        imp.reload(m)
+    else:
+        import importlib
+        importlib.reload(m)
     toolset = []
     try:
         d = m.__export__
-    except AttributeError :
-        d = _listFromDict( m.__dict__ )
+    except AttributeError:
+        d = _listFromDict(m.__dict__)
         pass
-    for k,v in d:
+    for k, v in d:
         if k.startswith('_'): continue
-        if not callable( v ): continue
-        toolset.append( (k,v) )
+        if not callable(v): continue
+        toolset.append((k, v))
         continue
     
     return moduleName, toolset
     
 
-def _listFromDict( d ):
-    return [ (k,v) for k,v in d.iteritems() ]
+def _listFromDict(d):
+    return [(k, v) for k, v in d.iteritems()]
 
 
 import os

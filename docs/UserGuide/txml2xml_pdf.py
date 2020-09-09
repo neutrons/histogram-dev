@@ -9,5 +9,5 @@
 from webserver import webserver
 
 urldict = {
-    'xxxWEBSITExxx': "%s/Docs/docs" % webserver,
+    'xxxWEBSITExxx': "{0!s}/Docs/docs".format(webserver),
     }

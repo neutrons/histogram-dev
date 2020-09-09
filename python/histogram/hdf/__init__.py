@@ -15,7 +15,7 @@
 try:
     import h5py
 except ImportError:
-    raise RuntimeError, "Please install h5py"
+    raise RuntimeError("Please install h5py")
 
 
 import os
@@ -36,7 +36,7 @@ def load( filename, pathinfile=None, fs = None, **kwds ):
         # it could be that there is only one entry 
         # in the histogram file, let us try that
         if os.path.exists(filename):
-            from utils import getOnlyEntry
+            from .utils import getOnlyEntry
             try:
                 pathinfile = getOnlyEntry(filename)
             except:
@@ -45,7 +45,7 @@ def load( filename, pathinfile=None, fs = None, **kwds ):
                     "Please explicitly specify the entry "
                     "by keyword 'pathinfile'"
                     ) % filename
-                raise ValueError, msg
+                raise ValueError(msg)
         # or it could be the first argument is an url
         # that has both the file path and the entry name
         else:
@@ -57,16 +57,16 @@ def load( filename, pathinfile=None, fs = None, **kwds ):
             filename, pathinfile = os.path.split(url)
             if not os.path.exists(filename):
                 msg = "invalid histogram url: %s" % url
-                raise ValueError, url
+                raise ValueError(url)
             
     if fs is None:
         from h5py import File
         try:
             fs = File( filename, 'r')
-        except IOError, msg:
-            raise IOError, "unable to load histogram. filename=%s, "\
-                "pathinfile=%s, kwds=%s" % (filename, pathinfile, kwds)
-    from Loader import Loader
+        except IOError as msg:
+            raise IOError("unable to load histogram. filename=%s, "\
+                "pathinfile=%s, kwds=%s" % (filename, pathinfile, kwds))
+    from .Loader import Loader
     loader = Loader(fs, pathinfile)
     return loader.load(**kwds)
 
@@ -89,7 +89,7 @@ def dump( histogram, filename = None, pathinfile = '/',
       The compression ratio. If it is 0, no compression will be done.
       The valid values are integers from 0 to 9 (inclusive).
     '''
-    from Renderer import Renderer
+    from .Renderer import Renderer
     #g = graphFromHDF5File( filename, pathinfile, fs = fs )
     pathinfile = pathinfile.split( '/' )
     p = pathinfile + [histogram.name()]

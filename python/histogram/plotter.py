@@ -27,15 +27,15 @@ class HistogramPlotter:
     def interactive(self, b):
         """if b is True, control will go back to python prompt after plotting
         """
-        raise NotImplementedError , "%s must override interactive" % (
-            self.__class__.__name__)
+        raise NotImplementedError("%s must override interactive" % (
+            self.__class__.__name__))
     
 
     def plot(self, hist, **kwds):
         dim = hist.dimension()
 
         if dim > 2:
-            raise NotImplementedError , "dim=%s" % (dim,)
+            raise NotImplementedError("dim=%s" % (dim,))
             warning.log( "NotImplementedError: dim = %s" % dim )
             return
         plot = getattr( self, "plot%dd" % dim )
@@ -44,20 +44,20 @@ class HistogramPlotter:
 
 
     def clear(self):
-        raise NotImplementedError, "clear"
+        raise NotImplementedError("clear")
 
     
     def plot1d(self, hist, **kwds):
-        raise NotImplementedError , "plot 1d curve"
+        raise NotImplementedError("plot 1d curve")
 
     def plot2d(self, hist, **kwds):
-        raise NotImplementedError , "plot 2d image"
+        raise NotImplementedError("plot 2d image")
 
     pass # end of HistogramPlotter
 
 
 
-from data_plotter import MplPlotter1D, MplPlotter2D
+from .data_plotter import MplPlotter1D, MplPlotter2D
 
 
 def axis_label( axis ):
@@ -92,12 +92,12 @@ class HistogramMplPlotter(HistogramPlotter):
         size = hist.shape()[0]
         if size > (display_size*10) :
             hist = resample( hist, display_size )
-            print '*'*70
-            print "This histogram has been RESAMPLED!"
-            print "The histogram displayed has lower resolution than the original."
-            print "To get full resolution, trying taking a slice with a small region."
-            print "The intensities are shown larger due to coarse-graining."
-            print '*'*70
+            print('*'*70)
+            print("This histogram has been RESAMPLED!")
+            print("The histogram displayed has lower resolution than the original.")
+            print("To get full resolution, trying taking a slice with a small region.")
+            print("The intensities are shown larger due to coarse-graining.")
+            print('*'*70)
         
         xaxis = hist.axisFromId(1)
         x = xaxis.binCenters()
@@ -157,7 +157,7 @@ class HistogramMplPlotter(HistogramPlotter):
 
 
     def image(self):
-        from data_plotter import MplPlotter
+        from .data_plotter import MplPlotter
         return MplPlotter._image
 
     pass # end of HistogramMplPlotter
@@ -205,7 +205,7 @@ def process_Iaxis_unit( unit ):
 
 
 def parse_unit( s ):
-    from _units import parser
+    from ._units import parser
     unit_parser = parser()
     return unit_parser.parse( s )
 
@@ -220,8 +220,8 @@ def resample( hist1, size ):
     xaxis = hist1.axes()[0]
     xbb = xaxis.binBoundaries().asNumarray()
     front, back = xbb[0], xbb[-1]
-    step = (back-front)/size
-    newxbb = H.arange( front, back+step/2, step)
+    step = 1.*(back-front)/size
+    newxbb = H.arange( front, back+step/2., step)
     newxaxis = H.axis( xaxis.name(), boundaries = newxbb, unit = xaxis.unit() )
 
     newhist = H.histogram(
@@ -230,11 +230,11 @@ def resample( hist1, size ):
 
     newxc = newxaxis.binCenters()
     for x in newxc[1:-1] :
-        newhist[ x ] = hist1[ (x-step/2, x+step/2) ].sum()
+        newhist[ x ] = hist1[ (x-step/2., x+step/2.) ].sum()
         continue
 
-    newhist[ newxc[0] ]= hist1[ (newxbb[0], newxc[0] + step/2) ].sum()
-    newhist[ newxc[-1] ]= hist1[ (newxc[-1]-step/2, newxbb[-1]-step*1.e-10) ].sum()
+    newhist[ newxc[0] ]= hist1[ (newxbb[0], newxc[0] + step/2.) ].sum()
+    newhist[ newxc[-1] ]= hist1[ (newxc[-1]-step/2., newxbb[-1]-step*1.e-10) ].sum()
 
     return newhist
         

@@ -22,7 +22,7 @@ a histogram collection with one single histogram
   - TODOs:
 """
 
-from DetHistCollection import DetHistCollection as DHCBase
+from .DetHistCollection import DetHistCollection as DHCBase
 
 
 class SimpleHistCollection(DHCBase):

@@ -7,7 +7,7 @@
 ##
 
 
-from NdArrayDataset import Dataset
+from .NdArrayDataset import Dataset
 
 
 class Axis(Dataset):
@@ -68,10 +68,10 @@ class Axis(Dataset):
     def cellIndexFromValue( self, value ):
         try:             
             return self._mapper(value)
-        except IndexError, msg:
+        except IndexError as msg:
             newmsg = "%s\nAxis %s: cannot find index of %s. (axis bin centers=%s)" % (
                 msg, self.name(), value, self.binCenters())
-            raise IndexError , newmsg
+            raise IndexError(newmsg)
         
 
     def binCenters( self):
@@ -103,7 +103,7 @@ class Axis(Dataset):
         #use parent class's changeUnit, but please remember:
         if self.__isslice:
             msg =  "This axis %r is a slice. cannot change unit." % self.name()
-            raise RuntimeError, msg
+            raise RuntimeError(msg)
         
         #there is a problem with mapper!!!!
         Dataset.changeUnit(self, unit)
@@ -179,12 +179,12 @@ class Axis(Dataset):
 
         # if start and end are special objects, convert to numbers as well
         bc = self.binCenters()
-        if start == front: start = bc[0]
-        if end == back: end = bc[-1]
+        if start == front: start = float(bc[0])
+        if end == back: end = float(bc[-1])
 
         # at this point, start and end should all be numbers
         if not isNumber(start) or not isNumber(end):
-            raise RuntimeError, "At this point, start and end should all be numbers: start=%s(%s), end=%s(%s)" % (start, type(start), end, type(end))
+            raise RuntimeError("At this point, start and end should all be numbers: start=%s(%s), end=%s(%s)" % (start, type(start), end, type(end)))
         #slice. +1 is due to the difference of bin boundaries and bin centers
         s = ( self.cellIndexFromValue( start ),
               self.cellIndexFromValue( end ) + 1 )
@@ -212,7 +212,7 @@ class Axis(Dataset):
         if mapper is None:
             try:
                 mapper = createMapper( storage.asList(), self._mapper.__class__ )
-            except NotImplementedError, err:
+            except NotImplementedError as err:
                 raise 'Unable to create copy of axis %s: %s, %s' % (
                     self, err.__class__.__name__, err )
                 
@@ -232,7 +232,7 @@ class Axis(Dataset):
         else:
             numcells = len(bblist) - 1
             return (bblist[1:]+bblist[:-1])/2.
-        raise RuntimeError, "should not reach here"
+        raise RuntimeError("should not reach here")
 
 
     pass # end of Axis
@@ -242,32 +242,32 @@ class Axis(Dataset):
 class LogicError(Exception): pass
 
 
-from _units import isDimensional
+from ._units import isDimensional
 def isNumber(candidate):
     return isFloat(candidate) or isInteger(candidate)
 
 import types
 def isFloat(candidate):
-    return isinstance(candidate, types.FloatType)
+    return isinstance(candidate, float)
 def isInteger(candidate):
-    return isinstance(candidate, types.IntType) or isinstance(candidate, N.int32)
+    return isinstance(candidate, int) or isinstance(candidate, N.int32)
 
 
 import numpy as N
 
 
-from AxisMapperCreater import creater
+from .AxisMapperCreater import creater
 createMapper = creater.create
 del creater
         
-from SlicingInfo import front, back
+from .SlicingInfo import front, back
         
-from SlicingInfo import SlicingInfo
+from .SlicingInfo import SlicingInfo
 def isSlicingInfo( s ):
     return isinstance(s, SlicingInfo)
 
 
-from DiscreteAxisMapper import DiscreteAxisMapper
+from .DiscreteAxisMapper import DiscreteAxisMapper
         
 
 # version
