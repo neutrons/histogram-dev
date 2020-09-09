@@ -40,15 +40,8 @@ import unittest
 alltests = unittest.TestSuite(allsuites)
 
 
-import all_tk_tests
-if sys.version_info < (3,):
-    importlib.reload(all_tk_tests)
-elif sys.version_info < (3, 4):
-    import imp
-    imp.reload(all_tk_tests)
-else:
-    import importlib
-    importlib.reload(all_tk_tests)
+import importlib, all_tk_tests
+importlib.reload(all_tk_tests)
 tktests = all_tk_tests.alltests
 alltests = unittest.TestSuite((alltests, tktests))
 
