@@ -12,6 +12,7 @@
 #
 
 
+import sys
 import numpy as np
 from ..ndarray.NumpyNdArray import NdArray, getNumpyArray_aktypecode as getDataType, arrayFromNumpyArray
 from histogram.NdArrayDataset import Dataset
@@ -158,12 +159,8 @@ class Loader:
     def onUnit(self, unit):
         if isinstance(unit, int) or isinstance(unit, float) or isinstance(unit, int):
             return unit
-        # ndarray of chars
-        from numpy import ndarray
-        if isinstance(unit, ndarray):
-            return unit.tostring()
-        if isinstance(unit, str):
-            return unit
+        unit = self._str(unit, raise_on_wrong_type=False)
+        if isinstance(unit, str): return unit
         try:
             return float(unit)
         except:
@@ -182,15 +179,16 @@ class Loader:
         return d
 
 
-    def _str(self, candidate):
+    def _str(self, candidate, raise_on_wrong_type=True):
         if isinstance(candidate, np.ndarray):
             candidate = candidate.tostring()
+        if sys.version_info >= (3,0) and isinstance(candidate, bytes):
+            candidate = candidate.decode()
         if isinstance(candidate, str):
             return candidate
-        if isinstance(candidate, bytes):
-            return candidate.decode()
-        raise NotImplementedError(str(candidate))
-
+        if raise_on_wrong_type:
+            raise ValueError("Not a string: %s" % (candidate,))
+        return candidate
 
     def _guessHistogramName(self):
         fs = self.fs
