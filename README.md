@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/danse-inelastic/histogram.svg?branch=master)](https://travis-ci.com/danse-inelastic/histogram)
+
 # histogram
 histogram data object
 
