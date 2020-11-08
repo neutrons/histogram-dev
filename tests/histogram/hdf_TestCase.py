@@ -379,7 +379,7 @@ hh.dump( h, '{0!s}', '/', 'c' )
 
 
     def testload_unicode(self):
-        'load '
+        'load histogram h5 file with unicode unit'
         h = load('I_tof.h5')
         return
 
