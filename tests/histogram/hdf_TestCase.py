@@ -1,5 +1,3 @@
-
-
 #!/usr/bin/env python
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -380,6 +378,10 @@ hh.dump( h, '{0!s}', '/', 'c' )
         return
 
 
+    def testload_unicode(self):
+        'load histogram h5 file with unicode unit'
+        h = load('I_tof.h5')
+        return
 
 def pysuite():
     suite1 = unittest.makeSuite(hdf_TestCase)

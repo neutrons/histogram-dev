@@ -182,8 +182,12 @@ class Loader:
     def _str(self, candidate, raise_on_wrong_type=True):
         if isinstance(candidate, np.ndarray):
             candidate = candidate.tostring()
-        if sys.version_info >= (3,0) and isinstance(candidate, bytes):
-            candidate = candidate.decode()
+        if sys.version_info >= (3,0) :
+            if isinstance(candidate, bytes):
+                candidate = candidate.decode()
+        else:
+            if isinstance(candidate, unicode):
+                candidate = candidate.encode()
         if isinstance(candidate, str):
             return candidate
         if raise_on_wrong_type:
