@@ -15,10 +15,12 @@ set ( INC_FILES
   Event2Quantity.h
   GridData_1D.h
   GridData_2D.h
+  GridData_3D.h
   GridData_4D.h
   EvenlySpacedAxisMapper.h
   EvenlySpacedGridData_1D.h
   EvenlySpacedGridData_2D.h
+  EvenlySpacedGridData_3D.h
   EvenlySpacedGridData_4D.h
   Exception.h
   Histogrammer.h
