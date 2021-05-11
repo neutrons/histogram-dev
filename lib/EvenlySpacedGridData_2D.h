@@ -50,7 +50,7 @@ HISTOGRAM_NAMESPACE_START
       ZIterator zarray_begin;
       IndexType size, shape[2];
       XDataType xbegin, xend, xstep;
-      YDataType ybegin, yend, ystep;  
+      YDataType ybegin, yend, ystep;
 
     
       /// ctor.
