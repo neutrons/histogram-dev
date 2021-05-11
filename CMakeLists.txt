@@ -10,7 +10,7 @@
 cmake_minimum_required (VERSION 2.6)
 project (histogram)
 
-set(VERSION "0.3.7")
+set(VERSION "0.3.8")
 set(AUTHOR "Jiao Lin")
 set(AUTHOR_EMAILE "jiao.lin@gmail.com")
 set(VENDOR "DANSE")
