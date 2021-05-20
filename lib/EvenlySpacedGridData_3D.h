@@ -77,6 +77,12 @@ HISTOGRAM_NAMESPACE_START
         assert(x1end > x1begin+x1step*2);
         assert(x2end > x2begin+x2step*2);
         assert(x3end > x3begin+x3step*2);
+        int N = (x1end-x1begin)/x1step;
+        x1end = x1begin + x1step*N;
+        N = (x2end-x2begin)/x2step;
+        x2end = x2begin + x2step*N;
+        N = (x3end-x3begin)/x3step;
+        x3end = x3begin + x3step*N;
 
         shape[0] = IndexType( (x1end-x1begin)/x1step );
         shape[1] = IndexType( (x2end-x2begin)/x2step );
@@ -90,7 +96,7 @@ HISTOGRAM_NAMESPACE_START
         m_x3mapper = new X3Mapper( x3begin, x3end, x3step );
         m_zarray = new ZArray(zarray_begin, shape);
         m_dg = new DG( *m_x1mapper, *m_x2mapper, *m_x3mapper, *m_zarray );
-      } 
+      }
 
   ZDataType operator ()
 	( const X1DataType & x1,
@@ -124,9 +130,9 @@ HISTOGRAM_NAMESPACE_START
 	  const X3DataType & x3)
 	const
       {
-        return x1 < x1begin || x1 >= x1end || \
-          x2 < x2begin || x2 >= x2end ||        \
-          x3 < x3begin || x3 >= x3end ;
+        return x1 < x1begin || x1 > x1end-x1step/1000.0 || \
+          x2 < x2begin || x2 >= x2end-x2step/1000.0 ||        \
+          x3 < x3begin || x3 >= x3end-x3step/1000.0 ;
       }
 
       void clear() {
