@@ -84,9 +84,9 @@ HISTOGRAM_NAMESPACE_START
         N = (x3end-x3begin)/x3step;
         x3end = x3begin + x3step*N;
 
-        shape[0] = IndexType( (x1end-x1begin)/x1step );
-        shape[1] = IndexType( (x2end-x2begin)/x2step );
-        shape[2] = IndexType( (x3end-x3begin)/x3step );
+        shape[0] = IndexType( round((x1end-x1begin)/x1step) );
+        shape[1] = IndexType( round((x2end-x2begin)/x2step) );
+        shape[2] = IndexType( round((x3end-x3begin)/x3step) );
 
         size = shape[0] * shape[1] * shape[2];
         zarray_begin = i_zarray_begin;
