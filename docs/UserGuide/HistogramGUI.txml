@@ -1,19 +1,19 @@
 <!--
-    
+
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
+
     Jiao Lin
     California Institute of Technology
     (C) 2007 All Rights Reserved
-    
+
     {LicenseText}
-    
+
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
+
 -->
 
 <chapter id="HistogramGUI">
-  
+
 <title >
   Histogram GUI
 </title>
@@ -26,7 +26,7 @@ and see what you are doing.
 <sect1 id="HistogramsGUI.launch">
 <title>Launch the Histogram GUI</title>
 
-To launch the Histogram GUI application, type the 
+To launch the Histogram GUI application, type the
 following command:
 
 <programlisting>
@@ -39,7 +39,7 @@ The main window will appear.
   <title >
     Histogram GUI snapshot
   </title>
-  
+
   <mediaobject >
     <imageobject >
       <imagedata width='70%' fileref='figures/HistogramGUIApp-snapshot.png' scalefit='1'/>
@@ -51,15 +51,15 @@ The main window will appear.
     </textobject>
   </mediaobject>
 </figure>
-    
+
 <para>
   The window  is divided into three parts: 1) a list of opened
-  histograms are presented in the upper left corner, 
+  histograms are presented in the upper left corner,
   2) a plot of
   the current histogram is presented at the upper right,
   and 3) a embedded python shell is available in the bottom window.
 </para>
-  
+
   </sect1>
 
 <sect1 id="HistogramGUI.loadHistogram">
@@ -68,7 +68,7 @@ The main window will appear.
 </title>
 
 <para>
-A histogram can be loaded from a python pickle file. 
+A histogram can be loaded from a python pickle file.
 <ulink url="xxxWEBSITExxx/reduction/Software-UserGuide/html/index.html">
   Reduction
 </ulink>
@@ -107,9 +107,9 @@ can produce histograms in the proper format of pickled files.
   In the embedded python shell you can fine-tune your plot
   using
   <ulink url="http://matplotlib.sourceforge.net/matplotlib.pylab.html">
-    pylab commands 
-  </ulink> 
-  . 
+    pylab commands
+  </ulink>
+  .
   If you are familiar with pylab or matlab,
   this should be really easy for you.
 </para>
@@ -153,12 +153,12 @@ or you can do it in the command line window
   >>> SQEData = pickle.load( open( 'sqehist.pkl' ) )
 </programlisting>
 
-A pseudo-color plot will appear. 
+A pseudo-color plot will appear.
 </para>
 
 <para>
 Plot the transpose of I:
-      
+
 <programlisting>
   >>> SQEData1 = SQEData.transpose()
 </programlisting>
@@ -196,7 +196,7 @@ python strings (for example, r"$\AA$' will work, but '$\AA$' won't):
 </programlisting>
 
 You may add a title:
-      
+
 <programlisting>
   >>> pylab.title( r"$S(Q,E)$" )
 </programlisting>
@@ -214,7 +214,7 @@ which color-coding will be applied
   >>> pylab.clim( 0, 1e-3 )
 </programlisting>
 
-You can choose a color palette 
+You can choose a color palette
 (some color palettes render the faint details better than others).
 For example:
 
@@ -223,20 +223,20 @@ For example:
   >>> pylab.bone()
 </programlisting>
 
-The following color maps are provided by pylab: 
-	
+The following color maps are provided by pylab:
+
 <programlisting>
   autumn bone cool copper flag gray hot hsv jet pink prism
   spring summer winter spectral
 </programlisting>
 
-If you have questions about color maps, you can 
-get help by 
+If you have questions about color maps, you can
+get help by
 
 <programlisting>
   >>> help(pylab.colormaps)
 </programlisting>
-	
+
 Choice of plotting intensity I or Sqrt(I) or Ln(I) (if no zeroes)
 
 <programlisting>
@@ -244,7 +244,7 @@ Choice of plotting intensity I or Sqrt(I) or Ln(I) (if no zeroes)
 </programlisting>
 
 
-You can zoom into a particular region by left-dragging 
+You can zoom into a particular region by left-dragging
 your mouse.
 
 </para>
@@ -256,16 +256,16 @@ You can get a slice of the original data as fllows
   >>> h = SQEData[ (0,10), (-10,10) ]
 </programlisting>
 
-The slicing syntax is 
+The slicing syntax is
 
 <programlisting>
   >>> histslice = histogram[ (axis1min, axis1max), (axis2min, axis2max), ... ]
 </programlisting>
 </para>
 
-Again, you might find the 
+Again, you might find the
 <ulink url="http://matplotlib.sourceforge.net/matplotlib.pylab.html">
-documentation for pylab 
+documentation for pylab
 </ulink>
 to be handy.
 
@@ -274,12 +274,12 @@ to be handy.
 
 <sect2>
 <title>Plot of a 1D Curve</title>
-      
+
 <figure id='HistogramGUIApp.diffraction_pattern'>
   <title >
     Diffraction pattern
   </title>
-	
+
   <mediaobject >
     <imageobject >
       <imagedata width='70%' fileref='figures/diffraction_pattern.png' scalefit='1'/>
@@ -313,14 +313,14 @@ and you will see a line like this:
 
 This will tell us there is an axis called "energy", and
 this axis name becomes the argument of method "sum" in
-the following command 
+the following command
 
 <programlisting>
   >>> I_Q = SQEData.sum( "energy" )
 </programlisting>
 
 
-You can zoom into a particular region by left-dragging 
+You can zoom into a particular region by left-dragging
 your mouse.
 
 You can also zoom in by entering
@@ -337,19 +337,19 @@ if you prefer:
 <sect2>
   <title>Find bad detectors</title>
   <para>
-    An important task in data reduction is to find out 
-    bad detectors. It can be performed by looking at the 
-      histogram of I(detector, pixel). 
+    An important task in data reduction is to find out
+    bad detectors. It can be performed by looking at the
+      histogram of I(detector, pixel).
   </para>
-  
+
   <para>
     To obtain I(detector, pixel) from measured data,
-    you can follow the instructions 
+    you can follow the instructions
     <ulink url="xxxWEBSITExxx/measurement/UserGuide/html/index.html">
       here
       </ulink>.
   </para>
-  
+
 </sect2>
 
 </sect1>
@@ -357,15 +357,15 @@ if you prefer:
 <sect1 id="HistogramGUI.toolsmenu">
   <title>Tools menu
   </title>
-    
+
   <para>
     The menu "Tools" is dynamic. You can load a toolset onto that menu by
     using menu "File-->Load a toolset".
   </para>
-  
+
   <para>
     The default set of menus under the "Tools" menu are:
-    
+
     <itemizedlist>
       <listitem> Raw data </listitem>
       <listitem> Reduction </listitem>

@@ -30,7 +30,7 @@ EXPORT_PYTHON_MODULES = \
 
 include doxygen/default.def
 
-export:: export-package-python-modules 
+export:: export-package-python-modules
 
 # version
 # $Id: Make.mm 1205 2006-11-15 16:23:10Z linjiao $

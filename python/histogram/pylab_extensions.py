@@ -15,7 +15,8 @@ try:
     import pylab
 except SystemError:
     try:
-        import matplotlib, pylab
+        import matplotlib
+        import pylab
     except ImportError:
         raise RuntimeError("Please install matplotlib")
 except ImportError:
@@ -32,16 +33,18 @@ def plothist(histogram, **kwds):
     x = histogram.axes()[0].binCenters()
 
     from .plotter import process_Iaxis_unit
+
     scale_factor, Iunit = process_Iaxis_unit(histogram.unit())
     y = histogram.I * scale_factor
-    yerr2 = histogram.E2 
+    yerr2 = histogram.E2
     yerr = N.sqrt(yerr2) * scale_factor
     pylab.errorbar(x, y, yerr=yerr, **kwds)
     return
 
 
-
 _plot = pylab.plot
+
+
 def plot(*args, **kwds):
     if len(args) == 1 and isHistogram(args[0]):
         plothist(args[0], **kwds)
@@ -49,17 +52,17 @@ def plot(*args, **kwds):
     _plot(*args, **kwds)
     return
 
+
 pylab.plot = plot
-
-
 
 
 def isHistogram(candidate):
     from .histogram.Histogram import Histogram
+
     return isinstance(candidate, Histogram)
 
 
 # version
 __id__ = "$Id$"
 
-# End of file 
+# End of file

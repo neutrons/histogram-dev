@@ -7,25 +7,23 @@ aspects = [
     "datasetFromName()",
     "datasetFromId()",
     "listDatasets()",
-    ]
+]
 
 
 def test_0(**kwds):
-
     from histogram.DatasetContainer import DatasetContainer
 
     dc = DatasetContainer()
 
     return True
 
-    
-def test_1(**kwds):
 
+def test_1(**kwds):
     from histogram.DatasetContainer import DatasetContainer
 
     dc = DatasetContainer()
-    ds = 'dataset'
-    name = 'ds1'
+    ds = "dataset"
+    name = "ds1"
     id = 1
     dc.addDataset(name, id, ds)
 
@@ -35,17 +33,16 @@ def test_1(**kwds):
         log("didn't correctly add dataset to _byNames")
     if dc._byIds[id] != [name, ds]:
         passed = False
-        log("didn't correctly add dataset to _byIds")    
+        log("didn't correctly add dataset to _byIds")
     return passed
 
-    
-def test_2(**kwds):
 
+def test_2(**kwds):
     from histogram.DatasetContainer import DatasetContainer
 
     dc = DatasetContainer()
-    ds = 'dataset'
-    name = 'ds1'
+    ds = "dataset"
+    name = "ds1"
     id = 1
     dc.addDataset(name, id, ds)
 
@@ -57,14 +54,13 @@ def test_2(**kwds):
         log("datasetFromName returned {0!s} instead of {1!s}".format(dsbn, ds))
     return passed
 
-    
-def test_3(**kwds):
 
+def test_3(**kwds):
     from histogram.DatasetContainer import DatasetContainer
 
     dc = DatasetContainer()
-    ds = 'dataset'
-    name = 'ds1'
+    ds = "dataset"
+    name = "ds1"
     id = 1
     dc.addDataset(name, id, ds)
 
@@ -76,14 +72,13 @@ def test_3(**kwds):
         log("datasetFromId returned {0!s} instead of {1!s}".format(dsbi, ds))
     return passed
 
-    
-def test_4(**kwds):
 
+def test_4(**kwds):
     from histogram.DatasetContainer import DatasetContainer
 
     dc = DatasetContainer()
-    ds = 'dataset'
-    name = 'ds1'
+    ds = "dataset"
+    name = "ds1"
     id = 1
     dc.addDataset(name, id, ds)
 
@@ -95,16 +90,15 @@ def test_4(**kwds):
         log("listDatasets returned {0!s} instead of {1!s}".format(dslist, [(id, name)]))
     return passed
 
-    
+
 # ------------- do not modify below this line ---------------
 
 
 def run(**kwds):
-    
     allPassed = True
-    
+
     for i, aspect in enumerate(aspects):
-        run = eval('test_' + str(i))
+        run = eval("test_" + str(i))
         utilities.preReport(log, target, aspect)
         passed = run(**kwds)
         utilities.postReport(log, target, aspect, passed)
@@ -119,11 +113,12 @@ target = "DatasetContainer"
 
 log = utilities.picklog(target)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import journal
+
     info = journal.info(target)
     info.activate()
-    
+
     run()
 
 # version

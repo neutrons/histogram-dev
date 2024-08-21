@@ -3,7 +3,7 @@
  * load histogram from file
  * View 1-D histogram
  * View 2-D histogram
- * Customize plot 
+ * Customize plot
    * change title
    * change axis labels
  * Save image to a file
@@ -32,10 +32,10 @@
 
 === Reduced data ===
 
- 1. image plots for S(Q,E), S(phi, E):	
+ 1. image plots for S(Q,E), S(phi, E):
    * all of the above for image plot of raw data
  1. Add:
    * plot of S(Q) for E around the elastic line (diffraction pattern), requires choice of energy range around zero.
-   * plot of S(E) 
+   * plot of S(E)
    * for both S(E), S(Q), choose the Y-range
    * especially for S(E), add error bars on plot *this is very useful to estimate wether statistics are good enough during experiment*

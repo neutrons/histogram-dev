@@ -5,7 +5,7 @@ to contain this c++ library.
 
 A histogram is thought to be data defined on grid, or griddata.
 
-A griddata represents a mapping: 
+A griddata represents a mapping:
   lambda: x,y,... --> f
 
 A griddata is decomposed to axis mappers and a multidimensional array.
@@ -32,4 +32,3 @@ I(tof)
 I(detID, pixelID, tof)
 I(Q,E)
 etc etc.
-

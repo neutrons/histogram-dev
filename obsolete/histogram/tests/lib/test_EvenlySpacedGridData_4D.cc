@@ -22,7 +22,7 @@ int test2()
   const Ipdpt & cipdpt = ipdpt;
 
   assert (115*8*128*100 == ipdpt.size);
-  
+
   ipdpt.clear();
 
   assert(cipdpt(6, 3, 77, 1005) == 0);

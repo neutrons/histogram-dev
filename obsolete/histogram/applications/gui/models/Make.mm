@@ -21,14 +21,14 @@ PROJ_CLEAN =
 BUILD_DIRS = \
 
 OTHER_DIRS = \
- 
+
 RECURSE_DIRS = $(BUILD_DIRS) $(OTHER_DIRS)
 
 #--------------------------------------------------------------------------
 #
 all: export
 	BLD_ACTION="all" $(MM) recurse
- 
+
 distclean::
 	BLD_ACTION="distclean" $(MM) recurse
 
@@ -48,7 +48,7 @@ EXPORT_PYTHON_MODULES = \
 
 
 
-export:: export-package-python-modules 
+export:: export-package-python-modules
 
 
 

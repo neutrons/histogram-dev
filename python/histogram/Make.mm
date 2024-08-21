@@ -69,7 +69,7 @@ EXPORT_PYTHON_MODULES = \
 #    MonitorData.py       \
 
 
-export:: export-python-modules 
+export:: export-python-modules
 
 
 include doxygen/default.def

@@ -1,5 +1,5 @@
 # ------------- Modify these -------------
-set ( SRC_FILES 
+set ( SRC_FILES
   Array_1D.cc
   events2Ix.cc
   events2Ixy.cc

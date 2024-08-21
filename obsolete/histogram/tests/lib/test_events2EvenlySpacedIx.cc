@@ -20,7 +20,7 @@ USING_HISTOGRAM_NAMESPACE
 // event->tof functor
 struct Event2TofChannel: public Event2Quantity1<Event, unsigned int>
 {
-  unsigned int operator() ( const Event & e, unsigned int & d ) const 
+  unsigned int operator() ( const Event & e, unsigned int & d ) const
   {
     d = e.tof;
     return 1;
@@ -29,7 +29,7 @@ struct Event2TofChannel: public Event2Quantity1<Event, unsigned int>
 
 
 int main()
-{  
+{
   // create events to reduce
   typedef std::vector<Event> events_t;
   events_t evts(10);
@@ -42,14 +42,14 @@ int main()
   // result histogram intensity array
   unsigned int intensities[7];
   for (int i=0; i<7; i++) { intensities[i] = 0; }
-  
+
   // run reduction
   events2EvenlySpacedIx
-    <Event, Event2TofChannel, 
+    <Event, Event2TofChannel,
     unsigned int, unsigned int
     >
-    (evts.begin(), evts.end(), 
-     e2t, 
+    (evts.begin(), evts.end(),
+     e2t,
      1000, 8000, 1000,
      intensities);
 
@@ -57,12 +57,11 @@ int main()
   // for (int i=0; i<7; i++)
   //   std::cout << intensities[i] << ", ";
   // std::cout << std::endl;
-  
+
   // verify
   assert(intensities[1] == 4);
   assert(intensities[2] == 3);
   assert(intensities[3] == 3);
-  
+
   return 0;
 }
-

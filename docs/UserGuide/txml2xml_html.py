@@ -7,5 +7,5 @@
 
 
 urldict = {
-    'xxxWEBSITExxx': "../../..",
-    }
+    "xxxWEBSITExxx": "../../..",
+}

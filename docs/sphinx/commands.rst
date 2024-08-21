@@ -10,9 +10,9 @@ PlotHist.py
 Synopsis ::
 
  Usage: PlotHist.py [options] histogram-file [internal-path]
- 
+
  Options:
- 
+
   -h, --help       show this help message and exit
   --output=OUTPUT  window or filename.png
 
@@ -29,4 +29,4 @@ at "/diffraction_pattern"::
 
 Plot the histogram into an image file::
 
- $ PlotHist.py --output=plot.png hist.h5 
+ $ PlotHist.py --output=plot.png hist.h5

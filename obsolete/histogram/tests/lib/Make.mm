@@ -15,7 +15,7 @@ PACKAGE = tests
 
 PROJ_CLEAN += $(PROJ_CPPTESTS)
 
-PROJ_PYTESTS = 
+PROJ_PYTESTS =
 PROJ_CPPTESTS = test_NdArray \
 	test_NdArraySlice \
 	test_GridData_1D \

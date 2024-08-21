@@ -18,7 +18,7 @@ int test2()
   const Iqe & ciqe = iqe;
 
   assert (sizeof(intensities)/sizeof(Iqe::zdatatype) == iqe.size );
-  
+
   iqe.clear();
   assert( ciqe(5., 10) == 0 );
 

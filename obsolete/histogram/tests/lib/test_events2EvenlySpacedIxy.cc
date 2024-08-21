@@ -22,9 +22,9 @@ USING_HISTOGRAM_NAMESPACE
 struct Event2PixTof
   : public Event2Quantity2<Event, unsigned int, unsigned int, double>
 {
-  unsigned int operator() 
-  (const Event & e, unsigned int & pix, double & tof) 
-    const 
+  unsigned int operator()
+  (const Event & e, unsigned int & pix, double & tof)
+    const
   {
     tof = e.tof * 0.1; // micro second
     pix = e.pixelID;
@@ -34,7 +34,7 @@ struct Event2PixTof
 
 
 int main()
-{  
+{
   // create events to reduce
   typedef std::vector<Event> events_t;
   events_t evts(1);
@@ -43,19 +43,19 @@ int main()
 
   // event->pix,tof functor
   Event2PixTof e2pt;
-  
+
   // intensity array
   const unsigned int NX = 3, NY = 4, N = NX*NY;
   unsigned int intensities[N];
   for (int i=0; i<N; i++) { intensities[i] = 0; }
-  
+
   // reduce
   events2EvenlySpacedIxy
     <Event, Event2PixTof, unsigned int, double, unsigned int>
-    (evts.begin(), evts.end(), 
-     e2pt, 
-     0, 3000, 1000, 
-     200, 600, 100, 
+    (evts.begin(), evts.end(),
+     e2pt,
+     0, 3000, 1000,
+     200, 600, 100,
      intensities);
 
   // verify
@@ -67,4 +67,3 @@ int main()
   }
   return 0;
 }
-

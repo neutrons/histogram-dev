@@ -19,8 +19,10 @@ except ImportError:
 
 
 import os
-def load( filename, pathinfile=None, fs = None, **kwds ):
-    '''load(filename, path_in_hdf_file ): load histogram from a hdf file
+
+
+def load(filename, pathinfile=None, fs=None, **kwds):
+    """load(filename, path_in_hdf_file ): load histogram from a hdf file
 
     filename:
       The hdf filename where the histogram is saved
@@ -30,13 +32,14 @@ def load( filename, pathinfile=None, fs = None, **kwds ):
 
     return:
       The histogram loaded.
-    '''
+    """
     # if pathinfile is not specified explicity
     if pathinfile is None:
-        # it could be that there is only one entry 
+        # it could be that there is only one entry
         # in the histogram file, let us try that
         if os.path.exists(filename):
             from .utils import getOnlyEntry
+
             try:
                 pathinfile = getOnlyEntry(filename)
             except:
@@ -44,7 +47,7 @@ def load( filename, pathinfile=None, fs = None, **kwds ):
                     "Cannot guess the entry of the histogram in %s."
                     "Please explicitly specify the entry "
                     "by keyword 'pathinfile'"
-                    ) % filename
+                ) % filename
                 raise ValueError(msg)
         # or it could be the first argument is an url
         # that has both the file path and the entry name
@@ -52,28 +55,34 @@ def load( filename, pathinfile=None, fs = None, **kwds ):
             # this is obsolete. in the future we should have
             # a dedicated "url" parameter
             import warnings
+
             warnings.warn("filename as url is deprecated")
             url = filename
             filename, pathinfile = os.path.split(url)
             if not os.path.exists(filename):
                 msg = "invalid histogram url: %s" % url
                 raise ValueError(url)
-            
+
     if fs is None:
         from h5py import File
+
         try:
-            fs = File( filename, 'r')
+            fs = File(filename, "r")
         except IOError as msg:
-            raise IOError("unable to load histogram. filename=%s, "\
-                "pathinfile=%s, kwds=%s" % (filename, pathinfile, kwds))
+            raise IOError(
+                "unable to load histogram. filename=%s, "
+                "pathinfile=%s, kwds=%s" % (filename, pathinfile, kwds)
+            )
     from .Loader import Loader
+
     loader = Loader(fs, pathinfile)
     return loader.load(**kwds)
 
 
-def dump( histogram, filename = None, pathinfile = '/', 
-          mode = 'c', fs = None, compression = 'lzf'):
-    '''dump( histogram, hdf_filename, path_in_hdf_file, mode ) -> save histogram into a hdf file.
+def dump(
+    histogram, filename=None, pathinfile="/", mode="c", fs=None, compression="lzf"
+):
+    """dump( histogram, hdf_filename, path_in_hdf_file, mode ) -> save histogram into a hdf file.
 
     histogram:
       The histogram to be written
@@ -88,17 +97,19 @@ def dump( histogram, filename = None, pathinfile = '/',
     compression:
       The compression ratio. If it is 0, no compression will be done.
       The valid values are integers from 0 to 9 (inclusive).
-    '''
+    """
     from .Renderer import Renderer
-    #g = graphFromHDF5File( filename, pathinfile, fs = fs )
-    pathinfile = pathinfile.split( '/' )
+
+    # g = graphFromHDF5File( filename, pathinfile, fs = fs )
+    pathinfile = pathinfile.split("/")
     p = pathinfile + [histogram.name()]
-    p = '/'.join( p )
-    if not p.startswith('/'): 
-        p = '/' + p
-    writeCodes = {'c':'w','w':'a'}
+    p = "/".join(p)
+    if not p.startswith("/"):
+        p = "/" + p
+    writeCodes = {"c": "w", "w": "a"}
     if fs is None:
         from h5py import File
+
         fs = File(filename, writeCodes[mode])
         Renderer(fs, compression).render(histogram)
         fs.close()
@@ -109,4 +120,4 @@ def dump( histogram, filename = None, pathinfile = '/',
 # version
 __id__ = "$Id$"
 
-# End of file 
+# End of file

@@ -53,8 +53,8 @@ Embedded python shell
 ::
 
     Note: Some examples in this tutorial can be found under the "Tools" menu.
-    
-In the embedded python shell you can fine-tune your plot using 
+
+In the embedded python shell you can fine-tune your plot using
 `pylab commands <http://matplotlib.sourceforge.net/matplotlib.pylab.html>`_ .
 If you are familiar with pylab or matlab, this should be really easy for you.
 
@@ -217,7 +217,7 @@ zoom in by entering commands in the python shell window if you prefer:
 
   >>> pylab.xlim( 2, 10 )
   >>> pylab.ylim( 0.0, )
-  
+
 Find bad detectors
 ------------------
 
@@ -225,7 +225,7 @@ Find bad detectors
 An important task in data reduction is to find out bad detectors. It can be
 performed by looking at the histogram of I(detector, pixel).
 
-To obtain I(detector, pixel) from measured data, you can follow the instructions 
+To obtain I(detector, pixel) from measured data, you can follow the instructions
 `here <http://docs.danse.us/histogram/measurement/UserGuide/html/index.html>`_ .
 
 

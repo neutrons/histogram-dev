@@ -13,8 +13,9 @@
 
 
 # main
-if __name__ == '__main__':
+if __name__ == "__main__":
     from histogram.scripts.HistogramGUIApp import main
+
     # invoke the application shell
     main()
 
@@ -22,4 +23,4 @@ if __name__ == '__main__':
 # version
 __id__ = "$Id$"
 
-# End of file 
+# End of file

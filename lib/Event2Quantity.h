@@ -23,12 +23,12 @@ HISTOGRAM_NAMESPACE_START
 
   /// Event2Quantity1: convert event to a scalar quantity.
   /// Class to convert an neutron event (Event object) to a scalar quantity.
-  /// For example, 
+  /// For example,
   ///   * event --> pixel ID
   ///   * event --> tof
-  /// This is an abstract base class. 
-  /// Solid subclasses will be used by histogrammers (objects of Histogrammer1). 
-  template <typename event_t, 
+  /// This is an abstract base class.
+  /// Solid subclasses will be used by histogrammers (objects of Histogrammer1).
+  template <typename event_t,
 	    typename prob_t,
 	    typename data_t = prob_t>
   class Event2Quantity1 {
@@ -39,18 +39,18 @@ HISTOGRAM_NAMESPACE_START
     virtual ~Event2Quantity1() {} ;
   };
 
-  /// Event2Quantity2: convert event to two scalar quantities, 
+  /// Event2Quantity2: convert event to two scalar quantities,
   /// and return the probability of the event
   /// Class to convert an neutron event (Event object) to two scalar quantities.
-  /// Forexample, 
+  /// Forexample,
   ///   event --> pixel ID, tof
   ///   event --> Q, E
   /// This is an abstract base class.
-  /// Solid subclasses will be used by histogrammers 
-  /// (objects of Histogrammer2). 
-  template <typename event_t, 
+  /// Solid subclasses will be used by histogrammers
+  /// (objects of Histogrammer2).
+  template <typename event_t,
 	    typename prob_t,
-	    typename x_t = prob_t, 
+	    typename x_t = prob_t,
 	    typename y_t = x_t
 	    >
   class Event2Quantity2 {
@@ -60,15 +60,15 @@ HISTOGRAM_NAMESPACE_START
     virtual prob_t operator() ( const event_t & e, x_t & d1, y_t &d2 ) const = 0;
     virtual ~Event2Quantity2() {}
   };
-  
+
   /// Event2Quantity4: convert event to four scalar quantities.
   /// Class to convert an neutron event (Event object) to four
   /// scalar quantities.
-  /// Forexample, 
+  /// Forexample,
   ///   event --> Qx, Qy, Qz, E
   /// This is an abstract base class.
-  /// Solid subclasses will be used by histogrammers 
-  /// (objects of Histogrammer4). 
+  /// Solid subclasses will be used by histogrammers
+  /// (objects of Histogrammer4).
   template <typename event_t,
 	    typename prob_t,
 	    typename x_t=prob_t,
@@ -80,8 +80,8 @@ HISTOGRAM_NAMESPACE_START
   public:
     /// convert event to 4 quantities
     /// return: 0 if failed. 1 if succeed
-    virtual prob_t operator() 
-    ( const event_t & e, 
+    virtual prob_t operator()
+    ( const event_t & e,
       x_t & d1, y_t &d2, z_t &d3, u_t &d4  ) const = 0;
     virtual ~Event2Quantity4() {}
   };
@@ -95,4 +95,4 @@ HISTOGRAM_NAMESPACE_END
 // version
 // $Id$
 
-// End of file 
+// End of file

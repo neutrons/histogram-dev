@@ -24,14 +24,14 @@ BUILD_DIRS = \
 	tools \
 
 OTHER_DIRS = \
- 
+
 RECURSE_DIRS = $(BUILD_DIRS) $(OTHER_DIRS)
 
 #--------------------------------------------------------------------------
 #
 all: export
 	BLD_ACTION="all" $(MM) recurse
- 
+
 distclean::
 	BLD_ACTION="distclean" $(MM) recurse
 
@@ -54,7 +54,7 @@ EXPORT_BINS = \
 
 
 
-export:: export-binaries release-binaries export-package-python-modules 
+export:: export-binaries release-binaries export-package-python-modules
 
 
 

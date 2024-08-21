@@ -29,7 +29,7 @@ RECURSE_DIRS = $(BUILD_DIRS) $(OTHER_DIRS)
 all: export
 	BLD_ACTION="all" $(MM) recurse
 
-tidy:: 
+tidy::
 	BLD_ACTION="tidy" $(MM) recurse
 
 
@@ -43,7 +43,7 @@ EXPORT_PYTHON_MODULES = \
 
 
 
-export:: export-package-python-modules 
+export:: export-package-python-modules
 
 
 include doxygen/default.def

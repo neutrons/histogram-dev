@@ -11,7 +11,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-# this Make.mm requires non-standard config package that includes 
+# this Make.mm requires non-standard config package that includes
 #  config/make/std-docs.def
 #  config/external/doxygen
 
@@ -64,7 +64,7 @@ include std-docs.def
 %.tex: %.lyx
 	lyx --export latex $<
 
-export:: 
+export::
 
 export-texdocs:: $(TEXDOCS) $(EXPORT_DOCDIR)
 	$(CP_F) *.pdf $(EXPORT_DOCDIR)

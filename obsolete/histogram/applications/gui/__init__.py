@@ -12,8 +12,7 @@
 #
 
 
-
 # version
 __id__ = "$Id$"
 
-# End of file 
+# End of file

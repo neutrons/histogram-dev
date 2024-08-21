@@ -23,12 +23,12 @@ HISTOGRAM_NAMESPACE_START
   /// 1-dimensional array.
   /// template class for 1-dimensional array
   /// This 1-D array takes a 1D array iterator and implement array interface.
-  /// 
+  ///
   /// tempalate parameters:
   ///  Iterator: 1D array iterator type
   ///  DataType: data type of array elements
   ///  Size: type of the shape array
-  /// 
+  ///
   /// CAUTION:
   ///  This class is not responsible for checking if the given iterator is sane.
   ///  If the iterator does not have the right size, core dump will happen.
@@ -41,9 +41,9 @@ HISTOGRAM_NAMESPACE_START
   class Array_1D {
 
   public:
-    
+
     typedef DataType datatype;
-    
+
     /// ctor.
     ///
     /// Parameters:
@@ -52,35 +52,35 @@ HISTOGRAM_NAMESPACE_START
     ///   size: length of the array.
     ///
     Array_1D( Iterator it, Size size ) :
-      m_it(it) 
+      m_it(it)
     {
       m_size = size;
     }
-    
+
     /// dtor.
     ~Array_1D() { }
-    
+
     /// get element.
     const DataType & operator [] ( const Size & index ) const
     {
       if (index<0 or index>m_size) _throw_out_of_bound( index );
       return *(m_it+index);
     }
-    
+
     /// set element.
-    DataType & operator [] ( const Size &index ) 
+    DataType & operator [] ( const Size &index )
     {
       if (index<0 or index>m_size) _throw_out_of_bound( index );
       return *(m_it+index);
     }
 
     /// set all elements to zero.
-    void clear() 
+    void clear()
     {
-      for (Iterator it = m_it; it < m_it + m_size; it++ ) 
+      for (Iterator it = m_it; it < m_it + m_size; it++ )
 	*it = 0;
     }
-    
+
   private:
     Iterator m_it;
     Size m_size;
@@ -102,4 +102,4 @@ HISTOGRAM_NAMESPACE_END
 // version
 // $Id$
 
-// End of file 
+// End of file

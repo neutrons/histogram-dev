@@ -6,5 +6,5 @@ histogram data object
 * Installation
 
   `$ conda install -c mcvine histogram`
-  
+
 * [Documentation](http://danse-inelastic.github.io/histogram)

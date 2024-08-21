@@ -1,5 +1,3 @@
-
-
 #!/usr/bin/env python
 
 # NdArray has a fixed interface
@@ -14,13 +12,17 @@
 import unittest
 
 from histogram.ndarray.AbstractNdArray import NdArray_TestCase
+
+
 def createTestCase(klass):
     class TC(NdArray_TestCase):
         def setUp(self):
             self.NdArray = klass
-            #print(klass)
+            # print(klass)
             return
-        pass # end of TC
+
+        pass  # end of TC
+
     return TC
 
 
@@ -34,12 +36,12 @@ def pysuite():
 
 
 def main():
-    import journal
-##     journal.debug('instrument').activate()
+    ##     journal.debug('instrument').activate()
     pytests = pysuite()
     alltests = unittest.TestSuite((pytests,))
     unittest.TextTestRunner(verbosity=2).run(alltests)
     return
 
 
-if __name__ == '__main__': main()
+if __name__ == "__main__":
+    main()

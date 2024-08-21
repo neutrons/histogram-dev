@@ -21,30 +21,30 @@
 HISTOGRAM_NAMESPACE_START
 
   /// Histogammer1: add event to a 1D histogram.
-  /// Class to add neutron events (objects of Event class) 
+  /// Class to add neutron events (objects of Event class)
   /// to a 1-D histogram (object of GridData_1D).
   /// The is the core of event-mode reduction.
   /// The idea is, given a neutron event, the histogrammer
-  /// deduce the value of the physical quantity from that neutron event, 
+  /// deduce the value of the physical quantity from that neutron event,
   /// and then do histogramming by add 1 to the bin
   /// to which the value of the physical quantity belongs.
-  /// 
+  ///
   /// template arguments:
   ///   GridData_1D: f(x) histogram. 1-dimensional
   ///   Event2Quantity1: functor event-->x
   ///   DataType: data type of x
   ///   IDataType: data type of the intensity (or probability)
   ///
-  template <typename Event, typename GridData_1D, typename Event2Quantity1, 
+  template <typename Event, typename GridData_1D, typename Event2Quantity1,
 	    typename DataType, typename IDataType>
   class Histogrammer1 {
-    
+
   public:
     Histogrammer1( GridData_1D & fx, const Event2Quantity1 & e2x )
       : m_fx( fx ), m_e2x( e2x )
     {
     }
-    
+
     void operator() ( const Event & e )
     {
       IDataType i = m_e2x( e, m_x );
@@ -58,11 +58,11 @@ HISTOGRAM_NAMESPACE_START
 	return;
       }
       // it is still necessary to catch out of bound error
-      // even though we have try to filter out most of them 
+      // even though we have try to filter out most of them
       // using isOutofbound due to floating point error
       try {
 	m_fx( m_x ) += i;
-      } 
+      }
       catch (OutOfBound & e) {
 #ifdef DEBUG
 	journal::warning_t warning("Histogrammer1");
@@ -72,8 +72,8 @@ HISTOGRAM_NAMESPACE_START
 #endif
       }
     }
-    
-    void clear() 
+
+    void clear()
     {
       m_fx.clear();
     }
@@ -86,32 +86,32 @@ HISTOGRAM_NAMESPACE_START
 
 
   /// Histogammer2: add event to a 2D histogram.
-  /// Class to add neutron events (objects of Event class) 
+  /// Class to add neutron events (objects of Event class)
   /// to a 2-D histogram (object of GridData_2D).
   /// This is the core of event-mode reduction.
   /// The idea is, given a neutron event, the histogrammer
-  /// deduce the values of the physical quantities from that neutron event, 
+  /// deduce the values of the physical quantities from that neutron event,
   /// and then do histogramming by add 1 to the bin
   /// to which the values of the physical quantities belong.
   ///
   /// template arguments:
-  ///   GridData_2D: f(x,y) histogram. 
+  ///   GridData_2D: f(x,y) histogram.
   ///   Event2Quantity2: functor event-->x,y
   ///   XDataType: data type of x
   ///   YDataType: data type of y
   ///   IDataType: data type of the intensity (or probability)
   ///
-  template <typename Event, typename GridData_2D, typename Event2Quantity2, 
+  template <typename Event, typename GridData_2D, typename Event2Quantity2,
 	    typename XDataType, typename YDataType,
 	    typename IDataType>
   class Histogrammer2 {
-    
+
   public:
     Histogrammer2( GridData_2D & fxy, const Event2Quantity2 & e2xy )
       : m_fxy( fxy ), m_e2xy( e2xy )
     {
     }
-    
+
     void operator() ( const Event & e )
     {
       IDataType i = m_e2xy( e, m_x, m_y );
@@ -125,11 +125,11 @@ HISTOGRAM_NAMESPACE_START
 	return;
       }
       // it is still necessary to catch out of bound error
-      // even though we have try to filter out most of them 
+      // even though we have try to filter out most of them
       // using isOutofbound due to floating point error
       try {
 	m_fxy( m_x, m_y ) += i;
-      } 
+      }
       catch (OutOfBound & e) {
 #ifdef DEBUG
 	journal::warning_t warning("Histogrammer2");
@@ -139,8 +139,8 @@ HISTOGRAM_NAMESPACE_START
 #endif
       }
     }
-    
-    void clear() 
+
+    void clear()
     {
       m_fxy.clear();
     }
@@ -153,16 +153,16 @@ HISTOGRAM_NAMESPACE_START
   } ;
 
   /// Histogammer4: add event to a 4D histogram.
-  /// Class to add neutron events (objects of Event class) 
+  /// Class to add neutron events (objects of Event class)
   /// to a 4-D histogram (object of GridData_4D).
   /// This is the core of event-mode reduction.
   /// The idea is, given a neutron event, the histogrammer
-  /// deduce the values of the physical quantities from that neutron event, 
+  /// deduce the values of the physical quantities from that neutron event,
   /// and then do histogramming by add 1 to the bin
   /// to which the values of the physical quantities belong.
   ///
   /// template arguments:
-  ///   GridData_4D: f(x1,x2,x3,x4) histogram. 
+  ///   GridData_4D: f(x1,x2,x3,x4) histogram.
   ///   Event2Quantity4: functor event-->x1,x2,x3,x4
   ///   X1DataType: data type of x1
   ///   X2DataType: data type of x2
@@ -170,17 +170,17 @@ HISTOGRAM_NAMESPACE_START
   ///   X4DataType: data type of x4
   ///   IDataType: data type of the intensity (or probability)
   ///
-  template <typename Event, typename GridData_4D, typename Event2Quantity4, 
+  template <typename Event, typename GridData_4D, typename Event2Quantity4,
 	    typename X1DataType, typename X2DataType, typename X3DataType, typename X4DataType,
 	    typename IDataType>
   class Histogrammer4 {
-    
+
   public:
     Histogrammer4( GridData_4D & fxxxx, const Event2Quantity4 & e2xxxx )
       : m_fxxxx( fxxxx ), m_e2xxxx( e2xxxx )
     {
     }
-    
+
     void operator() ( const Event & e )
     {
       IDataType i = m_e2xxxx( e, m_x1, m_x2, m_x3, m_x4 );
@@ -194,11 +194,11 @@ HISTOGRAM_NAMESPACE_START
 	return;
       }
       // it is still necessary to catch out of bound error
-      // even though we have try to filter out most of them 
+      // even though we have try to filter out most of them
       // using isOutofbound due to floating point error
       try {
 	m_fxxxx( m_x1, m_x2, m_x3, m_x4 ) += i;
-      } 
+      }
       catch (OutOfBound & e) {
 #ifdef DEBUG
 	journal::warning_t warning("Histogrammer4");
@@ -208,8 +208,8 @@ HISTOGRAM_NAMESPACE_START
 #endif
       }
     }
-    
-    void clear() 
+
+    void clear()
     {
       m_fxxxx.clear();
     }
@@ -233,4 +233,4 @@ HISTOGRAM_NAMESPACE_END
 // version
 // $Id$
 
-// End of file 
+// End of file

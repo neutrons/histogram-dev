@@ -24,10 +24,10 @@ HISTOGRAM_NAMESPACE_START
   class AxisMapper {
 
   public:
-    
+
     typedef DataType datatype;
     typedef IndexType indextype;
-  
+
     virtual IndexType operator() ( const DataType & data ) const = 0;
     virtual ~AxisMapper() {};
   };
@@ -40,4 +40,4 @@ HISTOGRAM_NAMESPACE_END
 // version
 // $Id$
 
-// End of file 
+// End of file

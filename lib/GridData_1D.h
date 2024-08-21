@@ -32,7 +32,7 @@ HISTOGRAM_NAMESPACE_START
   /// This class is not intended to be used by users of this library.
   /// Classes in this library use this class, however, and provide
   /// easier-to-use interfaces.
-  /// 
+  ///
   /// template arguments:
   ///   XAxisMapper: functor class to map x value to index
   ///   YArray: 1-dimensional array class.
@@ -79,4 +79,4 @@ HISTOGRAM_NAMESPACE_END
 // version
 // $Id$
 
-// End of file 
+// End of file

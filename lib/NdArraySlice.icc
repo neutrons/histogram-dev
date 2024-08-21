@@ -56,7 +56,7 @@ NdArraySlice<NdArray, DataType, IndexType>::shape() const
 
 template <typename NdArray, typename DataType, typename IndexType>
 const DataType &
-NdArraySlice<NdArray, DataType, IndexType>::operator [] 
+NdArraySlice<NdArray, DataType, IndexType>::operator []
 ( const std::vector<index_t> & indexes) const
 {
   static std::vector< index_t > allindexes;
@@ -73,9 +73,9 @@ NdArraySlice<NdArray, DataType, IndexType>::operator []
 
 
 template <typename NdArray, typename DataType, typename IndexType>
-DataType & 
-NdArraySlice<NdArray, DataType, IndexType>::operator [] 
-( const std::vector<index_t> & indexes) 
+DataType &
+NdArraySlice<NdArray, DataType, IndexType>::operator []
+( const std::vector<index_t> & indexes)
 {
   assert (indexes.size() == dimension() );
   for (index_t axis=0; axis<dimension(); axis++) {
@@ -87,9 +87,9 @@ NdArraySlice<NdArray, DataType, IndexType>::operator []
 
 HISTOGRAM_NAMESPACE_END
 
-#endif 
+#endif
 
 // version
 // $Id$
 
-// End of file 
+// End of file

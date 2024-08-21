@@ -32,7 +32,7 @@ HISTOGRAM_NAMESPACE_START
 
     template <typename NdArray, typename DataType = double, typename IndexType = unsigned int>
     class NdArraySlice {
-      
+
     public:
 
       // types
@@ -49,9 +49,9 @@ HISTOGRAM_NAMESPACE_START
       // item access
       const DataType & operator [] ( const std::vector<index_t> & ) const;
       DataType & operator [] ( const std::vector<index_t> & ) ;
-      
+
     private:
-      
+
       // data
       NdArray & m_data;
       // implementation
@@ -67,4 +67,4 @@ HISTOGRAM_NAMESPACE_END
 // version
 // $Id$
 
-// End of file 
+// End of file

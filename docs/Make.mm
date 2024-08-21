@@ -11,7 +11,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-# this Make.mm requires non-standard config package that includes 
+# this Make.mm requires non-standard config package that includes
 #  config/make/std-docs.def
 
 PROJECT = histogram
@@ -38,7 +38,7 @@ PROJ_CLEAN =
 #--------------------------------------------------------------------------
 #
 
-all: 
+all:
 	BLD_ACTION="all" $(MM) recurse
 
 tidy::
