@@ -516,7 +516,7 @@ class Histogram(AttributeCont):
             y = other._data
             dy2 = other._errors
 
-            if dy2 == None:  # special case
+            if dy2 is None:  # special case
                 # ydx/y^2
                 errs /= y
                 errs /= y

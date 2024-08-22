@@ -12,12 +12,28 @@ repos:
       exclude: "tests/histogram/"
     - id: trailing-whitespace
       exclude: "tests/histogram/"
-# - repo: https://github.com/astral-sh/ruff-pre-commit
-#   rev: v0.5.5
-#   hooks:
-#     - id: ruff
-#       args: [--fix, --exit-non-zero-on-fix]
-#     - id: ruff-format
+
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.5.5
+  hooks:
+    - id: ruff
+    # F403: Start import, F401:imported but unused, E402: module level import not at top of file
+    # E722: Do not use bare 'except', #731 do no use lambda
+      args: [--fix, --exit-non-zero-on-fix,
+      --ignore, F403,
+      --ignore, F401,
+      --ignore, E402,
+      --ignore, E722,
+      --ignore, F405,
+      --ignore, E712,
+      --ignore, F841,
+      --ignore, F821,
+      --ignore, E731,
+      --ignore, E741]
+      exclude: "tests/histogram/"
+    - id: ruff-format
+      exclude: "tests/histogram/"
+
 # - repo: https://github.com/codespell-project/codespell
 #   rev: v2.3.0
 #   hooks:
