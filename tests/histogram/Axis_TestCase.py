@@ -161,10 +161,10 @@ class Axis_TestCase(TestCase):
 
     def _run_oldtest(self, i):
         aspect = aspects[i]
-        utilities.preReport(log, target, aspect)
+        # utilities.preReport(log, target, aspect)
         run = eval("oldtest.test_{0!s}".format(i))
         passed = run()
-        utilities.postReport(log, target, aspect, passed)
+        # utilities.postReport(log, target, aspect, passed)
         self.assertEqual(passed, True)
         return
 
