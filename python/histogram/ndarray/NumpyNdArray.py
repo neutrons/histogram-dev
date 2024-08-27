@@ -477,7 +477,8 @@ def _sum(anumarr):
     return _sum(a)
 
 
-from .AbstractNdArray import NdArray_TestCase as TestBase, unittest
+from .AbstractNdArray import NdArray_TestCase as TestBase
+import unittest
 
 
 class NdArray_TestCase(TestBase):
