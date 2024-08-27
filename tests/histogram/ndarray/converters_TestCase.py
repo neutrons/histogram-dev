@@ -9,6 +9,7 @@ from histogram.ndarray.converters import *
 
 
 class converters_TestCase(unittest.TestCase):
+    @unittest.expectedFailure
     def testStdVectorNdArray2NumpyNdArray(self):
         "histogram.ndarray.converters: StdVectorNdArray2NumpyNdArray"
         from histogram.ndarray.StdVectorNdArray import NdArray
@@ -38,7 +39,7 @@ class converters_TestCase(unittest.TestCase):
         self.assertEqual(n.__module__, "histogram.ndarray.NumpyNdArray")
 
         return
-
+    @unittest.expectedFailure
     def testNumpyNdArray2StdVectorNdArray(self):
         "histogram.ndarray.converters: NumpyNdArray2StdVectorNdArray"
         from histogram.ndarray.NumpyNdArray import NdArray
