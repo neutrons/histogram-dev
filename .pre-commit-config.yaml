@@ -29,6 +29,7 @@ repos:
       --ignore, F841,
       --ignore, F821,
       --ignore, E731,
+      --ignore, E711,
       --ignore, E741]
       exclude: "tests/histogram/"
     - id: ruff-format
