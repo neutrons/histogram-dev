@@ -3,9 +3,8 @@
 
 from .AttributeContBase import AttributeContBase
 
+
 class AttributeCont(AttributeContBase):
-
-
     def getAttribute(self, name):
         """getAttribute( name) -> value"""
         try:
@@ -14,24 +13,22 @@ class AttributeCont(AttributeContBase):
             msg = "no attribute named {0!s}".format(name)
             raise KeyError(msg)
         return attr
-    
 
     def listAttributes(self):
         """listAttributes() -> [names of attributes]"""
         return list(self._attributes.keys())
-    
-    
+
     def setAttribute(self, name, value):
         """setAttribute( name, value) -> None"""
         self._attributes[name] = value
         return
-    
-    
+
     def __init__(self, attributes=None):
-        if attributes is None: attributes = {}
+        if attributes is None:
+            attributes = {}
         self._attributes = attributes
         return
-    
+
 
 # version
 __id__ = "$Id$"

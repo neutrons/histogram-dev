@@ -3,14 +3,16 @@
 
 from .DatasetBase import DatasetBase
 import journal
+
 debug = journal.debug("NdArrayDataset")
 
 
-class Dataset( DatasetBase):
+class Dataset(DatasetBase):
     """datasets that use NdArray"""
 
-    def __init__( self, name='', unit='1', attributes = None,
-                  shape = [], storage = None, isslice = False):
+    def __init__(
+        self, name="", unit="1", attributes=None, shape=[], storage=None, isslice=False
+    ):
         """DatasetBase( name='', unit='', attributes={},
         shape = [], storage = None)
         Inputs:
@@ -23,171 +25,158 @@ class Dataset( DatasetBase):
             new DatasetBase object
         Exceptions: None
         Notes: None"""
-        #whether this dataset is a slice of another dataset
+        # whether this dataset is a slice of another dataset
         self._isslice = isslice
-        
+
         from .DictAttributeCont import AttributeCont
+
         # copy user's attributes to avoid confusion
         attributes = attributes or {}
-        attributeCont = AttributeCont( dict(attributes))
+        attributeCont = AttributeCont(dict(attributes))
 
-        #debug.log("storage = %s" % str(storage))
-        
-        if shape == [] and storage is not None: shape = storage.shape()
+        # debug.log("storage = %s" % str(storage))
+
+        if shape == [] and storage is not None:
+            shape = storage.shape()
         if shape != [] and storage is not None:
             if list(storage.shape()) != list(shape):
-                raise RuntimeError("Incompaitlbe inputs: shape = %s, storage.shape = %s" % (
-                    shape, storage.shape()))
+                raise RuntimeError(
+                    "Incompaitlbe inputs: shape = %s, storage.shape = %s"
+                    % (shape, storage.shape())
+                )
             pass
         shape = list(shape)
         _checkShape(shape)
 
-        #debug.log("shape = %s" % (storage.shape(),))
+        # debug.log("shape = %s" % (storage.shape(),))
 
-        DatasetBase.__init__( self, name, unit, attributeCont, shape, storage)
+        DatasetBase.__init__(self, name, unit, attributeCont, shape, storage)
         return
 
-
-    def name( self):
+    def name(self):
         """name() -> name of this axis"""
-        return self._attributeCont.getAttribute('name')
-
+        return self._attributeCont.getAttribute("name")
 
     def isunitless(self):
         from ._units import isunitless
-        return isunitless( self.unit() )
 
+        return isunitless(self.unit())
 
     def isslice(self):
         "is this dataset a slice of another dataset?"
         return self._isslice
 
-
-    def shape( self):
+    def shape(self):
         """shape() -> [list of dimensions]"""
-        return list( self._shape)
-
+        return list(self._shape)
 
     def setShape(self, newShape):
-        self._storage.setShape( newShape )
+        self._storage.setShape(newShape)
         self._shape = newShape
         return
 
-
-    def storage( self):
+    def storage(self):
         """storage() -> storage object"""
         return self._storage
-    
 
-    def typecode( self):
+    def typecode(self):
         """typecode() -> type code
         Type codes are:
             5.....float (single precision)
             6.....double (double precision)
             24....int (typically 32 bit)
             25....unsigned int (typically 32 bit)"""
-        return int( self._typecode)
+        return int(self._typecode)
 
-
-    def typecodeAsC( self):
+    def typecodeAsC(self):
         """typecodeAsC() -> code
-        get type code as C type ('float', 'double', 'int', 'unsigned' """
-        return str( self._typesSV2C[self._typecode])
+        get type code as C type ('float', 'double', 'int', 'unsigned'"""
+        return str(self._typesSV2C[self._typecode])
 
-
-    def typecodeAsNA( self):
+    def typecodeAsNA(self):
         """typecodeAsNA() -> code
         typecode translated to numpy type ('Float32', 'Float64', 'Int32',
         'UInt32)"""
-        return str( self._typesSV2NA[ self._typecode])
+        return str(self._typesSV2NA[self._typecode])
 
-
-    def typecodeAsStdVector( self):
+    def typecodeAsStdVector(self):
         return int(self._typecode)
 
-
-    def unit( self):
+    def unit(self):
         """unit() -> unit for this axis"""
-        return self._attributeCont.getAttribute('unit')
-
+        return self._attributeCont.getAttribute("unit")
 
     def changeUnit(self, unit):
-        '''change unit. update data array accordingly'''
+        """change unit. update data array accordingly"""
 
-        unit = tounit( unit )
+        unit = tounit(unit)
         myunit = self.unit()
-        
-        try: unit + myunit
-        except: ValueError, "cannot set dataset of unit %s to new unit %s" % (
-            myunit, unit)
 
-        ratio = myunit/unit
+        try:
+            unit + myunit
+        except:
+            ValueError, "cannot set dataset of unit %s to new unit %s" % (myunit, unit)
+
+        ratio = myunit / unit
         self._storage *= ratio
-        self._setunit( unit )
+        self._setunit(unit)
         return
-    
 
-    def attribute( self, name):
+    def attribute(self, name):
         """attribute( attrName) -> attrValue"""
-        return self._attributeCont.getAttribute( name)
+        return self._attributeCont.getAttribute(name)
 
-
-    def listAttributes( self):
+    def listAttributes(self):
         """listAttributes() -> [list of attr names]"""
         return self._attributeCont.listAttributes()
 
-
-    def setAttribute( self, name, value):
+    def setAttribute(self, name, value):
         """setAttribute( name, value) -> None"""
-        self._attributeCont.setAttribute( name, value)
+        self._attributeCont.setAttribute(name, value)
         return
 
-
     def copy(self):
-        return self._copy( )
+        return self._copy()
 
-
-    def sum(self, axis = None):
-        if axis is None : return self.storage().sum() * self.unit()
+    def sum(self, axis=None):
+        if axis is None:
+            return self.storage().sum() * self.unit()
         name = "sum of %s along axis %s" % (self.name(), axis)
-        unit = self.unit() #sum don't change unit
+        unit = self.unit()  # sum don't change unit
 
-        #copy attributes
+        # copy attributes
         keys = self.listAttributes()
         attrs = {}
-        for key in keys: attrs[key] = self.attribute( key )
+        for key in keys:
+            attrs[key] = self.attribute(key)
 
-        #shape
+        # shape
         shape = list(self.shape())
-        del shape[ axis ]
+        del shape[axis]
 
-        #storage
+        # storage
         storage = self.storage().sum(axis)
-        
+
         new = self.__class__(
-            name=name, unit = unit, attributes = attrs, shape = shape, storage = storage)
+            name=name, unit=unit, attributes=attrs, shape=shape, storage=storage
+        )
         return new
-    
 
-     #operators
+    # operators
     def __neg__(self):
-        return -1. * self
-
+        return -1.0 * self
 
     def __add__(self, other):
         r = self.copy()
         r += other
         return r
-    
 
     __radd__ = __add__
-
 
     def __sub__(self, other):
         r = self.copy()
         r -= other
         return r
-
 
     def __rsub__(self, other):
         r = self.copy()
@@ -195,64 +184,76 @@ class Dataset( DatasetBase):
         r += other
         return r
 
-
     def __mul__(self, other):
         r = self.copy()
         r *= other
         return r
 
-
     __rmul__ = __mul__
 
     def __truediv__(self, other):
-        return self * (1./other)
-    __div__ = __truediv__ 
+        return self * (1.0 / other)
+
+    __div__ = __truediv__
 
     def __rtruediv__(self, other):
         if isNumber(other):
             r = self.copy()
             stor = r.storage()
-            stor[:] = other/self.storage()
-            r.setAttribute('unit', 1/self.unit())
+            stor[:] = other / self.storage()
+            r.setAttribute("unit", 1 / self.unit())
             return r
-        raise NotImplementedError("__rdiv__ is not defined for %s and %s" % (
-            other.__class__.__name__, self.__class__.__name__, ))
+        raise NotImplementedError(
+            "__rdiv__ is not defined for %s and %s"
+            % (
+                other.__class__.__name__,
+                self.__class__.__name__,
+            )
+        )
+
     __rdiv__ = __rtruediv__
 
     def __iadd__(self, other):
-        if other is None: return self
+        if other is None:
+            return self
         stor = self.storage()
         if isNumber(other) and self.isunitless():
-            stor += other/self.unit()
+            stor += other / self.unit()
         elif isDimensional(other):
-            try: self.unit() + other
-            except: raise ValueError("unit mismatch: %s and %s" % (
-                self.unit(), other))
-            stor += other/self.unit()
+            try:
+                self.unit() + other
+            except:
+                raise ValueError("unit mismatch: %s and %s" % (self.unit(), other))
+            stor += other / self.unit()
         elif isUnitCompatibleDataset(self, other):
-            stor += other.storage() * (other.unit()/self.unit())
+            stor += other.storage() * (other.unit() / self.unit())
         elif isDataset(other):
-            raise ValueError("Incompatible datasets: %s, %s" % (
-                self, other))
+            raise ValueError("Incompatible datasets: %s, %s" % (self, other))
         else:
-            raise NotImplementedError("%s + %s" % (
-                self.__class__.__name__, other.__class__.__name__, 
-                ))
+            raise NotImplementedError(
+                "%s + %s"
+                % (
+                    self.__class__.__name__,
+                    other.__class__.__name__,
+                )
+            )
         return self
-
 
     def __isub__(self, other):
-        if other is None: return self
+        if other is None:
+            return self
         stor = self.storage()
-        if isNumber(other) and self.isunitless(): stor -= other/self.unit()
-        elif isDimensional(other): stor -= other/self.unit()
+        if isNumber(other) and self.isunitless():
+            stor -= other / self.unit()
+        elif isDimensional(other):
+            stor -= other / self.unit()
         elif isUnitCompatibleDataset(self, other):
-            stor -= other.storage() * (other.unit()/self.unit())
+            stor -= other.storage() * (other.unit() / self.unit())
         else:
-            raise NotImplementedError("%s - %s" % (
-                self.__class__.__name__, other.__class__.__name__))
+            raise NotImplementedError(
+                "%s - %s" % (self.__class__.__name__, other.__class__.__name__)
+            )
         return self
-
 
     def __imul__(self, other):
         stor = self.storage()
@@ -260,79 +261,81 @@ class Dataset( DatasetBase):
             stor *= 0
             return self
         if self.isslice() and isNumber(other):
-            #if this dataset is a slice, and other is a number
-            #we just need to work on the array. But we cannot
-            #change unit.
+            # if this dataset is a slice, and other is a number
+            # we just need to work on the array. But we cannot
+            # change unit.
             stor *= other
             return self
-        
+
         if self.isslice():
             # if this dataset is actually a slice of another dataset, then
             # we cannot change unit. otherwise this dataset will
             # have different unit than the original dataset
-            raise ValueError("%s*%s. This dataset is a slice, we cannot change unit" % (
-                self, other))
-        
+            raise ValueError(
+                "%s*%s. This dataset is a slice, we cannot change unit" % (self, other)
+            )
+
         if isNumber(other) or isDimensional(other):
-            self.setAttribute( 'unit', self.unit()*other )
+            self.setAttribute("unit", self.unit() * other)
         elif isCompatibleDataset(self, other):
             stor *= other.storage()
-            self.setAttribute( 'unit', self.unit()*other.unit() )
+            self.setAttribute("unit", self.unit() * other.unit())
         else:
-            raise NotImplementedError("%s * %s" % (
-                self.__class__.__name__, other.__class__.__name__))
+            raise NotImplementedError(
+                "%s * %s" % (self.__class__.__name__, other.__class__.__name__)
+            )
         return self
-    
 
     def __itruediv__(self, other):
         stor = self.storage()
-        
+
         if self.isslice() and isNumber(other):
-            #if this dataset is a slice, and other is a number
-            #we just need to work on the array. But we cannot
-            #change unit.
+            # if this dataset is a slice, and other is a number
+            # we just need to work on the array. But we cannot
+            # change unit.
             stor /= other
             return self
-        
+
         if self.isslice():
             # if this dataset is actually a slice of another dataset, then
             # we cannot change unit. otherwise this dataset will
             # have different unit than the original dataset
-            raise ValueError("%s/%s. This dataset is a slice, we cannot change unit" % (
-                self, other))
-        
+            raise ValueError(
+                "%s/%s. This dataset is a slice, we cannot change unit" % (self, other)
+            )
+
         if isNumber(other) or isDimensional(other):
-            self.setAttribute('unit', 1.* self.unit()/other)
+            self.setAttribute("unit", 1.0 * self.unit() / other)
         elif isCompatibleDataset(self, other):
             stor /= other.storage()
-            self.setAttribute( 'unit', 1.* self.unit()/other.unit() )
+            self.setAttribute("unit", 1.0 * self.unit() / other.unit())
         else:
-            raise NotImplementedError("%s * %s" % (
-                self.__class__.__name__, other.__class__.__name__))
+            raise NotImplementedError(
+                "%s * %s" % (self.__class__.__name__, other.__class__.__name__)
+            )
         return self
+
     __idiv__ = __itruediv__
 
     def square(self):
         self.storage().square()
-        self.setAttribute( 'unit', self.unit()**2 )
+        self.setAttribute("unit", self.unit() ** 2)
         return
-    
 
     def sqrt(self):
         self.storage().sqrt()
         from math import sqrt
-        self.setAttribute( 'unit', self.unit()**(1./2) )
-        return
 
+        self.setAttribute("unit", self.unit() ** (1.0 / 2))
+        return
 
     def reverse(self):
         self.storage().reverse()
-        self.setAttribute( 'unit', 1./self.unit() )
+        self.setAttribute("unit", 1.0 / self.unit())
         return
 
-
     def transpose(self, *args):
-        '''Returns a view of dataset with axes transposed.
+        """Returns a view of dataset with axes transposed.
         Axes should be give as integers.
         If no axes are given,
         or None is passed, switches the order of the axes. For a 2-d
@@ -340,85 +343,96 @@ class Dataset( DatasetBase):
         they describe how the axes are permuted.
 
         !!!How should meta data change?
-        '''
+        """
         name = self.name()
         unit = self.unit()
         attrs = {}
         for n in self.listAttributes():
-            attrs[n] = self.attribute( n )
+            attrs[n] = self.attribute(n)
             continue
         storage = self.storage().transpose()
         shape = storage.shape()
-        return Dataset( name = name, unit = unit, attributes = attrs,
-                        shape = shape, storage = storage )
-
+        return Dataset(
+            name=name, unit=unit, attributes=attrs, shape=shape, storage=storage
+        )
 
     def __getitem__(self, s):
-        if isinstance(s, list): s = tuple(s)
-        
-        if isinstance(s, int): return self._storage[s] * self.unit()
+        if isinstance(s, list):
+            s = tuple(s)
+
+        if isinstance(s, int):
+            return self._storage[s] * self.unit()
         elif isinstance(s, tuple):
             s = list(s)
             slicing = False
             for i in s:
-                if not isinstance(i, int): slicing = True; break
+                if not isinstance(i, int):
+                    slicing = True
+                    break
                 continue
         elif isinstance(s, slice):
             slicing = True
         else:
             raise IndexError("Don't know how to do indexing by %s" % (s,))
-        
+
         if slicing:
-            ret = self._copy( self._storage[s], slicing = True )
+            ret = self._copy(self._storage[s], slicing=True)
             ret._original = self
             return ret
         return self._storage[s] * self.unit()
-        
 
     def __setitem__(self, s, rhs):
-        if isDataset( rhs ):
-            rhs = rhs._storage * (rhs.unit()/self.unit())
+        if isDataset(rhs):
+            rhs = rhs._storage * (rhs.unit() / self.unit())
         else:
             unit = self.unit()
             try:
-                rhs = rhs/self.unit()
-            except Exception as msg :
-                raise ValueError('__setitem__: the rhs must be either dataset or numpy data array'\
-                      ' with unit. rhs = %s.\n'\
-                      '%s: %s' %  (rhs, msg.__class__.__name__, msg))
+                rhs = rhs / self.unit()
+            except Exception as msg:
+                raise ValueError(
+                    "__setitem__: the rhs must be either dataset or numpy data array"
+                    " with unit. rhs = %s.\n"
+                    "%s: %s" % (rhs, msg.__class__.__name__, msg)
+                )
             pass
         try:
             self._storage[s] = rhs
         except Exception as err:
             raise ValueError("rhs = %s. %s:%s" % (rhs, err.__class__, err))
-        return rhs 
-
+        return rhs
 
     def __str__(self):
-        return '''Dataset %s(unit=%s): %s''' % (
-            self.name(), self.unit(), self.storage().asNumarray() )
-    
+        return """Dataset %s(unit=%s): %s""" % (
+            self.name(),
+            self.unit(),
+            self.storage().asNumarray(),
+        )
 
-    def _copy(self, storage = None, slicing = False):
+    def _copy(self, storage=None, slicing=False):
         keys = self.listAttributes()
         attrs = {}
-        for key in keys: attrs[key] = self.attribute( key )
+        for key in keys:
+            attrs[key] = self.attribute(key)
 
-        #create a copy of my storage if necessary
-        if storage is None: storage = self.storage().copy()
-        
+        # create a copy of my storage if necessary
+        if storage is None:
+            storage = self.storage().copy()
+
         copy = self.__class__(
-            name=self.name(), unit=self.unit(), attributes = attrs,
-            shape = [], storage = storage, isslice = slicing)
+            name=self.name(),
+            unit=self.unit(),
+            attributes=attrs,
+            shape=[],
+            storage=storage,
+            isslice=slicing,
+        )
         return copy
 
-
     def _setunit(self, unit):
-        self.setAttribute( 'unit', unit )
+        self.setAttribute("unit", unit)
         return
-    
 
-    pass # end of Class Dataset
+    pass  # end of Class Dataset
 
 
 from ._units import *
@@ -428,36 +442,40 @@ def isDataset(ds):
     return isinstance(ds, DatasetBase)
 
 
-def isCompatibleDataset(a,b):
+def isCompatibleDataset(a, b):
     if not isinstance(a, DatasetBase) or not isinstance(b, DatasetBase):
-        debug.log("either %s or %s is not a dataset" % (a.__class__.__name__,
-                                                        b.__class__.__name__,) )
+        debug.log(
+            "either %s or %s is not a dataset"
+            % (
+                a.__class__.__name__,
+                b.__class__.__name__,
+            )
+        )
         return False
-    
+
     if a.shape() != b.shape():
-        debug.log("imcompatible shape: %s, %s" % (a.shape(), b.shape()) )
+        debug.log("imcompatible shape: %s, %s" % (a.shape(), b.shape()))
         return False
 
     return True
 
 
-def isUnitCompatibleDataset(a,b):
-    if not isCompatibleDataset(a,b): return False
-    try: a.unit() + b.unit()
+def isUnitCompatibleDataset(a, b):
+    if not isCompatibleDataset(a, b):
+        return False
+    try:
+        a.unit() + b.unit()
     except:
-        debug.log("imcompatible units: %s, %s" % (a.unit(), b.unit()) )
+        debug.log("imcompatible units: %s, %s" % (a.unit(), b.unit()))
         return False
     return True
-
 
 
 def _checkShape(shape):
     for i in shape:
-        assert isinstance(i, int) or isinstance(i, int), "wrong shape %s" % (
-            shape,)
+        assert isinstance(i, int) or isinstance(i, int), "wrong shape %s" % (shape,)
         continue
     return
-        
 
 
 # version

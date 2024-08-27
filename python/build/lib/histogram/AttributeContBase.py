@@ -3,20 +3,21 @@
 
 msg = "{0!s} must override {1!s}"
 
+
 class AttributeContBase(object):
     """attribute container interface"""
 
     def getAttribute(self, name):
         """getAttribute( name) -> value"""
-        raise NotImplemented(msg.format(self.__class__.__name__, 'getAttribute'))
+        raise NotImplementedError(msg.format(self.__class__.__name__, "getAttribute"))
 
     def listAttributes(self):
         """listAttributes() -> [names of attributes]"""
-        raise NotImplemented(msg.format(self.__class__.__name__, 'listAttributes'))
+        raise NotImplementedError(msg.format(self.__class__.__name__, "listAttributes"))
 
     def setAttribute(self, name, value):
         """setAttribute( name, value) -> None"""
-        raise NotImplemented(msg.format(self.__class__.__name__, 'setAttribute'))
+        raise NotImplementedError(msg.format(self.__class__.__name__, "setAttribute"))
 
 
 # version

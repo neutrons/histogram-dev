@@ -11,8 +11,8 @@
 
 from .AxisMapper import AxisMapper
 
-class ContinuousAxisMapper(AxisMapper):
 
+class ContinuousAxisMapper(AxisMapper):
     """
     map a value in an continuous Axis to a index.
 
@@ -22,51 +22,58 @@ class ContinuousAxisMapper(AxisMapper):
     def __init__(self, binBoundaries=None):
         self._bb = binBoundaries
         return
-    
 
     def __call__(self, value):
-        return findCellIndex( value, self._bb )
-        
+        return findCellIndex(value, self._bb)
 
-    pass # end of ContinuousAxisMapper
-
+    pass  # end of ContinuousAxisMapper
 
 
-class SmallArrayError(Exception): pass
-class OutOfBoundError(Exception): pass
+class SmallArrayError(Exception):
+    pass
 
 
-def findCellIndex( value, arr ):
-    
-    if (len(arr) < 2 ) : raise SmallArrayError
-    if (value< arr[0] or value > arr[-1]):  raise OutOfBoundError
-    if (arr[-1] < arr[0]) : raise ValueError("array must be ascending") 
+class OutOfBoundError(Exception):
+    pass
 
-    n = len( arr )
 
-    i,j,k =0, n//2, n-1
+def findCellIndex(value, arr):
+    if len(arr) < 2:
+        raise SmallArrayError
+    if value < arr[0] or value > arr[-1]:
+        raise OutOfBoundError
+    if arr[-1] < arr[0]:
+        raise ValueError("array must be ascending")
 
-    while (i!=j and j!=k) :
+    n = len(arr)
+
+    i, j, k = 0, n // 2, n - 1
+
+    while i != j and j != k:
         middle = arr[j]
-        if (middle < value) : i = j; j = (i+k)//2
-        elif (value < middle):  k = j; j = (i+k)//2
-        else : return j
+        if middle < value:
+            i = j
+            j = (i + k) // 2
+        elif value < middle:
+            k = j
+            j = (i + k) // 2
+        else:
+            return j
         continue
-      
-    if (i==j):  return i
+
+    if i == j:
+        return i
     return j
 
 
+def testFindCellIndex():
+    arr = [1, 3, 5, 7]
 
-def testFindCellIndex( ):
+    assert findCellIndex(4, arr) == 1
 
-    arr=[1,3,5,7]
+    arr = [1, 3, 5, 8, 10]
 
-    assert findCellIndex( 4, arr ) == 1
-
-    arr=[1,3,5,8, 10]
-    
-    assert findCellIndex( 9, arr ) == 3
+    assert findCellIndex(9, arr) == 3
     return
 
 
@@ -75,4 +82,5 @@ def test():
     return
 
 
-if __name__ == "__main__": test()
+if __name__ == "__main__":
+    test()
