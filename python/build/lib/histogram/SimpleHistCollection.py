@@ -26,7 +26,6 @@ from .DetHistCollection import DetHistCollection as DHCBase
 
 
 class SimpleHistCollection(DHCBase):
-
     """Hist collection is useful when detector system is complex.
     For example, some instrument has two sets of detectors, the
     longer one and the short one. One histogram is not good enough
@@ -35,23 +34,25 @@ class SimpleHistCollection(DHCBase):
 
     For uniformity, all main detector data should be represented
     by a histogram collection.
-    
+
     This SimpleHistCollection is used when the main detector system
     is simple, and one histogram is good enough to represent the
     data from the whole detector system.
     """
 
-    def __init__(self, hist): self._hist = hist
+    def __init__(self, hist):
+        self._hist = hist
 
-    def getAll(self): return [self._hist]
+    def getAll(self):
+        return [self._hist]
 
-    def __call__(self, detector=None): return self._hist
+    def __call__(self, detector=None):
+        return self._hist
 
-    pass # end of SimpleHistCollection
-
+    pass  # end of SimpleHistCollection
 
 
 # version
 __id__ = "$Id$"
 
-# End of file 
+# End of file
