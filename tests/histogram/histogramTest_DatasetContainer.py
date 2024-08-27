@@ -98,12 +98,11 @@ def run(**kwds):
     allPassed = True
 
     for i, aspect in enumerate(aspects):
-        run = eval("test_" + str(i))
-        utilities.preReport(log, target, aspect)
+        run = eval('test_' + str(i))
+        # utilities.preReport(log, target, aspect)
         passed = run(**kwds)
-        utilities.postReport(log, target, aspect, passed)
+        # utilities.postReport(log, target, aspect, passed)
         allPassed = allPassed and passed
-
     return allPassed
 
 

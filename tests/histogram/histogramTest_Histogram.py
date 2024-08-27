@@ -214,23 +214,24 @@ def test_4(**kwds):
 
 
 # ------------- do not modify below this line ---------------
-
-
-def run(**kwds):
+def run( **kwds):
+    
     allPassed = True
-
-    for i, aspect in enumerate(aspects):
-        run = eval("test_" + str(i))
-        utilities.preReport(log, target, aspect)
-        passed = run(**kwds)
-        utilities.postReport(log, target, aspect, passed)
+    
+    for i, aspect in enumerate( aspects):
+        run = eval( 'test_' + str(i))
+        # utilities.preReport( log, target, aspect)
+        passed = run( **kwds)
+        # utilities.postReport( log, target, aspect, passed)
         allPassed = allPassed and passed
 
     return allPassed
 
 
-if __name__ == "__main__":
-    import ARCSTest.utilities as utilities
+
+if __name__ == '__main__':
+    # import ARCSTest.utilities as utilities
+    import utilities as utilities
 
     target = "Histogram"
 
