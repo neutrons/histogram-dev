@@ -1,6 +1,5 @@
 import numpy as N
-from pyre.units import *
-from pyre.units import unit
+from pyre.units import unit, parser
 from pyre.units import length
 import sys
 
