@@ -26,8 +26,8 @@ int main()
 
   typedef EvenlySpacedAxisMapper< int, short > YMapper;
   YMapper ymapper( 100, 500, 100 );
-  
-  
+
+
   typedef GridData_2D<double, XMapper, int, YMapper, unsigned int, ZArray > GD2;
   GD2 g( xmapper, ymapper, zarr );
   const GD2 & cg = g;
@@ -42,4 +42,3 @@ int main()
   return 0;
 
 }
-

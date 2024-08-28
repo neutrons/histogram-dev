@@ -6,101 +6,106 @@ aspects = [
     "binCenters()",
     "binBoundaries()",
     "binBoundariesAsList()",
-    ]
-
+]
 
 
 from histogram import ndArray
 
 
-
 def test_0(**kwds):
-
     from histogram.Axis import Axis
 
-    name = 'test'
-    unit = '1'
-    attributes = {'plottable': True, 'nifty': False, 'pi': 3.14159, 3.14159: 'pi'}
+    name = "test"
+    unit = "1"
+    attributes = {"plottable": True, "nifty": False, "pi": 3.14159, 3.14159: "pi"}
     length = 23
     dtype = 6  # double
 
-    storage = ndArray(dtype, length+1, 1.0)
+    storage = ndArray(dtype, length + 1, 1.0)
 
-    axis = Axis(name, unit, attributes, length,  storage)
+    axis = Axis(name, unit, attributes, length, storage)
 
     passed = True
     if axis._shape != [length + 1]:
         passed = False
-        log("shape was {0!s} instead of {1!s}".format(axis._shape, [length+1]))
+        log("shape was {0!s} instead of {1!s}".format(axis._shape, [length + 1]))
     # everything else tested in histogramTest_StdvectorDataset.py
-    
-    return passed 
+
+    return passed
 
 
 def test_1(**kwds):
-
     from histogram.Axis import Axis
 
-    name = 'test'
-    unit = '1'
-    attributes = {'plottable': True, 'nifty': False, 'pi': 3.14159, 3.14159: 'pi'}
+    name = "test"
+    unit = "1"
+    attributes = {"plottable": True, "nifty": False, "pi": 3.14159, 3.14159: "pi"}
     length = 23
     dtype = 6  # double
 
-    binBounds = [i+1.0 for i in range(length+1)]
+    binBounds = [i + 1.0 for i in range(length + 1)]
     storage = ndArray(dtype, binBounds)
 
+    axis = Axis(name, unit, attributes, length, storage)
 
-    axis = Axis(name, unit, attributes, length,  storage)
-
-    expected = [i+1.5 for i in range(23)]
+    expected = [i + 1.5 for i in range(23)]
     passed = utilities.compareFPLists(expected, axis.binCenters(), 1e-15, log)
     if not passed:
-        log("binCenters(): expected {0!s}, got {1!s}".format(expected, axis.binCenters()))
+        log(
+            "binCenters(): expected {0!s}, got {1!s}".format(
+                expected, axis.binCenters()
+            )
+        )
 
     return passed
 
 
 def test_2(**kwds):
-
     from histogram.Axis import Axis
 
-    name = 'test'
-    unit = '1'
-    attributes = {'plottable': True, 'nifty': False, 'pi': 3.14159, 3.14159: 'pi'}
+    name = "test"
+    unit = "1"
+    attributes = {"plottable": True, "nifty": False, "pi": 3.14159, 3.14159: "pi"}
     length = 23
     dtype = 6  # double
 
-    binBounds = [i+1.0 for i in range(length+1)]
+    binBounds = [i + 1.0 for i in range(length + 1)]
     storage = ndArray(dtype, binBounds)
 
     axis = Axis(name, unit, attributes, length, storage)
 
     passed = storage == axis.binBoundaries()
     if not passed:
-        log("binBoundaries(): expected {0!s}, got {1!s}".format(storage, axis.binBoundaries()))
+        log(
+            "binBoundaries(): expected {0!s}, got {1!s}".format(
+                storage, axis.binBoundaries()
+            )
+        )
 
     return passed
 
 
 def test_3(**kwds):
-
     from histogram.Axis import Axis
 
-    name = 'test'
-    unit = '1'
-    attributes = {'plottable': True, 'nifty': False, 'pi': 3.14159, 3.14159: 'pi'}
+    name = "test"
+    unit = "1"
+    attributes = {"plottable": True, "nifty": False, "pi": 3.14159, 3.14159: "pi"}
     length = 23
     dtype = 6  # double
 
-    binBounds = [i+1.0 for i in range(length+1)]
+    binBounds = [i + 1.0 for i in range(length + 1)]
     storage = ndArray(dtype, binBounds)
 
     axis = Axis(name, unit, attributes, length, storage)
 
     passed = storage.asList() == axis.binBoundariesAsList()
     if not passed:
-        log("binBoundariesAsList(): expected {0!s}, got {1!s}".format(storage.asList(), axis.binBoundariesAsList()))
+        log(
+            "binBoundariesAsList(): expected {0!s}, got {1!s}".format(
+                storage.asList(), axis.binBoundariesAsList()
+            )
+        )
 
     return passed
 
@@ -109,35 +114,34 @@ def test_3(**kwds):
 
 
 def run(**kwds):
-    
     allPassed = True
-    
+
     for i, aspect in enumerate(aspects):
         run = eval('test_' + str(i))
-        utilities.preReport(log, target, aspect)
+        # utilities.preReport(log, target, aspect)
         passed = run(**kwds)
-        utilities.postReport(log, target, aspect, passed)
+        # utilities.postReport(log, target, aspect, passed)
         allPassed = allPassed and passed
 
     return allPassed
 
 
-#import ARCSTest.utilities as utilities
+# import ARCSTest.utilities as utilities
 import utilities
 
 target = "Axis"
 
 log = utilities.picklog(target)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import journal
+
     info = journal.info(target)
     info.activate()
-    
+
     run()
 
 # version
 __id__ = "$Id$"
 
 # End of file
-

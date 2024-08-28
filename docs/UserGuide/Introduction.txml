@@ -25,16 +25,16 @@ for scientific computing: histogram.
 A histogram object is a container of data, error bars, and axes.
 With this package, you can create and manipulate histograms,
 and apply numerical operators to histograms.
-The datasets in a histogram can be easily retrieved as 
+The datasets in a histogram can be easily retrieved as
 <ulink url='http://numpy.org'>numpy</ulink> arrays.
 The meta data of a histogram are accessible through member
 functions of the histogram and the associated data objects.
 </para>
 
 <para>
-This package is developed in the 
+This package is developed in the
 <ulink url="http://danse.us">DANSE</ulink> package
-as the fundamental data object for 
+as the fundamental data object for
     <ulink url='http://danse.us/trac/DrChops'>
       DrChops
     </ulink>
@@ -43,7 +43,7 @@ as the fundamental data object for
 
   <para>
     A user can access a histogram through its public interface
-    using the python shell. 
+    using the python shell.
     Here is an example of a  python session:
   </para>
 
@@ -59,13 +59,12 @@ as the fundamental data object for
   </programlisting>
 
   <para>
-    For more details about how to manipulate histograms 
+    For more details about how to manipulate histograms
     from the python command line, please read
     <xref linkend="histogram.CommandlineInterface"/>.
     Histograms can also be accessed from the Histogram GUI application,
     which may be more convenient and interactive.
     The <xref linkend='HistogramGUI'/> has more details about that.
   </para>
-  
-</chapter>
 
+</chapter>

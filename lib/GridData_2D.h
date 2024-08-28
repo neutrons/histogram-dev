@@ -20,12 +20,12 @@
 
 
 HISTOGRAM_NAMESPACE_START
-    
+
     /// 2-dimensional grid data.
     /// This class associates a 2D data array and two axis mappers.
     /// For example, say we have an axis detectorID=[10, 11, ..., 20],
     /// and an axis pixelID=[0,1,2,3]
-    /// and an array of shape 11 X 4. 
+    /// and an array of shape 11 X 4.
     /// Together they represent a histogram.
     /// The most important usage of this kind of grid data is to return
     /// value of f(x,y) given values of x and y.
@@ -35,20 +35,20 @@ HISTOGRAM_NAMESPACE_START
     /// This class is not intended to be used by users of this library.
     /// Classes in this library use this class, however, and provide
     /// easier-to-use interfaces.
-    /// 
+    ///
     /// template arguments:
     ///   XAxisMapper: functor class to map x value to index
     ///   YAxisMapper: functor class to map y value to index
     ///   ZArray: 2-dimensional array class.
-    template < typename XDataType, typename XAxisMapper, 
+    template < typename XDataType, typename XAxisMapper,
 	       typename YDataType, typename YAxisMapper,
 	       typename ZDataType, typename ZArray,
 	       typename IndexType = unsigned int>
     class GridData_2D {
-      
+
     public:
       /// ctor.
-      GridData_2D( const XAxisMapper & xmapper, 
+      GridData_2D( const XAxisMapper & xmapper,
 		   const YAxisMapper & ymapper,
 		   ZArray & zarray ) :
 	m_xmapper( xmapper ),  m_ymapper( ymapper ),
@@ -65,7 +65,7 @@ HISTOGRAM_NAMESPACE_START
 	static IndexType indexes[2];
 	indexes[0] = m_xmapper( x );
 	indexes[1] = m_ymapper( y );
-	
+
 	return m_zarray[ indexes ];
       }
 
@@ -88,7 +88,7 @@ HISTOGRAM_NAMESPACE_START
     };
 
 HISTOGRAM_NAMESPACE_END
-    
+
 
 #endif // HISTOGRAM_GRIDDATA_2D_H
 
@@ -96,4 +96,4 @@ HISTOGRAM_NAMESPACE_END
 // version
 // $Id$
 
-// End of file 
+// End of file

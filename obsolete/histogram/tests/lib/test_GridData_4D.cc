@@ -26,14 +26,14 @@ int main()
 
   typedef EvenlySpacedAxisMapper< int, short > X2Mapper;
   X2Mapper x2mapper( 1, 5, 1 );
-  
+
   typedef EvenlySpacedAxisMapper< int, short > X3Mapper;
   X3Mapper x3mapper( 100, 600, 100 );
-  
+
   typedef EvenlySpacedAxisMapper< double, short > X4Mapper;
   X4Mapper x4mapper( 3000., 9000., 1000 );
-  
-  
+
+
   typedef GridData_4D<double, X1Mapper, int, X2Mapper, int, X3Mapper, double, X4Mapper,
     unsigned int, ZArray > GD4;
   GD4 g( x1mapper, x2mapper, x3mapper, x4mapper, zarr );
@@ -50,4 +50,3 @@ int main()
   return 0;
 
 }
-

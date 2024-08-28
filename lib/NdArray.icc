@@ -27,38 +27,38 @@ HISTOGRAM_NAMESPACE_START
 	      unsigned int NDimension>
     SuperSize
     NdArray<Iterator, DataType, Size, SuperSize, NDimension>::_1dindex
-    ( const Size * indexes ) 
-      const 
+    ( const Size * indexes )
+      const
     {
       SuperSize ind = 0; // what if this get out of bound of largest integer?
       SuperSize N = 1;
       for (int i=NDimension-1; i>=0; i--  ) {
 	if (indexes[i]<0 || indexes[i]>=m_shape[i]) _throw_out_of_bound(indexes);
-	ind += N * indexes[ i ]; 
+	ind += N * indexes[ i ];
 	N *= m_shape[ i ];
       }
       return ind;
     }
-    
+
     template <typename Iterator, typename DataType, typename Size, typename SuperSize,
 	      unsigned int NDimension>
-    void 
+    void
     NdArray<Iterator, DataType, Size, SuperSize, NDimension>::_throw_out_of_bound
-    (const Size * indexes) 
+    (const Size * indexes)
       const
     {
       std::ostringstream oss;
       oss << "NdArray: "
 	  << "indexes = ";
-      for (unsigned int i=0; i<NDimension; i++) 
+      for (unsigned int i=0; i<NDimension; i++)
 	oss << indexes[i] << ", ";
       oss << "shape = ";
-      for (unsigned int i=0; i<NDimension; i++) 
+      for (unsigned int i=0; i<NDimension; i++)
 	oss << m_shape[i] << ", ";
-      
+
       throw OutOfBound( oss.str().c_str() );
     }
-    
+
 
 HISTOGRAM_NAMESPACE_END
 
@@ -66,4 +66,4 @@ HISTOGRAM_NAMESPACE_END
 // version
 // $Id$
 
-// End of file 
+// End of file

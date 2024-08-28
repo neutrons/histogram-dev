@@ -9,5 +9,5 @@
 from webserver import webserver
 
 urldict = {
-    'xxxWEBSITExxx': "{0!s}/Docs/docs".format(webserver),
-    }
+    "xxxWEBSITExxx": "{0!s}/Docs/docs".format(webserver),
+}

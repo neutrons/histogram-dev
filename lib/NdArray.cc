@@ -25,4 +25,4 @@ HISTOGRAM_NAMESPACE_END
 // version
 // $Id$
 
-// End of file 
+// End of file

@@ -53,7 +53,7 @@ HISTOGRAM_NAMESPACE_START
       /// The zarray_begin array must have consistent shape with that defined
       /// by parameters {xibegin, xiend, xistep}.
       ///
-      ///   size(zarray) = \Pi_{i} [(xiend-xibegin)/xistep] 
+      ///   size(zarray) = \Pi_{i} [(xiend-xibegin)/xistep]
       ///
       /// zarray is a 1D array, but it can be seen as a 3D array of shape
       ///
@@ -151,7 +151,7 @@ HISTOGRAM_NAMESPACE_START
       typedef EvenlySpacedAxisMapper< X1DataType, IndexType > X1Mapper;
       typedef EvenlySpacedAxisMapper< X2DataType, IndexType > X2Mapper;
       typedef EvenlySpacedAxisMapper< X3DataType, IndexType > X3Mapper;
-      typedef GridData_3D<X1DataType, X1Mapper, 
+      typedef GridData_3D<X1DataType, X1Mapper,
 			  X2DataType, X2Mapper,
 			  X3DataType, X3Mapper,
 			  ZDataType, ZArray,

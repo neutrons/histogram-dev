@@ -20,17 +20,17 @@ USING_HISTOGRAM_NAMESPACE
 
 // event->(pack, tube, pixel, tof) functor
 struct Event2pdpt
-  : public Event2Quantity4<Event, 
-			   unsigned int, 
+  : public Event2Quantity4<Event,
 			   unsigned int,
 			   unsigned int,
-			   unsigned int, 
+			   unsigned int,
+			   unsigned int,
 			   double>
 {
-  unsigned int operator() 
-  ( const Event & e, 
-    unsigned int & pack, unsigned int & tube, 
-    unsigned int &pixel, double &tof ) const 
+  unsigned int operator()
+  ( const Event & e,
+    unsigned int & pack, unsigned int & tube,
+    unsigned int &pixel, double &tof ) const
   {
     pack = e.pixelID/1024 + 1;
     tube = e.pixelID/128 % 8;
@@ -42,7 +42,7 @@ struct Event2pdpt
 
 
 int main()
-{  
+{
   // create events to reduce
   typedef std::vector<Event> events_t;
   events_t evts(1);
@@ -59,12 +59,12 @@ int main()
 
   // reduce
   events2EvenlySpacedIxxxx
-    <Event, Event2pdpt, 
-    unsigned int, unsigned int, unsigned int, double, 
+    <Event, Event2pdpt,
+    unsigned int, unsigned int, unsigned int, double,
     unsigned int>
     (evts.begin(), evts.end(),
-     e2pdpt, 
-     1, 116, 1, 
+     e2pdpt,
+     1, 116, 1,
      0, 8, 1,
      0, 128, 1,
      1000, 2000, 10.,
@@ -72,9 +72,8 @@ int main()
 
   // verify
   assert (intensities[ ((21-1)*1024+3*128+77)*100 + 25] == 1);
-  
+
   // finalize
   delete [] intensities;
   return 0;
 }
-

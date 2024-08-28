@@ -106,9 +106,9 @@ add_custom_command(
   COMMAND git archive --format=tar --prefix=${PKG_NAME}-${CPACK_PACKAGE_VERSION}/ HEAD | gzip -c > ${CMAKE_CURRENT_BINARY_DIR}/${PKG_NAME}-${CPACK_PACKAGE_VERSION}.tar.gz
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   )
-add_custom_target( 
+add_custom_target(
   src_tgz
-  DEPENDS ${PKG_NAME}-${CPACK_PACKAGE_VERSION}.tar.gz 
+  DEPENDS ${PKG_NAME}-${CPACK_PACKAGE_VERSION}.tar.gz
   )
 
 # CPack does not have a rule for source rpm
@@ -136,7 +136,7 @@ add_custom_command(
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   DEPENDS src_tgz
   )
-add_custom_target( 
+add_custom_target(
   srpm
   DEPENDS ${SRC_RPM}
   )

@@ -32,7 +32,7 @@
 
 
     <splitter direction="horizontal" minimumPanelSize="100" sliderPosition="400">
-      
+
       <splitter direction="vertical" minimumPanelSize="250">
 	<panel label="listpanel" borderStyle="sunken">
 	  <sizer ratios="[0,1]" border="5" direction="vertical">
@@ -48,15 +48,15 @@
 	  </sizer>
 	</panel>
       </splitter>
-      
+
       <panel label="lower" borderStyle="sunken">
 	<sizer ratios="[1]" border="5">
 	  <pyshell keydown-callback="+OnKeyDownInShellWindow" locals="pyshell_locals" label="pythonshell">
 	  </pyshell>
 	</sizer>
       </panel>
-      
-    </splitter>    
+
+    </splitter>
 
   </mainframe>
 </mainapp>

@@ -5,8 +5,8 @@ Histogram Python Interface
 ==========================
 
 For simplicity, in the following
-examples, we all start by importing 
-from the packages *histogram* and *numpy*. 
+examples, we all start by importing
+from the packages *histogram* and *numpy*.
 
 .. They include many
 .. convenient functions like "histogram" factory and "exp" math functions.
@@ -55,13 +55,13 @@ is put into a list.
    in which the only item describes the only axis for the histogram.
 
 .. note::
-   To construct a histogram, you could supply its axes using a list of tuples, 
+   To construct a histogram, you could supply its axes using a list of tuples,
    while each tuple represents an axis::
 
     [ ('x', range(10)), ('y', range(15)) ]
-   
+
    or using a list of instances of Axis class::
-   
+
     [ axis('x', range(10)), axis('y', range(15)) ]
 
 .. _cheatsheat:
@@ -82,7 +82,7 @@ The following text show up::
     - Metadata: [('name', 'h')]
     - Data: ... [0. 0. ... 0.]
     - Errors: ... [0. 0. ... 0.]
-    
+
 A histogram has a name, a bunch of axes,
 some meta data, and two main datasets: "data" and "errors".
 
@@ -114,13 +114,13 @@ In the python command line, we enter::
  >>> tof = h.tof
  >>> # now we apply the function to the axis and assign it to the histogram
  >>> h.I = exp(-tof/1000.)
-  
+
 A shortcut to create the same histogram from scratch::
 
  >>> h = histogram(
-      "h", 
+      "h",
       [
-       ('tof', arange(1000., 3000., 1.0), "microsecond") 
+       ('tof', arange(1000., 3000., 1.0), "microsecond")
       ],
       fromfunction = lambda x: exp(-x/1000.) )
 
@@ -188,20 +188,20 @@ For example::
 
  >>> ycube = h.y**3
  >>> h[ 0.3, () ] = ycube, None
-  
+
 You may notice that we need a tuple on the right-hand side. The reason is there
-are two datasets in a histogram: one for the data, another for the error squares. 
+are two datasets in a histogram: one for the data, another for the error squares.
 (Recall
-that the squares of the errors are stored to reduce computation time.) 
+that the squares of the errors are stored to reduce computation time.)
 In the 2-tuple
 
 ::
 
   ycube, None
 
-"ycube" will be assign to the "data" dataset, 
+"ycube" will be assign to the "data" dataset,
 and "None" will be assigned to the
-"error bar squares" dataset. 
+"error bar squares" dataset.
 Actually "None" is a special dataset for error bar
 squares: it means all error bars are zero.
 
@@ -384,10 +384,10 @@ Examples
  >>> h = histogram( 'h', [x,y], fromfunction = lambda x,y: x*x + y*y )
  >>> dataarr = h.I
  >>> errsarr = h.E2
-  
+
 Both "dataarr" and "errsarr" are numpy arrays that reference to the underlying
 data stored in the histogram. You can work directly on these arrays, and the
-original histogram will be changed. 
+original histogram will be changed.
 Please see `numpy <http://www.numpy.org/>`_ documentation to learn of
 other methods that are available in the numpy package.
 

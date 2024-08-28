@@ -28,10 +28,10 @@ HISTOGRAM_NAMESPACE_START
 /// template arguments:
 ///   Event: Event class
 ///   Event2X: a Event2Quantity class
-///   XData: data type of x 
+///   XData: data type of x
 ///   YIterator: iterator of y values.
 ///   EventIterator: event iterator type.
-/// 
+///
 /// arguments:
 ///   events_begin: events beginning iterator
 ///   events_end: events ending iterator
@@ -39,29 +39,29 @@ HISTOGRAM_NAMESPACE_START
 ///   e2x: event -> x functor
 ///   x_begin, x_end, x_step: define the x axis
 ///   y_begin: iterator of y array to store y values at x points on x axis
-template <typename Event, 
-	  typename Event2X, 
+template <typename Event,
+	  typename Event2X,
 	  typename XData,
 	  typename YData, typename YIterator,
 	  typename EventIterator>
 void events2EvenlySpacedIx
 ( const EventIterator & events_begin, const EventIterator &events_end,
   const Event2X & e2x,
-  XData x_begin, XData x_end, XData x_step, 
+  XData x_begin, XData x_end, XData x_step,
   YIterator y_begin)
 {
   // histogram type
   typedef EvenlySpacedGridData_1D< XData, YData, YIterator> Ix;
   // the histogram
   Ix ix(x_begin, x_end, x_step, y_begin);
-  
+
   // histogrammer
-  Histogrammer1< Event, Ix, Event2X, 
+  Histogrammer1< Event, Ix, Event2X,
     typename Ix::xdatatype, typename Ix::ydatatype> her( ix, e2x );
 
   // reduce
   events2histogram( events_begin, events_end, her );
-  
+
   return;
 }
 
@@ -74,5 +74,4 @@ HISTOGRAM_NAMESPACE_END
 // version
 // $Id$
 
-// End of file 
-  
+// End of file

@@ -11,19 +11,21 @@
 #
 
 
-def getOnlyEntry( h5filename ):
+def getOnlyEntry(h5filename):
     from h5py import File
-    fs = File(h5filename, 'r')
+
+    fs = File(h5filename, "r")
     histogramNames = list(fs)
-    if len(histogramNames)>1:
-        msg = "Hdf5 file %s has multiple entries: %s. Please specify"\
-              "the entry you want to open." % (
-            h5filename, histogramNames )
+    if len(histogramNames) > 1:
+        msg = (
+            "Hdf5 file %s has multiple entries: %s. Please specify"
+            "the entry you want to open." % (h5filename, histogramNames)
+        )
         raise RuntimeError(msg)
-    if len(histogramNames)==0:
+    if len(histogramNames) == 0:
         msg = "Hdf5 file %s has no entry." % h5filename
         raise RuntimeError(msg)
-    
+
     entry = histogramNames[0]
     return entry
 
@@ -31,4 +33,4 @@ def getOnlyEntry( h5filename ):
 # version
 __id__ = "$Id$"
 
-# End of file 
+# End of file

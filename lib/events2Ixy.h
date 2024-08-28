@@ -28,22 +28,22 @@ HISTOGRAM_NAMESPACE_START
 ///   Event: event class
 ///   Event2XY: a Event2Quantity2 class
 ///   Ixy: a DataGrid2D class or a Ixy class
-/// 
+///
 /// arguments:
-///   events_begin: begin iterator of neutron events 
-///   events_end: end iterator of neutron events 
+///   events_begin: begin iterator of neutron events
+///   events_end: end iterator of neutron events
 ///   e2xy: event -> x,y functor
 ///   ixy: I(x,y) histogram
-template 
+template
 <typename Event, typename Event2XY, typename Ixy, typename EventIterator>
 void events2Ixy
 ( const EventIterator & events_begin,
   const EventIterator & events_end,
-  const Event2XY & e2xy, 
+  const Event2XY & e2xy,
   Ixy & ixy )
 {
   Histogrammer2
-    <Event, Ixy, Event2XY, 
+    <Event, Ixy, Event2XY,
     typename Ixy::xdatatype,
     typename Ixy::ydatatype,
     typename Ixy::zdatatype
@@ -62,5 +62,4 @@ HISTOGRAM_NAMESPACE_END
 // version
 // $Id$
 
-// End of file 
-  
+// End of file

@@ -29,7 +29,7 @@ all: export
 	BLD_ACTION="all" $(MM) recurse
 
 
-tidy:: 
+tidy::
 	BLD_ACTION="tidy" $(MM) recurse
 
 #--------------------------------------------------------------------------
@@ -42,7 +42,7 @@ EXPORT_PYTHON_MODULES = \
     NumpyNdArray.py      \
 
 
-export:: export-package-python-modules 
+export:: export-package-python-modules
 
 
 include doxygen/default.def

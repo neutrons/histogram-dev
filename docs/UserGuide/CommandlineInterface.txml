@@ -1,19 +1,19 @@
 <!--
-    
+
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
+
     Jiao Lin
     California Institute of Technology
     (C) 2007 All Rights Reserved
-    
+
     {LicenseText}
-    
+
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
+
 -->
 
 <chapter id="histogram.CommandlineInterface">
-  
+
   <title >
     Histogram Python Interface
   </title>
@@ -29,7 +29,7 @@ They include many convenient functions like "histogram" factory
 and "exp" math functions.
 
 <programlisting>
-  from numpy import *  
+  from numpy import *
   from histogram import *
 </programlisting>
 
@@ -45,32 +45,32 @@ Here, string "h" denotes the name of the histogram. The tuple
 </programlisting>
 
 defines a time-of-flight axis. The axis has a name 'tof', and the
-centers of the bins on the axis are 
+centers of the bins on the axis are
 
 <programlisting>
   1000., 1001., ..., 2999.
 </programlisting>
 
 The string "microsecond" is the unit of the tof axis.
-The tuple 
+The tuple
 
 <programlisting>
   ('tof', arange(1000., 3000., 1.0), "microsecond")
 </programlisting>
 
-is put into a list. 
+is put into a list.
 
 <note>
 In most cases, histograms
-are multi-dimensional. For a multi-dimensional histogram, 
+are multi-dimensional. For a multi-dimensional histogram,
 we need a list of axes, in which each item describes an axis.
-So, even for a 1D histogram, we 
-require user to supply a single-item list, 
+So, even for a 1D histogram, we
+require user to supply a single-item list,
 in which the only item describes the only axis for the
 histogram.
 </note>
 
-If we type 
+If we type
 
 <programlisting>
   print h
@@ -79,7 +79,7 @@ If we type
 The following texts show up:
 
 <programlisting>
-  
+
 Histogram "h"
 - Axes:
    - Axis tof: [ 1000.0, 1001.0, ... 2998.0, 2999.0 ]
@@ -115,7 +115,7 @@ In the python command line, we enter
   from numpy import exp
   def f(tof): return exp(-tof/1000.)
   # and we also need the time-of-flight axis
-  tofaxis = h.axisFromName('tof') 
+  tofaxis = h.axisFromName('tof')
   # now we apply the function to the axis to obtain a dataset
   d = datasetFromFunction( f, [tofaxis] )
   h[()] = d, None
@@ -127,23 +127,23 @@ a lambda expression offered by  Python
   from histogram import *
   from numpy import exp
   h = histogram(
-      "h", [ ('tof', arange(1000., 3000., 1.0), "microsecond") ], 
-      fromfunction = lambda x: exp(-x/1000.) ) 
+      "h", [ ('tof', arange(1000., 3000., 1.0), "microsecond") ],
+      fromfunction = lambda x: exp(-x/1000.) )
 </programlisting>
 
 </sect1>
 
 <sect1>
 <title> Slicing </title>
-Probably the most important functionality of a histogram is 
-slicing. 
+Probably the most important functionality of a histogram is
+slicing.
 First note that the syntax of histogram slicing is different from
 normal python array slicing. A python slicing looks like
 
 <programlisting>
   a[ 3:10, 1:9 ]
 </programlisting>
-    
+
 whereas a histogram slicing looks like
 
 <programlisting>
@@ -152,7 +152,7 @@ whereas a histogram slicing looks like
 
 <sect2>
 <title> Examples </title>
-      
+
 Create a histogram:
 
 <programlisting>
@@ -207,7 +207,7 @@ In the 2-tuple
   s, None
 </programlisting>
 "s" will be assign to the "data" dataset, and "None" will be assigned
-to the "error bar squares" dataset. 
+to the "error bar squares" dataset.
 Actually "None" is a special dataset for error bar squares:
 it means all error bars are zero.
 
@@ -219,7 +219,7 @@ it means all error bars are zero.
 <para>
 Some basic numerical operators are availabele
 for manipulating histograms.
-When these computations are performed, both data and error bars 
+When these computations are performed, both data and error bars
 are processed.
 </para>
 
@@ -283,7 +283,7 @@ are defined by the following formulas:
     </imageobject>
     <textobject role="tex">
       <phrase>
-	z=x + y; \; \sigma_z^2 = \sigma_x^2 + \sigma_y^2 
+	z=x + y; \; \sigma_z^2 = \sigma_x^2 + \sigma_y^2
       </phrase>
     </textobject>
   </mediaobject>
@@ -338,9 +338,9 @@ are defined by the following formulas:
 <sect1>
 <title> Numerical functions </title>
 
-<sect2>   
+<sect2>
 <title>sum</title>
-  
+
 <sect3>
 <title> Description </title>
 It will sum the data and the error bar squares of all bins,
@@ -348,8 +348,8 @@ and return the total
 counts and its error bar square.
 It can also sum a high-dimensional (D) histogram along one axis,
 and return a histogram of reduced dimension (D-1).
-</sect3>    
-  
+</sect3>
+
 <sect3>
 <title> Examples </title>
 First, create a histogram
@@ -367,29 +367,29 @@ Now,
 </programlisting>
 
 returns a 2-tuple of counts and error bar square of all bins summed together.
-The expression 
+The expression
 
 <programlisting>
   h.sum( 'x' )
 </programlisting>
 returns a 1-D histogram that results from summing over the axis 'x'.
   </sect3>
-  
+
 </sect2>
 
-<sect2>   
+<sect2>
   <title>reduce</title>
-  
+
   <sect3>
     <title> Description </title>
     Sometime you may have a histogram having  an axis
-    that is only one bin wide. 
+    that is only one bin wide.
     Such histograms (n-dimensional) are
-    actually (n-1)-dimensional. 
+    actually (n-1)-dimensional.
     You can reduce the dimensionality
     of this kind of histogram by using this command.
-  </sect3>    
-  
+  </sect3>
+
   <sect3>
     <title> Examples </title>
 <programlisting>
@@ -401,17 +401,17 @@ returns a 1-D histogram that results from summing over the axis 'x'.
 </programlisting>
 
   </sect3>
-  
+
 </sect2>
 
-<sect2>   
+<sect2>
   <title>transpose</title>
-  
+
   <sect3>
     <title> Description </title>
     This function transpose the axes of a histogram.
-  </sect3>    
-  
+  </sect3>
+
   <sect3>
     <title> Examples </title>
 <para>
@@ -427,7 +427,7 @@ then transpose the x and y axes.
 </para>
 
   </sect3>
-  
+
 </sect2>
 
   </sect1>
@@ -435,18 +435,18 @@ then transpose the x and y axes.
   <sect1>
     <title>Miscellaneous</title>
 
-<sect2>   
+<sect2>
   <title>axes</title>
-  
+
   <sect3>
     <title> Description </title>
     You can retrieve information about axes of a histogram
-    in a variety of ways. 
+    in a variety of ways.
     Method "axes" return a list of all axes of a histogram.
     Method "axisNameList" return a list of names of axes of a histogram.
     Method "axisFromName" return the axis given the axis' name.
-  </sect3>    
-  
+  </sect3>
+
   <sect3>
     <title> Examples </title>
 <programlisting>
@@ -463,21 +463,21 @@ then transpose the x and y axes.
   print h.y  # bin cetners of y axis
 </programlisting>
   </sect3>
-  
+
 </sect2>
 
-<sect2>   
+<sect2>
 <title>Retrieve Data and Error Bar Square Arrays</title>
-  
+
 <sect3>
 <title> Description </title>
 Sometimes it may be necessary to develop new numeric
 operators and methods for customized computation
 on  the data array encapsulated in the
-histogram object. 
+histogram object.
 They are accessible as attributes 'I' and 'E2'.
-</sect3>    
-  
+</sect3>
+
 <sect3>
 <title> Examples </title>
 <programlisting>
@@ -488,32 +488,32 @@ They are accessible as attributes 'I' and 'E2'.
   dataarr = h.I
   errsarr = h.E2
 </programlisting>
-Both "dataarr" and "errsarr" are numpy arrays that reference to 
-the underlying data stored in the histogram. You can work directly 
+Both "dataarr" and "errsarr" are numpy arrays that reference to
+the underlying data stored in the histogram. You can work directly
 on these arrays, and the original histogram will be changed.
-Please see 
+Please see
 <ulink url="http://www.numpy.org">
 numpy
 </ulink>
  documentation to learn of other methods
 that are available in the numpy package.
   </sect3>
-  
+
 </sect2>
 
 <!--
-<sect2>   
+<sect2>
   <title>sum</title>
-  
+
   <sect3>
     <title> Description </title>
     Sum all data and error bar squares, or along one axis.
-  </sect3>    
-  
+  </sect3>
+
   <sect3>
     <title> Examples </title>
   </sect3>
-  
+
 </sect2>
 
 -->

@@ -39,35 +39,35 @@ HISTOGRAM_NAMESPACE_START
     ///   IndexType: data type of index for indexling the z array. Usually unsigned integers.
     /// CAUTION:
     ///
-    template <typename X1DataType, 
-	      typename X2DataType, 
-	      typename X3DataType, 
-	      typename X4DataType, 
+    template <typename X1DataType,
+	      typename X2DataType,
+	      typename X3DataType,
+	      typename X4DataType,
 	      typename ZDataType, typename ZIterator = ZDataType *,
 	      typename IndexType=unsigned int >
-    
+
     struct EvenlySpacedGridData_4D {
-      
+
       typedef ZDataType zdatatype;
       typedef X1DataType x1datatype;
       typedef X2DataType x2datatype;
       typedef X3DataType x3datatype;
       typedef X4DataType x4datatype;
-      
+
       ZIterator zarray_begin;
       IndexType size, shape[4];
       X1DataType x1begin, x1end, x1step;
       X2DataType x2begin, x2end, x2step;
       X3DataType x3begin, x3end, x3step;
       X4DataType x4begin, x4end, x4step;
-    
+
       /// ctor.
       /// This constructor accepts an iterator that points to the beginning
       /// of the z array.
       /// The zarray_begin array must have consistent shape with that defined
       /// by parameters {xibegin, xiend, xistep}.
       ///
-      ///   size(zarray) = \Pi_{i} [(xiend-xibegin)/xistep] 
+      ///   size(zarray) = \Pi_{i} [(xiend-xibegin)/xistep]
       ///
       /// zarray is a 1D array, but it can be seen as a 4D array of shape
       ///
@@ -94,14 +94,14 @@ HISTOGRAM_NAMESPACE_START
 	assert(x2end > x2begin+x2step*2);
 	assert(x3end > x3begin+x3step*2);
 	assert(x4end > x4begin+x4step*2);
-    
+
 	shape[0] = IndexType( (x1end-x1begin)/x1step );
 	shape[1] = IndexType( (x2end-x2begin)/x2step );
 	shape[2] = IndexType( (x3end-x3begin)/x3step );
 	shape[3] = IndexType( (x4end-x4begin)/x4step );
 
 	size = shape[0] * shape[1] * shape[2] * shape[3];
-	
+
 	zarray_begin = i_zarray_begin;
 
 	m_x1mapper = new X1Mapper( x1begin, x1end, x1step );
@@ -110,28 +110,28 @@ HISTOGRAM_NAMESPACE_START
 	m_x4mapper = new X4Mapper( x4begin, x4end, x4step );
 	m_zarray = new ZArray(zarray_begin, shape);
 	m_dg = new DG( *m_x1mapper, *m_x2mapper, *m_x3mapper, *m_x4mapper, *m_zarray );
-      } 
+      }
 
       const ZDataType & operator ()
-	( const X1DataType & x1, 
+	( const X1DataType & x1,
 	  const X2DataType & x2,
 	  const X3DataType & x3,
-	  const X4DataType & x4) 
-	const 
+	  const X4DataType & x4)
+	const
       { return (*m_dg)( x1,x2,x3,x4 ) ; }
 
-      ZDataType & operator () 
-	( const X1DataType & x1, 
+      ZDataType & operator ()
+	( const X1DataType & x1,
 	  const X2DataType & x2,
 	  const X3DataType & x3,
-	  const X4DataType & x4) 
+	  const X4DataType & x4)
       { return (*m_dg)( x1,x2,x3,x4 ) ; }
 
       bool isOutofbound
-	( const X1DataType & x1, 
+	( const X1DataType & x1,
 	  const X2DataType & x2,
 	  const X3DataType & x3,
-	  const X4DataType & x4) 
+	  const X4DataType & x4)
 	const
       {
 	return x1 < x1begin || x1 >= x1end || \
@@ -139,36 +139,36 @@ HISTOGRAM_NAMESPACE_START
 	  x3 < x3begin || x3 >= x3end ||      \
 	  x4 < x4begin || x4 >= x4end ;
       }
-      
+
       void clear() {m_dg->clear();}
 
-      ~EvenlySpacedGridData_4D() 
-      { 
+      ~EvenlySpacedGridData_4D()
+      {
 	delete m_x1mapper; delete m_x2mapper; delete m_x3mapper; delete m_x4mapper;
-	delete m_zarray; 
-	delete m_dg; 
+	delete m_zarray;
+	delete m_dg;
       }
-    
+
     private:
       typedef NdArray< ZIterator, ZDataType, IndexType, size_t, 4> ZArray;
       typedef EvenlySpacedAxisMapper< X1DataType, IndexType > X1Mapper;
       typedef EvenlySpacedAxisMapper< X2DataType, IndexType > X2Mapper;
       typedef EvenlySpacedAxisMapper< X3DataType, IndexType > X3Mapper;
       typedef EvenlySpacedAxisMapper< X4DataType, IndexType > X4Mapper;
-      typedef GridData_4D<X1DataType, X1Mapper, 
+      typedef GridData_4D<X1DataType, X1Mapper,
 			  X2DataType, X2Mapper,
 			  X3DataType, X3Mapper,
 			  X4DataType, X4Mapper,
 			  ZDataType, ZArray,
 			  IndexType > DG;
-  
+
       ZArray *m_zarray; // NdArray
       X1Mapper *m_x1mapper;
       X2Mapper *m_x2mapper;
       X3Mapper *m_x3mapper;
       X4Mapper *m_x4mapper;
       DG *m_dg;
-      
+
     };
 
 HISTOGRAM_NAMESPACE_END
@@ -181,4 +181,4 @@ HISTOGRAM_NAMESPACE_END
 // version
 // $Id$
 
-// End of file 
+// End of file

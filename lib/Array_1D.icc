@@ -21,9 +21,9 @@
 HISTOGRAM_NAMESPACE_START
 
     template <typename Iterator, typename DataType, typename Size>
-    void 
+    void
     Array_1D<Iterator, DataType, Size>::_throw_out_of_bound
-    (const Size & index) 
+    (const Size & index)
       const
     {
       std::ostringstream oss;
@@ -34,11 +34,11 @@ HISTOGRAM_NAMESPACE_START
 
       throw OutOfBound( oss.str().c_str() );
     }
-    
+
 HISTOGRAM_NAMESPACE_END
 
 
 // version
 // $Id$
 
-// End of file 
+// End of file

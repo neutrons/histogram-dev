@@ -15,11 +15,11 @@
 import PRL
 
 __export__ = [
-    ('PRL', PRL),
-    ]
+    ("PRL", PRL),
+]
 
 
 # version
 __id__ = "$Id$"
 
-# End of file 
+# End of file

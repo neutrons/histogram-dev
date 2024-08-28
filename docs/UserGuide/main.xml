@@ -12,7 +12,7 @@
 <bookinfo>
 <title> Histogram: User's Guide</title>
 </bookinfo>
- 
+
 &Introduction;
 &CommandlineInterface;
 &HistogramGUI;

@@ -30,11 +30,11 @@ HISTOGRAM_NAMESPACE_START
       : m_begin( begin ), m_end( end ), m_step( step )
     {}
 
-    virtual IndexType operator() ( const NumberType & data ) const 
+    virtual IndexType operator() ( const NumberType & data ) const
     {
       if (data>=m_end || data<m_begin) {
 	std::ostringstream oss;
-	oss << "data " << data 
+	oss << "data " << data
 	    << " is out of bound (" << m_begin << ", " << m_end
 	    << " )";
 	throw OutOfBound(oss.str());
@@ -43,7 +43,7 @@ HISTOGRAM_NAMESPACE_START
       //std::cout << IndexType( (data-m_begin)/m_step ) << std::endl;
       return IndexType( (data-m_begin)/m_step );
     }
-    
+
   private:
     NumberType m_begin, m_end, m_step;
   };
@@ -57,4 +57,4 @@ HISTOGRAM_NAMESPACE_END
 // version
 // $Id$
 
-// End of file 
+// End of file

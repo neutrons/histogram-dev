@@ -18,7 +18,7 @@ PACKAGE = converters
 
 all: export
 
-tidy:: 
+tidy::
 	BLD_ACTION="tidy" $(MM) recurse
 
 #--------------------------------------------------------------------------
@@ -34,7 +34,7 @@ EXPORT_PYTHON_MODULES = \
 
 include doxygen/default.def
 
-export:: export-package-python-modules 
+export:: export-package-python-modules
 
 
 

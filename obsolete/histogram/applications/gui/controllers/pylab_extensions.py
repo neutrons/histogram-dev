@@ -11,10 +11,8 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 
-import histogram.pylab_extensions
-
 
 # version
 __id__ = "$Id$"
 
-# End of file 
+# End of file

@@ -31,7 +31,7 @@ HISTOGRAM_NAMESPACE_START
   template <typename histogrammer_t, typename event_it_t>
   void events2histogram
   (const event_it_t & events_begin,
-   const event_it_t & events_end, 
+   const event_it_t & events_end,
    histogrammer_t & her )
   {
 #ifdef DEBUG
@@ -39,7 +39,7 @@ HISTOGRAM_NAMESPACE_START
 #endif
     std::for_each(events_begin, events_end, her);
   }
-  
+
 HISTOGRAM_NAMESPACE_END
 
 #endif // H_HISTOGRAM_EVENTS2HISTOGRAM
@@ -48,4 +48,4 @@ HISTOGRAM_NAMESPACE_END
 // version
 // $Id$
 
-// End of file 
+// End of file

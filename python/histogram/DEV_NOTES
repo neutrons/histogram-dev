@@ -4,7 +4,7 @@ Jan 22, 2006:
 
 It seems useful to have a histogram slicer that can create slice of
 a histogram.
-It can be used when only a part of the data is interesting and it 
+It can be used when only a part of the data is interesting and it
 would be unecessary to reduce the whole data set which could take forever.
 
 Slicers now include:

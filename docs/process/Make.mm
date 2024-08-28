@@ -11,7 +11,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-# this Make.mm requires non-standard config package that includes 
+# this Make.mm requires non-standard config package that includes
 #  config/make/std-docs.def
 #  config/external/doxygen
 
@@ -28,7 +28,7 @@ OTHER_DIRS = \
 RECURSE_DIRS = $(BUILD_DIRS) $(OTHER_DIRS)
 
 
-PROJ_CLEAN = $(CLEAN_LATEX) 
+PROJ_CLEAN = $(CLEAN_LATEX)
 
 
 #--------------------------------------------------------------------------

@@ -26,7 +26,7 @@ RECURSE_DIRS = $(BUILD_DIRS) $(OTHER_DIRS)
 #--------------------------------------------------------------------------
 #
 
-all: 
+all:
 	BLD_ACTION="all" $(MM) recurse
 
 distclean::

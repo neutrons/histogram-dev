@@ -11,7 +11,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-# this Make.mm requires non-standard config package that includes 
+# this Make.mm requires non-standard config package that includes
 #  config/make/std-docs.def
 
 PROJECT = histogram
@@ -32,13 +32,13 @@ PROJ_CLEAN =
 #--------------------------------------------------------------------------
 #
 
-all: docs 
+all: docs
 	BLD_ACTION="all" $(MM) recurse
 
 tidy::
 	BLD_ACTION="tidy" $(MM) recurse
 
-docs: export-all-files 
+docs: export-all-files
 	BLD_ACTION="docs" $(MM) recurse
 
 

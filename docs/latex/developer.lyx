@@ -6,7 +6,7 @@
 \fontscheme default
 \graphics default
 \paperfontsize default
-\spacing single 
+\spacing single
 \papersize Default
 \paperpackage a4
 \use_geometry 0
@@ -29,22 +29,22 @@
 Introduction
 \layout Standard
 
-This histogram package originated from the ARCS 
+This histogram package originated from the ARCS
 \begin_inset Foot
 collapsed true
 
 \layout Standard
 
 A direct-geometry time-of-flight neutron spectrometry
-\end_inset 
+\end_inset
 
  reduction package, which can be used to reduce inelastic neutron scattering
- data to 
+ data to
 \begin_inset Formula $S(Q,E)$
-\end_inset 
+\end_inset
 
 .
- 
+
 \layout Standard
 
 Histograms are common in scientific and business computations.
@@ -65,22 +65,22 @@ Histogram itself is mostly a container of information, including axes, data,
  histogram.
 \layout Standard
 
-For convenience, numerical operators like 
+For convenience, numerical operators like
 \begin_inset Formula $+,-,\times,\div$
-\end_inset 
+\end_inset
 
-, and simple math functions like 
-\shape italic 
+, and simple math functions like
+\shape italic
 sum
-\shape default 
- and 
-\shape italic 
+\shape default
+ and
+\shape italic
 average
-\shape default 
+\shape default
  should be provided for histogram class.
  Multiple-dimensional histogram is quite common in scientific computing,
  and should be supported.
- Slicing is an important operation that is very useful 
+ Slicing is an important operation that is very useful
 \begin_inset Foot
 collapsed true
 
@@ -88,7 +88,7 @@ collapsed true
 
 For example, high dimensional histogram could be reduced to lower dimension
  for better understanding using slicing.
-\end_inset 
+\end_inset
 
  and should be supported too.
  It is very important that error bars are propagated in any of these operations.
@@ -98,20 +98,20 @@ Usage of histogram (Use cases)
 \layout Standard
 
 
-\shape italic 
+\shape italic
 Programatically
 \layout Standard
 
 We expect histogram to be used in basic data analysis procedures.
  Reduction is one such procedure that transform measured histograms to histogram
 s that are more human-understandable.
- A typical case of reduction is to reduce a diffraction raw data, 
+ A typical case of reduction is to reduce a diffraction raw data,
 \begin_inset Formula $I(pixel)$
-\end_inset 
+\end_inset
 
-, to a diffraction pattern, 
+, to a diffraction pattern,
 \begin_inset Formula $I(2\theta)$
-\end_inset 
+\end_inset
 
 .
  In the procedure of reduction, various kind of operations will be done
@@ -150,10 +150,10 @@ errsstorage = h.errors().storage() # an NdArray instance
 \layout Standard
 
 
-\shape italic 
+\shape italic
 Interactively
-\shape default 
- 
+\shape default
+
 \layout Standard
 
 We expect that users might want to manipulate histograms interactively and
@@ -173,25 +173,25 @@ Users of histogram might also like to interactively view and investigate
 Here is a list of operations that are useful:
 \layout Itemize
 
-Load histogram from file 
+Load histogram from file
 \layout Itemize
 
-View 1-D histogram 
+View 1-D histogram
 \layout Itemize
 
-View 2-D histogram 
+View 2-D histogram
 \layout Itemize
 
-Customize plot 
+Customize plot
 \layout Itemize
 
-Change title 
+Change title
 \layout Itemize
 
-Change axis labels 
+Change axis labels
 \layout Itemize
 
-Save image to a file 
+Save image to a file
 \layout Itemize
 
 Make slices of histograms
@@ -204,9 +204,9 @@ To further this discussion, we need to first clearly define what do we mean
  here by "histogram".
  The result of any measurement is actually a histogram, by which we mean
  we have data in some bins.
- For example, if we measure a spectrum with 
+ For example, if we measure a spectrum with
 \begin_inset Formula $x$
-\end_inset 
+\end_inset
 
 -axis being time-of-flight, we will get an array of counts, while each element
  in that array represents the number of counts measured in a predefined
@@ -218,30 +218,30 @@ To further this discussion, we need to first clearly define what do we mean
 \begin_inset Formula \begin{equation}
 \frac{dI}{dx}(x)\Delta x\end{equation}
 
-\end_inset 
+\end_inset
 
- where 
+ where
 \begin_inset Formula $\frac{dI}{dx}$
-\end_inset 
+\end_inset
 
- is a density function and 
+ is a density function and
 \begin_inset Formula $\Delta x$
-\end_inset 
+\end_inset
 
  is bin size.
  This observation forms the base of our design of histogram classes.
 \layout Standard
 
 In a more mathematical form, we can describe a histogram as a mapping from
- an area (rectagular) in a phase space to a 
+ an area (rectagular) in a phase space to a
 \begin_inset Formula $\Re^{2}$
-\end_inset 
+\end_inset
 
 :
 \begin_inset Formula \[
 \mathcal{D}\rightarrow\Re^{2}\]
 
-\end_inset 
+\end_inset
 
 
 \layout Standard
@@ -250,16 +250,16 @@ This statement is not complete without following constraints:
 \layout Enumerate
 
 in each direction (axis) of the phase space, the axis is discretized to
- 
-\series bold 
+
+\series bold
 bins
-\series default 
+\series default
 ;
 \layout Enumerate
 
-the 
+the
 \begin_inset Formula $\Re^{2}$
-\end_inset 
+\end_inset
 
  represents the 2-tuple of the data and the error bar;
 \layout Standard
@@ -278,14 +278,14 @@ the axis that holds the information about bins.
 Therefore, we need at least two data structures: NdArray and Axis:
 \layout Itemize
 
-NdArray: map 
+NdArray: map
 \begin_inset Formula $N$
-\end_inset 
+\end_inset
 
 -tuple of integer indexes to a floating number.
- Here 
+ Here
 \begin_inset Formula $N$
-\end_inset 
+\end_inset
 
  is the number of dimension.
 \layout Itemize
@@ -303,39 +303,39 @@ Let us rethink this break-down a little bit more to see if it is reasonable.
  The remained data structure, Axis, deserves more thoughts.
  Axis is the thing that brings physical meaning to histogram.
  Up to this point, we think of an axis as a mapping from bins to indexes.
- But if we think about Axis without the context of 
+ But if we think about Axis without the context of
 \begin_inset Quotes eld
-\end_inset 
+\end_inset
 
 histogram
 \begin_inset Quotes erd
-\end_inset 
+\end_inset
 
-, then we find that the notion of 
+, then we find that the notion of
 \begin_inset Quotes eld
-\end_inset 
+\end_inset
 
 bins
 \begin_inset Quotes erd
-\end_inset 
+\end_inset
 
  are actually special for Histogram.
  An axis should have a name and a unit to denote its physical meaning.
  For example, name =
 \begin_inset Quotes eld
-\end_inset 
+\end_inset
 
 Neutron Energy
 \begin_inset Quotes erd
-\end_inset 
+\end_inset
 
 , unit=
 \begin_inset Quotes eld
-\end_inset 
+\end_inset
 
 meV
 \begin_inset Quotes erd
-\end_inset 
+\end_inset
 
  should give us a pretty good idea of the meaning of an axis.
  So one good design could be to define a more abstract Axis, and inherit
@@ -343,13 +343,13 @@ meV
 \layout Standard
 
 In the previous discussion, we forgot one fact: an NdArray instance does
- not have 
+ not have
 \begin_inset Quotes eld
-\end_inset 
+\end_inset
 
 unit
 \begin_inset Quotes erd
-\end_inset 
+\end_inset
 
 .
  But a physical quantity (data or error bar) has a unit.
@@ -376,7 +376,7 @@ dataset: a dense array of floating-numbers which may have many dimensions.
  This array represents a physical quantity.
  The unit of this physical quantity should be kept in the dataset.
  Data and errors are all represented by datasets.
- 
+
 \layout Itemize
 
 axis: a representation of the bins of one dimension of a histogram.
@@ -385,11 +385,11 @@ axis: a representation of the bins of one dimension of a histogram.
 \layout Itemize
 
 meta-data: data which provides context for other data: data about data.
- 
+
 \layout Itemize
 
-histogram: it contains 
-\begin_deeper 
+histogram: it contains
+\begin_deeper
 \layout Itemize
 
 (1) one dataset whose elements represent the number of counts in some range
@@ -400,7 +400,7 @@ collapsed true
 \layout Standard
 
 actually the squares of error bars are stored to improve computation efficiency
-\end_inset 
+\end_inset
 
 ;
 \layout Itemize
@@ -408,8 +408,8 @@ actually the squares of error bars are stored to improve computation efficiency
 (3) a set of associations concerning a histogram and potentially everything
  that can be known about it: axes, history, etc.
  (meta-data).
- 
-\end_deeper 
+
+\end_deeper
 \layout Standard
 
 The design of the histogram package is not too complex.
@@ -421,10 +421,10 @@ The design of the histogram package is not too complex.
 ontainer class.
 \layout Standard
 
-Figure 
+Figure
 \begin_inset LatexCommand \ref{cap:histogram-class-diagram-new}
 
-\end_inset 
+\end_inset
 
  is the class diagram of histogram package.
 \layout Standard
@@ -442,7 +442,7 @@ collapsed false
 	width 14cm
 	keepAspectRatio
 
-\end_inset 
+\end_inset
 
 
 \layout Caption
@@ -450,18 +450,18 @@ collapsed false
 
 \begin_inset LatexCommand \label{cap:histogram-class-diagram-new}
 
-\end_inset 
+\end_inset
 
 Histogram class diagram
-\end_inset 
+\end_inset
 
 
 \layout Standard
 
-In comparison, the original class diagram is in Figure 
+In comparison, the original class diagram is in Figure
 \begin_inset LatexCommand \ref{cap:histogram-class-diagram}
 
-\end_inset 
+\end_inset
 
 .
 \layout Standard
@@ -479,7 +479,7 @@ collapsed false
 	width 15cm
 	keepAspectRatio
 
-\end_inset 
+\end_inset
 
 
 \layout Caption
@@ -487,10 +487,10 @@ collapsed false
 
 \begin_inset LatexCommand \label{cap:histogram-class-diagram}
 
-\end_inset 
+\end_inset
 
 Histogram class diagram
-\end_inset 
+\end_inset
 
 
 \layout Standard
@@ -498,22 +498,22 @@ Histogram class diagram
 Things to note:
 \layout Itemize
 
-Histograms have 
+Histograms have
 \begin_inset Quotes eld
-\end_inset 
+\end_inset
 
 meta-data
 \begin_inset Quotes erd
-\end_inset 
+\end_inset
 
 .
- Those 
+ Those
 \begin_inset Quotes eld
-\end_inset 
+\end_inset
 
 meta-data
 \begin_inset Quotes erd
-\end_inset 
+\end_inset
 
  are stored in DictAttributeCont instances.
 \layout Itemize
@@ -557,29 +557,29 @@ There are two different kinds of axis.
  The usual case is that an axis represents a continuous physical quantity
  (energy, time, momentum, etc.), and the axis instance contains a storage
  of bin boundaries.
- The size of that storage is then 
+ The size of that storage is then
 \begin_inset Formula $n+1$
-\end_inset 
+\end_inset
 
-, where 
+, where
 \begin_inset Formula $n$
-\end_inset 
+\end_inset
 
  is the number of bins.
  In some situation an axis can represent a discrete physical quantity (detector
  ID, pixel ID, etc.), and the axis instance contains a storage of those discrete
  numbers.
  At the end of that storage, a number (any number) will be appended to make
- sure that the size of the storage is also 
+ sure that the size of the storage is also
 \begin_inset Formula $n+1$
-\end_inset 
+\end_inset
 
-, where 
+, where
 \begin_inset Formula $n$
-\end_inset 
+\end_inset
 
  is the number of bins.
- 
+
 \layout Itemize
 
 Slicing on histogram using axes coordinates actually requires mapping of
@@ -602,59 +602,59 @@ Histogram can only represent a rectangular region in a phase space.
 \layout Itemize
 
 Histogram slicing could happen in two ways.
- Let us suppose we have a histogram that represents 
+ Let us suppose we have a histogram that represents
 \begin_inset Formula $I(2\theta)$
-\end_inset 
+\end_inset
 
 .
- Suppose the axis 
+ Suppose the axis
 \begin_inset Formula $2\theta$
-\end_inset 
+\end_inset
 
  has bin boundaries [10., 20., 30., ..., 120.].
- We could do a slicing using bin indexes: I[ 2:5 ] --> 
+ We could do a slicing using bin indexes: I[ 2:5 ] -->
 \begin_inset Formula $I(2\theta)$
-\end_inset 
+\end_inset
 
- curve for 
+ curve for
 \begin_inset Formula $2\theta=$
-\end_inset 
+\end_inset
 
 [30., 40., 50.].
- We could also do a slicing using axis values: I[10.:50.]--> 
+ We could also do a slicing using axis values: I[10.:50.]-->
 \begin_inset Formula $I(2\theta)$
-\end_inset 
+\end_inset
 
- curve for 
+ curve for
 \begin_inset Formula $2\theta=$
-\end_inset 
+\end_inset
 
 [10.,20.,30.,40., 50.].
  We don't want to confuse users with these two cases.
  Currently the solution is that we only support the latter case, and the
- latter case will be done by using 
+ latter case will be done by using
 \begin_inset Quotes eld
-\end_inset 
+\end_inset
 
 SlicingInfo
 \begin_inset Quotes erd
-\end_inset 
+\end_inset
 
-, i.e., instead of 
+, i.e., instead of
 \begin_inset Quotes eld
-\end_inset 
+\end_inset
 
 I[10.:50.]
 \begin_inset Quotes erd
-\end_inset 
+\end_inset
 
-, we require 
+, we require
 \begin_inset Quotes eld
-\end_inset 
+\end_inset
 
 I[SlicingInfo((10.,50.)]
 \begin_inset Quotes erd
-\end_inset 
+\end_inset
 
 .
  Please also note that slicing using axis values is inclusive at both ends

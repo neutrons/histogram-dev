@@ -13,5 +13,3 @@ To compile latex file:
  $ latex developer
  $ dvips -Ppdf developer
  $ ps2pdf developer.ps
-
-

@@ -26,7 +26,7 @@ HISTOGRAM_NAMESPACE_START
   ///   Event2X: a Event2Quantity class
   ///   Ix: a GridData_1D class
   ///   EventIterator: event iterator type
-  /// 
+  ///
   /// arguments:
   ///   events_begin: beginning iterator for events
   ///   events_end: ending iterator for events
@@ -39,9 +39,9 @@ HISTOGRAM_NAMESPACE_START
     const Event2X & e2x, Ix & ix )
   {
     Histogrammer1				\
-      <Event, Ix, Event2X, 
-      typename Ix::xdatatype, 
-      typename Ix::ydatatype> 
+      <Event, Ix, Event2X,
+      typename Ix::xdatatype,
+      typename Ix::ydatatype>
       her(ix, e2x);
     events2histogram( events_begin, events_end, her );
     return;
@@ -56,5 +56,4 @@ HISTOGRAM_NAMESPACE_END
 // version
 // $Id$
 
-// End of file 
-  
+// End of file

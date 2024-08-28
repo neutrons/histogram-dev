@@ -1,12 +1,10 @@
-
-
 def loop(axes, f):
-    '''loop over all values on a grid defined by axes
-    
+    """loop over all values on a grid defined by axes
+
     axes: a list of axes
 
     loop( [ ['a','b','c'], [1,5] ], f ) --> f('a',1); f('a',5); ...; f('c',5)
-    '''
+    """
     shape = [len(axis) for axis in axes]
     indexes = [0 for axis in axes]
     for i in range(volume(shape)):
@@ -23,9 +21,9 @@ def increment(indexes, limits):
     increment( [1,4,7], [3,10,8] ) --> indexes becomes [1,5,0]
     """
     n = len(limits)
-    for i in range(n-1, -1, -1):
+    for i in range(n - 1, -1, -1):
         index = indexes[i]
-        if index < limits[i]-1:
+        if index < limits[i] - 1:
             indexes[i] += 1
             break
         else:
@@ -37,11 +35,12 @@ def increment(indexes, limits):
 
 def volume(shape):
     from operator import mul
+
     # Using this import breaks backwards compatibility with
     # all versions of Python 2 under 2.6.
     import functools
+
     return functools.reduce(mul, shape)
-        
 
 
 def test_increment():
@@ -51,7 +50,7 @@ def test_increment():
     assert indexes[0] == 1
     assert indexes[1] == 4
     assert indexes[2] == 4
-    
+
     indexes = [1, 4, 7]
     increment(indexes, limits)
     assert indexes[0] == 1
@@ -63,10 +62,13 @@ def test_increment():
 
 def test_loop():
     axes = [
-        ['a', 'b'],
+        ["a", "b"],
         [1, 2, 3],
-        ]
-    def f(x, y): print(x, y)
+    ]
+
+    def f(x, y):
+        print(x, y)
+
     loop(axes, f)
     return
 
@@ -77,4 +79,5 @@ def main():
     return
 
 
-if __name__ == '__main__': main()
+if __name__ == "__main__":
+    main()
