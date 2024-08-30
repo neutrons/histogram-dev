@@ -21,6 +21,8 @@ import sys
 
 from unittestX import TestCase
 
+import os
+
 
 class plotter_TestCase(TestCase):
     def test1D(self):
@@ -108,8 +110,8 @@ class plotter_TestCase(TestCase):
         "plot sqe"
         import histogram.hdf as hh
         import pylab
-
-        sqe = hh.load("sqe.h5/S(Q,E)")
+        curdir = os.path.split(__file__)[0]
+        sqe = hh.load(os.path.join(curdir, "sqe.h5/S(Q,E)"))
         self.plotter.plot(sqe)
         if interactive:
             if sys.version_info < (3,):
@@ -125,7 +127,8 @@ class plotter_TestCase(TestCase):
         import histogram.hdf as hh
         import pylab
 
-        sqe = hh.load("sqe.h5/S(Q,E)")
+        curdir = os.path.split(__file__)[0]
+        sqe = hh.load(os.path.join(curdir, "sqe.h5/S(Q,E)"))
         self.plotter.plot(sqe, interpolation="bicubic")
         if interactive:
             if sys.version_info < (3,):
@@ -159,7 +162,8 @@ def pysuite():
 
 def main():
     global interactive
-    interactive = True
+    # interactive = True
+    interactive = False
 
     ##     journal.debug('instrument').activate()
     ##     journal.debug('instrument.elements').activate()

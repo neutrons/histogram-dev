@@ -311,25 +311,30 @@ hh.dump( h, '{0!s}', '/', 'c' )
 
         import histogram.hdf as hh
 
-        h = hh.load("testload.h5", "/h")
+        curdir = os.path.split(__file__)[0]
+
+        h = hh.load(os.path.join(curdir, "testload.h5"), "/h")
         s = h[(10, 30), ()]
         hh.dump(s, tmpfile, "/", "c")
         return
 
     def testload(self):
         "load simplest histogram"
-        h = load("testload.h5", "/h")
+        curdir = os.path.split(__file__)[0]
+        h = load(os.path.join(curdir, "testload.h5"), "/h")
         return
 
     def testload1(self):
         "load histogram with unit"
-        h = load("testload.h5", "/h1")
+        curdir = os.path.split(__file__)[0]
+        h = load(os.path.join(curdir, "testload.h5"), "/h1")
         return
 
     def testload2(self):
         "load histogram with one path string"
         # h = load('testload.h5/h')
-        h = load("sqe.h5/S(Q,E)")
+        curdir = os.path.split(__file__)[0]
+        h = load(os.path.join(curdir, "sqe.h5/S(Q,E)"))
         return
 
     def testload3(self):
@@ -382,7 +387,8 @@ hh.dump( h, '{0!s}', '/', 'c' )
         """load with fs specified: catch error when there is mismatch in the
         mode of fs and the load method
         """
-        orig = "testload.h5"
+        curdir = os.path.split(__file__)[0]
+        orig = os.path.join(curdir, "testload.h5")
         filename = "testload6.h5"
         import shutil
 
@@ -397,12 +403,14 @@ hh.dump( h, '{0!s}', '/', 'c' )
 
     def testload7(self):
         "load histogram that is only one entry with just the filename"
-        h = load("sqe.h5")
+        curdir = os.path.split(__file__)[0]
+        h = load(os.path.join(curdir, "sqe.h5"))
         return
 
     def testload_unicode(self):
         "load histogram h5 file with unicode unit"
-        h = load("I_tof.h5")
+        curdir = os.path.split(__file__)[0]
+        h = load(os.path.join(curdir, "I_tof.h5"))
         return
 
 
