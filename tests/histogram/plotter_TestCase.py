@@ -111,7 +111,9 @@ class plotter_TestCase(TestCase):
         import histogram.hdf as hh
         import pylab
         curdir = os.path.split(__file__)[0]
-        sqe = hh.load(os.path.join(curdir, "sqe.h5/S(Q,E)"))
+        prevdir = os.path.dirname(curdir)
+        testdir = os.path.join(prevdir,"data")
+        sqe = hh.load(os.path.join(testdir, "sqe.h5/S(Q,E)"))
         self.plotter.plot(sqe)
         if interactive:
             if sys.version_info < (3,):
@@ -128,7 +130,9 @@ class plotter_TestCase(TestCase):
         import pylab
 
         curdir = os.path.split(__file__)[0]
-        sqe = hh.load(os.path.join(curdir, "sqe.h5/S(Q,E)"))
+        prevdir = os.path.dirname(curdir)
+        testdir = os.path.join(prevdir,"data")
+        sqe = hh.load(os.path.join(testdir, "sqe.h5/S(Q,E)"))
         self.plotter.plot(sqe, interpolation="bicubic")
         if interactive:
             if sys.version_info < (3,):
