@@ -14,7 +14,8 @@
 
 import histogram
 import numpy as np
-
+import tempfile
+import os
 
 def createHistogram(noerror=False):
     from histogram import createContinuousAxis, arange, createDiscreteAxis
@@ -527,7 +528,8 @@ class Histogram_TestCase(TestCase):
         import pickle
 
         h = self._histogram
-        pickle.dump(h, open("tmp.pkl", "wb"))
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pickle.dump(h, open(os.path.join(temp_dir,"tmp.pkl"), "wb"))
         return
 
     def test_load(self):
@@ -535,32 +537,33 @@ class Histogram_TestCase(TestCase):
         import pickle
 
         h = self._histogram
-        pickle.dump(h, open("tmp.pkl", "wb"))
-        h1 = pickle.load(open("tmp.pkl", "rb"))
-        self.assertEqual(h.name(), h1.name())
-        print(("data=%s" % h1.data().storage().asNumarray()))
-        self.assertTrue(h.data().storage().compare(h1.data().storage()))
-        print(("errors=%s" % h1.errors().storage().asNumarray()))
-        self.assertTrue(h.errors().storage().compare(h1.errors().storage()))
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pickle.dump(h, open(os.path.join(temp_dir,"tmp.pkl"), "wb"))
+            h1 = pickle.load(open(os.path.join(temp_dir,"tmp.pkl"), "rb"))
+            self.assertEqual(h.name(), h1.name())
+            print(("data=%s" % h1.data().storage().asNumarray()))
+            self.assertTrue(h.data().storage().compare(h1.data().storage()))
+            print(("errors=%s" % h1.errors().storage().asNumarray()))
+            self.assertTrue(h.errors().storage().compare(h1.errors().storage()))
 
-        for axisName in h.axisNameList():
-            print(("axis %s" % axisName))
-            axis = h.axisFromName(axisName)
-            axis1 = h1.axisFromName(axisName)
-            self.assertTrue(axis.storage().compare(axis1.storage()))
-            continue
+            for axisName in h.axisNameList():
+                print(("axis %s" % axisName))
+                axis = h.axisFromName(axisName)
+                axis1 = h1.axisFromName(axisName)
+                self.assertTrue(axis.storage().compare(axis1.storage()))
+                continue
 
-        from histogram import histogram
+            from histogram import histogram
 
-        h2 = histogram(
-            "h2",
-            [
-                ("x", [1, 2, 3]),
-            ],
-            unit="meter",
-        )
-        pickle.dump(h2, open("tmp.pkl", "wb"))
-        h2a = pickle.load(open("tmp.pkl", "rb"))
+            h2 = histogram(
+                "h2",
+                [
+                    ("x", [1, 2, 3]),
+                ],
+                unit="meter",
+            )
+            pickle.dump(h2, open(os.path.join(temp_dir,"tmp.pkl"), "wb"))
+            h2a = pickle.load(open(os.path.join(temp_dir,"tmp.pkl"), "rb"))
 
         return
 
