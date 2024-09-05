@@ -15,7 +15,7 @@ def test_0(**kwds):
 
     dc = DatasetContainer()
 
-    return True
+    assert True
 
 
 def test_1(**kwds):
@@ -34,7 +34,7 @@ def test_1(**kwds):
     if dc._byIds[id] != [name, ds]:
         passed = False
         log("didn't correctly add dataset to _byIds")
-    return passed
+    assert passed
 
 
 def test_2(**kwds):
@@ -52,7 +52,7 @@ def test_2(**kwds):
     if dsbn != ds:
         passed = False
         log("datasetFromName returned {0!s} instead of {1!s}".format(dsbn, ds))
-    return passed
+    assert passed
 
 
 def test_3(**kwds):
@@ -70,7 +70,7 @@ def test_3(**kwds):
     if dsbi != ds:
         passed = False
         log("datasetFromId returned {0!s} instead of {1!s}".format(dsbi, ds))
-    return passed
+    assert passed
 
 
 def test_4(**kwds):
@@ -88,7 +88,7 @@ def test_4(**kwds):
     if dslist != [(id, name)]:
         passed = False
         log("listDatasets returned {0!s} instead of {1!s}".format(dslist, [(id, name)]))
-    return passed
+    assert passed
 
 
 # ------------- do not modify below this line ---------------

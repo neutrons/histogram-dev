@@ -31,7 +31,7 @@ def test_0(**kwds):
         log("shape was {0!s} instead of {1!s}".format(axis._shape, [length + 1]))
     # everything else tested in histogramTest_StdvectorDataset.py
 
-    return passed
+    assert passed
 
 
 def test_1(**kwds):
@@ -57,7 +57,7 @@ def test_1(**kwds):
             )
         )
 
-    return passed
+    assert passed
 
 
 def test_2(**kwds):
@@ -82,7 +82,7 @@ def test_2(**kwds):
             )
         )
 
-    return passed
+    assert passed
 
 
 def test_3(**kwds):
@@ -107,7 +107,7 @@ def test_3(**kwds):
             )
         )
 
-    return passed
+    assert passed
 
 
 # ------------- do not modify below this line ---------------
