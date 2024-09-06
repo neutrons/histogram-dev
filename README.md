@@ -8,7 +8,8 @@ histogram data object
   `$ conda install -c mcvine histogram`
 
 * Tests
-  In root directory of histogram-dev,type
+
+  In root directory of histogram-dev,type 
   `pytest`
 
 
