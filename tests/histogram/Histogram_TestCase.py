@@ -18,6 +18,8 @@ import tempfile
 import os
 import warnings
 
+# divide by 0 arises due to generating data using arrange(n) where arrange will generate data starting from 0
+# currently we are surpressing it
 def createHistogram(noerror=False):
     from histogram import createContinuousAxis, arange, createDiscreteAxis
 
