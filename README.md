@@ -9,7 +9,7 @@ histogram data object
 
 * Tests
 
-  In root directory of histogram-dev,type 
+  In root directory of histogram-dev,type
   `pytest`
 
 
