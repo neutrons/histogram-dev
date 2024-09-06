@@ -16,6 +16,7 @@ import histogram
 import numpy as np
 import tempfile
 import os
+import warnings
 
 def createHistogram(noerror=False):
     from histogram import createContinuousAxis, arange, createDiscreteAxis
@@ -398,18 +399,20 @@ class Histogram_TestCase(TestCase):
         "histogram: h/=h1"
         h = self._histogram.copy()
         h2 = self._histogram2
-        h /= h2
-        self.assertVectorAlmostEqual(h[1.5, 1], (1, 2.0 / 3))
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            h /= h2
+            self.assertVectorAlmostEqual(h[1.5, 1], (1, 2.0 / 3))
 
-        h = self._histogram.copy()
-        h2 = createHistogram(noerror=True)
-        h /= h2
-        self.assertVectorAlmostEqual(h[1.5, 1], (1, 1.0 / 3))
+            h = self._histogram.copy()
+            h2 = createHistogram(noerror=True)
+            h /= h2
+            self.assertVectorAlmostEqual(h[1.5, 1], (1, 1.0 / 3))
 
-        from histogram import histogram, axis, arange, datasetFromFunction
+            from histogram import histogram, axis, arange, datasetFromFunction
 
-        x = axis("x", arange(1, 2, 0.2))
-        y = axis("y", arange(0, 3, 0.5))
+            x = axis("x", arange(1, 2, 0.2))
+            y = axis("y", arange(0, 3, 0.5))
 
         def fa(x, y):
             return x * y + x
@@ -512,15 +515,17 @@ class Histogram_TestCase(TestCase):
 
     def test__div__(self):
         "histogram: h/b"
-        h = self._histogram / (2.0, 1.0)
-        self.assertVectorEqual(h[0.5, 1], (0, 0))
-        self.assertVectorEqual(h[0.5, 3], (0.5, 5.0 / 16))
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            h = self._histogram / (2.0, 1.0)
+            self.assertVectorEqual(h[0.5, 1], (0, 0))
+            self.assertVectorEqual(h[0.5, 3], (0.5, 5.0 / 16))
 
-        h = (2.0, 1.0) / self._histogram
-        self.assertVectorEqual(h[0.5, 3], (2, 5.0))
+            h = (2.0, 1.0) / self._histogram
+            self.assertVectorEqual(h[0.5, 3], (2, 5.0))
 
-        h = self._histogram / self._histogram2
-        self.assertVectorAlmostEqual(h[1.5, 1], (1, 2.0 / 3))
+            h = self._histogram / self._histogram2
+            self.assertVectorAlmostEqual(h[1.5, 1], (1, 2.0 / 3))
         return
 
     def test_dump(self):
