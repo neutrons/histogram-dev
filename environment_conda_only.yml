@@ -1,24 +1,22 @@
-name: histogram-dev
+name: histogram-conda_build_only
 channels:
+  - mantid
   - mcvine
   - conda-forge
 dependencies:
   - anaconda-client
   - boa
-  - libmamba
-  - libarchive
+  - check-wheel-contents
   - conda-build
   - conda-verify
-  - check-wheel-contents
   - coverage
-  - cmake
-  - gxx_linux-64
-  - numpy >= 1.20.3,< 2.0
+  - numpy 
+  - scipy
   - python >=3.8
   - pyre == 0.8.3
-  - mantid == 6.4
-  #- libmamba
-  #- libarchive
+  - mantid >= 6.4
+  - libmamba
+  - libarchive
   - journal==0.8.4
   - pre-commit
   - pytest
