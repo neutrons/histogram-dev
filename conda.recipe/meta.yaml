@@ -34,10 +34,15 @@ requirements:
   build:
     - setuptools>=42
     - versioningit
+
   run:
+    - python 
     - numpy
+    - h5py
     - pyre
-    - journal
+    - scipy
+    - matplotlib
+    - mantid
 
 test:
   imports:
@@ -45,6 +50,6 @@ test:
 
 about:
   home: {{ url }}
-  summary: {{ description }}
-  license: BSD
+  summary: {{ description }}  
+  license: null
   license_file: null

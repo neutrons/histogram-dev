@@ -4,9 +4,7 @@ description = "The histogram python package provides a simple yet fundamental da
 dynamic = ["version"]
 requires-python = ">=3.8"
 dependencies = [
-  "numpy >= 1.20.3,< 2.0",
-  "pyre == 0.8.3",
-  "journal==0.8.4"
+  # list all runtime dependencies here
 ]
 license = { text = "MIT" }
 keywords = ["neutrons", "histogram", "python"]
@@ -15,12 +13,14 @@ readme = "README.md"
 [project.urls]
 homepage = "https://github.com/neutrons/histogram-dev"  # if no homepage, use repo url
 repository = "https://github.com/neutrons/histogram-dev"
-documentation = "https://histogram-dev.readthedocs.io"
-
+# documentation = add_url_to_readthedoc_here
+#issues = ""
 
 [build-system]
 requires = [
-  "setuptools>=42",
+  "setuptools>= 42",
+  "wheel",
+  "toml",
   "versioningit"
 ]
 build-backend = "setuptools.build_meta"
