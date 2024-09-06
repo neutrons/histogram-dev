@@ -36,7 +36,7 @@ requirements:
     - versioningit
 
   run:
-    - python 
+    - python
     - numpy
     - h5py
     - pyre
@@ -50,6 +50,6 @@ test:
 
 about:
   home: {{ url }}
-  summary: {{ description }}  
+  summary: {{ description }}
   license: null
   license_file: null
