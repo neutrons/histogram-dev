@@ -10,7 +10,7 @@ dependencies:
   - conda-build
   - conda-verify
   - coverage
-  - numpy 
+  - numpy
   - scipy
   - python >=3.8
   - pyre == 0.8.3
