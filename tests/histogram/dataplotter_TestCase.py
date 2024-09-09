@@ -24,7 +24,7 @@ class dataplotter_TestCase(TestCase):
     def test_defaultPloter2D_plot(self):
         "plot: 2d"
         import pylab
-
+        
         a, b = 3, 10
         x, y, z = array(arange(a)), array(arange(b)), array(arange((a - 1) * (b - 1)))
         z.shape = a - 1, b - 1
