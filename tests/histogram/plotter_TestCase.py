@@ -166,8 +166,7 @@ def pysuite():
 
 def main():
     global interactive
-    # interactive = True
-    interactive = False
+    interactive = True
 
     ##     journal.debug('instrument').activate()
     ##     journal.debug('instrument.elements').activate()

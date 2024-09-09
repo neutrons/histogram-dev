@@ -130,7 +130,7 @@ class Loader:
 
     def onDataset(self, histogramGrp, name, slice=None):
         dataGroup = histogramGrp[name]
-        if "storage" in list(dataGroup):  # this uses the 'storage' convention
+        if "storage" in str(list(dataGroup)):  # this uses the 'storage' convention
             rawdata = dataGroup["storage"]
         else:
             # case when dataGroup *is* the dataset
