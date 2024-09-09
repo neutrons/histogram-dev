@@ -13,7 +13,7 @@ def test_0(**kwds):
     from histogram.DictAttributeCont import AttributeCont
 
     attCont = AttributeCont()
-    return True
+    assert True
 
 
 def test_1(**kwds):
@@ -34,7 +34,7 @@ def test_1(**kwds):
         passed = False
         log("did not store 'name' as a key")
 
-    return passed
+    assert passed
 
 
 def test_2(**kwds):
@@ -50,7 +50,7 @@ def test_2(**kwds):
         passed = False
         log("value of 'name' attribute ({0!s}) was incorrect".format(name))
 
-    return passed
+    assert passed
 
 
 def test_3(**kwds):
@@ -68,7 +68,7 @@ def test_3(**kwds):
         passed = False
         log("listAtts() returned {0!s}, should have been {1!s}".format(acList, attList))
 
-    return passed
+    assert passed
 
 
 # ------------- do not modify below this line ---------------

@@ -21,6 +21,10 @@ import sys
 
 from unittestX import TestCase
 
+import os
+
+import warnings
+
 
 class plotter_TestCase(TestCase):
     def test1D(self):
@@ -108,32 +112,40 @@ class plotter_TestCase(TestCase):
         "plot sqe"
         import histogram.hdf as hh
         import pylab
-
-        sqe = hh.load("sqe.h5/S(Q,E)")
-        self.plotter.plot(sqe)
-        if interactive:
-            if sys.version_info < (3,):
-                input("Press ENTER to continue")
-            else:
-                eval(input("Press ENTER to continue"))
-        pylab.clf()
-        pylab.close()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            curdir = os.path.split(__file__)[0]
+            prevdir = os.path.dirname(curdir)
+            testdir = os.path.join(prevdir,"data")
+            sqe = hh.load(os.path.join(testdir, "sqe.h5/S(Q,E)"))
+            self.plotter.plot(sqe)
+            if interactive:
+                if sys.version_info < (3,):
+                    input("Press ENTER to continue")
+                else:
+                    eval(input("Press ENTER to continue"))
+            pylab.clf()
+            pylab.close()
         return
 
     def test3a(self):
         "plot sqe with interpolation"
         import histogram.hdf as hh
         import pylab
-
-        sqe = hh.load("sqe.h5/S(Q,E)")
-        self.plotter.plot(sqe, interpolation="bicubic")
-        if interactive:
-            if sys.version_info < (3,):
-                input("Press ENTER to continue")
-            else:
-                eval(input("Press ENTER to continue"))
-        pylab.clf()
-        pylab.close()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            curdir = os.path.split(__file__)[0]
+            prevdir = os.path.dirname(curdir)
+            testdir = os.path.join(prevdir,"data")
+            sqe = hh.load(os.path.join(testdir, "sqe.h5/S(Q,E)"))
+            self.plotter.plot(sqe, interpolation="bicubic")
+            if interactive:
+                if sys.version_info < (3,):
+                    input("Press ENTER to continue")
+                else:
+                    eval(input("Press ENTER to continue"))
+            pylab.clf()
+            pylab.close()
         return
 
     def __init__(self, *args, **kwds):

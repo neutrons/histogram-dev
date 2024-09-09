@@ -18,6 +18,10 @@ import unittest
 
 from unittestX import TestCase
 
+import os
+
+import tempfile
+
 
 class Histogram_TestCase(TestCase):
     def test_axis(self):
@@ -346,7 +350,8 @@ class Histogram_TestCase(TestCase):
             unit="meter",
             data=[1, 2, 3],
         )
-        plot(h, output="Ix.png")
+        with tempfile.TemporaryDirectory() as temp_dir:
+            plot(h, output=os.path.join(temp_dir,"Ix.png"))
         return
 
     pass  # end of Histogram_TestCase
@@ -362,7 +367,6 @@ def main():
     alltests = unittest.TestSuite((pytests,))
     unittest.TextTestRunner(verbosity=2).run(alltests)
     return
-
 
 if __name__ == "__main__":
     main()

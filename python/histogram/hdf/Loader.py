@@ -130,7 +130,7 @@ class Loader:
 
     def onDataset(self, histogramGrp, name, slice=None):
         dataGroup = histogramGrp[name]
-        if "storage" in list(dataGroup):  # this uses the 'storage' convention
+        if "storage" in str(list(dataGroup)):  # this uses the 'storage' convention
             rawdata = dataGroup["storage"]
         else:
             # case when dataGroup *is* the dataset
@@ -181,7 +181,7 @@ class Loader:
 
     def _str(self, candidate, raise_on_wrong_type=True):
         if isinstance(candidate, np.ndarray):
-            candidate = candidate.tostring()
+            candidate = candidate.tobytes()
         if sys.version_info >= (3, 0):
             if isinstance(candidate, bytes):
                 candidate = candidate.decode()

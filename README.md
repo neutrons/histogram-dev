@@ -7,4 +7,10 @@ histogram data object
 
   `$ conda install -c mcvine histogram`
 
+* Tests
+
+  In root directory of histogram-dev,type
+  `pytest`
+
+
 * [Documentation](http://danse-inelastic.github.io/histogram)

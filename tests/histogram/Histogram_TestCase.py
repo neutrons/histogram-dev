@@ -14,8 +14,12 @@
 
 import histogram
 import numpy as np
+import tempfile
+import os
+import warnings
 
-
+# divide by 0 arises due to generating data using arrange(n) where arrange will generate data starting from 0
+# currently we are surpressing it
 def createHistogram(noerror=False):
     from histogram import createContinuousAxis, arange, createDiscreteAxis
 
@@ -397,18 +401,20 @@ class Histogram_TestCase(TestCase):
         "histogram: h/=h1"
         h = self._histogram.copy()
         h2 = self._histogram2
-        h /= h2
-        self.assertVectorAlmostEqual(h[1.5, 1], (1, 2.0 / 3))
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            h /= h2
+            self.assertVectorAlmostEqual(h[1.5, 1], (1, 2.0 / 3))
 
-        h = self._histogram.copy()
-        h2 = createHistogram(noerror=True)
-        h /= h2
-        self.assertVectorAlmostEqual(h[1.5, 1], (1, 1.0 / 3))
+            h = self._histogram.copy()
+            h2 = createHistogram(noerror=True)
+            h /= h2
+            self.assertVectorAlmostEqual(h[1.5, 1], (1, 1.0 / 3))
 
-        from histogram import histogram, axis, arange, datasetFromFunction
+            from histogram import histogram, axis, arange, datasetFromFunction
 
-        x = axis("x", arange(1, 2, 0.2))
-        y = axis("y", arange(0, 3, 0.5))
+            x = axis("x", arange(1, 2, 0.2))
+            y = axis("y", arange(0, 3, 0.5))
 
         def fa(x, y):
             return x * y + x
@@ -511,15 +517,17 @@ class Histogram_TestCase(TestCase):
 
     def test__div__(self):
         "histogram: h/b"
-        h = self._histogram / (2.0, 1.0)
-        self.assertVectorEqual(h[0.5, 1], (0, 0))
-        self.assertVectorEqual(h[0.5, 3], (0.5, 5.0 / 16))
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            h = self._histogram / (2.0, 1.0)
+            self.assertVectorEqual(h[0.5, 1], (0, 0))
+            self.assertVectorEqual(h[0.5, 3], (0.5, 5.0 / 16))
 
-        h = (2.0, 1.0) / self._histogram
-        self.assertVectorEqual(h[0.5, 3], (2, 5.0))
+            h = (2.0, 1.0) / self._histogram
+            self.assertVectorEqual(h[0.5, 3], (2, 5.0))
 
-        h = self._histogram / self._histogram2
-        self.assertVectorAlmostEqual(h[1.5, 1], (1, 2.0 / 3))
+            h = self._histogram / self._histogram2
+            self.assertVectorAlmostEqual(h[1.5, 1], (1, 2.0 / 3))
         return
 
     def test_dump(self):
@@ -527,7 +535,8 @@ class Histogram_TestCase(TestCase):
         import pickle
 
         h = self._histogram
-        pickle.dump(h, open("tmp.pkl", "wb"))
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pickle.dump(h, open(os.path.join(temp_dir,"tmp.pkl"), "wb"))
         return
 
     def test_load(self):
@@ -535,32 +544,33 @@ class Histogram_TestCase(TestCase):
         import pickle
 
         h = self._histogram
-        pickle.dump(h, open("tmp.pkl", "wb"))
-        h1 = pickle.load(open("tmp.pkl", "rb"))
-        self.assertEqual(h.name(), h1.name())
-        print(("data=%s" % h1.data().storage().asNumarray()))
-        self.assertTrue(h.data().storage().compare(h1.data().storage()))
-        print(("errors=%s" % h1.errors().storage().asNumarray()))
-        self.assertTrue(h.errors().storage().compare(h1.errors().storage()))
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pickle.dump(h, open(os.path.join(temp_dir,"tmp.pkl"), "wb"))
+            h1 = pickle.load(open(os.path.join(temp_dir,"tmp.pkl"), "rb"))
+            self.assertEqual(h.name(), h1.name())
+            print(("data=%s" % h1.data().storage().asNumarray()))
+            self.assertTrue(h.data().storage().compare(h1.data().storage()))
+            print(("errors=%s" % h1.errors().storage().asNumarray()))
+            self.assertTrue(h.errors().storage().compare(h1.errors().storage()))
 
-        for axisName in h.axisNameList():
-            print(("axis %s" % axisName))
-            axis = h.axisFromName(axisName)
-            axis1 = h1.axisFromName(axisName)
-            self.assertTrue(axis.storage().compare(axis1.storage()))
-            continue
+            for axisName in h.axisNameList():
+                print(("axis %s" % axisName))
+                axis = h.axisFromName(axisName)
+                axis1 = h1.axisFromName(axisName)
+                self.assertTrue(axis.storage().compare(axis1.storage()))
+                continue
 
-        from histogram import histogram
+            from histogram import histogram
 
-        h2 = histogram(
-            "h2",
-            [
-                ("x", [1, 2, 3]),
-            ],
-            unit="meter",
-        )
-        pickle.dump(h2, open("tmp.pkl", "wb"))
-        h2a = pickle.load(open("tmp.pkl", "rb"))
+            h2 = histogram(
+                "h2",
+                [
+                    ("x", [1, 2, 3]),
+                ],
+                unit="meter",
+            )
+            pickle.dump(h2, open(os.path.join(temp_dir,"tmp.pkl"), "wb"))
+            h2a = pickle.load(open(os.path.join(temp_dir,"tmp.pkl"), "rb"))
 
         return
 

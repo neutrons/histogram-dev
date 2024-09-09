@@ -46,7 +46,7 @@ def test_0(**kwds):
 
     histogram = Histogram("testHist", data, error, [ax1, ax2, ax3], attributes)
 
-    return True
+    assert True
 
 
 def test_1(**kwds):
@@ -87,7 +87,7 @@ def test_1(**kwds):
     if hax1 is not ax1:
         passed = False
         log("hax1 was %s instead of %s" % (hax1, ax1))
-    return passed
+    assert passed
 
 
 def test_2(**kwds):
@@ -128,7 +128,7 @@ def test_2(**kwds):
     if hax1 is not ax1:
         passed = False
         log("hax1 was %s instead of %s" % (hax1, ax1))
-    return passed
+    assert passed
 
 
 def test_3(**kwds):
@@ -169,7 +169,7 @@ def test_3(**kwds):
     if hdata is not data:
         passed = False
         log("hdata was %s instead of %s" % (hdata, data))
-    return passed
+    assert passed
 
 
 def test_4(**kwds):
@@ -210,7 +210,7 @@ def test_4(**kwds):
     if herror is not error:
         passed = False
         log("herror was %s instead of %s" % (herror, error))
-    return passed
+    assert passed
 
 
 # ------------- do not modify below this line ---------------

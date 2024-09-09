@@ -55,8 +55,6 @@ alltests = unittest.TestSuite((alltests, tktests))
 
 # run test
 unittest.TextTestRunner(verbosity=2).run(alltests)
-
-
 # version
 __id__ = "$Id: alltests.py 947 2006-05-31 01:51:51Z jiao $"
 
