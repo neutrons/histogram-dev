@@ -16,6 +16,7 @@
 import os
 from histogram.hdf import load, dump
 import tempfile
+import warnings
 
 import unittest
 from unittestX import TestCase
@@ -349,10 +350,12 @@ hh.dump( h, '{0!s}', '/', 'c' )
     def testload2(self):
         "load histogram with one path string"
         # h = load('testload.h5/h')
-        curdir = os.path.split(__file__)[0]
-        prevdir = os.path.dirname(curdir)
-        testdir = os.path.join(prevdir,"data")
-        h = load(os.path.join(testdir, "sqe.h5/S(Q,E)"))
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            curdir = os.path.split(__file__)[0]
+            prevdir = os.path.dirname(curdir)
+            testdir = os.path.join(prevdir,"data")
+            h = load(os.path.join(testdir, "sqe.h5/S(Q,E)"))
         return
 
     def testload3(self):
