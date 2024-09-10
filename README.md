@@ -36,7 +36,7 @@ histogram data object
   In root directory of histogram-dev,type
 
   .. code-block:: shell
-  
+
     `pytest`
 
 
