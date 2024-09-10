@@ -10,7 +10,7 @@ histogram data object
   .. code-block:: shell
 
     $ python -m build --wheel --no-isolation
-    $ check-wheel-contents dist/drtsans-*.whl
+    $ check-wheel-contents dist/histogram-*.whl
 
 2. Conda package
 
@@ -19,11 +19,11 @@ histogram data object
     # create a conda package
     $ cd conda.recipe
     $ echo "versioningit $(versioningit ../)"
-    $ CHANNELS="--channel mantid/label/main --channel conda-forge"
+    $ CHANNELS="--channel mcvine --channel conda-forge"
     $ VERSION=$(versioningit ../) conda mambabuild $CHANNELS --output-folder . .
-    $ conda verify noarch/drtsans-*.tar.bz2
+    $ conda verify noarch/histogram-*.tar.bz2
     # install a local conda package
-    $ conda install noarch/<drtsans .tar.bz2 file>
+    $ conda install noarch/<histogram.tar.bz2 file>
 
 ### Installation Instructions for editable mode
 
