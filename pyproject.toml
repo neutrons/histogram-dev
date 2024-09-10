@@ -58,19 +58,12 @@ exclude = ["histogram/ndarray/converters*"]
 [project.scripts]
 histogram-cli = "histogram.Histogram:main"
 
-#[tool.pytest.ini_options]
-#pythonpath = [
-#  ".", "src", "scripts"
-#]
-#testpaths = ["tests"]
-#python_files = ["test*.py"]
-#norecursedirs = [".git", "tmp*", "_tmp*", "__pycache__", "*dataset*", "*data_set*"]
-#markers = [
-#    "mymarker: example markers goes here"
-#]
+# pytest.ini
+[tool.pytest.ini_options]
+norecursedirs = .svn _build ndarray* # ignore tests in ndarray due to missing stdVector module not found
+testpaths =
+    tests
+python_files = *_TestCase.py histogramTest_*.py #manually run python alltests.py will also return 145 tests
+filterwarnings =
+    ignore: Matplotlib is currently using ps, which is a non-GUI backend, so cannot show the figure.
 
-#[tool.ruff]
-#line-length = 120
-#select = ["A", "ARG","ASYNC","BLE","C90", "E", "F", "I", "N", "UP032", "W"]
-
-# Add additional 3rd party tool configuration here as needed
