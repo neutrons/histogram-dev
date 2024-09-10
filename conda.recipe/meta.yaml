@@ -34,13 +34,10 @@ requirements:
   build:
     - setuptools>=42
     - versioningit
-    - numpy >= 1.20.3,< 2.0
-    - journal==0.8.4
   run:
-    - python
-    - numpy >= 1.20.3,< 2.0
-    - pyre == 0.8.3
-    - journal==0.8.4
+    - numpy
+    - pyre
+    - journal
 
 test:
   imports:

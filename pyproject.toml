@@ -44,26 +44,16 @@ file = "src/histogram/_version.py"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-#exclude = ["histogram/ndarray*"]
-
-#[tool.setuptools]
-#packages = ["src/histogram", "lib", "bin"]
-
-[tool.setuptools]
-script-files = [
-#    "lib/Array_1D.cc"
-    "bin/plothist"
-]
+exclude = ["histogram/ndarray/converters*"]
 
 [tool.setuptools.package-data]
 "*" = [
-  "lib/Array_1D.cc",
-#  "bin/plothist"
+    "*.h",
+    "*.cc",
+    "plothist",
+    "*.icc"
 ]
 
-#    "*.mm",
-#    "*.h",
-#    "*.cc",
 
 [project.scripts]
 histogram-cli = "histogram.Histogram:main"

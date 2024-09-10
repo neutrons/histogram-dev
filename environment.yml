@@ -1,6 +1,5 @@
 name: histogram-dev
 channels:
-  - mantid
   - mcvine
   - conda-forge
 dependencies:
