@@ -10,7 +10,7 @@ histogram data object
   .. code-block:: shell
 
     $ python -m build --wheel --no-isolation
-    $ check-wheel-contents dist/histogram-*.whl
+    $ check-wheel-contents dist/histogram_*.whl
 
 2. Conda package
 
