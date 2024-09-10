@@ -3,6 +3,12 @@ channels:
   - mcvine
   - conda-forge
 dependencies:
+  - anaconda-client
+  - boa
+  - libmamba
+  - libarchive
+  - conda-build
+  - conda-verify
   - check-wheel-contents
   - coverage
   - numpy >= 1.20.3,< 2.0
