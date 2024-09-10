@@ -1,6 +1,5 @@
 name: histogram-conda_build_only
 channels:
-  - mantid
   - mcvine
   - conda-forge
 dependencies:
@@ -14,7 +13,6 @@ dependencies:
   - scipy
   - python >=3.8
   - pyre == 0.8.3
-  - mantid >= 6.4
   - libmamba
   - libarchive
   - journal==0.8.4
