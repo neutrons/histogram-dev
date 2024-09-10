@@ -4,7 +4,9 @@ description = "The histogram python package provides a simple yet fundamental da
 dynamic = ["version"]
 requires-python = ">=3.8"
 dependencies = [
-  # list all runtime dependencies here
+  "numpy >= 1.20.3,< 2.0",
+  "pyre == 0.8.3",
+  "journal==0.8.4"
 ]
 license = { text = "MIT" }
 keywords = ["neutrons", "histogram", "python"]
@@ -42,21 +44,26 @@ file = "src/histogram/_version.py"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
+#exclude = ["histogram/ndarray*"]
 
 #[tool.setuptools]
-#script-files = [
-#    "lib/Array_1D.cc",
-#]
+#packages = ["src/histogram", "lib", "bin"]
+
+[tool.setuptools]
+script-files = [
+#    "lib/Array_1D.cc"
+    "bin/plothist"
+]
 
 [tool.setuptools.package-data]
 "*" = [
-    "bin/plothist",
-    "*.mm",
-    "*.h",
-    "*.cc",
+  "lib/Array_1D.cc",
+#  "bin/plothist"
 ]
 
+#    "*.mm",
+#    "*.h",
+#    "*.cc",
 
 [project.scripts]
 histogram-cli = "histogram.Histogram:main"
