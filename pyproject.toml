@@ -66,5 +66,6 @@ testpaths =[
 ]
 python_files = ["*_TestCase.py","histogramTest_*.py"] #manually run python alltests.py will also return 145 tests
 filterwarnings =[
-    "ignore: Matplotlib is currently using ps, which is a non-GUI backend, so cannot show the figure."
+    "ignore: Matplotlib is currently using ps, which is a non-GUI backend, so cannot show the figure.",
+    "ignore: FigureCanvasPS is non-interactive, and thus cannot be shown"
 ]
