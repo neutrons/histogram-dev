@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [next]
+    tags: ['v*']
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: mamba-org/setup-micromamba@v1
+      with:
+        environment-file: environment.yml
