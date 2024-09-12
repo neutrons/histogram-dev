@@ -45,6 +45,8 @@
 # this NdArray will be used by Histogram classes
 import tempfile
 import os
+
+
 class NdArray(object):
     def as_(self, NdArrayTypeName):
         return converters.convert(self, NdArrayTypeName)
