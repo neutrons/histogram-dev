@@ -477,35 +477,35 @@ def _sum(anumarr):
     return _sum(a)
 
 
-from .AbstractNdArray import NdArray_TestCase as TestBase
-import unittest
+# from .AbstractNdArray import NdArray_TestCase as TestBase
+# import unittest
 
 
-class NdArray_TestCase(TestBase):
-    def setUp(self):
-        global NdArray
-        self.NdArray = NdArray
-        return
+# class NdArray_TestCase(TestBase):
+#     def setUp(self):
+#         global NdArray
+#         self.NdArray = NdArray
+#         return
 
-    pass  # end of NdArray_TestCase
-
-
-def pysuite():
-    suite1 = unittest.makeSuite(NdArray_TestCase)
-    return unittest.TestSuite((suite1,))
+#     pass  # end of NdArray_TestCase
 
 
-def main():
-    ##     journal.debug('instrument').activate()
-    ##     journal.debug('instrument.elements').activate()
-    pytests = pysuite()
-    alltests = unittest.TestSuite((pytests,))
-    unittest.TextTestRunner(verbosity=2).run(alltests)
-    return
+# def pysuite():
+#     suite1 = unittest.makeSuite(NdArray_TestCase)
+#     return unittest.TestSuite((suite1,))
 
 
-if __name__ == "__main__":
-    main()
+# def main():
+#     ##     journal.debug('instrument').activate()
+#     ##     journal.debug('instrument.elements').activate()
+#     pytests = pysuite()
+#     alltests = unittest.TestSuite((pytests,))
+#     unittest.TextTestRunner(verbosity=2).run(alltests)
+#     return
+
+
+# if __name__ == "__main__":
+#     main()
 
 
 # version

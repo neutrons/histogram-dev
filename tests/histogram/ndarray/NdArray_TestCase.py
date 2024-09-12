@@ -10,7 +10,7 @@
 
 
 # from histogram.ndarray.AbstractNdArray import NdArray_TestCase
-from histogram.ndarray.AbstractNdArray import NdArray
+# from histogram.ndarray.AbstractNdArray import NdArray
 import tempfile
 import os
 

@@ -60,7 +60,7 @@ histogram-cli = "histogram.Histogram:main"
 
 # pytest.ini
 [tool.pytest.ini_options]
-norecursedirs = [".svn","_build","ndarray*"] # ignore tests in ndarray due to missing stdVector module not found
+norecursedirs = [".svn","_build"] # ignore tests in ndarray due to missing stdVector module not found
 testpaths =[
     "tests"
 ]
