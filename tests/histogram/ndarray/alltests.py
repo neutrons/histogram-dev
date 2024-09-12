@@ -40,7 +40,6 @@ import unittest
 
 alltests = unittest.TestSuite(allsuites)
 
-
 # run test
 unittest.TextTestRunner(verbosity=2).run(alltests)
 
