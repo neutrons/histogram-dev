@@ -43,6 +43,8 @@
 # std::vector could contribute to an implementation of this NdArray
 # and numpy.ndarray could contribute to another one
 # this NdArray will be used by Histogram classes
+import tempfile
+import os
 class NdArray(object):
     def as_(self, NdArrayTypeName):
         return converters.convert(self, NdArrayTypeName)
@@ -549,7 +551,8 @@ class NdArray_TestCase(TestCase):
 
         v = self.NdArray("double", [1, 2, 3, 4])
         v.setShape((2, 2))
-        pickle.dump(v, open("tmp.pkl", "w"))
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pickle.dump(v, open(os.path.join(temp_dir, "tmp.pkl"), "w"))
         return
 
     @unittest.expectedFailure
@@ -559,10 +562,11 @@ class NdArray_TestCase(TestCase):
 
         v = self.NdArray("double", [1, 2, 3, 4])
         v.setShape((2, 2))
-        pickle.dump(v, open("tmp.pkl", "w"))
-        v1 = pickle.load(open("tmp.pkl"))
-        print(v1.asNumarray())
-        assert v1.compare(v)
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pickle.dump(v, open(os.path.join(temp_dir, "tmp.pkl"), "w"))
+            v1 = pickle.load(open(os.path.join(temp_dir, "tmp.pkl")))
+            print(v1.asNumarray())
+            assert v1.compare(v)
         return
 
     def test_setShape(self):
