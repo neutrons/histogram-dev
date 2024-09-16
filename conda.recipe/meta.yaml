@@ -13,7 +13,7 @@
 
 package:
   name: histogram
-  version: {{ version_number }}
+  version: 0.3.9
 
 source:
   path: ..
@@ -34,6 +34,8 @@ requirements:
   build:
     - setuptools>=42
     - versioningit
+    - {{ compiler('cxx') }} 7 # [linux]
+    - cmake
   run:
     - numpy
     - pyre
@@ -42,9 +44,11 @@ requirements:
 test:
   imports:
     - histogram
+  include:
+    - histogram/NdArray.h
 
 about:
   home: {{ url }}
   summary: {{ description }}
-  license: null
+  license: BSD
   license_file: null
