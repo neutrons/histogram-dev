@@ -33,3 +33,5 @@ jobs:
       run: xvfb-run --server-args="-screen 0 1920x1080x24" -a python -m pytest --cov=src --cov-report=xml --cov-report=term
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
