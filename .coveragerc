@@ -1,0 +1,5 @@
+[run]
+omit =
+    src/histogram/_version.py
+source =
+    src
