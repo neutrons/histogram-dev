@@ -54,6 +54,13 @@ exclude = ["histogram/ndarray/converters*"]
     "*.icc"
 ]
 
+[tool.coverage.run]
+omit = [
+    "src/histogram/_version.py"
+    ]
+source = [
+  "src"
+]
 
 [project.scripts]
 histogram-cli = "histogram.Histogram:main"
