@@ -9,7 +9,7 @@ python:
   install:
     - method: pip
       path: .
-    - requirements: doc/sphinx/requirements.txt
+    - requirements: docs/sphinx/requirements.txt
 
 sphinx:
   builder: html
