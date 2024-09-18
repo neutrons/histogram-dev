@@ -10,7 +10,7 @@ python:
     - method: pip
       path: .
       extra_requirements:
-        - [-e]
+        - [--no-deps]
 sphinx:
   builder: html
   configuration: docs/sphinx/conf.py
