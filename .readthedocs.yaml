@@ -7,9 +7,9 @@ build:
 
 python:
   install:
+    - requirements: docs/sphinx/requirements.txt
     - method: pip
       path: .
-    - requirements: docs/sphinx/requirements.txt
 
 sphinx:
   builder: html
