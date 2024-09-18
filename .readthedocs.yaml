@@ -8,9 +8,7 @@ build:
 python:
   install:
     - method: pip
-      path: .
-      options:
-      - --no-deps
+      path: -e . --no-deps
 
 sphinx:
   builder: html
