@@ -1,1 +1,1 @@
--e .[doc]
+-e . --no-deps [doc]
