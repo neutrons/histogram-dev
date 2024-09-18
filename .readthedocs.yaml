@@ -9,7 +9,7 @@ python:
   install:
     - method: pip
       path: .
-      extra_requirements: "--no-deps"
+      extra_requirements: [ --no-deps]
 
 sphinx:
   builder: html
