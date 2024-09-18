@@ -4,13 +4,15 @@ build:
   os: ubuntu-22.04
   tools:
     python: "mambaforge-4.10"
+  commands:
+    - pip install -e . --no-deps
 
-python:
-  install:
-    - method: pip
-      path: .
-      extra_requirements:
-        - ["--no-deps"]
+# python:
+#   install:
+#     - method: pip
+#       path: .
+#       extra_requirements:
+#         - ["--no-deps"]
 sphinx:
   builder: html
   configuration: docs/sphinx/conf.py
