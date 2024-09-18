@@ -8,8 +8,9 @@ build:
 python:
   install:
     - method: pip
-      path: -e . --no-deps
-
+      path: .
+      extra_requirements:
+        - --no-deps
 sphinx:
   builder: html
   configuration: docs/sphinx/conf.py
