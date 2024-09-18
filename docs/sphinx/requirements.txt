@@ -1,1 +1,1 @@
---no-deps
+. --no-deps
