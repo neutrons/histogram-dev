@@ -46,5 +46,5 @@ test:
 about:
   home: {{ url }}
   summary: {{ description }}
-  license: null
+  license: BSD
   license_file: null

@@ -11,6 +11,8 @@ dependencies:
   - conda-verify
   - check-wheel-contents
   - coverage
+  - cmake
+  - gxx_linux-64
   - numpy >= 1.20.3,< 2.0
   - python >=3.8
   - pyre == 0.8.3

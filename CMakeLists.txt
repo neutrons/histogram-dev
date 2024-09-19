@@ -17,7 +17,7 @@ set(VENDOR "DANSE")
 set(SUMMARY "histogram")
 set(LICENSE "BSD")
 set(RPM_APP_GROUP "Development/Tools")
-set(GITHUB_URL "https://github.com/danse-inelastic/histogram")
+set(GITHUB_URL "https://github.com/neutrons/histogram-dev") # this repo
 set (HOMEPAGE ${GITHUB_URL})
 
 # this is released with danse.ins packages
@@ -77,7 +77,7 @@ enable_testing()
 # subdirs
 add_subdirectory(lib)
 # add_subdirectory(pyext)
-add_subdirectory(python)
+add_subdirectory(src)
 add_subdirectory(bin)
 # add_subdirectory(etc)
 add_subdirectory(tests)
