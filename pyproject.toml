@@ -25,31 +25,9 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
-[tool.scikit-build]
-#check here https://scikit-build-core.readthedocs.io/en/latest/
-cmake_args = [
-    #"-DCMAKE_BUILD_TYPE=Release",
-    #"-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
-    "-DCONDA_BUILD=TRUE",
-    "-DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX",
-    "-DDEPLOYMENT_PREFIX=$CONDA_PREFIX"
-]
-cmake.build-type = "Release"
-ninja.version = ">=1.5"
-sdist.include = ["libdata*"]
-
-
-[build_cmake]
-source_dir = "lib"
-cmake_args = [
-    "-DCONDA_BUILD=TRUE",
-    "-DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX",
-    "-DDEPLOYMENT_PREFIX=$CONDA_PREFIX"
-]
-
 [tool.versioningit.vcs]
 method = "git"
-default-tag = "0.3.9"
+default-tag = "0.0.1"
 
 [tool.versioningit.next-version]
 method = "minor"
@@ -61,13 +39,6 @@ distance-dirty = "{next_version}.dev{distance}+d{build_date:%Y%m%d%H%M}"
 
 [tool.versioningit.write]
 file = "src/histogram/_version.py"
-
-#[tool.setuptools]
-#library_dirs = ["lib/*"]
-
-#ext-modules = [
-#  {name = "histogram.NdArray", sources = ["lib/NdArray.cc"], include_dirs= ["lib/*"]}
-#]
 
 [tool.setuptools.packages.find]
 where = ["src"]
