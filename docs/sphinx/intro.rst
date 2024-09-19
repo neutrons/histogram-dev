@@ -40,7 +40,7 @@ Features
 * :ref:`Easy access to data as numpy arrays <I_E2>`
 * :ref:`Dump/load histograms in hdf format <save_load>`
 * :ref:`Quick plot using matplotlib <plot>`
-* Minimal GUI application that
+* :ref:`Minimal GUI application that is easy to use <gui>`
 
 
 Getting Started
