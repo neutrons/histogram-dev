@@ -41,5 +41,5 @@ histogram data object
 
 
 * [Documentation](http://danse-inelastic.github.io/histogram)
-[![CI](https://github.com/neutrons/histogram-dev/actions/workflows/actions.yml/badge.svg?branch=ci_jobs)](https://github.com/neutrons/histogram-dev/actions/workflows/actions.yml)
+[![CI](https://github.com/neutrons/histogram-dev/actions/workflows/actions.yml/badge.svg?branch=next)](https://github.com/neutrons/histogram-dev/actions/workflows/actions.yml)
 [![codecov](https://codecov.io/gh/neutrons/histogram-dev/graph/badge.svg?token=Z0Y3B6XEWP)](https://codecov.io/gh/neutrons/histogram-dev)
