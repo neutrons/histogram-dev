@@ -42,7 +42,7 @@ file = "src/histogram/_version.py"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-exclude = ["src/histogram/scripts/Make.mm"] 
+exclude = ["src/histogram/scripts/Make.mm"]
 
 [tool.coverage.run]
 omit = [
