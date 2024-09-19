@@ -1,34 +1,29 @@
 name: histogram-dev
 channels:
-  - mantid
   - mcvine
   - conda-forge
 dependencies:
-  #- anaconda-client
-  #- boa
+  - anaconda-client
+  - boa
+  - libmamba
+  - libarchive
+  - conda-build
+  - conda-verify
   - check-wheel-contents
-  #- conda-build
-  #- conda-verify
   - coverage
+  - cmake
+  - gxx_linux-64
   - numpy >= 1.20.3,< 2.0
-  - scipy >= 1.9.0,< 1.14.0
   - python >=3.8
   - pyre == 0.8.3
-  - mantid == 6.4
+  - journal==0.8.4
   - matplotlib
-  #- libmamba
-  #- libarchive
+  - h5py
   - pre-commit
   - pytest
   - pytest-cov
   - python-build
   - sphinx
   - sphinx-rtd-theme
-  - numpydoc
   - versioningit
   - setuptools
-  - coveralls
-  - ipywidgets # used in one test
-  - pip
-  - pip:
-    - ipywe == 0.1.3a1

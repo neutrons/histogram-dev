@@ -1,16 +1,43 @@
-[![Build Status](https://travis-ci.com/danse-inelastic/histogram.svg?branch=master)](https://travis-ci.com/danse-inelastic/histogram)
-
-# histogram
+# Histogram
 histogram data object
 
-* Installation
+## Installation
 
-  `$ conda install -c mcvine histogram`
+### Package Build and Installation Instructions
+
+1. Python wheel
+
+  .. code-block:: shell
+
+    $ python -m build --wheel --no-isolation
+    $ check-wheel-contents dist/histogram_*.whl
+
+2. Conda package
+
+  .. code-block:: shell
+
+    # create a conda package
+    $ cd conda.recipe
+    $ echo "versioningit $(versioningit ../)"
+    $ CHANNELS="--channel mcvine --channel conda-forge"
+    $ VERSION=$(versioningit ../) conda mambabuild $CHANNELS --output-folder . .
+    $ conda verify noarch/histogram-*.tar.bz2
+    # install a local conda package
+    $ conda install noarch/<histogram.tar.bz2 file>
+
+### Installation Instructions for editable mode
+
+  .. code-block:: shell
+
+    $ pip install -e . --no-deps
 
 * Tests
 
   In root directory of histogram-dev,type
-  `pytest`
+
+  .. code-block:: shell
+
+    `pytest`
 
 
 * [Documentation](http://danse-inelastic.github.io/histogram)
