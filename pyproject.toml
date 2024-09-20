@@ -44,6 +44,7 @@ file = "src/histogram/_version.py"
 where = ["src"]
 exclude = ["src/histogram/scripts/Make.mm"]
 
+
 [tool.coverage.run]
 omit = [
     "src/histogram/_version.py"
@@ -57,12 +58,15 @@ histogram-cli = "histogram.Histogram:main"
 
 # pytest.ini
 [tool.pytest.ini_options]
+
 norecursedirs = [".svn","_build"] # ignore tests in ndarray due to missing stdVector module not found
+
 testpaths =[
     "tests"
 ]
 python_files = ["*_TestCase.py","histogramTest_*.py"] #manually run python alltests.py will also return 145 tests
 filterwarnings =[
+
     "ignore: Matplotlib is currently using ps, which is a non-GUI backend, so cannot show the figure.",
     "ignore: FigureCanvasPS is non-interactive, and thus cannot be shown"
 ]

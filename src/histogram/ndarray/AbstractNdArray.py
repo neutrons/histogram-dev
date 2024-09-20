@@ -43,6 +43,7 @@
 # std::vector could contribute to an implementation of this NdArray
 # and numpy.ndarray could contribute to another one
 # this NdArray will be used by Histogram classes
+
 import tempfile
 import os
 
