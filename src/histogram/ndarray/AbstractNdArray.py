@@ -47,6 +47,7 @@
 import tempfile
 import os
 
+
 class NdArray(object):
     def as_(self, NdArrayTypeName):
         return converters.convert(self, NdArrayTypeName)
@@ -258,7 +259,6 @@ class NdArray(object):
         )
 
     pass  # end of NdArray
-
 
 
 # Tests have been moved into tests/histogram/ndarray/NdArray_TestCase.py
