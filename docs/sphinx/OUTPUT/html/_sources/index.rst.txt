@@ -16,7 +16,7 @@ Contents:
    python-interface
    commands
    gui
-   
+
 Indices and tables
 ==================
 

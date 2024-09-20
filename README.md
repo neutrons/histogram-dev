@@ -34,7 +34,7 @@ histogram data object
 * Tests
 
   In root directory of histogram-dev,type
-  
+
   .. code-block:: shell
 
     `pytest`
