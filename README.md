@@ -39,7 +39,7 @@ histogram data object
 
     `pytest`
 
-* [Documentation](http://danse-inelastic.github.io/histogram)
+* [Documentation](https://histogram-dev.readthedocs.io/en/latest/)
 
 ---
 
