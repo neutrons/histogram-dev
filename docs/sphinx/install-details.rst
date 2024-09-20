@@ -21,7 +21,7 @@ Optionally, you may want to install:
 
 Install
 -------
-The histogram package can be installed by using easy_install::
+The histogram package can be installed by using easy_install (deprecated)::
 
  $ easy_install histogram
 
