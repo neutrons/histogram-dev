@@ -43,9 +43,9 @@
 # std::vector could contribute to an implementation of this NdArray
 # and numpy.ndarray could contribute to another one
 # this NdArray will be used by Histogram classes
+
 import tempfile
 import os
-
 
 class NdArray(object):
     def as_(self, NdArrayTypeName):
@@ -258,6 +258,7 @@ class NdArray(object):
         )
 
     pass  # end of NdArray
+
 
 
 # Tests have been moved into tests/histogram/ndarray/NdArray_TestCase.py

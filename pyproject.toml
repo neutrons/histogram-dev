@@ -15,14 +15,12 @@ readme = "README.md"
 [project.urls]
 homepage = "https://github.com/neutrons/histogram-dev"  # if no homepage, use repo url
 repository = "https://github.com/neutrons/histogram-dev"
-# documentation = add_url_to_readthedoc_here
-#issues = ""
+documentation = "https://histogram-dev.readthedocs.io"
+
 
 [build-system]
 requires = [
-  "setuptools>= 42",
-  "wheel",
-  "toml",
+  "setuptools>=42",
   "versioningit"
 ]
 build-backend = "setuptools.build_meta"
@@ -44,23 +42,7 @@ file = "src/histogram/_version.py"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-exclude = ["histogram/ndarray/converters*"]
-
-[tool.setuptools.package-data]
-"*" = [
-    "*.h",
-    "*.cc",
-    "plothist",
-    "*.icc"
-]
-
-[tool.coverage.run]
-omit = [
-    "src/histogram/_version.py"
-    ]
-source = [
-  "src"
-]
+exclude = ["src/histogram/scripts/Make.mm"]
 
 [project.scripts]
 histogram-cli = "histogram.Histogram:main"

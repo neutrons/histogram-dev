@@ -204,7 +204,7 @@ class NdArray(AbstractNdArray):
 
     # ufuncs
     def integrate(self, start, end, dx):
-        """integrate(  start, end, dx) -> dx*/sum_{i in [start, end)}vec_i
+        """integrate(  start, end, dx) -> dx*\sum_{i in [start, end)}vec_i
         Add from start to (but not including) end, multiply by dx.
         Inputs:
             start: index at which to begin (integer)
