@@ -52,7 +52,6 @@ reload(all_tk_tests)
 tktests = all_tk_tests.alltests
 alltests = unittest.TestSuite((alltests, tktests))
 
-
 # run test
 unittest.TextTestRunner(verbosity=2).run(alltests)
 # version
