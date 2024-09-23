@@ -25,7 +25,7 @@ The histogram package can be installed by using pip install in editable mode cur
 
  $ git clone git@github.com:neutrons/histogram-dev.git.
 
- Navigate to the root directory of histogram-dev:
+Navigate to the root directory of histogram-dev:::
 
  $ conda env create
 
