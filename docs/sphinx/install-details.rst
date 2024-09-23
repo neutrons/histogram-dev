@@ -30,4 +30,4 @@ The histogram package can be installed by using pip install in editable mode cur
 
 To install the package, in the correct environment(histogram-dev)::
 
- $ pip install -e . --no-deps
+ $ pip install -e .

@@ -9,7 +9,7 @@ The histogram package can be installed by using pip install::
 
  To install:
 
- $ pip install -e . --no-deps
+ $ pip install -e .
 
  To test, in the root directory type:
 
