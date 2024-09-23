@@ -131,7 +131,7 @@ html_theme = "default"
 html_static_path = ["_static"]
 
 html_css_files = [
-    'default.css',
+    "default.css",
 ]
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
