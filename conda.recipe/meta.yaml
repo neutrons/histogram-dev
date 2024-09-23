@@ -36,8 +36,8 @@ requirements:
     - versioningit
   run:
     - numpy
-    # - pyre
-    # - journal
+    - pyre
+    - journal
 
 test:
   imports:
