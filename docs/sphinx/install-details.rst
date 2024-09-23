@@ -1,3 +1,5 @@
+:orphan:
+
 .. _install-details:
 
 Installation Details
@@ -19,13 +21,16 @@ Optionally, you may want to install:
 
 Install
 -------
-The histogram package can be installed by using easy_install::
+The histogram package can be installed by using pip install in editable mode currently::
 
- $ easy_install histogram
+ $ git clone git@github.com:neutrons/histogram-dev.git.
 
-Or you can download histogram package from
-http://dev.danse.us/packages/histogram-0.2dev.tar.gz
+Navigate to the root directory of histogram-dev:::
 
-Expand and enter it, and run::
+ $ conda env create
 
- $ python setup.py install
+ (This will create an environment using the environment.yml file.)
+
+To install the package, in the correct environment(histogram-dev)::
+
+ $ pip install -e .

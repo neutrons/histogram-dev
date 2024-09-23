@@ -21,7 +21,7 @@ body {
     margin: 0;
     /*min-width: 740px;*/
 
-    background-image:url('bg.png');
+    /* background-image:url('bg.png'); */
     background-repeat:no-repeat;
     background-position:bottom right;
     background-color:#777777;
@@ -170,7 +170,7 @@ div.document {
     /* opacity: 0.8;
     filter:alpha(opacity=80); */
     text-align: left;
-    background-image: url(contents.png);
+    /* background-image: url(contents.png); */
     background-repeat: repeat-x;
 }
 
@@ -195,7 +195,8 @@ div.related h3 {
 }
 
 div.related ul {
-    background-image: url(navigation.png);
+    /* background-image: url(navigation.png); */
+    background-color: black;
     height: 2em;
     list-style: none;
     border-top: 1px solid #ddd;
@@ -545,7 +546,7 @@ ul.search {
 
 ul.search li {
     padding: 5px 0 5px 20px;
-    background-image: url(file.png);
+    /* background-image: url(file.png); */
     background-repeat: no-repeat;
     background-position: 0 7px;
 }

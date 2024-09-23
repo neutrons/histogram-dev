@@ -88,8 +88,9 @@ some meta data, and two main datasets: "data" and "errors".
 
 * name: h.name()
 * bin centers of an axis: h.<axisname>
- - For example, a histogram has an axis named "x", then the bin
-   centers of "x" axis can be accessed as h.x.
+
+ - For example, a histogram has an axis named "x", then the bin centers of "x" axis can be accessed as h.x.
+
 * data (the "intensities" array): h.I
 * error squares (the squares of error bars array): h.E2
 
@@ -440,10 +441,16 @@ Save/load a histogram
 ^^^^^^^^^^^^^^^^^^^^^
 You can save/load a histogram in hdf5 format.
 
-* To save a histogram::
+* To save a histogram
+
+::
+
  >>> from histogram.hdf import dump
  >>> dump(h, 'myhist.h5')
 
-* To load a histogram::
+* To load a histogram
+
+::
+
  >>> from histogram.hdf import load
  >>> h = load('myhist.h5')

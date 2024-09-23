@@ -29,7 +29,7 @@ histogram data object
 
   .. code-block:: shell
 
-    $ pip install -e . --no-deps
+    $ pip install -e .
 
 * Tests
 
