@@ -5,7 +5,7 @@ Installation
 
 The histogram package can be installed by using pip install::
 
- Download the package at https://github.com/neutrons/histogram-dev.
+ Download the source code from https://github.com/neutrons/histogram-dev.
 
  To install:
 
