@@ -209,7 +209,7 @@ class NdArray(AbstractNdArray):
             end: index one past the last (integer)
             dx: \"measure\"
         Output:
-            dx*\sum_{i in [start, end)}
+            dx*\\sum_{i in [start, end)}
         Exceptions: ValueError, IndexError
         Notes: end must be <= size of vector; start must be <= end."""
         return numpy.sum(self._numarr[start:end]) * dx

@@ -2,9 +2,10 @@
 # Jiao Lin Copyright (c) 2005 All rights reserved
 
 
-import journal
+import logging
 
-debug = journal.debug("ins.histogram.AxisMapperCreater")
+logger = logging.getLogger("Histogram")
+logger.debug("ins.histogram.AxisMapperCreater")
 
 
 from .EvenlyContinuousAxisMapper import EvenlyContinuousAxisMapper
