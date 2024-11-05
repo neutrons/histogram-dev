@@ -11,10 +11,11 @@
 #
 
 
-import journal
+import logging
 
+logger = logging.getLogger('Histogram')
 jrnltag = "histogram.hdf.Renderer"
-debug = journal.debug(jrnltag)
+logger.debug(jrnltag)
 
 
 class Renderer(object):
@@ -118,7 +119,7 @@ types = {
 
 
 if __name__ == "__main__":
-    test()
+    exit()  
 
 
 # version

@@ -2,9 +2,6 @@
 #
 #
 
-__version__ = "0.3.9"
-
-
 ## \mainpage histogram
 ##
 ## \section reference_sec Public Interface
@@ -69,6 +66,16 @@ __version__ = "0.3.9"
 ##  - histogram
 ##  - axis
 
+import logging
+
+# Create and configure logger
+logging.basicConfig()
+
+# Create a logger
+logger = logging.getLogger('Histogram')
+
+# Set the logging level
+logger.setLevel(logging.DEBUG)
 
 # factories
 def pqvalue(*args):
