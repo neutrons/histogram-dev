@@ -23,6 +23,9 @@
 from .AbstractNdArray import NdArray as AbstractNdArray
 import numpy
 from functools import reduce
+import logging
+
+logger = logging.getLogger('Histogram')
 
 types = {
     "char": 4,
@@ -54,11 +57,6 @@ types.update(
         "unsigned": types["uint"],
     }
 )
-
-import journal
-
-info = journal.info("NumpyNdArray")
-warning = journal.warning("NumpyNdArray")
 
 
 def arrayFromNumpyArray(arr, datatype=None):
@@ -286,15 +284,15 @@ class NdArray(AbstractNdArray):
         and are element-by-element equal to within epsilon.
         """
         if not isinstance(other, AbstractNdArray):
-            info.log("%s is not a vector" % other)
+            logging.info("%s is not a vector" % other)
             return False
         if self.datatype() != other.datatype():
-            info.log(
+            logging.info(
                 "incompatible data type: %s, %s" % (self.datatype(), other.datatype())
             )
             return False
         if self.shape() != other.shape():
-            info.log("incompatible array dhape: %s, %s" % (self.shape(), other.shape()))
+            logging.info("incompatible array dhape: %s, %s" % (self.shape(), other.shape()))
             return False
         this = self._numarr
         other = other.asNumarray()
@@ -437,7 +435,7 @@ def getAKTypecode(arr):
         try:
             return getNumericArray_aktypecode(arr)
         except:
-            warning.log("numpy datatype unknown for ndarray: %s" % arr.dtype.name)
+            logging.warning("numpy datatype unknown for ndarray: %s" % arr.dtype.name)
             return 10000 + arr.dtype.num
     raise "Should not reach here"
 
@@ -496,8 +494,6 @@ def _sum(anumarr):
 
 
 # def main():
-#     ##     journal.debug('instrument').activate()
-#     ##     journal.debug('instrument.elements').activate()
 #     pytests = pysuite()
 #     alltests = unittest.TestSuite((pytests,))
 #     unittest.TextTestRunner(verbosity=2).run(alltests)
