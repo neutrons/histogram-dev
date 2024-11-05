@@ -328,7 +328,7 @@ def datasetFromFunction(func, axes, *args, **kwds):
     except:
         import traceback
 
-        debug.log(traceback.format_exc())
+        logger.debug(traceback.format_exc())
         return applyFunction_slow(func, xs, *args, **kwds)
     raise "should not reach here"
 
@@ -355,7 +355,7 @@ def applyFunction_fast(func, xs, *args, **kwds):
     """
     mg = meshgrid(*xs)
     targs = mg + list(args)
-    debug.log("%s" % (targs,))
+    logger.debug("%s" % (targs,))
     return func(*targs, **kwds)
 
 
@@ -490,12 +490,7 @@ def createContinuousAxis(
     try:
         axisMapper = AxisMapper(binBoundaries=boundaries)
     except NotEvenlySpaced:
-        import traceback
-        import journal
-
-        debug = journal.debug("histogram.createContinuousAxis")
-        # debug.log( traceback.format_exc() )
-        debug.log(
+        logger.debug(
             "createContinuousAxis(name = %r, unit = %r, centers= %r, boundaries = %r"
             % (name, unit, centers, boundaries)
         )
@@ -806,10 +801,6 @@ def _grid(arr, i, shape):
     rt.shape = shape
     return rt
 
-
-import journal
-
-debug = journal.debug("histogram")
 
 from ._units import unitFromString
 

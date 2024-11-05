@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # Timothy M. Kelley Copyright (c) 2005 All rights reserved
 
-import journal
+import logging
 
-debug = journal.debug("histogram.DatasetBase")
+logger = logging.getLogger("Histogram")
 
 
 msg = "class {0!s} must override {1!s}"
