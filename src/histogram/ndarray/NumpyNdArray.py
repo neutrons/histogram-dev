@@ -25,7 +25,7 @@ import numpy
 from functools import reduce
 import logging
 
-logger = logging.getLogger('Histogram')
+logger = logging.getLogger("Histogram")
 
 types = {
     "char": 4,
@@ -292,7 +292,9 @@ class NdArray(AbstractNdArray):
             )
             return False
         if self.shape() != other.shape():
-            logging.info("incompatible array dhape: %s, %s" % (self.shape(), other.shape()))
+            logging.info(
+                "incompatible array dhape: %s, %s" % (self.shape(), other.shape())
+            )
             return False
         this = self._numarr
         other = other.asNumarray()

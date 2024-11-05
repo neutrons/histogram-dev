@@ -13,7 +13,7 @@
 
 import logging
 
-logger = logging.getLogger('Histogram')
+logger = logging.getLogger("Histogram")
 jrnltag = "histogram.hdf.Renderer"
 logger.debug(jrnltag)
 
@@ -119,7 +119,7 @@ types = {
 
 
 if __name__ == "__main__":
-    exit()  
+    exit()
 
 
 # version

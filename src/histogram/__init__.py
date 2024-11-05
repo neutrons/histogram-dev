@@ -72,10 +72,11 @@ import logging
 logging.basicConfig()
 
 # Create a logger
-logger = logging.getLogger('Histogram')
+logger = logging.getLogger("Histogram")
 
 # Set the logging level
 logger.setLevel(logging.DEBUG)
+
 
 # factories
 def pqvalue(*args):
