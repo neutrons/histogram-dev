@@ -5,7 +5,6 @@
 import logging
 
 logger = logging.getLogger("Histogram")
-logger.debug("ins.histogram.AxisMapperCreater")
 
 
 from .EvenlyContinuousAxisMapper import EvenlyContinuousAxisMapper
