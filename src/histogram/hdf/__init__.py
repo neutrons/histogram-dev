@@ -19,6 +19,9 @@ except ImportError:
 
 
 import os
+import logging
+
+logger = logging.getLogger("Histogram")
 
 
 def load(filename, pathinfile=None, fs=None, **kwds):
@@ -54,9 +57,8 @@ def load(filename, pathinfile=None, fs=None, **kwds):
         else:
             # this is obsolete. in the future we should have
             # a dedicated "url" parameter
-            import warnings
 
-            warnings.warn("filename as url is deprecated")
+            logger.warning("filename as url is deprecated")
             url = filename
             filename, pathinfile = os.path.split(url)
             if not os.path.exists(filename):

@@ -14,8 +14,6 @@
 import logging
 
 logger = logging.getLogger("Histogram")
-jrnltag = "histogram.hdf.Renderer"
-logger.debug(jrnltag)
 
 
 class Renderer(object):

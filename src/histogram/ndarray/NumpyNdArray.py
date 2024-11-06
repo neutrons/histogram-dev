@@ -437,7 +437,7 @@ def getAKTypecode(arr):
         try:
             return getNumericArray_aktypecode(arr)
         except:
-            logging.warning("numpy datatype unknown for ndarray: %s" % arr.dtype.name)
+            logger.warning("numpy datatype unknown for ndarray: %s" % arr.dtype.name)
             return 10000 + arr.dtype.num
     raise "Should not reach here"
 

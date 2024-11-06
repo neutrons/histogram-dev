@@ -19,9 +19,9 @@
 ##
 
 
-import journal
+import logging
 
-warning = journal.warning("histogram.plotter")
+logger = logging.getLogger("Histogram")
 
 
 class HistogramPlotter:
@@ -36,7 +36,7 @@ class HistogramPlotter:
 
         if dim > 2:
             raise NotImplementedError("dim=%s" % (dim,))
-            warning.log("NotImplementedError: dim = %s" % dim)
+            logger.warning("NotImplementedError: dim = %s" % dim)
             return
         plot = getattr(self, "plot%dd" % dim)
         plot(hist, **kwds)

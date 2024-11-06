@@ -69,7 +69,9 @@
 import logging
 
 # Create and configure logger
-logging.basicConfig()
+logging.basicConfig(
+    format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s"
+)
 
 # Create a logger
 logger = logging.getLogger("Histogram")

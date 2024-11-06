@@ -1,9 +1,16 @@
 #!/usr/bin/env python
 # Timothy M. Kelley Copyright (c) 2005 All rights reserved
+from __future__ import print_function
 
 import logging
 
 logger = logging.getLogger("Histogram")
+
+# import journal
+
+# journal.journal()
+# debug = journal.debug("histogram")
+# debug.activate()
 
 
 class DatasetContainer(object):
