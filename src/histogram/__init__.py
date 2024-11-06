@@ -70,7 +70,7 @@ import logging
 
 # Create and configure logger
 logging.basicConfig(
-    format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s"
+    format="[%(asctime)s] [%(levelname)s] %(pathname)s:%(lineno)d %(message)s"
 )
 
 # Create a logger
