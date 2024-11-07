@@ -77,7 +77,7 @@ logging.basicConfig(
 logger = logging.getLogger("Histogram")
 
 # Set the logging level
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 
 # factories

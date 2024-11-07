@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # Copyright (c) 2004 Timothy M. Kelley all rights reserved
+import logging
+
+logger = logging.getLogger("Histogram")
 
 aspects = [
     "instantiate/initialize",
@@ -30,10 +33,16 @@ def test_1(**kwds):
     passed = True
     if dc._byNames[name] != ds:
         passed = False
-        log("didn't correctly add dataset to _byNames")
+        logger.debug("didn't correctly add dataset to _byNames")
     if dc._byIds[id] != [name, ds]:
         passed = False
-        log("didn't correctly add dataset to _byIds")
+        logger.debug("didn't correctly add dataset to _byIds")
+    try:
+        logger.info('Attempting to log something')
+    except Exception as e:
+        print(f"Logging failed with error: {e}")
+    print(" \n\n\n\n print't correctly add dataset to _byIds")
+
     assert passed
 
 
@@ -51,7 +60,7 @@ def test_2(**kwds):
 
     if dsbn != ds:
         passed = False
-        log("datasetFromName returned {0!s} instead of {1!s}".format(dsbn, ds))
+        logger.debug("datasetFromName returned {0!s} instead of {1!s}".format(dsbn, ds))
     assert passed
 
 
@@ -69,7 +78,7 @@ def test_3(**kwds):
 
     if dsbi != ds:
         passed = False
-        log("datasetFromId returned {0!s} instead of {1!s}".format(dsbi, ds))
+        logger.debug("datasetFromId returned {0!s} instead of {1!s}".format(dsbi, ds))
     assert passed
 
 
@@ -87,7 +96,7 @@ def test_4(**kwds):
 
     if dslist != [(id, name)]:
         passed = False
-        log("listDatasets returned {0!s} instead of {1!s}".format(dslist, [(id, name)]))
+        logger.debug("listDatasets returned {0!s} instead of {1!s}".format(dslist, [(id, name)]))
     assert passed
 
 
@@ -99,24 +108,12 @@ def run(**kwds):
 
     for i, aspect in enumerate(aspects):
         run = eval('test_' + str(i))
-        # utilities.preReport(log, target, aspect)
         passed = run(**kwds)
-        # utilities.postReport(log, target, aspect, passed)
         allPassed = allPassed and passed
     return allPassed
 
 
-import utilities
-
-target = "DatasetContainer"
-
-log = utilities.picklog(target)
-
 if __name__ == "__main__":
-    import journal
-
-    info = journal.info(target)
-    info.activate()
 
     run()
 

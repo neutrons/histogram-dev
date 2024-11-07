@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # Copyright (c) 2004 Timothy M. Kelley all rights reserved
+import logging
+
+logger = logging.getLogger("Histogram")
 
 aspects = [
     "instantiate/initialize",
@@ -29,10 +32,10 @@ def test_1(**kwds):
         name = attDict["name"]
         if name != "timmah!":
             passed = False
-            log("value of 'name' attribute ({0!s}) was incorrect".format(name))
+            logger.info("value of 'name' attribute ({0!s}) was incorrect".format(name))
     except KeyError:
         passed = False
-        log("did not store 'name' as a key")
+        logger.info("did not store 'name' as a key")
 
     assert passed
 
@@ -48,7 +51,7 @@ def test_2(**kwds):
     name = attCont.getAttribute("name")
     if name != "timmah!":
         passed = False
-        log("value of 'name' attribute ({0!s}) was incorrect".format(name))
+        logger.info("value of 'name' attribute ({0!s}) was incorrect".format(name))
 
     assert passed
 
@@ -66,7 +69,7 @@ def test_3(**kwds):
     acList = attCont.listAttributes()
     if acList != attList:
         passed = False
-        log("listAtts() returned {0!s}, should have been {1!s}".format(acList, attList))
+        logger.info("listAtts() returned {0!s}, should have been {1!s}".format(acList, attList))
 
     assert passed
 
@@ -87,17 +90,8 @@ def run(**kwds):
     return allPassed
 
 
-import utilities
-
-target = "DictAttCont"
-
-log = utilities.picklog(target)
 
 if __name__ == "__main__":
-    import journal
-
-    info = journal.info(target)
-    info.activate()
 
     run()
 

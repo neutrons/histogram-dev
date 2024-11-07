@@ -34,8 +34,6 @@ class Dataset(DatasetBase):
         attributes = attributes or {}
         attributeCont = AttributeCont(dict(attributes))
 
-        # debug.log("storage = %s" % str(storage))
-
         if shape == [] and storage is not None:
             shape = storage.shape()
         if shape != [] and storage is not None:
@@ -47,8 +45,6 @@ class Dataset(DatasetBase):
             pass
         shape = list(shape)
         _checkShape(shape)
-
-        # debug.log("shape = %s" % (storage.shape(),))
 
         DatasetBase.__init__(self, name, unit, attributeCont, shape, storage)
         return

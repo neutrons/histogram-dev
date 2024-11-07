@@ -51,8 +51,6 @@ def pysuite():
 
 
 def main():
-    ##     journal.debug('instrument').activate()
-    ##     journal.debug('instrument.elements').activate()
     pytests = pysuite()
     alltests = unittest.TestSuite((pytests,))
     unittest.TextTestRunner(verbosity=2).run(alltests)

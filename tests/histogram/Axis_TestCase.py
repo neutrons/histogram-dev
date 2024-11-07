@@ -13,7 +13,7 @@
 
 
 # import histogramTest_Axis as oldtest
-from histogramTest_Axis import log, target, aspects, utilities
+from histogramTest_Axis import aspects
 
 
 from histogram import calcBinBoundaries, ndArray, axis

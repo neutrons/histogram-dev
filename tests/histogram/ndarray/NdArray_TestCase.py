@@ -373,7 +373,6 @@ if __name__ == "__main__":
 
 
 # def main():
-#     ##     journal.debug('instrument').activate()
 #     pytests = pysuite()
 #     alltests = unittest.TestSuite((pytests,))
 #     unittest.TextTestRunner(verbosity=2).run(alltests)
