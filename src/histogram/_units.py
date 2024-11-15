@@ -1,5 +1,5 @@
 import numpy as N
-from pyre.units import unit, parser, length
+from histogram.utils.units import length, unit, parser
 import sys
 
 
