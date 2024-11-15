@@ -2,9 +2,9 @@
 name = "histogram-dev"
 description = "The histogram python package provides a simple yet fundamental data structure for scientific computing histogram"
 dynamic = ["version"]
-requires-python = ">=3.10"
+requires-python = ">=3.8"
 dependencies = [
-  "numpy == 1.26.4"
+  "numpy >= 1.20.3,< 2.0",
 ]
 license = { text = "MIT" }
 keywords = ["neutrons", "histogram", "python"]
