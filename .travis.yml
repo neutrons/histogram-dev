@@ -26,7 +26,7 @@ install:
   - conda update conda
   - conda config --add channels conda-forge
   - conda config --add channels mcvine
-  - conda create -n testenv python=$TRAVIS_PYTHON_VERSION anaconda-client future pytest gxx_linux-64=7 cmake danse.ins journal pyre h5py matplotlib
+  - conda create -n testenv python=$TRAVIS_PYTHON_VERSION anaconda-client future pytest gxx_linux-64=7 cmake danse.ins pyre h5py matplotlib
   - source activate testenv
   - conda config --set anaconda_upload no
   - export SRC=$PWD

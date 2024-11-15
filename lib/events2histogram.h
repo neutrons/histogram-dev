@@ -21,9 +21,6 @@
 #include "_macros.h"
 
 
-#ifdef DEBUG
-#include "journal/debug.h"
-#endif
 
 
 HISTOGRAM_NAMESPACE_START
@@ -35,7 +32,7 @@ HISTOGRAM_NAMESPACE_START
    histogrammer_t & her )
   {
 #ifdef DEBUG
-    journal::debug_t debug("events2histogram");
+    printf("Warning events2histogram %s:%d \n", __FILE__, __LINE__);
 #endif
     std::for_each(events_begin, events_end, her);
   }

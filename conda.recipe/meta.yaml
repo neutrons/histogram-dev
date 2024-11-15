@@ -37,7 +37,6 @@ requirements:
   run:
     - numpy
     - pyre
-    - journal
 
 test:
   imports:
