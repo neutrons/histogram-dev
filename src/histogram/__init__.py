@@ -65,7 +65,7 @@
 ## Main funtions:
 ##  - histogram
 ##  - axis
-
+from ._version import __version__ as __version__
 import logging
 
 # Create and configure logger
