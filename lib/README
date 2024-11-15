@@ -1,5 +1,5 @@
 c++ library for histogram-related stuff
-This library used to depends on pyre journal. It has currently been removed.
+This library used to depend on pyre journal. (It has currently been removed.)
 The distributed histogram python package does not need
 to contain this c++ library.
 
