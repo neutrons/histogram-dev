@@ -30,13 +30,13 @@ set (PKGCLOUD_REPO "ins")
 # set(DOCKER_PKGING_DEB_DIST_NAME "ubuntu")
 # set(DOCKER_PKGING_DEB_DIST_VERSION "12.04")
 # dependencies
-set (DOCKER_PKGING_DEPS_DEB "python-numpy danse.ins journal pyre")
-set (DOCKER_PKGING_DEPS_RPM "numpy danse.ins journal pyre")
+set (DOCKER_PKGING_DEPS_DEB "python-numpy danse.ins pyre")
+set (DOCKER_PKGING_DEPS_RPM "numpy danse.ins pyre")
 set (DOCKER_PKGING_TEST_SRPM ". /opt/danse/bin/setup-danse.sh && python -c 'import histogram as p; print p'")
 set (DOCKER_PKGING_TEST_RPM ${DOCKER_PKGING_TEST_SRPM})
 set (DOCKER_PKGING_TEST_DEB ${DOCKER_PKGING_TEST_SRPM})
-set (CONDA_PKGING_BUILD_DEPS "python numpy journal")
-set (CONDA_PKGING_RUN_DEPS "python numpy danse.ins journal pyre h5py")
+set (CONDA_PKGING_BUILD_DEPS "python numpy")
+set (CONDA_PKGING_RUN_DEPS "python numpy danse.ins pyre h5py")
 
 # variables
 set (PYBINDING_NAME "${PROJECT_NAME}module")

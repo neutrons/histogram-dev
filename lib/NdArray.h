@@ -77,6 +77,7 @@ HISTOGRAM_NAMESPACE_START
   printf("Warning NdArray %s:%d -- shape[%d] = %d\n", __FILE__, __LINE__, i, shape[i]);
 #endif
     }
+  }
 
     /// dtor.
     ~NdArray() { }
