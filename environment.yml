@@ -21,6 +21,7 @@ dependencies:
   - pre-commit
   - pytest
   - pytest-cov
+  - pytest-xvfb
   - python-build
   - sphinx
   - sphinx-rtd-theme
