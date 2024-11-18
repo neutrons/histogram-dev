@@ -20,7 +20,7 @@ def parser():
 
 # implementation of the Parser singleton
 
-from pyre.util.Singleton import Singleton
+from histogram.utils.Singleton import Singleton
 
 
 class Parser(Singleton):
