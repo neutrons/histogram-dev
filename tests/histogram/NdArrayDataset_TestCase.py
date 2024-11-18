@@ -12,8 +12,7 @@
 #
 
 
-from pyre.units.length import meter
-
+from histogram.utils.units.length import meter
 
 import unittest
 from unittestX import TestCase

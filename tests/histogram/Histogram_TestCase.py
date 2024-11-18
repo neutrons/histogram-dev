@@ -222,7 +222,7 @@ class Histogram_TestCase(TestCase):
         h[1] = 10, 10
 
         h = histogram("h", [("a", [1, 2, 3])], unit="meter")
-        from pyre.units.length import meter
+        from histogram.utils.units.length import meter
 
         h[1] = 10 * meter, 10 * meter * meter
         return
