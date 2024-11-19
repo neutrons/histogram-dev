@@ -173,8 +173,6 @@ def main():
     global interactive
     interactive = True
 
-    ##     journal.debug('instrument').activate()
-    ##     journal.debug('instrument.elements').activate()
     pytests = pysuite()
     alltests = unittest.TestSuite((pytests,))
     unittest.TextTestRunner(verbosity=2).run(alltests)

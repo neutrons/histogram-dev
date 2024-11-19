@@ -2,9 +2,6 @@
 #
 #
 
-__version__ = "0.3.9"
-
-
 ## \mainpage histogram
 ##
 ## \section reference_sec Public Interface
@@ -68,6 +65,19 @@ __version__ = "0.3.9"
 ## Main funtions:
 ##  - histogram
 ##  - axis
+from ._version import __version__ as __version__
+import logging
+
+# Create and configure logger
+logging.basicConfig(
+    format="[%(asctime)s] [%(levelname)s] %(pathname)s:%(lineno)d %(message)s"
+)
+
+# Create a logger
+logger = logging.getLogger("Histogram")
+
+# Set the logging level
+logger.setLevel(logging.INFO)
 
 
 # factories
@@ -320,7 +330,7 @@ def datasetFromFunction(func, axes, *args, **kwds):
     except:
         import traceback
 
-        debug.log(traceback.format_exc())
+        logger.debug(traceback.format_exc())
         return applyFunction_slow(func, xs, *args, **kwds)
     raise "should not reach here"
 
@@ -347,7 +357,7 @@ def applyFunction_fast(func, xs, *args, **kwds):
     """
     mg = meshgrid(*xs)
     targs = mg + list(args)
-    debug.log("%s" % (targs,))
+    logger.debug("%s" % (targs,))
     return func(*targs, **kwds)
 
 
@@ -482,12 +492,7 @@ def createContinuousAxis(
     try:
         axisMapper = AxisMapper(binBoundaries=boundaries)
     except NotEvenlySpaced:
-        import traceback
-        import journal
-
-        debug = journal.debug("histogram.createContinuousAxis")
-        # debug.log( traceback.format_exc() )
-        debug.log(
+        logger.debug(
             "createContinuousAxis(name = %r, unit = %r, centers= %r, boundaries = %r"
             % (name, unit, centers, boundaries)
         )
@@ -798,10 +803,6 @@ def _grid(arr, i, shape):
     rt.shape = shape
     return rt
 
-
-import journal
-
-debug = journal.debug("histogram")
 
 from ._units import unitFromString
 

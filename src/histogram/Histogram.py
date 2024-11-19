@@ -7,13 +7,13 @@
 ## in histogram.__init__ package to create histogram.
 
 
-import journal
 from functools import reduce
-
-debug = journal.debug("ins.histogram.Histogram")
 
 import operator
 from .DictAttributeCont import AttributeCont
+import logging
+
+logger = logging.getLogger("Histogram")
 
 
 class Histogram(AttributeCont):
@@ -301,7 +301,7 @@ class Histogram(AttributeCont):
             if rhs is not None:
                 lhs[indexSlices] = rhs
             else:
-                debug.log("indefinite behavior: setting to None")
+                logger.debug("indefinite behavior: setting to None")
             continue
 
         return self[indexes_or_slice]
@@ -763,7 +763,7 @@ class Histogram(AttributeCont):
 
     def typeCode(self):
         """type code"""
-        debug.log(
+        logger.debug(
             "Histogram %s: typecode = %s" % (self.getAttribute("name"), self._typeCode)
         )
         return self._typeCode

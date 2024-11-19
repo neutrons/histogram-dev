@@ -18,9 +18,6 @@
 #include <vector>
 #include "OutOfBound.h"
 
-#include "journal/debug.h"
-
-
 HISTOGRAM_NAMESPACE_START
 
   /// Multiple dimensional array.
@@ -70,24 +67,17 @@ HISTOGRAM_NAMESPACE_START
     {
       m_size1D = 1;
 #ifdef DEBUG
-      journal::debug_t debug("NdArray");
-      debug << journal::at(__HERE__)
-	    << "dimension: " << dimension() << journal::endl
-	    << "shape: " ;
+  printf("Warning NdArray %s:%d\n", __FILE__, __LINE__);
 #endif
 
       for (unsigned int i=0; i<NDimension; i++) {
 	m_shape[i] = shape[i];
 	m_size1D *= shape[i];
 #ifdef DEBUG
-      debug
-	<< shape[i] << ", ";
-#endif
-      }
-#ifdef DEBUG
-      debug << journal::endl;
+  printf("Warning NdArray %s:%d -- shape[%d] = %d\n", __FILE__, __LINE__, i, shape[i]);
 #endif
     }
+  }
 
     /// dtor.
     ~NdArray() { }

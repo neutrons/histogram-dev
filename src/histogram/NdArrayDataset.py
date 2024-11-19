@@ -2,9 +2,9 @@
 # Jiao Lin Copyright (c) 2006 All rights reserved
 
 from .DatasetBase import DatasetBase
-import journal
+import logging
 
-debug = journal.debug("NdArrayDataset")
+logger = logging.getLogger("Histogram")
 
 
 class Dataset(DatasetBase):
@@ -34,8 +34,6 @@ class Dataset(DatasetBase):
         attributes = attributes or {}
         attributeCont = AttributeCont(dict(attributes))
 
-        # debug.log("storage = %s" % str(storage))
-
         if shape == [] and storage is not None:
             shape = storage.shape()
         if shape != [] and storage is not None:
@@ -47,8 +45,6 @@ class Dataset(DatasetBase):
             pass
         shape = list(shape)
         _checkShape(shape)
-
-        # debug.log("shape = %s" % (storage.shape(),))
 
         DatasetBase.__init__(self, name, unit, attributeCont, shape, storage)
         return
@@ -442,7 +438,7 @@ def isDataset(ds):
 
 def isCompatibleDataset(a, b):
     if not isinstance(a, DatasetBase) or not isinstance(b, DatasetBase):
-        debug.log(
+        logger.debug(
             "either %s or %s is not a dataset"
             % (
                 a.__class__.__name__,
@@ -452,7 +448,7 @@ def isCompatibleDataset(a, b):
         return False
 
     if a.shape() != b.shape():
-        debug.log("incompatible shape: %s, %s" % (a.shape(), b.shape()))
+        logger.debug("incompatible shape: %s, %s" % (a.shape(), b.shape()))
         return False
 
     return True
@@ -464,7 +460,7 @@ def isUnitCompatibleDataset(a, b):
     try:
         a.unit() + b.unit()
     except:
-        debug.log("incompatible units: %s, %s" % (a.unit(), b.unit()))
+        logger.debug("incompatible units: %s, %s" % (a.unit(), b.unit()))
         return False
     return True
 

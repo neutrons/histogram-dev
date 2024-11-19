@@ -11,6 +11,9 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 
+import logging
+
+logger = logging.getLogger("Histogram")
 
 use = "system pickle"
 
@@ -29,11 +32,6 @@ if use == "system pickle":
         return pickle.load(open(filename))
 
     pass
-
-
-import journal
-
-warning = journal.warning("histogram.hpickle")
 
 
 # version

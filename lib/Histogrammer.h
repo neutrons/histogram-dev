@@ -16,7 +16,6 @@
 #define H_HISTOGRAM_HISTOGRAMMER
 
 #include "OutOfBound.h"
-#include "journal/warning.h"
 
 HISTOGRAM_NAMESPACE_START
 
@@ -50,10 +49,7 @@ HISTOGRAM_NAMESPACE_START
       IDataType i = m_e2x( e, m_x );
       if (m_fx.isOutofbound(m_x)) {
 #ifdef DEBUG
-	journal::warning_t warning("Histogrammer1");
-	warning << journal::at(__HERE__)
-		<< "OutOfBound: " << m_x
-		<< journal::endl;
+  printf("Warning Histogrammer1 %s:%d\n", __FILE__, __LINE__);
 #endif
 	return;
       }
@@ -65,10 +61,7 @@ HISTOGRAM_NAMESPACE_START
       }
       catch (OutOfBound & e) {
 #ifdef DEBUG
-	journal::warning_t warning("Histogrammer1");
-	warning << journal::at(__HERE__)
-		<< e.what()
-		<< journal::endl;
+  printf("Warning Histogrammer1 %s:%d\n", __FILE__, __LINE__);
 #endif
       }
     }
@@ -117,10 +110,7 @@ HISTOGRAM_NAMESPACE_START
       IDataType i = m_e2xy( e, m_x, m_y );
       if (m_fxy.isOutofbound(m_x, m_y)) {
 #ifdef DEBUG
-	journal::warning_t warning("Histogrammer2");
-	warning << journal::at(__HERE__)
-		<< "OutOfBound: " << m_x << ", " << m_y
-		<< journal::endl;
+  printf("Warning Histogrammer1 %s:%d\n", __FILE__, __LINE__);
 #endif
 	return;
       }
@@ -132,10 +122,7 @@ HISTOGRAM_NAMESPACE_START
       }
       catch (OutOfBound & e) {
 #ifdef DEBUG
-	journal::warning_t warning("Histogrammer2");
-	warning << journal::at(__HERE__)
-		<< e.what()
-		<< journal::endl;
+  printf("Warning Histogrammer1 %s:%d\n", __FILE__, __LINE__);
 #endif
       }
     }
@@ -186,10 +173,7 @@ HISTOGRAM_NAMESPACE_START
       IDataType i = m_e2xxxx( e, m_x1, m_x2, m_x3, m_x4 );
       if (m_fxxxx.isOutofbound( m_x1, m_x2, m_x3, m_x4 )) {
 #ifdef DEBUG
-	journal::warning_t warning("Histogrammer4");
-	warning << journal::at(__HERE__)
-		<< "OutOfBound: " << m_x1 << ", " << m_x2 << ", " << m_x3 << ", " << m_x4
-		<< journal::endl;
+  printf("Warning Histogrammer1 %s:%d\n", __FILE__, __LINE__);
 #endif
 	return;
       }
@@ -201,10 +185,7 @@ HISTOGRAM_NAMESPACE_START
       }
       catch (OutOfBound & e) {
 #ifdef DEBUG
-	journal::warning_t warning("Histogrammer4");
-	warning << journal::at(__HERE__)
-		<< e.what()
-		<< journal::endl;
+  printf("Warning Histogrammer1 %s:%d\n", __FILE__, __LINE__);
 #endif
       }
     }

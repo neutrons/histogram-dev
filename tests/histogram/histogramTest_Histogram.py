@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # Copyright (c) 2004 Timothy M. Kelley all rights reserved
+import logging
+
+logger = logging.getLogger("Histogram")
 
 aspects = [
     "instantiate/initialize",
@@ -86,7 +89,7 @@ def test_1(**kwds):
     hax1 = hist.axisFromId(1)
     if hax1 is not ax1:
         passed = False
-        log("hax1 was %s instead of %s" % (hax1, ax1))
+        logger.info("hax1 was %s instead of %s" % (hax1, ax1))
     assert passed
 
 
@@ -127,7 +130,7 @@ def test_2(**kwds):
     hax1 = hist.axisFromName("testax1")
     if hax1 is not ax1:
         passed = False
-        log("hax1 was %s instead of %s" % (hax1, ax1))
+        logger.info("hax1 was %s instead of %s" % (hax1, ax1))
     assert passed
 
 
@@ -168,7 +171,7 @@ def test_3(**kwds):
     hdata = hist.data()
     if hdata is not data:
         passed = False
-        log("hdata was %s instead of %s" % (hdata, data))
+        logger.info("hdata was %s instead of %s" % (hdata, data))
     assert passed
 
 
@@ -209,7 +212,7 @@ def test_4(**kwds):
     herror = hist.errors()
     if herror is not error:
         passed = False
-        log("herror was %s instead of %s" % (herror, error))
+        logger.info("herror was %s instead of %s" % (herror, error))
     assert passed
 
 
@@ -230,16 +233,6 @@ def run( **kwds):
 
 
 if __name__ == '__main__':
-    # import ARCSTest.utilities as utilities
-    import utilities as utilities
-
-    target = "Histogram"
-
-    log = utilities.picklog(target)
-    import journal
-
-    info = journal.info(target)
-    info.activate()
 
     run()
 

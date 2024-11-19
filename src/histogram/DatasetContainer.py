@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # Timothy M. Kelley Copyright (c) 2005 All rights reserved
+import logging
 
-import journal
-
-debug = journal.debug("histogram")
+logger = logging.getLogger("Histogram")
 
 
 class DatasetContainer(object):
@@ -22,7 +21,7 @@ class DatasetContainer(object):
         # 1. store by name
         if name not in self._byNames:
             self._byNames[name] = dataset
-            debug.log("{0!s} added dataset {1!s}".format(self, name))
+            logger.debug("{0!s} added dataset {1!s}".format(self, name))
         else:
             msg = "container already has dataset named {0!s}".format(name)
             raise ValueError(msg)
@@ -79,7 +78,7 @@ class DatasetContainer(object):
         name = name or self._id2name[id]
         id = id or self._name2id[name]
 
-        debug.log("{0!s} replaced dataset {1!s} (id={2!s})".format(self, name, id))
+        logger.debug("{0!s} replaced dataset {1!s} (id={2!s})".format(self, name, id))
 
         self._byNames[name] = dataset
         self._byIds[id] = [name, dataset]

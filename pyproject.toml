@@ -2,9 +2,9 @@
 name = "histogram-dev"
 description = "The histogram python package provides a simple yet fundamental data structure for scientific computing histogram"
 dynamic = ["version"]
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
-  "numpy >= 1.20.3,< 2.0",
+  "numpy == 1.26.4"
 ]
 license = { text = "MIT" }
 keywords = ["neutrons", "histogram", "python"]
@@ -56,7 +56,8 @@ histogram-cli = "histogram.Histogram:main"
 
 # pytest.ini
 [tool.pytest.ini_options]
-
+log_cli = true
+log_file_format = "%(asctime)s [%(levelname)8s] (%(path)s:%(lineno)s) %(message)s"
 norecursedirs = [".svn","_build"] # ignore tests in ndarray due to missing stdVector module not found
 
 testpaths =[

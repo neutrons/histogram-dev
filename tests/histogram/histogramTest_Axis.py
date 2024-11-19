@@ -1,6 +1,14 @@
 #!/usr/bin/env python
 # Copyright (c) 2004 Timothy M. Kelley all rights reserved
 
+import logging
+
+logger = logging.getLogger("Histogram")
+
+
+from histogram import ndArray
+import utilities
+
 aspects = [
     "instantiate/intialize",
     "binCenters()",
@@ -8,8 +16,6 @@ aspects = [
     "binBoundariesAsList()",
 ]
 
-
-from histogram import ndArray
 
 
 def test_0(**kwds):
@@ -28,7 +34,7 @@ def test_0(**kwds):
     passed = True
     if axis._shape != [length + 1]:
         passed = False
-        log("shape was {0!s} instead of {1!s}".format(axis._shape, [length + 1]))
+        logger.info("shape was {0!s} instead of {1!s}".format(axis._shape, [length + 1]))
     # everything else tested in histogramTest_StdvectorDataset.py
 
     assert passed
@@ -49,9 +55,9 @@ def test_1(**kwds):
     axis = Axis(name, unit, attributes, length, storage)
 
     expected = [i + 1.5 for i in range(23)]
-    passed = utilities.compareFPLists(expected, axis.binCenters(), 1e-15, log)
+    passed = utilities.compareFPLists(expected, axis.binCenters(), 1e-15)
     if not passed:
-        log(
+        logger.info(
             "binCenters(): expected {0!s}, got {1!s}".format(
                 expected, axis.binCenters()
             )
@@ -76,7 +82,7 @@ def test_2(**kwds):
 
     passed = storage == axis.binBoundaries()
     if not passed:
-        log(
+        logger.info(
             "binBoundaries(): expected {0!s}, got {1!s}".format(
                 storage, axis.binBoundaries()
             )
@@ -101,7 +107,7 @@ def test_3(**kwds):
 
     passed = storage.asList() == axis.binBoundariesAsList()
     if not passed:
-        log(
+        logger.info(
             "binBoundariesAsList(): expected {0!s}, got {1!s}".format(
                 storage.asList(), axis.binBoundariesAsList()
             )
@@ -126,18 +132,7 @@ def run(**kwds):
     return allPassed
 
 
-# import ARCSTest.utilities as utilities
-import utilities
-
-target = "Axis"
-
-log = utilities.picklog(target)
-
 if __name__ == "__main__":
-    import journal
-
-    info = journal.info(target)
-    info.activate()
 
     run()
 

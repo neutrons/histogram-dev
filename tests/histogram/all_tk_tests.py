@@ -73,8 +73,6 @@ alltests = createsuites()
 
 
 def main():
-    ##     journal.debug('instrument').activate()
-    ##     journal.debug('instrument.elements').activate()
     unittest.TextTestRunner(verbosity=2).run(alltests)
     return
 

@@ -47,8 +47,6 @@ add_definitions(-DUSE_DANSE_NAMESPACE )
 
 # include python headers
 include_directories( ${PYTHON_INCLUDE_DIRS} )
-# assume journal is already deployed at the same deployment prefix
-# where we are going to deploy histogram
 include_directories( ${DEPLOYMENT_PREFIX}/include )
 
 # export headers from this project
