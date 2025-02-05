@@ -36,7 +36,6 @@ requirements:
     - versioningit
   run:
     - numpy
-    - pyre=0.8.3
 
 test:
   imports:
