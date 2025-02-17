@@ -14,15 +14,25 @@
 package:
   name: histogram
   version: {{ version_number }}
+  include:
+    - lib/*
+    - src/histogram/*
+  #   - bin/*
 
 source:
-  path: ..
+  path: ../
+
 
 build:
+  script_env:
+    - CC
+    - CXX
   noarch: python
   number: {{ build_number }}
-  string: py{{py}}
-  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv
+  #script: ./build.sh
+  #string: py{{py}}
+  #script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv
+  #https://docs.conda.io/projects/conda-build/en/stable/resources/define-metadata.html
 
 requirements:
   host:
@@ -34,6 +44,10 @@ requirements:
   build:
     - setuptools>=42
     - versioningit
+    - python
+    - cmake
+    - pip
+
   run:
     - numpy
 
