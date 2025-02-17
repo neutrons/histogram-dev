@@ -14,10 +14,6 @@
 package:
   name: histogram
   version: {{ version_number }}
-  include:
-    - lib/*
-    - src/histogram/*
-  #   - bin/*
 
 source:
   path: ../
