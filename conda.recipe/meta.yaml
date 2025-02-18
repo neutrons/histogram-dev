@@ -21,8 +21,8 @@ source:
 
 build:
   script_env:
-    - CC
-    - CXX
+    - {{ compiler("c") }}
+    - {{ compiler("cxx") }}
   noarch: python
   number: {{ build_number }}
 

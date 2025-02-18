@@ -1,6 +1,5 @@
 name: histogram-dev
 channels:
-  - mcvine
   - conda-forge
 dependencies:
   - anaconda-client
