@@ -16,7 +16,7 @@ package:
   version: {{ version_number }}
 
 source:
-  path: ../
+  path: ..
 
 
 build:
@@ -36,12 +36,11 @@ requirements:
   build:
     - setuptools>=42
     - versioningit
-    - python
-    - cmake
-    - pip
 
   run:
     - numpy
+    - matplotlib
+    - h5py
 
 test:
   imports:
