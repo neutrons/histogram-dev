@@ -11,6 +11,8 @@ from functools import reduce
 
 import operator
 from .DictAttributeCont import AttributeCont
+from . import _units as units
+from histogram.utils.units.SI import second
 import logging
 
 logger = logging.getLogger("Histogram")
@@ -1102,8 +1104,6 @@ def test_equalUnit():
     assert _equalUnit(1, 2) == False
     assert _equalUnit(1, 1) == True
     assert _equalUnit(1, 1 + 1e-10) == True
-    from . import _units as units
-    from histogram.utils.units.SI import second
 
     meter = units.length.meter
     assert _equalUnit(1 * meter, 1 * meter) == True
