@@ -1103,9 +1103,9 @@ def test_equalUnit():
     assert _equalUnit(1, 1) == True
     assert _equalUnit(1, 1 + 1e-10) == True
     from . import _units as units
+    from histogram.utils.units.SI import second
 
     meter = units.length.meter
-    second = units.time.second
     assert _equalUnit(1 * meter, 1 * meter) == True
     assert _equalUnit(1 * meter, 1) == False
     assert _equalUnit(1 * meter, 1 * second) == False

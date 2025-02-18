@@ -25,10 +25,6 @@ build:
     - CXX
   noarch: python
   number: {{ build_number }}
-  #script: ./build.sh
-  #string: py{{py}}
-  #script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv
-  #https://docs.conda.io/projects/conda-build/en/stable/resources/define-metadata.html
 
 requirements:
   host:

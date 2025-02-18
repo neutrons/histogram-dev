@@ -9,8 +9,8 @@ cd lib/
 src_files=$(ls *.cc)
 
 mkdir -p $PREFIX/lib
-g++ -c -fPIC $src_files
-g++ -shared -o $PREFIX/lib/libhistogram.so $(ls *.o)
+${CXX} -c -fPIC $src_files
+${CXX} -shared -o $PREFIX/lib/libhistogram.so $(ls *.o)
 cd ..
 
 #Python files
