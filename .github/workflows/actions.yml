@@ -56,6 +56,7 @@ jobs:
       shell: bash -l {0}
       run: |
         python -m build --wheel --no-isolation
+        check-wheel-contents dist/histogram*.whl
     - name: build conda package
       run: |
         # set up environment
