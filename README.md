@@ -19,7 +19,7 @@ histogram data object
     # create a conda package
     $ cd conda.recipe
     $ echo "versioningit $(versioningit ../)"
-    $ CHANNELS="--channel mcvine --channel conda-forge"
+    $ CHANNELS="--channel conda-forge"
     $ VERSION=$(versioningit ../) conda mambabuild $CHANNELS --output-folder . .
     $ conda verify noarch/histogram-*.tar.bz2
     # install a local conda package

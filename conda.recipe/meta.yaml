@@ -18,11 +18,13 @@ package:
 source:
   path: ..
 
+
 build:
+  script_env:
+    - {{ compiler("c") }}
+    - {{ compiler("cxx") }}
   noarch: python
   number: {{ build_number }}
-  string: py{{py}}
-  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv
 
 requirements:
   host:
@@ -34,8 +36,11 @@ requirements:
   build:
     - setuptools>=42
     - versioningit
+
   run:
     - numpy
+    - matplotlib
+    - h5py
 
 test:
   imports:
