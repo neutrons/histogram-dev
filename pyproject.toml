@@ -145,6 +145,9 @@ pre-commit = ">=4.2.0"
 pylint = "*"
 codecov = ">=2.1.13"
 
+[tool.pixi.feature.developer.pypi-dependencies]
+yq = "*"
+
 #readthedocs
 [tool.pixi.feature.docs.dependencies]
 sphinx = ">=8"
@@ -184,5 +187,9 @@ clean-all = { description = "Clean all artifacts", depends-on = [
     "clean-conda",
     "clean-docs",
 ] }
-sync-version = { cmd = 'version=$(python -m versioningit); toml set tool.pixi.package.version "$version" --toml-path pyproject.toml', description = "Sync pyproject.toml version with Git version" }
-reset-version = { cmd = "toml set tool.pixi.package.version \"0.0.0\" --toml-path pyproject.toml", description = "Reset the package version to 0.0.0" }
+sync-version-pyproject = { cmd = 'version=$(python -m versioningit); toml set tool.pixi.package.version "$version" --toml-path pyproject.toml', description = "Sync pyproject.toml version with Git version" }
+sync-version-recipe = { cmd = 'version=$(python -m versioningit); yq -i ".package.version = \"$version\"" recipe.yaml -y', description = "Sync recipe.yaml version with Git version" }
+reset-version-pyproject = { cmd = "toml set tool.pixi.package.version \"0.0.0\" --toml-path pyproject.toml", description = "Reset pyproject.toml version to 0.0.0" }
+reset-version-recipe = { cmd = 'yq -i ".package.version = \"0.0.0\"" recipe.yaml -y', description = "Reset recipe.yaml version to 0.0.0" }
+reset-version = { depends-on = ["reset-version-pyproject", "reset-version-recipe"], description = "Reset both pyproject.toml and recipe.yaml versions to 0.0.0" }
+sync-version = {depends-on = ["sync-version-recipe", "sync-version-pyproject"], description = "Sync both pyproject.toml and recipe.yaml versions with Git version" }
