@@ -91,7 +91,7 @@ channels = [
 
 [tool.pixi.package]
 name = "histogram"
-version = "0.0.0" # placeholder, can be updated by task sync-version
+version = "0.5.0.dev1" # placeholder, can be updated by task sync-version
 
 [tool.pixi.package.build]
 backend = { name = "pixi-build-rattler-build", version = "0.1.*" }
@@ -101,9 +101,11 @@ hatchling = "*"
 versioningit = "*"
 cmake = "*"
 gxx_linux-64 = "*"
+cxx-compiler = ">=1.9.0, <2"
+ninja = ">=1.12.1,<2"
 
 [tool.pixi.package.run-dependencies]
-#dependencies for the conda package - for shiver to run
+#dependencies for the conda package - for histogram to run
 numpy = "==1.26.4"
 matplotlib = "*"
 h5py = "*"
@@ -113,6 +115,7 @@ h5py = "*"
 numpy = "==1.26.4"
 matplotlib = "*"
 h5py = "*"
+rattler-build = ">=0.44.0,<0.45"
 
 [tool.pixi.pypi-dependencies]
 # PyPI dependencies for the local environment though pixi
