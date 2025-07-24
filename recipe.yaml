@@ -12,13 +12,14 @@
 # change the build number by hand if you want to rebuild the package
 context:
   build_number: 0
-  name: ${{ load_from_file("pyproject.toml").tool.pixi.package }}
+  name: ${{ load_from_file("pyproject.toml").project.name }}
   version: ${{ load_from_file("pyproject.toml").tool.pixi.package.version }}
-  source_url: ${{ load_from_file("pyproject.toml").project.urls.repository }}
+  homepage: ${{ load_from_file("pyproject.toml").project.urls.homepage }}
+  description: ${{ load_from_file("pyproject.toml").project.description }}
 
 package:
-  name: histogram
-  version: 0.0.0
+  name: ${{ name }}
+  version: ${{ version }}
 
 source:
   path: ..
@@ -50,6 +51,6 @@ tests:
         - histogram
 
 about:
-  homepage: https://github.com/neutrons/histogram-dev
-  summary: "The histogram python package provides a simple yet fundamental data structure for scientific computing histogram"
+  homepage: ${{ homepage }}
+  summary: ${{ description }}
   #license: BSD
