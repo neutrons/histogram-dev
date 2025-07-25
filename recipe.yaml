@@ -24,28 +24,22 @@ build:
       - bin/plothist
 requirements:
   host:
-    - python
     - versioningit
-    - wheel
     - python
     - pip
     - hatchling
 
   build:
     - versioningit
-    - ${{ compiler('cxx') }}
-    - cmake
-    - ninja
     - python
     - pip
     - hatchling
 
   run:
-    - numpy
+    - numpy==1.26.4
     - matplotlib
     - h5py
 
 about:
   homepage: ${{ homepage }}
   summary: ${{ description }}
-  #license: BSD

@@ -2,6 +2,16 @@
 echo "-------------  BUILD SCRIPT  -------------"
 python -m pip install . --no-deps --ignore-installed
 
+# in case a shared library is needed
+# shared library for linux
+# cd lib/
+# src_files=$(ls *.cc)
+
+# mkdir -p $PREFIX/lib
+# ${CXX} -c -fPIC $src_files
+# ${CXX} -shared -o $PREFIX/lib/libhistogram.so $(ls *.o)
+# cd ..
+
 #lib folder
 mkdir -p $PREFIX/include/histogram
 cp -r lib/* $PREFIX/include/histogram/
