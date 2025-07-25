@@ -154,8 +154,8 @@ pytest-xvfb = ">=3.1.1"
 
 [tool.pixi.tasks]
 # Documentation
-build-docs = { cmd = 'sphinx-build -b html docs/source/ docs/_build/html', description = "Build documentation" }
-test-docs = { cmd = "sphinx-build -M doctest docs/source/ docs/_build/html", description = "Test building the documentation" }
+build-docs = { cmd = 'sphinx-build -b html docs/sphinx/ docs/_build/html', description = "Build documentation" }
+test-docs = { cmd = "sphinx-build -M doctest docs/sphinx/ docs/_build/html", description = "Test building the documentation" }
 # Testing
 test = { description = "Run the test suite", cmd = "pytest" }
 # Packaging

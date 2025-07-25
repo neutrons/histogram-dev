@@ -13,15 +13,15 @@ package:
 source:
   path: .
 
-
 build:
   noarch: python
   number: ${{ build_number }}
   files:
     include:
-      - lib/python*/**/*.py
+      - lib/python*/*
       - include/histogram/*
       - bin/plothist
+
 requirements:
   host:
     - versioningit
