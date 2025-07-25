@@ -1056,8 +1056,8 @@ packages:
   timestamp: 1753357500665
 - pypi: ./
   name: histogram
-  version: 0.5.0.dev2
-  sha256: 97110da785a458ce80ffcacd6a89cdf47326396316950872bcf71d03e059c279
+  version: 0.5.0.dev5
+  sha256: 2efc9f24555fabc40f98415c9567308c1d31ca0ff207d5fcee84cd50c2720097
   requires_python: '>=3.10'
   editable: true
 - conda: https://conda.anaconda.org/conda-forge/noarch/hpack-4.1.0-pyhd8ed1ab_0.conda

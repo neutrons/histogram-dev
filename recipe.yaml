@@ -1,15 +1,4 @@
 # load information from pyproject.toml
-#{% set pyproject = load_file_data("pyproject.toml", from_recipe_dir=True) %}
-#{% set project = {{ PIXI_PACKAGE_NAME }} %}
-#{% set license = project.get('license').get('text') %}
-#{% set description = project.get('description') %}
-#{% set project_url = pyproject.get('project', {}).get('urls') %}
-#{% set url = project_url.get('homepage') %}
-# this will get the version set by environment variable
-#{% set tool_conf = pyproject.get('tool', {}) %}
-#{% set version = tool_conf.get('pixi',{}).get('package',{}).get('version',{}) %}
-#{% set version_number = version.split('+')[0] %}
-# change the build number by hand if you want to rebuild the package
 context:
   build_number: 0
   name: ${{ load_from_file("pyproject.toml").project.name }}
@@ -22,33 +11,39 @@ package:
   version: ${{ version }}
 
 source:
-  path: ..
+  path: .
 
 
 build:
   noarch: python
   number: ${{ build_number }}
-
+  files:
+    include:
+      - lib/python*/**/*.py
+      - include/histogram/*
+      - bin/plothist
 requirements:
   host:
     - python
     - versioningit
-    - setuptools>=42
     - wheel
+    - python
+    - pip
+    - hatchling
 
   build:
-    - setuptools>=42
     - versioningit
+    - ${{ compiler('cxx') }}
+    - cmake
+    - ninja
+    - python
+    - pip
+    - hatchling
 
   run:
     - numpy
     - matplotlib
     - h5py
-
-tests:
-  - python:
-      imports:
-        - histogram
 
 about:
   homepage: ${{ homepage }}

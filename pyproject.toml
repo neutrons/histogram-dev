@@ -28,7 +28,6 @@ source = "versioningit"
 [tool.hatch.build]
 artifacts = ["*.yml", "*.yaml", "*.json"]
 
-
 [tool.hatch.build.hooks.versioningit-onbuild]
 source-file = "src/histogram/_version.py"
 build-file = "histogram/_version.py"
@@ -91,7 +90,7 @@ channels = [
 
 [tool.pixi.package]
 name = "histogram"
-version = "0.5.0.dev1" # placeholder, can be updated by task sync-version
+version = "0.0.0" # placeholder, can be updated by task sync-version
 
 [tool.pixi.package.build]
 backend = { name = "pixi-build-rattler-build", version = "0.1.*" }
@@ -168,11 +167,11 @@ test-docs = { cmd = "sphinx-build -M doctest docs/source/ docs/_build/html", des
 # Testing
 test = { description = "Run the test suite", cmd = "pytest" }
 # Packaging
-conda-build-command = { cmd = "pixi build", description = "Wrapper for building the conda package - used by `conda-build`" }
+conda-build-command = { cmd = "RATTLER_BUILD_EXPERIMENTAL=true pixi build", description = "Wrapper for building the conda package - used by `conda-build`" }
 conda-build = { description = "Build the conda package", depends-on = [
-    "sync-version",
+    "sync-version-pyproject",
     "conda-build-command",
-    "reset-version",
+    "reset-version-pyproject",
 ] }
 conda-publish = { cmd = "anaconda upload *.conda", description = "Publish the .conda package to anaconda.org", depends-on = [
     "conda-build",
