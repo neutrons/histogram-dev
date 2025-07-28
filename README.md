@@ -14,7 +14,7 @@ histogram data object
    ```
    Also install git, if it is missing.
 
-2. Go to a location where you would like to install the program (e.g., $HOME/software), run:
+2. Go to a location where you would like to install histogram, run:
 
    ```bash
    git clone https://github.com/neutrons/histogram-dev.git`
