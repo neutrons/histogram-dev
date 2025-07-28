@@ -3,43 +3,38 @@
 Installation
 ============
 
-The histogram package can be installed:
+The histogram package can be installed with 2 ways:
 
-    1. from the source code:
+* from the source code:
 
-        1. Install [Pixi](https://pixi.sh/) for managing environments, dependencies, packaging, and task execution. (if it is not already installed).
+    1. Install `Pixi <https://pixi.sh/>`_ for managing environments, dependencies, packaging, and task execution. (if it is not already installed).
 
         Pixi installation e.g. for Linux:
 
-        ```bash
+        .. code:: shell
 
-        curl -fsSL https://pixi.sh/install.sh | sh
+            $ curl -fsSL https://pixi.sh/install.sh | sh
 
-        ```
+
         Also install git, if it is missing.
 
-        2. Go to a location where you would like to install the program (e.g., $HOME/software), run:
+    2. Go to a location where you would like to install the program, run:
 
+        .. code:: shell
 
-            `git clone https://github.com/neutrons/histogram-dev.git`
+            $ git clone https://github.com/neutrons/histogram-dev.git
 
-        3. Setup/Update the environment
+    3. Setup and enter the environment
 
-        ```bash
-        pixi install
-        ```
+        .. code:: shell
 
-        or to enter the environment
+            $ pixi shell
 
-        ```bash
-        pixi shell
-
-        ```
-    2. as a conda package: https://anaconda.org/neutrons/histogram
+* as a conda package: `Histogram Package Installation Instructions <https://anaconda.org/neutrons/histogram>`_
 
 
  To test, in the root directory type:
 
  pytest
 
-:ref:`More details <install-details>`
+:ref:`Additional details <install-details>`

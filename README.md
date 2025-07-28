@@ -17,14 +17,14 @@ histogram data object
 2. Go to a location where you would like to install histogram, run:
 
    ```bash
-   git clone https://github.com/neutrons/histogram-dev.git`
+   git clone https://github.com/neutrons/histogram-dev.git
 
    ```
 
-3. Setup/Update the environment
+3. Setup-activate and enter the environment
 
     ```bash
-    pixi install
+    pixi shell
     ```
 
 The histogram environment is activated and the application is ready to use.
@@ -32,9 +32,6 @@ The histogram environment is activated and the application is ready to use.
 
 ## For Contributors
 
-**Development/Deployment**
-
----
 
 * Pixi additional Information
 
@@ -46,10 +43,10 @@ The histogram environment is activated and the application is ready to use.
 
   ```
 
-  to enter the environment
+  to install/update the enrivornment
 
     ```bash
-    pixi shell
+    pixi install
 
     ```
 
