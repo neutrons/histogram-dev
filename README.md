@@ -41,13 +41,15 @@ The histogram environment is activated and the application is ready to use.
 
 ---
 
-Any change to pyproject.toml, e.g. new dependencies, requires updating the pixi.lock file and including it in the commit.
+* Pixi additional Information
 
-```bash
+  Any change to pyproject.toml, e.g. new dependencies, requires updating the pixi.lock file and including it in the commit.
 
-pixi.lock
+  ```bash
 
-```
+  pixi.lock
+
+  ```
 
 * Tests
 
