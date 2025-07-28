@@ -26,8 +26,8 @@ jobs:
       with:
         pixi-version: v0.48.2
 
-    - name: pylint
-      run: pixi run pre-commit run -a pylint
+    - name: ruff
+      run: pixi run pre-commit run -a ruff
 
     - name: Install histogram
       run: pixi run python -m pip install -e .
