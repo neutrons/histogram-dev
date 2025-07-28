@@ -27,13 +27,6 @@ histogram data object
     pixi install
     ```
 
-    or to enter the environment
-
-    ```bash
-    pixi shell
-
-    ```
-
 The histogram environment is activated and the application is ready to use.
 
 
@@ -52,6 +45,13 @@ The histogram environment is activated and the application is ready to use.
   pixi.lock
 
   ```
+
+  to enter the environment
+
+    ```bash
+    pixi shell
+
+    ```
 
 * Tests
 
