@@ -101,8 +101,6 @@ jobs:
           micromamba install -c /tmp/local-channel -c conda-forge ${{ env.PKG_NAME }}
 
       - name: Verify the installation
-        env:
-          MPLBACKEND: Agg
         run: |
           conda_version=$(micromamba list "${{ env.PKG_NAME }}" | awk -v pkg="${{ env.PKG_NAME }}" '$1 == pkg { print $2 }')
           echo "Conda version: $conda_version"
