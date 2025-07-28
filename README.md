@@ -21,16 +21,16 @@ histogram data object
 
 3. Setup/Update the environment
 
-  ```bash
-  pixi install
-  ```
+    ```bash
+    pixi install
+    ```
 
-  or to enter the environment
+    or to enter the environment
 
-  ```bash
-  pixi shell
+    ```bash
+    pixi shell
 
-  ```
+    ```
 
 The histogram environment is activated and the application is ready to use.
 
@@ -53,10 +53,9 @@ pixi.lock
 
   In root directory of histogram-dev,type
 
-  .. code-block:: shell
-
-    `pytest`
-
+    ```bash
+    pytest
+      ```
 * [Documentation](https://histogram-dev.readthedocs.io/en/latest/)
 
 ---
