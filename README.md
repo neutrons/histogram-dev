@@ -55,7 +55,8 @@ pixi.lock
 
     ```bash
     pytest
-      ```
+
+    ```
 * [Documentation](https://histogram-dev.readthedocs.io/en/latest/)
 
 ---
