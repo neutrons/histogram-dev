@@ -16,8 +16,10 @@ histogram data object
 
 2. Go to a location where you would like to install the program (e.g., $HOME/software), run:
 
+   ```bash
+   git clone https://github.com/neutrons/histogram-dev.git`
 
-    `git clone https://github.com/neutrons/histogram-dev.git`
+   ```
 
 3. Setup/Update the environment
 
