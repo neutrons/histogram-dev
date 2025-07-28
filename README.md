@@ -3,33 +3,51 @@ histogram data object
 
 ## Installation
 
-### Package Build and Installation Instructions
+1. Install [Pixi](https://pixi.sh/) for managing environments, dependencies, packaging, and task execution. (if it is not already installed).
 
-1. Python wheel
+   Pixi installation e.g. for Linux:
 
-  .. code-block:: shell
+   ```bash
 
-    $ python -m build --wheel --no-isolation
-    $ check-wheel-contents dist/histogram_*.whl
+   curl -fsSL https://pixi.sh/install.sh | sh
 
-2. Conda package
+   ```
+   Also install git, if it is missing.
 
-  .. code-block:: shell
+2. Go to a location where you would like to install the program (e.g., $HOME/software), run:
 
-    # create a conda package
-    $ cd conda.recipe
-    $ echo "versioningit $(versioningit ../)"
-    $ CHANNELS="--channel conda-forge"
-    $ VERSION=$(versioningit ../) conda mambabuild $CHANNELS --output-folder . .
-    $ conda verify noarch/histogram-*.tar.bz2
-    # install a local conda package
-    $ conda install noarch/<histogram.tar.bz2 file>
 
-### Installation Instructions for editable mode
+    `git clone https://github.com/neutrons/histogram-dev.git`
 
-  .. code-block:: shell
+3. Setup/Update the environment
 
-    $ pip install -e .
+  ```bash
+  pixi install
+  ```
+
+  or to enter the environment
+
+  ```bash
+  pixi shell
+
+  ```
+
+The histogram environment is activated and the application is ready to use.
+
+
+## For Contributors
+
+**Development/Deployment**
+
+---
+
+Any change to pyproject.toml, e.g. new dependencies, requires updating the pixi.lock file and including it in the commit.
+
+```bash
+
+pixi.lock
+
+```
 
 * Tests
 
@@ -43,5 +61,5 @@ histogram data object
 
 ---
 
-[![CI](https://github.com/neutrons/histogram-dev/actions/workflows/actions.yml/badge.svg?branch=next)](https://github.com/neutrons/histogram-dev/actions/workflows/actions.yml)
+[![CI](https://github.com/neutrons/histogram-dev/actions/workflows/test_and_deploy.yml/badge.svg?branch=next)](https://github.com/neutrons/histogram-dev/actions/workflows/test_and_deploy.yml)
 [![codecov](https://codecov.io/gh/neutrons/histogram-dev/graph/badge.svg?token=Z0Y3B6XEWP)](https://codecov.io/gh/neutrons/histogram-dev)
