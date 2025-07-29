@@ -1,0 +1,45 @@
+# load information from pyproject.toml
+context:
+  build_number: 0
+  name: ${{ load_from_file("pyproject.toml").project.name }}
+  version: ${{ load_from_file("pyproject.toml").tool.pixi.package.version }}
+  homepage: ${{ load_from_file("pyproject.toml").project.urls.homepage }}
+  description: ${{ load_from_file("pyproject.toml").project.description }}
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  path: .
+
+build:
+  noarch: python
+  number: ${{ build_number }}
+  files:
+    include:
+      - lib/python*/*
+      - include/histogram/*
+      - bin/plothist
+
+requirements:
+  host:
+    - versioningit
+    - python
+    - pip
+    - hatchling
+
+  build:
+    - versioningit
+    - python
+    - pip
+    - hatchling
+
+  run:
+    - numpy==1.26.4
+    - matplotlib
+    - h5py
+
+about:
+  homepage: ${{ homepage }}
+  summary: ${{ description }}

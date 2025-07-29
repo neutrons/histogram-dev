@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-
-#lib folder
-mkdir -p $PREFIX/include/histogram
-cp -r lib/* $PREFIX/include/histogram/
+echo "-------------  BUILD SCRIPT  -------------"
+python -m pip install . --no-deps --ignore-installed
 
 # in case a shared library is needed
 # shared library for linux
@@ -14,8 +12,13 @@ cp -r lib/* $PREFIX/include/histogram/
 # ${CXX} -shared -o $PREFIX/lib/libhistogram.so $(ls *.o)
 # cd ..
 
+#lib folder
+mkdir -p $PREFIX/include/histogram
+cp -r lib/* $PREFIX/include/histogram/
+
 #Python files
 mkdir -p $PREFIX/lib/python$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')/site-packages/histogram
+ls src/histogram/
 cp -r src/histogram/* $PREFIX/lib/python$(python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')/site-packages/histogram/
 
 #Executable plothist

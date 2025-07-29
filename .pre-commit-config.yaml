@@ -1,3 +1,7 @@
+
+ci:
+    skip: [pixi-lock-check]
+
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v4.6.0
@@ -35,8 +39,10 @@ repos:
     - id: ruff-format
       exclude: "tests/histogram/"
 
-# - repo: https://github.com/codespell-project/codespell
-#   rev: v2.3.0
-#   hooks:
-#     - id: codespell
-#     exclude: "lib/README/.*"
+- repo: local
+  hooks:
+    - id: pixi-lock-check
+      name: pixi-lock-check
+      entry: bash -c "pixi lock --check"
+      stage: pre-push
+      language: system

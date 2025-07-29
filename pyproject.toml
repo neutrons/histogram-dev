@@ -1,11 +1,8 @@
 [project]
-name = "histogram-dev"
+name = "histogram"
 description = "The histogram python package provides a simple yet fundamental data structure for scientific computing histogram"
 dynamic = ["version"]
 requires-python = ">=3.10"
-dependencies = [
-  "numpy == 1.26.4"
-]
 license = { text = "MIT" }
 keywords = ["neutrons", "histogram", "python"]
 readme = "README.md"
@@ -15,32 +12,44 @@ homepage = "https://github.com/neutrons/histogram-dev"  # if no homepage, use re
 repository = "https://github.com/neutrons/histogram-dev"
 documentation = "https://histogram-dev.readthedocs.io"
 
+[project.scripts]
+histogram-cli = "histogram.Histogram:main"
 
 [build-system]
 requires = [
-  "setuptools>=42",
+  "hatchling",
   "versioningit"
 ]
-build-backend = "setuptools.build_meta"
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "versioningit"
+
+[tool.hatch.build]
+artifacts = ["*.yml", "*.yaml", "*.json"]
+
+[tool.hatch.build.hooks.versioningit-onbuild]
+source-file = "src/histogram/_version.py"
+build-file = "histogram/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/histogram"]
+
+
+[tool.versioningit.write]
+file = "src/histogram/_version.py"
 
 [tool.versioningit.vcs]
 method = "git"
-default-tag = "0.0.1"
+default-tag = "4.0.0"
 
 [tool.versioningit.next-version]
 method = "minor"
 
 [tool.versioningit.format]
 distance = "{next_version}.dev{distance}"
-dirty = "{version}+d{build_date:%Y%m%d}"
-distance-dirty = "{next_version}.dev{distance}+d{build_date:%Y%m%d%H%M}"
-
-[tool.versioningit.write]
-file = "src/histogram/_version.py"
-
-[tool.setuptools.packages.find]
-where = ["src"]
-exclude = ["src/histogram/scripts/Make.mm"]
+dirty = "{version}"
+distance-dirty = "{next_version}.dev{distance}"
 
 
 [tool.coverage.run]
@@ -51,8 +60,6 @@ source = [
   "src"
 ]
 
-[project.scripts]
-histogram-cli = "histogram.Histogram:main"
 
 # pytest.ini
 [tool.pytest.ini_options]
@@ -69,3 +76,107 @@ filterwarnings =[
     "ignore: Matplotlib is currently using ps, which is a non-GUI backend, so cannot show the figure.",
     "ignore: FigureCanvasPS is non-interactive, and thus cannot be shown"
 ]
+
+# ------------------ #
+# Pixi configuration #
+# ------------------ #
+[tool.pixi.workspace]
+preview = ["pixi-build"] # Need this to access pixi-build feature
+platforms = ["linux-64"]
+channels = [
+  "conda-forge",
+  "https://prefix.dev/pixi-build-backends"
+]
+
+[tool.pixi.package]
+name = "histogram"
+version = "0.0.0" # placeholder, can be updated by task sync-version
+
+[tool.pixi.package.build]
+backend = { name = "pixi-build-rattler-build", version = "0.1.*" }
+
+[tool.pixi.package.host-dependencies]
+hatchling = "*"
+versioningit = "*"
+pip = "*"
+
+[tool.pixi.package.run-dependencies]
+#dependencies for the conda package - for histogram to run
+numpy = "==1.26.4"
+matplotlib = "*"
+h5py = "*"
+
+[tool.pixi.dependencies]
+# Conda package dependencies for the local environment though pixi
+numpy = "==1.26.4"
+matplotlib = "*"
+h5py = "*"
+rattler-build = ">=0.44.0,<0.45"
+
+[tool.pixi.pypi-dependencies]
+# PyPI dependencies for the local environment though pixi
+#including this package to allow local editable installs
+histogram = { path = ".", editable = true }
+
+[tool.pixi.environments]
+#environment definitions with feature dependencies
+default = { features = ["package", "developer","docs","test",], solve-group = "default" }
+
+[tool.pixi.feature.package.dependencies]
+#conda package
+anaconda-client = ">=1.13.0"
+check-wheel-contents = ">=0.6.2"
+versioningit = ">=3.2.0"
+
+[tool.pixi.feature.package.pypi-dependencies]
+toml-cli = "*"
+
+#code analysis tools
+[tool.pixi.feature.developer.dependencies]
+pip = ">=25.1.1"
+pip-audit = ">=2.9.0"
+pre-commit = ">=4.2.0"
+pylint = "*"
+codecov = ">=2.1.13"
+
+#readthedocs
+[tool.pixi.feature.docs.dependencies]
+sphinx = ">=8"
+sphinx_rtd_theme = ">=3.0.1"
+
+#pytest
+[tool.pixi.feature.test.dependencies]
+pytest = ">=8.4.1"
+pytest-qt = ">=4.4.0"
+pytest-cov = ">=6.2.1"
+pytest-mock = ">=3.14.1"
+pytest-xvfb = ">=3.1.1"
+
+[tool.pixi.tasks]
+# Documentation
+build-docs = { cmd = 'sphinx-build -b html docs/sphinx/ docs/_build/html', description = "Build documentation" }
+test-docs = { cmd = "sphinx-build -M doctest docs/sphinx/ docs/_build/html", description = "Test building the documentation" }
+# Testing
+test = { description = "Run the test suite", cmd = "pytest" }
+# Packaging
+conda-build-command = { cmd = "RATTLER_BUILD_EXPERIMENTAL=true pixi build", description = "Wrapper for building the conda package - used by `conda-build`" }
+conda-build = { description = "Build the conda package", depends-on = [
+    "sync-version",
+    "conda-build-command",
+    "reset-version",
+] }
+conda-publish = { cmd = "anaconda upload *.conda", description = "Publish the .conda package to anaconda.org", depends-on = [
+    "conda-build",
+] }
+# Misc
+audit-deps = { cmd = "pip-audit --local -s osv", description = "Audit the package dependencies for vulnerabilities" }
+clean = { cmd = 'rm -rf .pytest_cache .ruff_cache **/*.egg-info **/dist **/__pycache__ **/_version.py', description = "Clean up various caches and build artifacts" }
+clean-conda = { cmd = "rm -f *.conda", description = "Clean the local .conda build artifacts" }
+clean-docs = { cmd = "rm -rf docs/_build", description = "Clean up documentation build artifacts" }
+clean-all = { description = "Clean all artifacts", depends-on = [
+    "clean",
+    "clean-conda",
+    "clean-docs",
+] }
+sync-version= { cmd = 'version=$(python -m versioningit); toml set tool.pixi.package.version "$version" --toml-path pyproject.toml', description = "Sync pyproject.toml version with Git version" }
+reset-version = { cmd = "toml set tool.pixi.package.version \"0.0.0\" --toml-path pyproject.toml", description = "Reset pyproject.toml version to 0.0.0" }

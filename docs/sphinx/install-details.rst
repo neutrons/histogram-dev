@@ -17,20 +17,3 @@ Optionally, you may want to install:
 
 * `h5py <http://code.google.com/p/h5py/>`_: for load/dump histograms
 * `matplotlib <http://matplotlib.sourceforge.net/>`_: for plotting
-
-
-Install
--------
-The histogram package can be installed by using pip install in editable mode currently::
-
- $ git clone git@github.com:neutrons/histogram-dev.git.
-
-Navigate to the root directory of histogram-dev:::
-
- $ conda env create
-
- (This will create an environment using the environment.yml file.)
-
-To install the package, in the correct environment(histogram-dev)::
-
- $ pip install -e .
