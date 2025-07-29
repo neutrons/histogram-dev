@@ -18,6 +18,12 @@ The histogram package can be installed with 2 ways:
 
         Also install git, if it is missing.
 
+        .. code:: shell
+
+            $ sudo apt update # for updating the package list
+            $ sudo apt install git
+
+
     2. Go to a location where you would like to install the program, run:
 
         .. code:: shell
