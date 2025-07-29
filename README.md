@@ -14,6 +14,13 @@ histogram data object
    ```
    Also install git, if it is missing.
 
+   ```bash
+   sudo apt update # for updating the package list
+   sudo apt install git
+
+   ```
+
+
 2. Go to a location where you would like to install histogram, run:
 
    ```bash
