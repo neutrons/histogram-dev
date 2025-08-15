@@ -65,7 +65,7 @@ source = [
 [tool.pytest.ini_options]
 log_cli = true
 log_file_format = "%(asctime)s [%(levelname)8s] (%(path)s:%(lineno)s) %(message)s"
-norecursedirs = [".svn","_build"] # ignore tests in ndarray due to missing stdVector module not found
+norecursedirs = [".git","_build"] # ignore tests in ndarray due to missing stdVector module not found
 
 testpaths =[
     "tests"
@@ -156,7 +156,7 @@ test-docs = { cmd = "sphinx-build -M doctest docs/sphinx/ docs/_build/html", des
 # Testing
 test = { description = "Run the test suite", cmd = "pytest" }
 # Packaging
-conda-build-command = { cmd = "RATTLER_BUILD_EXPERIMENTAL=true pixi build", description = "Wrapper for building the conda package - used by `conda-build`" }
+conda-build-command = { cmd = "RATTLER_BUILD_EXPERIMENTAL=true pixi build -v", description = "Wrapper for building the conda package - used by `conda-build`" }
 conda-build = { description = "Build the conda package", depends-on = [
     "sync-version",
     "conda-build-command",
