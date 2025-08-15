@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 echo "-------------  BUILD SCRIPT  -------------"
 
+# write out the _version.py file
+python -m pip install . --no-deps --ignore-installed
+
 #lib folder
 mkdir -p $PREFIX/include/histogram
 cp -r lib/* $PREFIX/include/histogram/
