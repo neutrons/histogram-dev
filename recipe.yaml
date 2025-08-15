@@ -44,6 +44,7 @@ tests:
   - python:
       imports:
         - histogram
+        - histogram.__version__
 
 about:
   homepage: ${{ homepage }}
