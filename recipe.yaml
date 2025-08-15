@@ -37,8 +37,13 @@ requirements:
 
   run:
     - numpy>=1.26.4
-    - matplotlib
+    - matplotlib-base
     - h5py
+
+tests:
+  - python:
+      imports:
+        - histogram
 
 about:
   homepage: ${{ homepage }}

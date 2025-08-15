@@ -103,12 +103,12 @@ pip = "*"
 [tool.pixi.package.run-dependencies]
 #dependencies for the conda package - for histogram to run
 numpy = ">=1.26.4"
-matplotlib = "*"
+matplotlib-base = "*"
 h5py = "*"
 
 [tool.pixi.dependencies]
 numpy = ">=1.26.4"
-matplotlib = "*"
+matplotlib-base = "*"
 h5py = "*"
 rattler-build = ">=0.44.0,<0.45"
 
@@ -146,10 +146,8 @@ sphinx_rtd_theme = ">=3.0.1"
 #pytest
 [tool.pixi.feature.test.dependencies]
 pytest = ">=8.4.1"
-pytest-qt = ">=4.4.0"
 pytest-cov = ">=6.2.1"
 pytest-mock = ">=3.14.1"
-pytest-xvfb = ">=3.1.1"
 
 [tool.pixi.tasks]
 # Documentation
